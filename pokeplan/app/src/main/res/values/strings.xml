@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">PokePlan</string>
+    <!-- General -->
+    <string name="app_name">PokéPlan</string>
+    <string name="tagline">tagline here. tagline tagline</string>
+
+    <!-- Login / Register -->
+    <string name="register_tagline">Hello! Register a new account now.</string>
+    <string name="login_tagline">Welcome back! Log in with an existing account.</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
 </resources>

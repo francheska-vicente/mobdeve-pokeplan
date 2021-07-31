@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/green"
-        app:layout_constraintBottom_toTopOf="@+id/gl_login_hor40p"
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_hor20p"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,61 +18,81 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_login_hor40p"
+        android:id="@+id/gl_register_hor20p"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+        app:layout_constraintGuide_percent="0.2" />
 
     <TextView
-        android:id="@+id/tv_login_username"
+        android:id="@+id/tv_register_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="@string/email"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/et_register_name"
+        app:layout_constraintTop_toBottomOf="@+id/et_register_name" />
+
+    <TextView
+        android:id="@+id/tv_register_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="@string/username"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/et_register_email"
+        app:layout_constraintTop_toBottomOf="@+id/et_register_email" />
+
+    <TextView
+        android:id="@+id/tv_register_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/raleway_light_italic"
-        android:text="@string/username"
+        android:text="@string/name"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_login_tagline"
-        app:layout_constraintTop_toBottomOf="@+id/tv_login_tagline" />
+        app:layout_constraintStart_toStartOf="@+id/tv_register_tagline"
+        app:layout_constraintTop_toBottomOf="@+id/tv_register_tagline" />
 
     <TextView
-        android:id="@+id/tv_login_tagline"
+        android:id="@+id/tv_register_tagline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/raleway_light_italic"
-        android:text="@string/login_tagline"
+        android:text="@string/register_tagline"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/tv_login_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_login_title" />
+        app:layout_constraintStart_toStartOf="@+id/tv_register_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_register_title" />
 
     <TextView
-        android:id="@+id/tv_login_password"
+        android:id="@+id/tv_register_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/raleway_light_italic"
         android:text="@string/password"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/et_login_username"
-        app:layout_constraintTop_toBottomOf="@+id/et_login_username" />
+        app:layout_constraintStart_toStartOf="@+id/et_register_username"
+        app:layout_constraintTop_toBottomOf="@+id/et_register_username" />
 
     <TextView
-        android:id="@+id/tv_login_title"
+        android:id="@+id/tv_register_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="Login"
+        android:text="Register"
         android:textSize="42sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <Button
-        android:id="@+id/btn_login_main"
+        android:id="@+id/btn_register_main"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -80,7 +100,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_button"
         android:fontFamily="@font/raleway_bold"
-        android:text="LOGIN"
+        android:text="REGISTER"
         android:textColor="@color/darkest_gray"
         app:backgroundTint="@color/pink"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -89,31 +109,44 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/et_login_username"
+        android:id="@+id/et_register_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:fontFamily="@font/raleway_semibold"
         android:inputType="text"
         android:singleLine="true"
         android:textColor="@color/darkest_gray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_login_username"
-        app:layout_constraintTop_toBottomOf="@+id/tv_login_username" />
+        app:layout_constraintStart_toStartOf="@+id/tv_register_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_register_name" />
 
     <EditText
-        android:id="@+id/et_login_password"
+        android:id="@+id/et_register_username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/raleway_semibold"
+        android:inputType="text"
+        android:singleLine="true"
+        android:textColor="@color/darkest_gray"
+        app:layout_constraintEnd_toEndOf="@+id/et_register_email"
+        app:layout_constraintStart_toStartOf="@+id/tv_register_username"
+        app:layout_constraintTop_toBottomOf="@+id/tv_register_username" />
+
+    <EditText
+        android:id="@+id/et_register_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/et_login_username"
-        app:layout_constraintStart_toStartOf="@+id/tv_login_password"
-        app:layout_constraintTop_toBottomOf="@+id/tv_login_password" />
+        app:layout_constraintEnd_toEndOf="@+id/et_register_username"
+        app:layout_constraintStart_toStartOf="@+id/tv_register_password"
+        app:layout_constraintTop_toBottomOf="@+id/tv_register_password" />
 
     <ImageButton
-        android:id="@+id/ib_login_back"
+        android:id="@+id/ib_register_back"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -123,4 +156,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/darkest_gray" />
+
+    <EditText
+        android:id="@+id/et_register_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:fontFamily="@font/raleway_semibold"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/et_register_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_register_email"
+        app:layout_constraintTop_toBottomOf="@+id/tv_register_email" />
 </androidx.constraintlayout.widget.ConstraintLayout>
