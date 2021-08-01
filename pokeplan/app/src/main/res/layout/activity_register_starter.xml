@@ -7,168 +7,198 @@
 
     <ImageButton
         android:id="@+id/imageButton13"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_1"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="150dp" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toTopOf="@+id/guideline12"
+        app:srcCompat="@drawable/pkmn_1" />
 
     <ImageButton
         android:id="@+id/imageButton18"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_10"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="273dp" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline14"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toTopOf="@+id/gl_register_first"
+        app:srcCompat="@drawable/pkmn_10" />
 
     <ImageButton
         android:id="@+id/imageButton19"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_16"
-        tools:layout_editor_absoluteX="257dp"
-        tools:layout_editor_absoluteY="265dp" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline14"
+        app:layout_constraintEnd_toStartOf="@+id/gl_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toTopOf="@+id/gl_register_first"
+        app:srcCompat="@drawable/pkmn_16" />
 
     <ImageButton
         android:id="@+id/imageButton20"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_13"
-        tools:layout_editor_absoluteX="128dp"
-        tools:layout_editor_absoluteY="273dp" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline14"
+        app:layout_constraintEnd_toStartOf="@+id/guideline20"
+        app:layout_constraintStart_toStartOf="@+id/guideline10"
+        app:layout_constraintTop_toTopOf="@+id/gl_register_first"
+        app:srcCompat="@drawable/pkmn_13" />
 
     <ImageButton
         android:id="@+id/imageButton21"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_19"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="380dp" />
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_third"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toTopOf="@+id/gl_register_second"
+        app:srcCompat="@drawable/pkmn_19" />
 
     <ImageButton
         android:id="@+id/imageButton24"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_28"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="490dp" />
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_fourth"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toTopOf="@+id/guideline18"
+        app:srcCompat="@drawable/pkmn_28" />
 
     <ImageButton
         android:id="@+id/imageButton27"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_37"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="590dp" />
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toTopOf="@+id/guideline19"
+        app:srcCompat="@drawable/pkmn_37" />
 
     <ImageButton
         android:id="@+id/imageButton25"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_31"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="480dp" />
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_fourth"
+        app:layout_constraintEnd_toStartOf="@+id/guideline20"
+        app:layout_constraintStart_toStartOf="@+id/guideline10"
+        app:layout_constraintTop_toTopOf="@+id/guideline18"
+        app:srcCompat="@drawable/pkmn_31" />
 
     <ImageButton
         android:id="@+id/imageButton28"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_40"
-        tools:layout_editor_absoluteX="157dp"
-        tools:layout_editor_absoluteY="580dp" />
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/guideline20"
+        app:layout_constraintStart_toStartOf="@+id/guideline10"
+        app:layout_constraintTop_toTopOf="@+id/guideline19"
+        app:srcCompat="@drawable/pkmn_40" />
 
     <ImageButton
         android:id="@+id/imageButton26"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_43"
-        tools:layout_editor_absoluteX="273dp"
-        tools:layout_editor_absoluteY="590dp" />
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_bottom"
+        app:layout_constraintEnd_toStartOf="@+id/gl_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toTopOf="@+id/guideline19"
+        app:srcCompat="@drawable/pkmn_43" />
 
     <ImageButton
         android:id="@+id/imageButton29"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_34"
-        tools:layout_editor_absoluteX="273dp"
-        tools:layout_editor_absoluteY="490dp" />
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_fourth"
+        app:layout_constraintEnd_toStartOf="@+id/gl_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toTopOf="@+id/guideline18"
+        app:srcCompat="@drawable/pkmn_34" />
 
     <ImageButton
         android:id="@+id/imageButton22"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_22"
-        tools:layout_editor_absoluteX="128dp"
-        tools:layout_editor_absoluteY="373dp" />
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_third"
+        app:layout_constraintEnd_toStartOf="@+id/guideline20"
+        app:layout_constraintStart_toStartOf="@+id/guideline10"
+        app:layout_constraintTop_toTopOf="@+id/gl_register_second"
+        app:srcCompat="@drawable/pkmn_22" />
 
     <ImageButton
         android:id="@+id/imageButton23"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_25"
-        tools:layout_editor_absoluteX="257dp"
-        tools:layout_editor_absoluteY="365dp" />
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_third"
+        app:layout_constraintEnd_toStartOf="@+id/gl_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toTopOf="@+id/gl_register_second"
+        app:srcCompat="@drawable/pkmn_25" />
 
     <ImageButton
         android:id="@+id/imageButton16"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_7"
-        tools:layout_editor_absoluteX="257dp"
-        tools:layout_editor_absoluteY="150dp" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+        app:layout_constraintEnd_toStartOf="@+id/gl_register_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
+        app:layout_constraintTop_toTopOf="@+id/guideline12"
+        app:srcCompat="@drawable/pkmn_7" />
 
     <ImageButton
         android:id="@+id/imageButton17"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/circle"
         android:padding="0dp"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/pkmn_4"
-        tools:layout_editor_absoluteX="140dp"
-        tools:layout_editor_absoluteY="150dp" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline13"
+        app:layout_constraintEnd_toStartOf="@+id/guideline20"
+        app:layout_constraintStart_toStartOf="@+id/guideline10"
+        app:layout_constraintTop_toTopOf="@+id/guideline12"
+        app:srcCompat="@drawable/pkmn_4" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -220,5 +250,117 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/darkest_gray" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_register_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.93" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_register_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_register_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.50" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_register_third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.63" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_register_fourth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.78" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_register_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.92" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.39" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.70" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.33242133" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.80" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.61" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
