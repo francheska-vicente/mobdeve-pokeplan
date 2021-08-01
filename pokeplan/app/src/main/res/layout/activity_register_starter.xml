@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/tv_register_tagline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="@string/register_s_tagline"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_register2_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_register2_title" />
+
     <ImageButton
         android:id="@+id/imageButton13"
         android:layout_width="0dp"
@@ -224,18 +234,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.18" />
 
     <TextView
         android:id="@+id/tv_register2_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/raleway_bold"
         android:text="Choose Your Starter"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/gl_register_hor20p3"
+        app:layout_constraintBottom_toTopOf="@+id/tv_register_tagline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
@@ -249,7 +259,7 @@
         android:src="@drawable/arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/darkest_gray" />
+        app:tint="@color/pink" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_register_bottom"
