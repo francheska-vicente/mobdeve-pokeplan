@@ -10,26 +10,17 @@ import android.widget.Button;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btninitregister;
-    private Button btninitlogin;
+    private Button btnfocus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_init);
+        setContentView(R.layout.activity_home);
 
-        btninitregister = findViewById(R.id.btn_init_register);
-        btninitregister.setOnClickListener(new View.OnClickListener() {
+        btnfocus = findViewById(R.id.btn_focus);
+        btnfocus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), RegisterActivity.class);
-                view.getContext().startActivity(i);
-            }
-        });
-
-        btninitlogin = findViewById(R.id.btn_init_login);
-        btninitlogin.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), LoginActivity.class);
+                Intent i = new Intent(view.getContext(), FocusTimerStartActivity.class);
                 view.getContext().startActivity(i);
             }
         });
