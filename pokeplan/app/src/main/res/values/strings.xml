@@ -11,5 +11,7 @@
     <string name="password">Password</string>
     <string name="name">Name</string>
     <string name="email">Email</string>
+    <string name="register_s_title">Choose Your Starter</string>
+    <string name="focustimer_s_tagline">chika here. chika chika chika</string>
 
 </resources>
