@@ -2,18 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_tasklist"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/cl_tasklist_label"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/green"
         app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor20p4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_focustimer_start_title2"
@@ -36,6 +37,7 @@
         app:layout_constraintGuide_percent="0.08" />
 
     <ScrollView
+        android:id="@+id/sv_tasklist"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,12 +47,13 @@
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
+            android:id="@+id/ll_tasklist_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/tv_tasklist_label_ongoing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/raleway_bold"
@@ -59,13 +62,14 @@
                 android:text="@string/tasklist_ongoing_label" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_tasklist_ongoing"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/tv_tasklist_label_completed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/raleway_bold"
@@ -74,12 +78,26 @@
                 android:text="@string/tasklist_completed_label" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_tasklist_completed"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="visible" />
 
         </LinearLayout>
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_tasklist_add_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        app:backgroundTint="@color/light_gray"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p"
+        app:maxImageSize="35dp"
+        app:srcCompat="@android:drawable/ic_menu_add" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_tasklist_ver3p"
