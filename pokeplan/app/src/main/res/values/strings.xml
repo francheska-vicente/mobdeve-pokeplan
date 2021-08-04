@@ -12,6 +12,15 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="register_s_title">Choose Your Starter</string>
-    <string name="focustimer_s_tagline">chika here. chika chika chika</string>
+
+    <!-- Focus Timer -->
+    <string name="focustimer_title">FOCUS TIMER</string>
+    <string name="focustimer_start_button">START TIMER</string>
+    <string name="focustimer_stop_button">STOP TIMER</string>
+    <string name="focustimer_start_tagline">
+        Avoid distractions with the focus timer!</string>
+    <string name="focustimer_ongoing_tagline">
+        Stay focused! Don\'t leave this screen!</string>
+
 
 </resources>
