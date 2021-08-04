@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 public class MainActivity extends AppCompatActivity {
     private Button btnfocus;
 
@@ -20,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         btnfocus = findViewById(R.id.btn_focus);
         btnfocus.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), FocusTimerStartActivity.class);
+                Intent i = new Intent(view.getContext(), FocusTimerActivity.class);
                 view.getContext().startActivity(i);
             }
         });

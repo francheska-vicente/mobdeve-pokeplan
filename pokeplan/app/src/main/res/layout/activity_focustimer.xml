@@ -13,9 +13,9 @@
         android:padding="0dp"
         android:scaleType="fitCenter"
         android:src="@drawable/arrow_down"
-        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_s_hours"
-        app:layout_constraintStart_toStartOf="@+id/tv_focustimer_s_hours"
-        app:layout_constraintTop_toBottomOf="@+id/tv_focustimer_s_hours"
+        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_hours"
+        app:layout_constraintStart_toStartOf="@+id/tv_focustimer_hours"
+        app:layout_constraintTop_toBottomOf="@+id/tv_focustimer_hours"
         app:tint="@color/pink" />
 
     <ImageButton
@@ -28,9 +28,9 @@
         android:padding="0dp"
         android:scaleType="fitCenter"
         android:src="@drawable/arrow_up"
-        app:layout_constraintBottom_toTopOf="@+id/tv_focustimer_s_hours"
-        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_s_hours"
-        app:layout_constraintStart_toStartOf="@+id/tv_focustimer_s_hours"
+        app:layout_constraintBottom_toTopOf="@+id/tv_focustimer_hours"
+        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_hours"
+        app:layout_constraintStart_toStartOf="@+id/tv_focustimer_hours"
         app:tint="@color/pink" />
 
     <ImageButton
@@ -41,8 +41,8 @@
         android:padding="0dp"
         android:scaleType="fitCenter"
         android:src="@drawable/arrow_up"
-        app:layout_constraintBottom_toTopOf="@+id/tv_focustimer_s_secs"
-        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_s_secs"
+        app:layout_constraintBottom_toTopOf="@+id/tv_focustimer_secs"
+        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_secs"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:tint="@color/pink" />
 
@@ -54,9 +54,9 @@
         android:padding="0dp"
         android:scaleType="fitCenter"
         android:src="@drawable/arrow_up"
-        app:layout_constraintBottom_toTopOf="@+id/tv_focustimer_s_mins"
-        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_s_mins"
-        app:layout_constraintStart_toStartOf="@+id/tv_focustimer_s_mins"
+        app:layout_constraintBottom_toTopOf="@+id/tv_focustimer_mins"
+        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_mins"
+        app:layout_constraintStart_toStartOf="@+id/tv_focustimer_mins"
         app:tint="@color/pink" />
 
     <ImageButton
@@ -67,9 +67,9 @@
         android:padding="0dp"
         android:scaleType="fitCenter"
         android:src="@drawable/arrow_down"
-        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_s_secs"
+        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_secs"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/tv_focustimer_s_secs"
+        app:layout_constraintTop_toBottomOf="@+id/tv_focustimer_secs"
         app:tint="@color/pink" />
 
     <ImageButton
@@ -80,13 +80,13 @@
         android:padding="0dp"
         android:scaleType="fitCenter"
         android:src="@drawable/arrow_down"
-        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_s_mins"
+        app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_mins"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/tv_focustimer_s_mins"
+        app:layout_constraintTop_toBottomOf="@+id/tv_focustimer_mins"
         app:tint="@color/pink" />
 
     <Button
-        android:id="@+id/btn_register_main2"
+        android:id="@+id/btn_focustimer_main"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -103,11 +103,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/tv_focustimer_start_tagline2"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_focustimer_tagline"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="@font/raleway_light_italic"
-        android:text="@string/focustimer_s_tagline"
+        android:gravity="center"
+        android:text="@string/focustimer_start_tagline"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView7"
         app:layout_constraintEnd_toEndOf="parent"
@@ -129,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_bold"
-            android:text="Focus Timer"
+            android:text="@string/focustimer_title"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -153,8 +156,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline22"
-        app:srcCompat="@drawable/circle"
-        app:tint="@color/green" />
+        app:srcCompat="@drawable/circle" />
 
     <ImageView
         android:id="@+id/imageView6"
@@ -185,7 +187,7 @@
         app:layout_constraintGuide_begin="400dp" />
 
     <TextView
-        android:id="@+id/tv_focustimer_s_hours"
+        android:id="@+id/tv_focustimer_hours"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/raleway_bold"
@@ -202,7 +204,7 @@
         android:fontFamily="@font/raleway_bold"
         android:text=":"
         android:textSize="60sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_focustimer_s_mins"
+        app:layout_constraintEnd_toStartOf="@+id/tv_focustimer_mins"
         app:layout_constraintTop_toBottomOf="@+id/ib_timer_mins_up" />
 
     <TextView
@@ -212,11 +214,11 @@
         android:fontFamily="@font/raleway_bold"
         android:text=":"
         android:textSize="60sp"
-        app:layout_constraintStart_toEndOf="@+id/tv_focustimer_s_mins"
+        app:layout_constraintStart_toEndOf="@+id/tv_focustimer_mins"
         app:layout_constraintTop_toBottomOf="@+id/ib_timer_mins_up" />
 
     <TextView
-        android:id="@+id/tv_focustimer_s_secs"
+        android:id="@+id/tv_focustimer_secs"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/raleway_bold"
@@ -227,7 +229,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ib_timer_mins_up" />
 
     <TextView
-        android:id="@+id/tv_focustimer_s_mins"
+        android:id="@+id/tv_focustimer_mins"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/raleway_bold"
@@ -239,5 +241,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView7"
         app:layout_constraintVertical_bias="0.25" />
+
+    <ImageButton
+        android:id="@+id/ib_focustimer_info"
+        android:layout_width="40dp"
+        android:layout_height="0dp"
+        android:backgroundTint="#00FFFFFF"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/gl_register_hor20p4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_dialog_info"
+        app:tint="@color/pink" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

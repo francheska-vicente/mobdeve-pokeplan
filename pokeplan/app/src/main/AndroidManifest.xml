@@ -19,7 +19,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".RegisterStarterActivity" />
-        <activity android:name=".FocusTimerStartActivity" />
+        <activity android:name=".FocusTimerActivity" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
