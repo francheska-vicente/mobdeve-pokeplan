@@ -3,6 +3,9 @@ package com.mobdeve.s11.pokeplan;
 import java.util.Date;
 
 public class Task {
+    private final String[] categories =
+            {"School", "Work", "Hobby", "Leisure", "Chores", "Health", "Social", "Others"};
+
     private String taskName;
     private int priority;
     private String category;

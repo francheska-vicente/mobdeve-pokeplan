@@ -59,7 +59,8 @@
                 android:fontFamily="@font/raleway_bold"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/tasklist_ongoing_label" />
+                android:text="@string/tasklist_ongoing_label"
+                android:textSize="16sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_tasklist_ongoing"
@@ -75,7 +76,8 @@
                 android:fontFamily="@font/raleway_bold"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/tasklist_completed_label" />
+                android:text="@string/tasklist_completed_label"
+                android:textSize="16sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_tasklist_completed"
@@ -90,14 +92,16 @@
         android:id="@+id/fab_tasklist_add_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
+        android:tint="@color/darkest_gray"
         app:backgroundTint="@color/light_gray"
-        app:fabSize="mini"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p"
-        app:maxImageSize="35dp"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:maxImageSize="32dp"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_tasklist_ver3p"

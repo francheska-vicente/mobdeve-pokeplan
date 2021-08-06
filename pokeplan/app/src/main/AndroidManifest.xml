@@ -9,11 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PokePlan">
-        <activity android:name=".TasklistActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <activity android:name=".TaskListActivity"></activity>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
