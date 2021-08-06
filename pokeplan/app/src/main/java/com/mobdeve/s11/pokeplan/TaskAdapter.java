@@ -35,7 +35,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
         vh.getConstraintLayout().setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), TaskListActivity.class);
+                Intent i = new Intent(view.getContext(), TasklistActivity.class);
                 i.putExtra(KEY_TASKNAME, tasks.get(vh.getBindingAdapterPosition()).getTaskName());
                 i.putExtra(KEY_CATEGORY, tasks.get(vh.getBindingAdapterPosition()).getCategory());
                 i.putExtra(KEY_DEADLINE, tasks.get(vh.getBindingAdapterPosition()).getEndDate());
