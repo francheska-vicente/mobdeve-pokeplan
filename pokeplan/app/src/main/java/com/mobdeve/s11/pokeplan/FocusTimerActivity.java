@@ -175,7 +175,7 @@ public class FocusTimerActivity extends AppCompatActivity {
     }
 
     private void finishTimer() {
-        //confirmstoptimerdialog.dismiss();
+        // confirmstoptimerdialog.dismiss();
 
         Egg egg = new Egg(timer);
         egg.generatePokemon();
