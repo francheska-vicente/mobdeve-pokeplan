@@ -16,7 +16,7 @@ public class Pool {
     }
 
     public static String generateCommonPokemon() {
-        /* TODO: populate array w/ common pokemon here */
+        common.add("");
         String pokemon = common.get((int)(Math.random() * common.size() + 1 - 2));
         return "Common";
     }

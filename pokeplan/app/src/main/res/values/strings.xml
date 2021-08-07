@@ -17,12 +17,26 @@
     <string name="focustimer_title">FOCUS TIMER</string>
     <string name="focustimer_start_button">START TIMER</string>
     <string name="focustimer_stop_button">STOP TIMER</string>
+    <string name="focustimer_finish_button">MAKE A NEW TIMER</string>
     <string name="focustimer_start_tagline">
         Avoid distractions with the focus timer!</string>
     <string name="focustimer_ongoing_tagline">
         Stay focused! Don\'t leave this screen!</string>
+
+    <string name="focustimer_dialog_confirm_title">Stop Timer</string>
+    <string name="focustimer_dialog_confirm_text">
+        Stopping the timer will reset your progress with the egg. Continue?</string>
+    <string name="focustimer_dialog_confirm_btncancel">Cancel</string>
+    <string name="focustimer_dialog_confirm_btnstop">Stop Timer</string>
+
+    <string name="focustimer_dialog_error_title">Invalid Time</string>
+    <string name="focustimer_dialog_error_text">
+        Minimum time is 5 minutes.</string>
+
     <!-- Task List -->
     <string name="tasklist_title">TASK LIST</string>
     <string name="tasklist_ongoing_label">Ongoing Tasks</string>
     <string name="tasklist_completed_label">Completed Tasks</string>
+
+
 </resources>

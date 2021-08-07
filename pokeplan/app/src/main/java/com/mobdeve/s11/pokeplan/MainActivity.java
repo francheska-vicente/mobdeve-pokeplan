@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         btntask = findViewById(R.id.btn_tasklist);
         btntask.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), TaskListActivity.class);
+                Intent i = new Intent(view.getContext(), TasklistActivity.class);
                 view.getContext().startActivity(i);
             }
         });
