@@ -14,4 +14,19 @@ public class TaskDataHelper {
 
         return data;
     }
+
+    public ArrayList<Task> getOngoingList ()
+    {
+        ArrayList<Task> data = new ArrayList<Task>();
+
+        return data;
+    }
+
+    public ArrayList<Task> getCompletedList ()
+    {
+        ArrayList<Task> data = new ArrayList<Task>();
+
+        return data;
+    }
+
 }
