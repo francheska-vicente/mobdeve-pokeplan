@@ -41,6 +41,7 @@
     <!-- Task List -->
     <string name="tasklist_title">TASK LIST</string>
     <string name="tasklist_ongoing_label">Ongoing Tasks</string>
+    <string name="tasklist_completed_label">Completed Tasks</string>
     <string name="taskdetails_label">View Task</string>
 
 </resources>
