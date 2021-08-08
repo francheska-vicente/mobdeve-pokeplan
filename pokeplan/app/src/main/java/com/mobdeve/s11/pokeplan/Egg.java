@@ -26,7 +26,7 @@ public class Egg {
         this.timer = timer;
     }
 
-    public void generatePokemon() {
+    public Pokemon generatePokemon() {
         // convert hh:mm:ss to minutes
         int total = (int) TimeUnit.HOURS.toMinutes(timer.getHours()) + timer.getMins();
         if (timer.getSecs() > 0)    total++;
@@ -58,13 +58,15 @@ public class Egg {
         String rarity = pool.get((int)(Math.random() * 100 + 1 - 2));
 
         // get random pokemon of the pulled rarity
-        String pokemon = "";
+        Pokemon pokemon;
         switch (rarity) {
-            case C: pokemon = Pool.generateCommonPokemon(); break;
-            case UC: pokemon = Pool.generateUncommonPokemon(); break;
-            case R: pokemon = Pool.generateRarePokemon(); break;
             case SR: pokemon = Pool.generateSuperRarePokemon(); break;
+            case R: pokemon = Pool.generateRarePokemon(); break;
+            case UC: pokemon = Pool.generateUncommonPokemon(); break;
+            case C: default: pokemon = Pool.generateCommonPokemon();
         }
+
+        return pokemon;
     }
 
     public void populatePool(int[] rates) {

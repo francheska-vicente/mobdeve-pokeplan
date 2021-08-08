@@ -3,36 +3,38 @@ package com.mobdeve.s11.pokeplan;
 import java.util.ArrayList;
 
 public class Pool {
-    private static ArrayList<String> common;
-    private static ArrayList<String> uncommon;
-    private static ArrayList<String> rare;
-    private static ArrayList<String> superrare;
+    private static ArrayList<Pokemon> common;
+    private static ArrayList<Pokemon> uncommon;
+    private static ArrayList<Pokemon> rare;
+    private static ArrayList<Pokemon> superrare;
+    private static Pokedex pokemonList;
 
     public Pool() {
         common = new ArrayList<>();
         uncommon = new ArrayList<>();
         rare = new ArrayList<>();
         superrare = new ArrayList<>();
+        pokemonList = new Pokedex();
     }
 
-    public static String generateCommonPokemon() {
-        common.add("");
-        String pokemon = common.get((int)(Math.random() * common.size() + 1 - 2));
-        return "Common";
+    public static Pokemon generateCommonPokemon() {
+        common = pokemonList.getCommonPokemonList();
+        Pokemon pokemon = common.get((int)(Math.random() * common.size() + 1 - 2));
+        return pokemon;
     }
-    public static String generateUncommonPokemon() {
-        /* TODO: populate array w/ uncommon pokemon here */
-        String pokemon = uncommon.get((int)(Math.random() * uncommon.size() + 1 - 2));
-        return "Uncommon";
+    public static Pokemon generateUncommonPokemon() {
+        uncommon = pokemonList.getUncommonPokemonList();
+        Pokemon pokemon = uncommon.get((int)(Math.random() * uncommon.size() + 1 - 2));
+        return pokemon;
     }
-    public static String generateRarePokemon() {
-        /* TODO: populate array w/ rare pokemon here */
-        String pokemon = rare.get((int)(Math.random() * rare.size() + 1 - 2));
-        return "Rare";
+    public static Pokemon generateRarePokemon() {
+        rare = pokemonList.getRarePokemonList();
+        Pokemon pokemon = rare.get((int)(Math.random() * rare.size() + 1 - 2));
+        return pokemon;
     }
-    public static String generateSuperRarePokemon() {
-        /* TODO: populate array w/ super rare pokemon here */
-        String pokemon = superrare.get((int)(Math.random() * superrare.size() + 1 - 2));
-        return "Super Rare";
+    public static Pokemon generateSuperRarePokemon() {
+        superrare = pokemonList.getSuperRarePokemonList();
+        Pokemon pokemon = superrare.get((int)(Math.random() * superrare.size() + 1 - 2));
+        return pokemon;
     }
 }
