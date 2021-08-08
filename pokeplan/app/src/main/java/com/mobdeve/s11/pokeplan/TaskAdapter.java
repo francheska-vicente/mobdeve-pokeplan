@@ -38,7 +38,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 Intent i = new Intent(view.getContext(), TasklistActivity.class);
                 i.putExtra(KEY_TASKNAME, tasks.get(vh.getBindingAdapterPosition()).getTaskName());
                 i.putExtra(KEY_CATEGORY, tasks.get(vh.getBindingAdapterPosition()).getCategory());
-                i.putExtra(KEY_DEADLINE, tasks.get(vh.getBindingAdapterPosition()).getEndDate());
+                i.putExtra(KEY_DEADLINE, tasks.get(vh.getBindingAdapterPosition()).getEndDate().toString());
                 view.getContext().startActivity(i);
             }
         });

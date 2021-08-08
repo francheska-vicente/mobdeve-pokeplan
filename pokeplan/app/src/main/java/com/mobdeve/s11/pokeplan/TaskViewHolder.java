@@ -25,6 +25,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         this.ivtaskicon = itemView.findViewById(R.id.iv_task_icon);
         this.tvtaskname = itemView.findViewById(R.id.tv_task_taskname);
         this.tvtaskdeadline = itemView.findViewById(R.id.tv_task_deadline);
+        this.layout = itemView.findViewById(R.id.cl_template_task);
     }
 
     public void setTaskIcon(String category) {
@@ -47,7 +48,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
     }
 
     /* TODO: fix string */
-    public void setTaskDeadline(Date dl) {
+    public void setTaskDeadline(CustomDate dl) {
         this.tvtaskdeadline.setText(dl.toString());
     }
 

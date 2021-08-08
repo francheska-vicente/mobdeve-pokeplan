@@ -9,11 +9,11 @@ public class Task {
     private String taskName;
     private int priority;
     private String category;
-    private Date startDate;
-    private Date endDate;
+    private CustomDate startDate;
+    private CustomDate endDate;
     private String description;
 
-    public Task (String taskName, int priority, String category, Date startDate, Date endDate, String description) {
+    public Task (String taskName, int priority, String category, CustomDate startDate, CustomDate endDate, String description) {
         this.taskName = taskName;
         this.priority = priority;
         this.category = category;
@@ -34,13 +34,14 @@ public class Task {
         return this.category;
     }
 
-    public Date getStartDate () {
+    public CustomDate getStartDate () {
         return this.startDate;
     }
 
-    public Date getEndDate () {
+    public CustomDate getEndDate () {
         return this.endDate;
     }
+
 
     public String getDescription () {
         return this.description;
