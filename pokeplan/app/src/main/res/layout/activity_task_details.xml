@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_taskdetails_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TaskDetailsActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_taskdetails_label"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/green"
+        app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor8p"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_taskdetails_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_bold"
+            android:text="@string/taskdetails_label"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_tasklist_hor8p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_tasklist_hor14p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.14227086" />
+
+    <ImageButton
+        android:id="@+id/ib_taskdetails_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor14p"
+        app:layout_constraintEnd_toStartOf="@+id/ib_taskdetails_delete"
+        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <ImageButton
+        android:id="@+id/ib_taskdetails_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor14p"
+        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
+        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_tasklist_ver3p2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.03" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_tasklist_ver97p2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.97" />
+
+    <TextView
+        android:id="@+id/tv_taskdetails_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/raleway_bold"
+        android:text="STUDY"
+        android:textColor="#000000"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@+id/cl_taskdetails_category"
+        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
+        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
+        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor14p" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_taskdetails_category"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:background="@drawable/rounded_rectangle"
+        android:backgroundTint="@color/light_gray"
+        android:paddingEnd="10dp"
+        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_name">
+
+        <ImageView
+            android:id="@+id/iv_taskdetails_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/task_categ_leisure" />
+
+        <TextView
+            android:id="@+id/tv_taskdetails_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="@font/raleway_light_italic"
+            android:text="Career"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_taskdetails_category"
+            app:layout_constraintStart_toEndOf="@+id/iv_taskdetails_category"
+            app:layout_constraintTop_toTopOf="@+id/iv_taskdetails_category" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_taskdetails_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/rounded_rectangle"
+        android:backgroundTint="@color/light_gray"
+        android:paddingEnd="10dp"
+        app:layout_constraintStart_toEndOf="@+id/cl_taskdetails_category"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_name">
+
+        <TextView
+            android:id="@+id/tv_taskdetails_priorty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/raleway_light_italic"
+            android:text="Mid Priority"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_priority_symbol"
+            app:layout_constraintStart_toEndOf="@+id/tv_taskdetails_priority_symbol"
+            app:layout_constraintTop_toTopOf="@+id/tv_taskdetails_priority_symbol" />
+
+        <TextView
+            android:id="@+id/tv_taskdetails_priority_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="@font/raleway_black"
+            android:text="!!!"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_taskdetails_time_start"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="Starts @ August 8, 2021 6:00 PM"
+        android:textColor="#0C0C0C"
+        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
+        app:layout_constraintTop_toBottomOf="@+id/cl_taskdetails_category" />
+
+    <TextView
+        android:id="@+id/tv_taskdetails_time_end"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="Ends @ August 8, 2021 8:00 PM"
+        android:textColor="#101010"
+        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
+        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_time_start" />
+
+    <TextView
+        android:id="@+id/tv_taskdetails_label_notes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="NOTES: "
+        android:textColor="#0C0B0B"
+        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
+        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_time_end" />
+
+    <TextView
+        android:id="@+id/tv_taskdetails_notes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="Once upon a time..."
+        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
+        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver6p"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_label_notes" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_tasklist_ver6p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.06" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
