@@ -17,8 +17,8 @@ public class CustomDate {
         this.year = c.get(Calendar.YEAR);
         this.day_in_month = c.get(Calendar.DAY_OF_MONTH);
         this.month = c.get(Calendar.MONTH);
-        this.hour = 0;
-        this.minute = 0;
+        this.hour = c.get(Calendar.HOUR_OF_DAY);
+        this.minute = c.get(Calendar.MINUTE);
     }
 
     public CustomDate(int year, int month, int day_in_month, int hour, int minute) {
