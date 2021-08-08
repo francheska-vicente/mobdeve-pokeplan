@@ -29,6 +29,7 @@ public class FocusTimerActivity extends AppCompatActivity {
 
     private Timer timer;
     private CountDownTimer countdown;
+    private boolean timerIsDone;
 
     private Dialog infodialog;
     private Dialog timererrordialog;
@@ -157,6 +158,7 @@ public class FocusTimerActivity extends AppCompatActivity {
 
         // start countdown timer
         long time = timeToMilliseconds(timer);
+        timerIsDone = false;
         countdown = new CountDownTimer(time, 1000) {
             public void onTick(long fin) {
                 adjustTimer(fin);
@@ -175,11 +177,12 @@ public class FocusTimerActivity extends AppCompatActivity {
     }
 
     private void finishTimer() {
-        // confirmstoptimerdialog.dismiss();
+        timerIsDone = true;
 
         Egg egg = new Egg(timer);
         egg.generatePokemon();
 
+        tvcaption.setText(R.string.focustimer_finish_tagline);
         btnfocustimer.setText(R.string.focustimer_finish_button);
         btnfocustimer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -255,7 +258,9 @@ public class FocusTimerActivity extends AppCompatActivity {
         btndialogconfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopTimer();
+                if (!timerIsDone) {
+                    stopTimer();
+                }
                 confirmstoptimerdialog.dismiss();
             }
         });
@@ -301,6 +306,32 @@ public class FocusTimerActivity extends AppCompatActivity {
         tvdialogtitle.setText(R.string.focustimer_dialog_error_title);
         TextView tvdialogtext = (TextView) timererrordialog.findViewById(R.id.tv_dialog_error_text);
         tvdialogtext.setText(R.string.focustimer_dialog_error_text);
+
+        Button btndialogerror = (Button) timererrordialog.findViewById(R.id.btn_dialog_error);
+        btndialogerror.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timererrordialog.dismiss();
+            }
+        });
+        timererrordialog.show();
+    }
+
+    private void createInfoDialog(View view) {
+        timererrordialog = new Dialog(view.getContext());
+        timererrordialog.setContentView(R.layout.dialog_ok);
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        timererrordialog.getWindow().setLayout(width, height);
+        timererrordialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) timererrordialog.findViewById(R.id.tv_dialog_ok_title);
+        tvdialogtitle.setText(R.string.focustimer_dialog_info_title);
+        TextView tvdialogtext = (TextView) timererrordialog.findViewById(R.id.tv_dialog_ok_text);
+        tvdialogtext.setText(R.string.focustimer_dialog_info_text);
+        ImageView ivdialogicon = (ImageView) hatcheggdialog.findViewById(R.id.iv_dialog_ok_icon);
+        ivdialogicon.setImageResource(R.drawable.egg);
 
         Button btndialogerror = (Button) timererrordialog.findViewById(R.id.btn_dialog_error);
         btndialogerror.setOnClickListener(new View.OnClickListener() {

@@ -1,7 +1,7 @@
 <resources>
     <!-- General -->
     <string name="app_name">PokéPlan</string>
-    <string name="tagline">tagline here. tagline tagline</string>
+    <string name="tagline">tagline here. tagline</string>
 
     <!-- Login / Register -->
     <string name="register_tagline">Hello! Create a new account now.</string>
@@ -22,6 +22,7 @@
         Avoid distractions with the focus timer!</string>
     <string name="focustimer_ongoing_tagline">
         Stay focused! Don\'t leave this screen!</string>
+    <string name="focustimer_finish_tagline">Oh? What\'s this?</string>
 
     <string name="focustimer_dialog_confirm_title">Stop Timer</string>
     <string name="focustimer_dialog_confirm_text">
@@ -32,6 +33,10 @@
     <string name="focustimer_dialog_error_title">Invalid Time</string>
     <string name="focustimer_dialog_error_text">
         Minimum time is 5 minutes.</string>
+
+    <string name="focustimer_dialog_info_title">Focus Timer</string>
+    <string name="focustimer_dialog_info_text">
+        chuchuchuchu</string>
 
     <!-- Task List -->
     <string name="tasklist_title">TASK LIST</string>
