@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_tasklist_label"
+        android:id="@+id/cl_add_task_label"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/green"
@@ -28,7 +28,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/tv_register_s_tagline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_tasklist_label" />
+        app:layout_constraintTop_toBottomOf="@+id/cl_add_task_label" />
 
     <TextView
         android:id="@+id/tv_register_s_tagline"

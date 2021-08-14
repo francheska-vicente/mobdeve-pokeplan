@@ -44,4 +44,23 @@
     <string name="tasklist_completed_label">Completed Tasks</string>
     <string name="taskdetails_label">View Task</string>
 
+    <!-- Add Task -->
+    <string name="add_task_title">ADD TASK</string>
+    <string name="add_task_name">NAME OF TASK</string>
+    <string name="add_task_type">TYPE OF TASK</string>
+    <string name="add_task_date_due">DUE DATE</string>
+    <string name="add_task_time_due">TIME DUE</string>
+    <string name="add_task_priority">PRIORITY</string>
+    <string name="add_task_notes">NOTES</string>
+
+    <string-array name="add_task_type_array">
+            <item>Chores</item>
+            <item>Health</item>
+            <item>Hobby</item>
+            <item>Leisure</item>
+            <item>School</item>
+            <item>Social</item>
+            <item>Work</item>
+            <item>Others</item>
+    </string-array>
 </resources>

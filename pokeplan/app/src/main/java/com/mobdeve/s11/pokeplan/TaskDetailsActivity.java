@@ -47,8 +47,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.tvTaskName.setText(taskName);
         this.tvCategory.setText(category);
 
-        this.tvStartTime.setText(startDate);
-        this.tvEndTime.setText(endDate);
+        this.tvStartTime.setText("Starts " + startDate);
+        this.tvEndTime.setText("Ends " + endDate);
 
         if (notes == null) {
             this.tvNotesLabel.setVisibility(View.GONE);

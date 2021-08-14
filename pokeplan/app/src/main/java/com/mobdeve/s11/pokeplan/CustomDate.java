@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class CustomDate {
     private static final String[] monthString = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
@@ -24,7 +25,7 @@ public class CustomDate {
     public CustomDate(int year, int month, int day_in_month, int hour, int minute) {
         this.year = year;
         this.day_in_month = day_in_month;
-        this.month = month;
+        this.month = month - 1;
         this.hour = hour;
         this.minute = minute;
     }
@@ -32,6 +33,7 @@ public class CustomDate {
     @Override
     public String toString() {
         Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -47,17 +49,17 @@ public class CustomDate {
             diff = Math.round((dateEnd.getTime() - dateStart.getTime()) / (double) 86400000);
 
             if (diff == 0) {
-                return "Due today @" + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
-            } else if (diff >= 6) {
+                return "today @ " + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
+            } else if (diff <= 6) {
                 Locale locale = new Locale("EN", "PHILIPPINES");
                 DateFormat formatter = new SimpleDateFormat("EEEE", locale);
-                return "Due " + formatter.format(dateEnd) + " @" + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
+                return formatter.format(dateEnd) + " @ " + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
             }
         } catch (Exception e) {
 
         }
 
-        return "Due " + monthString[month] + " " + this.day_in_month + ", " + this.year + "@" + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
+        return monthString[month] + " " + this.day_in_month + ", " + this.year + " @" + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
     }
 
 }

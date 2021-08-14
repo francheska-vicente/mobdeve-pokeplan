@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_tasklist_label"
+        android:id="@+id/cl_add_task_label"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/green"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_focustimer_start_title2"
+            android:id="@+id/tv_tasklist_start_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_bold"

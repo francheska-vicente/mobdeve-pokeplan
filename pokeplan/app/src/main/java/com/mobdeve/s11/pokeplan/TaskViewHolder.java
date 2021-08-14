@@ -49,7 +49,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
 
     /* TODO: fix string */
     public void setTaskDeadline(CustomDate dl) {
-        this.tvtaskdeadline.setText(dl.toString());
+        this.tvtaskdeadline.setText("Due " + dl.toString());
     }
 
     public ConstraintLayout getConstraintLayout() {
