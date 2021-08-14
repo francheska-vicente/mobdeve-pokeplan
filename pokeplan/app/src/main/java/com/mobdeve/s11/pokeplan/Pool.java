@@ -1,6 +1,7 @@
 package com.mobdeve.s11.pokeplan;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Pool {
     private static ArrayList<Pokemon> common;
@@ -19,22 +20,22 @@ public class Pool {
 
     public static Pokemon generateCommonPokemon() {
         common = pokemonList.getCommonPokemonList();
-        Pokemon pokemon = common.get((int)(Math.random() * common.size() + 1 - 2));
+        Pokemon pokemon = common.get(new Random().nextInt(common.size()  + 1));
         return pokemon;
     }
     public static Pokemon generateUncommonPokemon() {
         uncommon = pokemonList.getUncommonPokemonList();
-        Pokemon pokemon = uncommon.get((int)(Math.random() * uncommon.size() + 1 - 2));
+        Pokemon pokemon = uncommon.get(new Random().nextInt(uncommon.size()  + 1));
         return pokemon;
     }
     public static Pokemon generateRarePokemon() {
         rare = pokemonList.getRarePokemonList();
-        Pokemon pokemon = rare.get((int)(Math.random() * rare.size() + 1 - 2));
+        Pokemon pokemon = rare.get(new Random().nextInt(rare.size() + 1));
         return pokemon;
     }
     public static Pokemon generateSuperRarePokemon() {
         superrare = pokemonList.getSuperRarePokemonList();
-        Pokemon pokemon = superrare.get((int)(Math.random() * superrare.size() + 1 - 2));
+        Pokemon pokemon = superrare.get(new Random().nextInt(superrare.size()  + 1));
         return pokemon;
     }
 }
