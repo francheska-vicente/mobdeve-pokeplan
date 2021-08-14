@@ -39,11 +39,12 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="32dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/pkmn_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sunny_side_up"
-        tools:srcCompat="@drawable/pkmn_120" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btn_dialog_ok"
@@ -62,12 +63,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_ok_text" />
 
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/imageView8"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/egg_hatch"
-        tools:layout_editor_absoluteY="69dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

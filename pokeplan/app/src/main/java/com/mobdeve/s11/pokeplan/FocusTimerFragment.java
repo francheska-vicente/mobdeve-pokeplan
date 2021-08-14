@@ -1,19 +1,26 @@
 package com.mobdeve.s11.pokeplan;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.os.CountDownTimer;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.concurrent.TimeUnit;
 
-public class FocusTimerActivity extends AppCompatActivity {
+
+public class FocusTimerFragment extends Fragment {
+    private ImageView ivegg;
+
     private Button btnfocustimer;
     private ImageButton ibhoursup;
     private ImageButton ibhoursdown;
@@ -36,30 +43,45 @@ public class FocusTimerActivity extends AppCompatActivity {
     private Dialog confirmstoptimerdialog;
     private Dialog hatcheggdialog;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_focustimer);
-
-        initView();
-        initTimer();
+    public FocusTimerFragment() {
     }
 
-    private void initView() {
-        tvhours = findViewById(R.id.tv_focustimer_hours);
-        tvmins = findViewById(R.id.tv_focustimer_mins);
-        tvsecs = findViewById(R.id.tv_focustimer_secs);
-        tvcaption = findViewById(R.id.tv_focustimer_tagline);
+    public static FocusTimerFragment newInstance() {
+        FocusTimerFragment fragment = new FocusTimerFragment();
+        return fragment;
+    }
 
-        ibinfo = findViewById(R.id.ib_focustimer_info);
-        ibhoursup = findViewById(R.id.ib_timer_hours_up);
-        ibhoursdown = findViewById(R.id.ib_timer_hours_down);
-        ibminsup = findViewById(R.id.ib_timer_mins_up);
-        ibminsdown = findViewById(R.id.ib_timer_mins_down);
-        ibsecsup = findViewById(R.id.ib_timer_secs_up);
-        ibsecsdown = findViewById(R.id.ib_timer_secs_down);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-        btnfocustimer = findViewById(R.id.btn_focustimer_main);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_focustimer, container, false);
+        initView(view);
+        initTimer();
+        return view;
+    }
+
+    private void initView(View view) {
+        tvhours = view.findViewById(R.id.tv_focustimer_hours);
+        tvmins = view.findViewById(R.id.tv_focustimer_mins);
+        tvsecs = view.findViewById(R.id.tv_focustimer_secs);
+        tvcaption = view.findViewById(R.id.tv_focustimer_tagline);
+
+        ibinfo = view.findViewById(R.id.ib_focustimer_info);
+        ibhoursup = view.findViewById(R.id.ib_timer_hours_up);
+        ibhoursdown = view.findViewById(R.id.ib_timer_hours_down);
+        ibminsup = view.findViewById(R.id.ib_timer_mins_up);
+        ibminsdown = view.findViewById(R.id.ib_timer_mins_down);
+        ibsecsup = view.findViewById(R.id.ib_timer_secs_up);
+        ibsecsdown = view.findViewById(R.id.ib_timer_secs_down);
+
+        ivegg = view.findViewById(R.id.iv_egg);
+
+        btnfocustimer = view.findViewById(R.id.btn_focustimer_main);
     }
 
     private void initTimer() {
@@ -121,16 +143,16 @@ public class FocusTimerActivity extends AppCompatActivity {
 
         btnfocustimer.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
+                //if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
                     startTimer();
-                else
-                    createTimeErrorDialog(view);
+                //else
+                //    createTimeErrorDialog(view);
             }
         });
 
         ibinfo.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // add info dialog here
+                createInfoDialog(view);
             }
         });
     }
@@ -157,7 +179,7 @@ public class FocusTimerActivity extends AppCompatActivity {
         });
 
         // start countdown timer
-        long time = timeToMilliseconds(timer);
+        long time = timeToMilliseconds(timer) + 500;
         timerIsDone = false;
         countdown = new CountDownTimer(time, 1000) {
             public void onTick(long fin) {
@@ -178,10 +200,6 @@ public class FocusTimerActivity extends AppCompatActivity {
 
     private void finishTimer() {
         timerIsDone = true;
-
-        Egg egg = new Egg(timer);
-        egg.generatePokemon();
-
         tvcaption.setText(R.string.focustimer_finish_tagline);
         btnfocustimer.setText(R.string.focustimer_finish_button);
         btnfocustimer.setOnClickListener(new View.OnClickListener() {
@@ -190,11 +208,14 @@ public class FocusTimerActivity extends AppCompatActivity {
             }
         });
 
-        createHatchEggDialog(this.findViewById(android.R.id.content));
+        Egg egg = new Egg(timer);
+        Pokemon hatch = egg.generatePokemon();
+
+        createHatchEggDialog(getView(), hatch);
     }
 
     private void resetTimer() {
-        timer = new Timer();
+        initTimer();
         ibhoursup.setVisibility(View.VISIBLE);
         ibhoursdown.setVisibility(View.VISIBLE);
         ibminsup.setVisibility(View.VISIBLE);
@@ -205,11 +226,6 @@ public class FocusTimerActivity extends AppCompatActivity {
 
         tvcaption.setText(R.string.focustimer_start_tagline);
         btnfocustimer.setText(R.string.focustimer_start_button);
-        btnfocustimer.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                startTimer();
-            }
-        });
 
         tvhours.setText("00");
         tvmins.setText("10");
@@ -267,7 +283,7 @@ public class FocusTimerActivity extends AppCompatActivity {
         confirmstoptimerdialog.show();
     }
 
-    private void createHatchEggDialog(View view) {
+    private void createHatchEggDialog(View view, Pokemon hatch) {
         hatcheggdialog = new Dialog(view.getContext());
         hatcheggdialog.setContentView(R.layout.dialog_ok);
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
@@ -277,16 +293,18 @@ public class FocusTimerActivity extends AppCompatActivity {
         hatcheggdialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         TextView tvdialogtitle = (TextView) hatcheggdialog.findViewById(R.id.tv_dialog_ok_title);
-        tvdialogtitle.setText(R.string.focustimer_dialog_confirm_title);
+        tvdialogtitle.setText(R.string.focustimer_dialog_hatch_title);
         TextView tvdialogtext = (TextView) hatcheggdialog.findViewById(R.id.tv_dialog_ok_text);
-        tvdialogtext.setText(R.string.focustimer_dialog_confirm_text);
+        String text = getString(R.string.focustimer_dialog_hatch_text) + " " + hatch.getSpecies() + "!";
+        tvdialogtext.setText(text);
         ImageView ivdialogicon = (ImageView) hatcheggdialog.findViewById(R.id.iv_dialog_ok_icon);
-        ivdialogicon.setImageResource(R.drawable.sunny_side_up);
+        ivdialogicon.setImageResource(getImageId(getContext(), "pkmn_" + hatch.getDexNum()));
 
         Button btndialogok = (Button) hatcheggdialog.findViewById(R.id.btn_dialog_ok);
         btndialogok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ivegg.setImageResource(getImageId(getContext(), "pkmn_" + hatch.getDexNum()));
                 hatcheggdialog.dismiss();
             }
         });
@@ -318,29 +336,29 @@ public class FocusTimerActivity extends AppCompatActivity {
     }
 
     private void createInfoDialog(View view) {
-        timererrordialog = new Dialog(view.getContext());
-        timererrordialog.setContentView(R.layout.dialog_ok);
+        infodialog = new Dialog(view.getContext());
+        infodialog.setContentView(R.layout.dialog_ok);
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
 
-        timererrordialog.getWindow().setLayout(width, height);
-        timererrordialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        infodialog.getWindow().setLayout(width, height);
+        infodialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        TextView tvdialogtitle = (TextView) timererrordialog.findViewById(R.id.tv_dialog_ok_title);
+        TextView tvdialogtitle = (TextView) infodialog.findViewById(R.id.tv_dialog_ok_title);
         tvdialogtitle.setText(R.string.focustimer_dialog_info_title);
-        TextView tvdialogtext = (TextView) timererrordialog.findViewById(R.id.tv_dialog_ok_text);
+        TextView tvdialogtext = (TextView) infodialog.findViewById(R.id.tv_dialog_ok_text);
         tvdialogtext.setText(R.string.focustimer_dialog_info_text);
-        ImageView ivdialogicon = (ImageView) hatcheggdialog.findViewById(R.id.iv_dialog_ok_icon);
+        ImageView ivdialogicon = (ImageView) infodialog.findViewById(R.id.iv_dialog_ok_icon);
         ivdialogicon.setImageResource(R.drawable.egg);
 
-        Button btndialogerror = (Button) timererrordialog.findViewById(R.id.btn_dialog_error);
-        btndialogerror.setOnClickListener(new View.OnClickListener() {
+        Button btndialoginfo = (Button) infodialog.findViewById(R.id.btn_dialog_ok);
+        btndialoginfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timererrordialog.dismiss();
+                infodialog.dismiss();
             }
         });
-        timererrordialog.show();
+        infodialog.show();
     }
 
     private long timeToMilliseconds (Timer timer) {
@@ -354,5 +372,7 @@ public class FocusTimerActivity extends AppCompatActivity {
         return "" + num;
     }
 
-
+    public static int getImageId(Context context, String imageName) {
+        return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
+    }
 }

@@ -159,7 +159,7 @@
         app:srcCompat="@drawable/circle" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/iv_egg"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="60dp"
@@ -255,15 +255,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_dialog_info"
         app:tint="@color/pink" />
-
-    <pl.droidsonroids.gif.GifImageView
-        android:id="@+id/imageView5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/egg_gif"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView7"
-        app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

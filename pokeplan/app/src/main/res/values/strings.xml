@@ -22,27 +22,37 @@
         Avoid distractions with the focus timer!</string>
     <string name="focustimer_ongoing_tagline">
         Stay focused! Don\'t leave this screen!</string>
-    <string name="focustimer_finish_tagline">Oh? What\'s this?</string>
+    <string name="focustimer_finish_tagline">Congratulations!</string>
 
+    <!-- Focus Timer Stop Timer Dialog -->
     <string name="focustimer_dialog_confirm_title">Stop Timer</string>
     <string name="focustimer_dialog_confirm_text">
         Stopping the timer will reset your progress with the egg. Continue?</string>
     <string name="focustimer_dialog_confirm_btncancel">Cancel</string>
     <string name="focustimer_dialog_confirm_btnstop">Stop Timer</string>
 
+    <!-- Focus Timer Hatch Dialog -->
+    <string name="focustimer_dialog_hatch_title">Oh! What\'s this?</string>
+    <string name="focustimer_dialog_hatch_text">
+        You hatched a</string>
+
+<!--  TODO: HUHUHUUHUHUHUHUHUHU  -->
+    <string name="focustimer_dialog_info_title">Focus Timer</string>
+    <string name="focustimer_dialog_info_text">
+        help</string>
+
+
     <string name="focustimer_dialog_error_title">Invalid Time</string>
     <string name="focustimer_dialog_error_text">
         Minimum time is 5 minutes.</string>
-
-    <string name="focustimer_dialog_info_title">Focus Timer</string>
-    <string name="focustimer_dialog_info_text">
-        chuchuchuchu</string>
 
     <!-- Task List -->
     <string name="tasklist_title">TASK LIST</string>
     <string name="tasklist_ongoing_label">Ongoing Tasks</string>
     <string name="tasklist_completed_label">Completed Tasks</string>
     <string name="taskdetails_label">View Task</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Add Task -->
     <string name="add_task_title">ADD TASK</string>

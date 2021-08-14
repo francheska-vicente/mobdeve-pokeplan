@@ -44,7 +44,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
             ImageButton button = (ImageButton)findViewById(id);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    Intent i = new Intent(view.getContext(), FocusTimerActivity.class);
+                    Intent i = new Intent(view.getContext(), MainActivity.class);
                     view.getContext().startActivity(i);
                 }
             });

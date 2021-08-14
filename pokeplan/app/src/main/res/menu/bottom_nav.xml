@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/focusTimerFragment"
+        android:icon="@drawable/nav_egg"
+        android:title="Focus Timer" />
+    <item
+        android:id="@+id/taskListActivity"
+        android:icon="@drawable/nav_task"
+        android:title="Task List" />
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/nav_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/pokedexFragment"
+        android:icon="@drawable/nav_pokedex"
+        android:title="Pokedex" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/nav_settings"
+        android:title="Settings" />
+</menu>

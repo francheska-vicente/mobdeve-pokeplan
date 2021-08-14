@@ -3,12 +3,13 @@ package com.mobdeve.s11.pokeplan;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Egg {
     private Timer timer;
 
-    private ArrayList<String> pool;
+    private ArrayList<String> raritypool;
     private final String C = "Common";
     private final String UC = "Uncommon";
     private final String R = "Rare";
@@ -22,8 +23,12 @@ public class Egg {
     private final int[] fifth = {5, 30, 40, 25};
     private final int[] sixth = {0, 20, 30, 50};
 
+    private Pool pkmnpool;
+
     public Egg(Timer timer) {
         this.timer = timer;
+        this.pkmnpool = new Pool();
+        this.raritypool = new ArrayList<>(100);
     }
 
     public Pokemon generatePokemon() {
@@ -32,7 +37,7 @@ public class Egg {
         if (timer.getSecs() > 0)    total++;
 
         // initialize pool of rarities
-        pool = new ArrayList<>(100);
+
 
         // rates are based on time
         if (total >= 5 && total < 20) {
@@ -54,16 +59,16 @@ public class Egg {
             populatePool(sixth);
         }
 
-        // get rarity from pull
-        String rarity = pool.get((int)(Math.random() * 100 + 1 - 2));
+        // get rarity from pool
+        String rarity = raritypool.get(new Random().nextInt(100));
 
         // get random pokemon of the pulled rarity
         Pokemon pokemon;
         switch (rarity) {
-            case SR: pokemon = Pool.generateSuperRarePokemon(); break;
-            case R: pokemon = Pool.generateRarePokemon(); break;
-            case UC: pokemon = Pool.generateUncommonPokemon(); break;
-            case C: default: pokemon = Pool.generateCommonPokemon();
+            case SR: pokemon = pkmnpool.generateSuperRarePokemon(); break;
+            case R: pokemon = pkmnpool.generateRarePokemon(); break;
+            case UC: pokemon = pkmnpool.generateUncommonPokemon(); break;
+            case C: default: pokemon = pkmnpool.generateCommonPokemon();
         }
 
         return pokemon;
@@ -71,13 +76,13 @@ public class Egg {
 
     public void populatePool(int[] rates) {
         for(int j=0; j<rates[0]; j++)
-            pool.add(C);
+            raritypool.add(C);
         for(int j=0; j<rates[1]; j++)
-            pool.add(UC);
+            raritypool.add(UC);
         for(int j=0; j<rates[2]; j++)
-            pool.add(R);
+            raritypool.add(R);
         for(int j=0; j<rates[3]; j++)
-            pool.add(SR);
+            raritypool.add(SR);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Pokedex {
@@ -34,7 +36,6 @@ public class Pokedex {
                 "Psychic","Grass"));
         pokemonList.add(new Pokemon("Jirachi",142,"Super Rare",
                 "Steel","Psychic"));
-
     }
 
     public ArrayList<Pokemon> getCommonPokemonList() {
