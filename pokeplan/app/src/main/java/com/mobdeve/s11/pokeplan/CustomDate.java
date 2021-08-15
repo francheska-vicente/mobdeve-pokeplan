@@ -44,16 +44,16 @@ public class CustomDate {
         long diff = -1;
         try {
             Date dateStart = simpleDateFormat.parse(currentDay + "." + currentMonth + "." + currentYear);
-            Date dateEnd = simpleDateFormat.parse(this.day_in_month + "." + this.month + "." + this.year);
+            Date dateEnd = simpleDateFormat.parse(this.day_in_month + "." + (this.month + 1) + "." + this.year);
 
-            diff = Math.round((dateEnd.getTime() - dateStart.getTime()) / (double) 86400000);
+            diff = Math.round(((dateEnd.getTime() - dateStart.getTime()) / (1000 * 60 * 60 * 24)) % 365);
 
             if (diff == 0) {
                 return "Today @ " + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
             } else if (diff <= 6) {
                 Locale locale = new Locale("EN", "PHILIPPINES");
                 DateFormat formatter = new SimpleDateFormat("EEEE", locale);
-                return formatter.format(dateEnd) + " @ " + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
+                return formatter.format(dateEnd) + " @ diff: " + diff + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
             }
         } catch (Exception e) {
 

@@ -59,31 +59,23 @@ public class TasklistFragment extends Fragment {
                     String endTime = intent.getStringExtra(AddTaskActivity.KEY_END_TIME);
                     String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
 
-                    String [] tempStartDate = startDate.split(".", 3);
-                    int monthStart = Integer.parseInt(tempStartDate [1]);
-                    int dayStart = Integer.parseInt(tempStartDate [0]);
-                    int yearStart = Integer.parseInt(tempStartDate [2]);
+                    int monthStart = Integer.parseInt(startDate.substring(3, 5));
+                    int dayStart = Integer.parseInt(startDate.substring(0, 2));
+                    int yearStart = Integer.parseInt(startDate.substring(6, 8));
 
-                    String [] tempEndDate = endDate.split(".", 3);
-                    int monthEnd = Integer.parseInt(tempEndDate [1]);
-                    int dayEnd = Integer.parseInt(tempEndDate [0]);
-                    int yearEnd = Integer.parseInt(tempEndDate [2]);
+                    int monthEnd = Integer.parseInt(endDate.substring(3, 5));
+                    int dayEnd = Integer.parseInt(endDate.substring(0, 2));
+                    int yearEnd = Integer.parseInt(endDate.substring(6, 8));
 
-                    String [] tempStartTime = startTime.split(".", 2);
-                    String [] temp = tempStartDate [1].split(" ", 2);
+                    int hourStart = Integer.parseInt(startTime.substring(0, 2));
+                    int minuteStart = Integer.parseInt(startTime.substring(3, 5));
 
-                    int hourStart = Integer.parseInt(tempStartTime [0]);
-                    int minuteStart = Integer.parseInt(temp [0]);
+                    hourStart = this.convertHour (hourStart, startTime.substring(6, 8));
 
-                    hourStart = this.convertHour (hourStart, temp [1]);
+                    int hourEnd = Integer.parseInt(endTime.substring(0, 2));
+                    int minuteEnd = Integer.parseInt(endTime.substring(3, 5));
 
-                    String [] tempEndTime = endTime.split(".", 2);
-                    temp = tempEndDate [1].split (" ", 2);
-
-                    int hourEnd = Integer.parseInt(tempEndTime [0]);
-                    int minuteEnd = Integer.parseInt(temp [0]);
-
-                    hourEnd = this.convertHour(hourEnd, temp [1]);
+                    hourEnd = this.convertHour(hourEnd, endTime.substring(6, 8));
 
                     ongoingList.add(0 , new Task(name, priority, category,
                             new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),

@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -96,7 +97,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 intent.putExtra(KEY_TASKNAME, taskName);
                 intent.putExtra(KEY_NOTES, taskNotes);
-                intent.putExtra(KEY_PRIORITY, Integer.valueOf(priority));
+                intent.putExtra(KEY_PRIORITY, Integer.valueOf(priority.length()));
                 intent.putExtra(KEY_CATEGORY, category);
                 intent.putExtra(KEY_START_DATE, startDate);
                 intent.putExtra(KEY_START_TIME, startTime);
