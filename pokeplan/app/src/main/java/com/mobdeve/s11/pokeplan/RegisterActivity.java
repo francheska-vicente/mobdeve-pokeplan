@@ -25,8 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnregisterback = findViewById(R.id.ib_register_back);
         btnregisterback.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), MainActivity.class);
-                view.getContext().startActivity(i);
+                onBackPressed();
             }
         });
     }
