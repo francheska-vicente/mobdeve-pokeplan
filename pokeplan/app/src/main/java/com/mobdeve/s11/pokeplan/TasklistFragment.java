@@ -39,7 +39,19 @@ public class TasklistFragment extends Fragment {
             public void onActivityResult(ActivityResult result) {
                 Intent intent = result.getData();
 
-                /* TODO: add intent */
+                String name =  intent.getStringExtra(AddTaskActivity.KEY_TASKNAME);
+                String category =  intent.getStringExtra(AddTaskActivity.KEY_CATEGORY);
+                int priority = intent.getIntExtra(AddTaskActivity.KEY_PRIORITY, 1);
+                String startDate = intent.getStringExtra(AddTaskActivity.KEY_START_DATE);
+                String endDate = intent.getStringExtra(AddTaskActivity.KEY_END_DATE);
+                String startTime = intent.getStringExtra(AddTaskActivity.KEY_START_TIME);
+                String endTime = intent.getStringExtra(AddTaskActivity.KEY_END_TIME);
+                String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
+
+                // ongoingList.add(0 , new Task(name, priority, category, notes));
+                taskAdapterOngoing.notifyItemChanged(0);
+                taskAdapterOngoing.notifyItemRangeChanged(0, taskAdapterOngoing.getItemCount());
+
 
             }
         }
@@ -61,7 +73,7 @@ public class TasklistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_tasklist, container, false);
+        View view = inflater.inflate(R.layout.fragment_tasklist, container, false);
         initFabAdd(view);
         initComponents(view);
         return view;

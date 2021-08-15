@@ -3,15 +3,20 @@ package com.mobdeve.s11.pokeplan;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class AddTaskActivity extends AppCompatActivity {
@@ -33,41 +38,112 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void initComponents () {
-        this.initDeadline ();
-        this.initTimeDue ();
+        this.initCalendar ();
     }
 
 
-    private void initDeadline () {
-        EditText edittext= (EditText) findViewById(R.id.et_add_task_start_date);
-        Calendar calendar = Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+    private void initCalendar () {
+        EditText startDate = (EditText) findViewById(R.id.et_add_task_start_date);
+        Calendar calendarStart = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateStart = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month,
                                   int day) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, day);
+                calendarStart.set(Calendar.YEAR, year);
+                calendarStart.set(Calendar.MONTH, month);
+                calendarStart.set(Calendar.DAY_OF_MONTH, day);
 
                 String myFormat = "dd.MM.yy";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
 
-                edittext.setText(sdf.format(calendar.getTime()));
+                startDate.setText(sdf.format(calendarStart.getTime()));
             }
 
         };
 
-        edittext.setOnClickListener(new View.OnClickListener() {
+        startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(AddTaskActivity.this, date, calendar
-                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(AddTaskActivity.this, dateStart, calendarStart
+                        .get(Calendar.YEAR), calendarStart.get(Calendar.MONTH),
+                        calendarStart.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-    }
 
-    private void initTimeDue () {
 
+
+        EditText endDate = (EditText) findViewById(R.id.et_add_task_end_date);
+        Calendar calendarEnd = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateEnd = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month,
+                                  int day) {
+                calendarEnd.set(Calendar.YEAR, year);
+                calendarEnd.set(Calendar.MONTH, month);
+                calendarEnd.set(Calendar.DAY_OF_MONTH, day);
+
+                String myFormat = "dd.MM.yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
+
+                endDate.setText(sdf.format(calendarEnd.getTime()));
+            }
+
+        };
+
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(AddTaskActivity.this, dateEnd, calendarEnd
+                        .get(Calendar.YEAR), calendarEnd.get(Calendar.MONTH),
+                        calendarEnd.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        EditText startTime = (EditText) findViewById(R.id.et_add_task_start_time);
+        TimePickerDialog.OnTimeSetListener timeStart = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String date = hourOfDay + "." + minute;
+                SimpleDateFormat sdf = new SimpleDateFormat("HH.mm");
+                try {
+                    Date tempDate = sdf.parse(date);
+                    sdf = new SimpleDateFormat("hh.mm aa");
+                    startTime.setText(sdf.format(tempDate));
+
+                } catch (ParseException e) {
+                }
+            }
+        };
+
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TimePickerDialog(AddTaskActivity.this, timeStart, 0, 0, false).show();
+            }
+        });
+
+        EditText endTime = (EditText) findViewById(R.id.et_add_task_end_time);
+        TimePickerDialog.OnTimeSetListener timeEnd = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String date = hourOfDay + "." + minute;
+                SimpleDateFormat sdf = new SimpleDateFormat("HH.mm");
+                try {
+                    Date tempDate = sdf.parse(date);
+                    sdf = new SimpleDateFormat("hh.mm aa");
+                    endTime.setText(sdf.format(tempDate));
+
+                } catch (ParseException e) {
+                }
+            }
+        };
+
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new TimePickerDialog(AddTaskActivity.this, timeEnd, 0, 0, false).show();
+
+            }
+        });
     }
 }
