@@ -142,7 +142,6 @@ public class AddTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new TimePickerDialog(AddTaskActivity.this, timeEnd, 0, 0, false).show();
-
             }
         });
     }
