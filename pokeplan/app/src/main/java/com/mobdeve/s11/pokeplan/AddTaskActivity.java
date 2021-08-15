@@ -16,6 +16,15 @@ import java.util.Locale;
 
 public class AddTaskActivity extends AppCompatActivity {
 
+    public static final String KEY_TASKNAME = "KEY_TASKNAME";
+    public static final String KEY_CATEGORY = "KEY_CATEGORY";
+    public static final String KEY_PRIORITY = "KEY_PRIORITY";
+    public static final String KEY_START_DATE = "KEY_START_DATE";
+    public static final String KEY_START_TIME = "KEY_START_TIME";
+    public static final String KEY_END_DATE = "KEY_END_DATE";
+    public static final String KEY_END_TIME = "KEY_END_TIME";
+    public static final String KEY_NOTES = "KEY_NOTES";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,18 +33,10 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void initComponents () {
-        this.initType ();
         this.initDeadline ();
         this.initTimeDue ();
     }
 
-    private void initType () {
-//        Spinner spinner = (Spinner) findViewById(R.id.sp_add_task_type);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.add_task_type_array, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(R.layout.template_spinner);
-//        spinner.setAdapter(adapter);
-    }
 
     private void initDeadline () {
         EditText edittext= (EditText) findViewById(R.id.et_add_task_start_date);

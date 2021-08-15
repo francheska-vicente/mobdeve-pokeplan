@@ -40,6 +40,7 @@ public class TasklistFragment extends Fragment {
                 Intent intent = result.getData();
 
                 /* TODO: add intent */
+
             }
         }
     );
