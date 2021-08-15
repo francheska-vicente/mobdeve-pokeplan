@@ -423,7 +423,7 @@
         android:src="@drawable/arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/darkest_gray" />
+        app:tint="@color/pink_button" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_register_s_hor8p"

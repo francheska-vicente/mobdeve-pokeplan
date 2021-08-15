@@ -128,7 +128,7 @@
         android:fontFamily="@font/raleway_bold"
         android:text="REGISTER"
         android:textColor="@color/darkest_gray"
-        app:backgroundTint="@color/pink"
+        app:backgroundTint="@color/pink_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -181,7 +181,7 @@
         android:src="@drawable/arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/pink" />
+        app:tint="@color/pink_button" />
 
     <EditText
         android:id="@+id/et_register_email"

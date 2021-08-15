@@ -57,6 +57,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         holder.setTaskIcon(this.tasks.get(position).getCategory());
         holder.setTaskName(this.tasks.get(position).getTaskName());
         holder.setTaskDeadline(this.tasks.get(position).getEndDate());
+        holder.setTaskPriority(this.tasks.get(position).getPriority());
     }
 
     @Override

@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_hours"
         app:layout_constraintStart_toStartOf="@+id/tv_focustimer_hours"
         app:layout_constraintTop_toBottomOf="@+id/tv_focustimer_hours"
-        app:tint="@color/pink" />
+        app:tint="@color/pink_button" />
 
     <ImageButton
         android:id="@+id/ib_timer_hours_up"
@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_focustimer_hours"
         app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_hours"
         app:layout_constraintStart_toStartOf="@+id/tv_focustimer_hours"
-        app:tint="@color/pink" />
+        app:tint="@color/pink_button" />
 
     <ImageButton
         android:id="@+id/ib_timer_secs_up"
@@ -44,7 +44,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_focustimer_secs"
         app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_secs"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:tint="@color/pink" />
+        app:tint="@color/pink_button" />
 
     <ImageButton
         android:id="@+id/ib_timer_mins_up"
@@ -57,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tv_focustimer_mins"
         app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_mins"
         app:layout_constraintStart_toStartOf="@+id/tv_focustimer_mins"
-        app:tint="@color/pink" />
+        app:tint="@color/pink_button" />
 
     <ImageButton
         android:id="@+id/ib_timer_secs_down"
@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_secs"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/tv_focustimer_secs"
-        app:tint="@color/pink" />
+        app:tint="@color/pink_button" />
 
     <ImageButton
         android:id="@+id/ib_timer_mins_down"
@@ -83,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tv_focustimer_mins"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/tv_focustimer_mins"
-        app:tint="@color/pink" />
+        app:tint="@color/pink_button" />
 
     <Button
         android:id="@+id/btn_focustimer_main"
@@ -96,7 +96,7 @@
         android:fontFamily="@font/raleway_bold"
         android:text="START TIMER"
         android:textColor="@color/darkest_gray"
-        app:backgroundTint="@color/pink"
+        app:backgroundTint="@color/pink_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -133,6 +133,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_bold"
             android:text="@string/focustimer_title"
+            android:textColor="@color/darker_gray"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -254,6 +255,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_dialog_info"
-        app:tint="@color/pink" />
+        app:tint="@color/pink_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

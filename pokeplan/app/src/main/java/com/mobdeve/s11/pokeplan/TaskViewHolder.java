@@ -17,6 +17,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
     private ImageView ivtaskicon;
     private TextView tvtaskname;
     private TextView tvtaskdeadline;
+    private TextView tvtaskpriority;
     private ConstraintLayout layout;
 
     public TaskViewHolder(@NonNull @NotNull View itemView) {
@@ -25,6 +26,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         this.ivtaskicon = itemView.findViewById(R.id.iv_task_icon);
         this.tvtaskname = itemView.findViewById(R.id.tv_task_taskname);
         this.tvtaskdeadline = itemView.findViewById(R.id.tv_task_deadline);
+        this.tvtaskpriority = itemView.findViewById(R.id.tv_task_priority);
         this.layout = itemView.findViewById(R.id.cl_template_task);
     }
 
@@ -47,9 +49,27 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         this.tvtaskname.setText(name);
     }
 
-    /* TODO: fix string */
     public void setTaskDeadline(CustomDate dl) {
         this.tvtaskdeadline.setText("Due " + dl.toString());
+    }
+
+    public void setTaskPriority(int priority) {
+        String priorityIcon = "!";
+        switch (priority) {
+            case 5:
+                priorityIcon = "!!!!!";
+                break;
+            case 4:
+                priorityIcon = "!!!!";
+                break;
+            case 3:
+                priorityIcon = "!!!";
+                break;
+            case 2:
+                priorityIcon = "!!";
+                break;
+        }
+        this.tvtaskpriority.setText(priorityIcon);
     }
 
     public ConstraintLayout getConstraintLayout() {
