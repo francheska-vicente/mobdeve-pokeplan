@@ -8,7 +8,18 @@ public class UserPokemon {
     public UserPokemon(Pokemon details) {
         this.details = details;
         this.level = 1;
+        this.fedcandy = 0;
     }
 
+    public void feedCandy() {
 
+    }
+
+    public void levelUpPokemon() {
+
+    }
+
+    public void evolvePokemon() {
+
+    }
 }
