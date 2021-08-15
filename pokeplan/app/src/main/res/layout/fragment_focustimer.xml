@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_semibold"
-            android:text="@string/home_title"
+            android:text="@string/focustimer_title"
             android:textColor="@color/darker_gray"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
