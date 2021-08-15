@@ -49,7 +49,7 @@ public class CustomDate {
             diff = Math.round((dateEnd.getTime() - dateStart.getTime()) / (double) 86400000);
 
             if (diff == 0) {
-                return "today @ " + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
+                return "Today @ " + new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
             } else if (diff <= 6) {
                 Locale locale = new Locale("EN", "PHILIPPINES");
                 DateFormat formatter = new SimpleDateFormat("EEEE", locale);
