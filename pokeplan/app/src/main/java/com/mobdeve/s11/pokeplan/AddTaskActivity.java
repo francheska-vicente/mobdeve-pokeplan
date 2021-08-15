@@ -30,11 +30,11 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void initType () {
-        Spinner spinner = (Spinner) findViewById(R.id.sp_add_task_type);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.add_task_type_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(R.layout.template_spinner);
-        spinner.setAdapter(adapter);
+//        Spinner spinner = (Spinner) findViewById(R.id.sp_add_task_type);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+//                R.array.add_task_type_array, android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(R.layout.template_spinner);
+//        spinner.setAdapter(adapter);
     }
 
     private void initDeadline () {
