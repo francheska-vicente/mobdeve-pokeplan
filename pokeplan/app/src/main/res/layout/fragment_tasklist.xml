@@ -126,7 +126,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_tasklist_label_ongoing"
                 app:layout_constraintStart_toEndOf="@+id/tv_tasklist_label_ongoing"
                 app:layout_constraintTop_toTopOf="@+id/tv_tasklist_label_ongoing"
-                app:tint="@color/bottom_nav" />
+                app:tint="@color/pink_button" />
 
             <ImageButton
                 android:id="@+id/ib_tasklist_togglecompleted"
@@ -138,7 +138,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_tasklist_label_completed"
                 app:layout_constraintStart_toEndOf="@+id/tv_tasklist_label_completed"
                 app:layout_constraintTop_toTopOf="@+id/tv_tasklist_label_completed"
-                app:tint="@color/bottom_nav" />
+                app:tint="@color/pink_button" />
 
             <View
                 android:id="@+id/divider2"
