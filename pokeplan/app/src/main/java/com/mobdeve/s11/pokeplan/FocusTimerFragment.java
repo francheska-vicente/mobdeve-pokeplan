@@ -7,18 +7,27 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.concurrent.TimeUnit;
 
 
 public class FocusTimerFragment extends Fragment {
+    private final int INITIAL = 0;
+    private final int START = 1;
+    private final int ONGOING = 2;
+    private final int FINISH = 3;
+
     private ImageView ivegg;
 
     private Button btnfocustimer;
@@ -60,8 +69,9 @@ public class FocusTimerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_focustimer, container, false);
+
         initView(view);
-        initTimer();
+        timer = new Timer();
         return view;
     }
 
@@ -82,101 +92,11 @@ public class FocusTimerFragment extends Fragment {
         ivegg = view.findViewById(R.id.iv_egg);
 
         btnfocustimer = view.findViewById(R.id.btn_focustimer_main);
-    }
-
-    private void initTimer() {
-        timer = new Timer();
-
-        ibhoursup.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (timer.getHours() < 99) {
-                    timer.setHours(timer.getHours()+1);
-                    tvhours.setText(addLeadingZero(timer.getHours()));
-                }
-            }
-        });
-
-        ibhoursdown.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (timer.getHours() > 0) {
-                    timer.setHours(timer.getHours()-1);
-                    tvhours.setText(addLeadingZero(timer.getHours()));
-                }
-            }
-        });
-
-        ibminsup.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (timer.getMins() < 59) {
-                    timer.setMins(timer.getMins()+1);
-                    tvmins.setText(addLeadingZero(timer.getMins()));
-                }
-            }
-        });
-
-        ibminsdown.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (timer.getMins() > 0) {
-                    timer.setMins(timer.getMins()-1);
-                    tvmins.setText(addLeadingZero(timer.getMins()));
-                }
-            }
-        });
-
-        ibsecsup.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (timer.getSecs() < 59) {
-                    timer.setSecs(timer.getSecs()+1);
-                    tvsecs.setText(addLeadingZero(timer.getSecs()));
-                }
-            }
-        });
-
-        ibsecsdown.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (timer.getSecs() > 0) {
-                    timer.setSecs(timer.getSecs()-1);
-                    tvsecs.setText(addLeadingZero(timer.getSecs()));
-                }
-            }
-        });
-
-        btnfocustimer.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                //if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
-                    startTimer();
-                //else
-                //    createTimeErrorDialog(view);
-            }
-        });
-
-        ibinfo.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                createInfoDialog(view);
-            }
-        });
+        setViewComponents(INITIAL);
     }
 
     private void startTimer() {
-        // hide timer buttons
-        ibhoursup.setVisibility(View.GONE);
-        ibhoursdown.setVisibility(View.GONE);
-        ibminsup.setVisibility(View.GONE);
-        ibminsdown.setVisibility(View.GONE);
-        ibsecsup.setVisibility(View.GONE);
-        ibsecsdown.setVisibility(View.GONE);
-        ibinfo.setVisibility(View.GONE);
-
-        // change caption
-        tvcaption.setText(getString(R.string.focustimer_ongoing_tagline));
-
-        // change button from start timer to stop timer
-        btnfocustimer.setText(getString(R.string.focustimer_stop_button));
-        btnfocustimer.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                createConfirmStopTimerDialog(view);
-            }
-        });
+        setViewComponents(ONGOING);
 
         // start countdown timer
         long time = timeToMilliseconds(timer) + 500;
@@ -185,7 +105,6 @@ public class FocusTimerFragment extends Fragment {
             public void onTick(long fin) {
                 adjustTimer(fin);
             }
-
             public void onFinish() {
                 finishTimer();
             }
@@ -200,36 +119,16 @@ public class FocusTimerFragment extends Fragment {
 
     private void finishTimer() {
         timerIsDone = true;
-        tvcaption.setText(R.string.focustimer_finish_tagline);
-        btnfocustimer.setText(R.string.focustimer_finish_button);
-        btnfocustimer.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                resetTimer();
-            }
-        });
+        setViewComponents(FINISH);
 
         Egg egg = new Egg(timer);
         Pokemon hatch = egg.generatePokemon();
-
         createHatchEggDialog(getView(), hatch);
     }
 
     private void resetTimer() {
-        initTimer();
-        ibhoursup.setVisibility(View.VISIBLE);
-        ibhoursdown.setVisibility(View.VISIBLE);
-        ibminsup.setVisibility(View.VISIBLE);
-        ibminsdown.setVisibility(View.VISIBLE);
-        ibsecsup.setVisibility(View.VISIBLE);
-        ibsecsdown.setVisibility(View.VISIBLE);
-        ibinfo.setVisibility(View.VISIBLE);
-
-        tvcaption.setText(R.string.focustimer_start_tagline);
-        btnfocustimer.setText(R.string.focustimer_start_button);
-
-        tvhours.setText("00");
-        tvmins.setText("10");
-        tvsecs.setText("00");
+        timer = new Timer();
+        setViewComponents(START);
     }
 
     private void adjustTimer(long fin) {
@@ -359,6 +258,153 @@ public class FocusTimerFragment extends Fragment {
             }
         });
         infodialog.show();
+    }
+
+    private void setViewComponents(int state) {
+        switch (state) {
+            case INITIAL:
+                ibhoursup.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (timer.getHours() < 99) {
+                            timer.setHours(timer.getHours()+1);
+                            tvhours.setText(addLeadingZero(timer.getHours()));
+                        }
+                    }
+                });
+                ibhoursdown.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (timer.getHours() > 0) {
+                            timer.setHours(timer.getHours()-1);
+                            tvhours.setText(addLeadingZero(timer.getHours()));
+                        }
+                    }
+                });
+                ibminsup.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (timer.getMins() < 59) {
+                            timer.setMins(timer.getMins()+1);
+                            tvmins.setText(addLeadingZero(timer.getMins()));
+                        }
+                    }
+                });
+                ibminsdown.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (timer.getMins() > 0) {
+                            timer.setMins(timer.getMins()-1);
+                            tvmins.setText(addLeadingZero(timer.getMins()));
+                        }
+                    }
+                });
+                ibsecsup.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (timer.getSecs() < 59) {
+                            timer.setSecs(timer.getSecs()+1);
+                            tvsecs.setText(addLeadingZero(timer.getSecs()));
+                        }
+                    }
+                });
+                ibsecsdown.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (timer.getSecs() > 0) {
+                            timer.setSecs(timer.getSecs()-1);
+                            tvsecs.setText(addLeadingZero(timer.getSecs()));
+                        }
+                    }
+                });
+                ibinfo.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        createInfoDialog(view);
+                    }
+                });
+                btnfocustimer.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
+                            startTimer();
+                        else createTimeErrorDialog(view);
+                    }
+                });
+                break;
+            case START:
+                setTimerButtonsVisibility(true);
+                tvcaption.setText(R.string.focustimer_start_tagline);
+                btnfocustimer.setText(R.string.focustimer_start_button);
+                tvhours.setText("00");
+                tvmins.setText("10");
+                tvsecs.setText("00");
+                ivegg.setImageResource(R.drawable.egg);
+                btnfocustimer.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
+                            startTimer();
+                        else createTimeErrorDialog(view);
+                    }
+                });
+                setBottomBarEnabled(true);
+                dimScreen(false);
+                break;
+            case ONGOING:
+                setTimerButtonsVisibility(false);
+                tvcaption.setText(getString(R.string.focustimer_ongoing_tagline));
+                btnfocustimer.setText(getString(R.string.focustimer_stop_button));
+                btnfocustimer.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        createConfirmStopTimerDialog(view);
+                    }
+                });
+                dimScreen(true);
+                setBottomBarEnabled(false);
+                break;
+            case FINISH:
+                tvcaption.setText(R.string.focustimer_finish_tagline);
+                btnfocustimer.setText(R.string.focustimer_finish_button);
+                btnfocustimer.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        resetTimer();
+                    }
+                });
+                dimScreen(false);
+                setBottomBarEnabled(true);
+                break;
+        }
+    }
+
+    private void setTimerButtonsVisibility(boolean toggle) {
+        if (toggle) {
+            ibhoursup.setVisibility(View.VISIBLE);
+            ibhoursdown.setVisibility(View.VISIBLE);
+            ibminsup.setVisibility(View.VISIBLE);
+            ibminsdown.setVisibility(View.VISIBLE);
+            ibsecsup.setVisibility(View.VISIBLE);
+            ibsecsdown.setVisibility(View.VISIBLE);
+            ibinfo.setVisibility(View.VISIBLE);
+        }
+        else {
+            ibhoursup.setVisibility(View.GONE);
+            ibhoursdown.setVisibility(View.GONE);
+            ibminsup.setVisibility(View.GONE);
+            ibminsdown.setVisibility(View.GONE);
+            ibsecsup.setVisibility(View.GONE);
+            ibsecsdown.setVisibility(View.GONE);
+            ibinfo.setVisibility(View.GONE);
+        }
+    }
+
+    private void setBottomBarEnabled(boolean toggle){
+        BottomNavigationView navView = (BottomNavigationView)
+                getActivity().findViewById(R.id.bottom_nav_view);
+        for (int i = 0; i < navView.getMenu().size(); i++) {
+            navView.getMenu().getItem(i).setEnabled(toggle);
+        }
+    }
+
+    private void dimScreen(boolean dimmed) {
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        if (dimmed)
+            lp.screenBrightness = 0.01f;
+        else
+            lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+
+        getActivity().getWindow().setAttributes(lp);
     }
 
     private long timeToMilliseconds (Timer timer) {

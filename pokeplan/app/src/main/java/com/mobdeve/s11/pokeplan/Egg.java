@@ -33,31 +33,11 @@ public class Egg {
 
     public Pokemon generatePokemon() {
         // convert hh:mm:ss to minutes
-        int total = (int) TimeUnit.HOURS.toMinutes(timer.getHours()) + timer.getMins();
-        if (timer.getSecs() > 0)    total++;
+        int minutes = (int) TimeUnit.HOURS.toMinutes(timer.getHours()) + timer.getMins();
+        if (timer.getSecs() > 0)    minutes++;
 
-        // initialize pool of rarities
-
-
-        // rates are based on time
-        if (total >= 5 && total < 20) {
-            populatePool(first);
-        }
-        else if (total >= 20 && total < 40) {
-            populatePool(second);
-        }
-        else if (total >= 40 && total < 60) {
-            populatePool(third);
-        }
-        else if (total >= 60 && total < 120) {
-            populatePool(fourth);
-        }
-        else if (total >= 120 && total < 240) {
-            populatePool(fifth);
-        }
-        else {
-            populatePool(sixth);
-        }
+        // fix rates based on time
+        fixRates(minutes);
 
         // get rarity from pool
         String rarity = raritypool.get(new Random().nextInt(100));
@@ -74,7 +54,7 @@ public class Egg {
         return pokemon;
     }
 
-    public void populatePool(int[] rates) {
+    public void populateRarityPool(int[] rates) {
         for(int j=0; j<rates[0]; j++)
             raritypool.add(C);
         for(int j=0; j<rates[1]; j++)
@@ -85,4 +65,24 @@ public class Egg {
             raritypool.add(SR);
     }
 
+    public void fixRates(int minutes) {
+        if (minutes >= 5 && minutes < 20) {
+            populateRarityPool(first);
+        }
+        else if (minutes >= 20 && minutes < 40) {
+            populateRarityPool(second);
+        }
+        else if (minutes >= 40 && minutes < 60) {
+            populateRarityPool(third);
+        }
+        else if (minutes >= 60 && minutes < 120) {
+            populateRarityPool(fourth);
+        }
+        else if (minutes >= 120 && minutes < 240) {
+            populateRarityPool(fifth);
+        }
+        else {
+            populateRarityPool(sixth);
+        }
+    }
 }
