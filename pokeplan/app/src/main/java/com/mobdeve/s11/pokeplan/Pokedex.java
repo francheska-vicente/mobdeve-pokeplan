@@ -38,6 +38,10 @@ public class Pokedex {
                 "Steel","Psychic"));
     }
 
+    public Pokemon getPokemon(int dexNum) {
+        return pokemonList.get(dexNum);
+    }
+
     public ArrayList<Pokemon> getCommonPokemonList() {
         ArrayList<Pokemon> common = new ArrayList<>();
 
