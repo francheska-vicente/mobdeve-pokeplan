@@ -20,7 +20,7 @@ public class TaskDataHelper {
         data.add(new Task("Study", 1, "School", new CustomDate(2021, 8, 20, 16, 00), new CustomDate(2021, 8, 8, 16, 00), "rawr"));
         data.add(new Task("Genshin Impact", 1, "Leisure", new CustomDate(), new CustomDate(), "rawr"));
         data.add(new Task("Study", 1, "School", new CustomDate(2021, 8, 20, 16, 00), new CustomDate(2021, 8, 8, 16, 00), "rawr"));
-        data.add(new Task("Genshin Impact", 2, "Leisure", new CustomDate(), new CustomDate(), "rawr"));
+        data.add(new Task("MMMMMMMMMMMMM", 2, "Leisure", new CustomDate(), new CustomDate(), "rawr"));
         data.add(new Task("Study", 1, "School", new CustomDate(2021, 8, 20, 16, 00), new CustomDate(2021, 8, 8, 16, 00), "rawr"));
         data.add(new Task("Genshin Impact", 4, "Leisure", new CustomDate(), new CustomDate(), "rawr"));
         data.add(new Task("Study", 1, "School", new CustomDate(2021, 8, 20, 16, 00), new CustomDate(2021, 8, 8, 16, 00), "rawr"));
