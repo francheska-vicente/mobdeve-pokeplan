@@ -41,12 +41,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p"
-        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p"
-        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor20p4"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_add_task_label">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_tasklist_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,38 +53,68 @@
 
             <TextView
                 android:id="@+id/tv_tasklist_label_ongoing"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/raleway_bold"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="@string/tasklist_ongoing_label"
-                android:textSize="16sp" />
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="43dp"
+                tools:layout_conversion_absoluteWidth="387dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_tasklist_ongoing"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_tasklist_label_ongoing"
+                tools:layout_conversion_absoluteHeight="194dp"
+                tools:layout_conversion_absoluteWidth="387dp">
 
             </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/tv_tasklist_label_completed"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/raleway_bold"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="@string/tasklist_completed_label"
-                android:textSize="16sp" />
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_tasklist_ongoing"
+                tools:layout_conversion_absoluteHeight="43dp"
+                tools:layout_conversion_absoluteWidth="387dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_tasklist_completed"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_tasklist_label_completed"
+                tools:layout_conversion_absoluteHeight="194dp"
+                tools:layout_conversion_absoluteWidth="387dp" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
