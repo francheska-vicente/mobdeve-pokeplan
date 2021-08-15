@@ -38,37 +38,31 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.08" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_tasklist_hor14p"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.13" />
-
     <ImageButton
         android:id="@+id/ib_taskdetails_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:adjustViewBounds="true"
         android:backgroundTint="#00FFFFFF"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
         android:tint="@color/pink_button"
-        app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor14p"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_name"
         app:layout_constraintEnd_toStartOf="@+id/ib_taskdetails_delete"
-        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p"
+        app:layout_constraintTop_toTopOf="@+id/tv_taskdetails_name"
         app:srcCompat="@drawable/edit" />
 
     <ImageButton
         android:id="@+id/ib_taskdetails_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
         android:adjustViewBounds="true"
         android:backgroundTint="#00FFFFFF"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
         android:tint="@color/pink_button"
-        app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor14p"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p"
+        app:layout_constraintTop_toTopOf="@+id/tv_taskdetails_name"
         app:srcCompat="@drawable/delete" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -89,15 +83,33 @@
         android:id="@+id/tv_taskdetails_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="Study"
-        android:textAllCaps="true"
+        android:text="Study For Finals Week"
+        android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/cl_taskdetails_category"
-        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
+        app:layout_constraintEnd_toStartOf="@+id/ib_taskdetails_edit"
         app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
-        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor14p" />
+        app:layout_constraintTop_toBottomOf="@+id/cl_taskdetails_label" />
+
+    <Button
+        android:id="@+id/btn_task_finish"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/rounded_rectangle"
+        android:fontFamily="@font/raleway_bold"
+        android:text="FINISH TASK"
+        android:textColor="@color/darkest_gray"
+        app:backgroundTint="@color/pink_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_taskdetails_category"
@@ -176,7 +188,7 @@
         android:id="@+id/tv_taskdetails_time_start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/raleway_light_italic"
         android:text="Starts @ August 8, 2021 6:00 PM"
         android:textColor="#0C0C0C"
@@ -216,9 +228,11 @@
         android:layout_marginTop="3dp"
         android:fontFamily="@font/raleway_light_italic"
         android:text="Once upon a time..."
+        app:layout_constraintBottom_toTopOf="@+id/btn_task_finish"
         app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
         app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver6p"
-        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_label_notes" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_label_notes"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_tasklist_ver6p"

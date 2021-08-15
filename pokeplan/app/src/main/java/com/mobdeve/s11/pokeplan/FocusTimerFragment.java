@@ -69,12 +69,12 @@ public class FocusTimerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_focustimer, container, false);
 
-        initView(view);
+        initComponents(view);
         timer = new Timer();
         return view;
     }
 
-    private void initView(View view) {
+    private void initComponents(View view) {
         tvhours = view.findViewById(R.id.tv_focustimer_hours);
         tvmins = view.findViewById(R.id.tv_focustimer_mins);
         tvsecs = view.findViewById(R.id.tv_focustimer_secs);
