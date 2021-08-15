@@ -1,7 +1,5 @@
 package com.mobdeve.s11.pokeplan;
 
-import java.util.Date;
-
 public class Task {
     private final String[] categories =
             {"School", "Work", "Hobby", "Leisure", "Chores", "Health", "Social", "Others"};
@@ -12,6 +10,7 @@ public class Task {
     private CustomDate startDate;
     private CustomDate endDate;
     private String description;
+    private boolean isFinished;
 
     public Task (String taskName, int priority, String category, CustomDate startDate, CustomDate endDate, String description) {
         this.taskName = taskName;
@@ -20,6 +19,7 @@ public class Task {
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
+        this.isFinished = false;
     }
 
     public String getTaskName () {
@@ -42,8 +42,39 @@ public class Task {
         return this.endDate;
     }
 
-
     public String getDescription () {
         return this.description;
+    }
+
+    public boolean isFinished() {
+        return this.isFinished;
+    }
+
+    public void setTaskName (String name) {
+        this.taskName = name;
+    }
+
+    public void setPriority (int priority) {
+        this.priority = priority;
+    }
+
+    public void setCategory (String category) {
+        this.category = category;
+    }
+
+    public void setStartDate (CustomDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate (CustomDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setDescription (String description) {
+        this.description = description;
+    }
+
+    public void setFinished(boolean finished) {
+        this.isFinished = finished;
     }
 }
