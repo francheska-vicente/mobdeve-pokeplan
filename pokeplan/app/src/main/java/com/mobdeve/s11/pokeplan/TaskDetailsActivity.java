@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class TaskDetailsActivity extends AppCompatActivity {
-
+    private ImageButton btnregisterback;
     private TextView tvTaskName;
     private TextView tvCategory;
     private ImageView ivCategory;
@@ -61,6 +62,16 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         this.setCategoryIcon(category);
         this.setPriorityIcon(priority);
+    }
+
+    private void initBackBtn() {
+        btnregisterback = findViewById(R.id.ib_register_back);
+        btnregisterback.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), MainActivity.class);
+                view.getContext().startActivity(i);
+            }
+        });
     }
 
     private void setCategoryIcon (String category) {
