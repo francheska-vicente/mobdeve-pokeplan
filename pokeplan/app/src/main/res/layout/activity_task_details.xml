@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_bold"
             android:text="@string/taskdetails_label"
+            android:textColor="@color/darker_gray"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.14227086" />
+        app:layout_constraintGuide_percent="0.13" />
 
     <ImageButton
         android:id="@+id/ib_taskdetails_edit"
@@ -50,10 +51,12 @@
         android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:backgroundTint="#00FFFFFF"
+        android:scaleType="centerInside"
+        android:tint="@color/pink_button"
         app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor14p"
         app:layout_constraintEnd_toStartOf="@+id/ib_taskdetails_delete"
         app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:srcCompat="@drawable/edit" />
 
     <ImageButton
         android:id="@+id/ib_taskdetails_delete"
@@ -61,10 +64,12 @@
         android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:backgroundTint="#00FFFFFF"
+        android:scaleType="centerInside"
+        android:tint="@color/pink_button"
         app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor14p"
-        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+        app:srcCompat="@drawable/delete" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_tasklist_ver3p2"
@@ -87,7 +92,7 @@
         android:fontFamily="@font/raleway_bold"
         android:text="Study"
         android:textAllCaps="true"
-        android:textColor="#000000"
+        android:textColor="@color/darkest_gray"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/cl_taskdetails_category"
         app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
@@ -98,6 +103,7 @@
         android:id="@+id/cl_taskdetails_category"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_rectangle"
         android:backgroundTint="@color/light_gray"
         android:paddingEnd="10dp"
@@ -110,6 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:adjustViewBounds="true"
+            android:foregroundTint="@color/darkest_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -120,7 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:fontFamily="@font/raleway_light_italic"
+            android:fontFamily="@font/raleway_semibold"
             android:text="Career"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="@+id/iv_taskdetails_category"
@@ -138,14 +145,14 @@
         android:backgroundTint="@color/light_gray"
         android:paddingEnd="10dp"
         app:layout_constraintStart_toEndOf="@+id/cl_taskdetails_category"
-        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_name">
+        app:layout_constraintTop_toTopOf="@+id/cl_taskdetails_category">
 
         <TextView
             android:id="@+id/tv_taskdetails_priorty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:fontFamily="@font/raleway_light_italic"
+            android:fontFamily="@font/raleway_semibold"
             android:text="Mid Priority"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_priority_symbol"
@@ -157,8 +164,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:fontFamily="@font/raleway_black"
+            android:fontFamily="@font/raleway_semibold"
             android:text="!!!"
+            android:textColor="@color/darkest_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
