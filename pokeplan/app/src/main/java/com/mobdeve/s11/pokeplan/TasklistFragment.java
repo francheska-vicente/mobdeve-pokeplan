@@ -49,46 +49,48 @@ public class TasklistFragment extends Fragment {
             public void onActivityResult(ActivityResult result) {
                 Intent intent = result.getData();
 
-                String name =  intent.getStringExtra(AddTaskActivity.KEY_TASKNAME);
-                String category =  intent.getStringExtra(AddTaskActivity.KEY_CATEGORY);
-                int priority = intent.getIntExtra(AddTaskActivity.KEY_PRIORITY, 1);
-                String startDate = intent.getStringExtra(AddTaskActivity.KEY_START_DATE);
-                String endDate = intent.getStringExtra(AddTaskActivity.KEY_END_DATE);
-                String startTime = intent.getStringExtra(AddTaskActivity.KEY_START_TIME);
-                String endTime = intent.getStringExtra(AddTaskActivity.KEY_END_TIME);
-                String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
+                if (intent != null) {
+                    String name =  intent.getStringExtra(AddTaskActivity.KEY_TASKNAME);
+                    String category =  intent.getStringExtra(AddTaskActivity.KEY_CATEGORY);
+                    int priority = intent.getIntExtra(AddTaskActivity.KEY_PRIORITY, 1);
+                    String startDate = intent.getStringExtra(AddTaskActivity.KEY_START_DATE);
+                    String endDate = intent.getStringExtra(AddTaskActivity.KEY_END_DATE);
+                    String startTime = intent.getStringExtra(AddTaskActivity.KEY_START_TIME);
+                    String endTime = intent.getStringExtra(AddTaskActivity.KEY_END_TIME);
+                    String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
 
-                String [] tempStartDate = startDate.split(".", 3);
-                int monthStart = Integer.parseInt(tempStartDate [1]);
-                int dayStart = Integer.parseInt(tempStartDate [0]);
-                int yearStart = Integer.parseInt(tempStartDate [2]);
+                    String [] tempStartDate = startDate.split(".", 3);
+                    int monthStart = Integer.parseInt(tempStartDate [1]);
+                    int dayStart = Integer.parseInt(tempStartDate [0]);
+                    int yearStart = Integer.parseInt(tempStartDate [2]);
 
-                String [] tempEndDate = endDate.split(".", 3);
-                int monthEnd = Integer.parseInt(tempEndDate [1]);
-                int dayEnd = Integer.parseInt(tempEndDate [0]);
-                int yearEnd = Integer.parseInt(tempEndDate [2]);
+                    String [] tempEndDate = endDate.split(".", 3);
+                    int monthEnd = Integer.parseInt(tempEndDate [1]);
+                    int dayEnd = Integer.parseInt(tempEndDate [0]);
+                    int yearEnd = Integer.parseInt(tempEndDate [2]);
 
-                String [] tempStartTime = startTime.split(".", 2);
-                String [] temp = tempStartDate [1].split(" ", 2);
+                    String [] tempStartTime = startTime.split(".", 2);
+                    String [] temp = tempStartDate [1].split(" ", 2);
 
-                int hourStart = Integer.parseInt(tempStartTime [0]);
-                int minuteStart = Integer.parseInt(temp [0]);
+                    int hourStart = Integer.parseInt(tempStartTime [0]);
+                    int minuteStart = Integer.parseInt(temp [0]);
 
-                hourStart = this.convertHour (hourStart, temp [1]);
+                    hourStart = this.convertHour (hourStart, temp [1]);
 
-                String [] tempEndTime = endTime.split(".", 2);
-                temp = tempEndDate [1].split (" ", 2);
+                    String [] tempEndTime = endTime.split(".", 2);
+                    temp = tempEndDate [1].split (" ", 2);
 
-                int hourEnd = Integer.parseInt(tempEndTime [0]);
-                int minuteEnd = Integer.parseInt(temp [0]);
+                    int hourEnd = Integer.parseInt(tempEndTime [0]);
+                    int minuteEnd = Integer.parseInt(temp [0]);
 
-                hourEnd = this.convertHour(hourEnd, temp [1]);
+                    hourEnd = this.convertHour(hourEnd, temp [1]);
 
-                ongoingList.add(0 , new Task(name, priority, category,
-                        new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
-                        new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes));
-                taskAdapterOngoing.notifyItemChanged(0);
-                taskAdapterOngoing.notifyItemRangeChanged(0, taskAdapterOngoing.getItemCount());
+                    ongoingList.add(0 , new Task(name, priority, category,
+                            new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
+                            new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes));
+                    taskAdapterOngoing.notifyItemChanged(0);
+                    taskAdapterOngoing.notifyItemRangeChanged(0, taskAdapterOngoing.getItemCount());
+                }
             }
         }
     );

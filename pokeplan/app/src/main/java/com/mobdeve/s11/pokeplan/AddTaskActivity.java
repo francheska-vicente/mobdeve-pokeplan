@@ -105,7 +105,6 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 setResult(Activity.RESULT_OK, intent);
                 finish();
-
             }
         });
     }
