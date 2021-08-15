@@ -6,18 +6,21 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.ActivityResultRegistry;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class TasklistActivity extends AppCompatActivity {
+public class TasklistFragment extends Fragment {
 
     private ArrayList<Task> ongoingList;
     private RecyclerView rvOngoing;
@@ -40,41 +43,54 @@ public class TasklistActivity extends AppCompatActivity {
             }
         }
     );
-    
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tasklist);
 
-        initComponents();
-        initFabAdd();
+    public TasklistFragment() {
     }
 
-    private void initComponents () {
+    public static TasklistFragment newInstance() {
+        TasklistFragment fragment = new TasklistFragment();
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_tasklist, container, false);
+        initFabAdd(view);
+        initComponents(view);
+        return view;
+    }
+
+    private void initComponents (View view) {
         TaskDataHelper helper = new TaskDataHelper();
 
         this.ongoingList = helper.getOngoingList();
 
-        this.rvOngoing = findViewById(R.id.rv_tasklist_ongoing);
-        this.rvOngoing.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
+        this.rvOngoing = view.findViewById(R.id.rv_tasklist_ongoing);
+        this.rvOngoing.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
         this.taskAdapterOngoing = new TaskAdapter(this.ongoingList);
         this.rvOngoing.setAdapter(this.taskAdapterOngoing);
 
         this.completedList = helper.getCompletedList();
 
-        this.rvCompleted = findViewById(R.id.rv_tasklist_completed);
-        this.rvCompleted.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        this.rvCompleted = view.findViewById(R.id.rv_tasklist_completed);
+        this.rvCompleted.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         this.taskAdapterCompleted = new TaskAdapter(this.completedList);
         this.rvCompleted.setAdapter(this.taskAdapterCompleted);
     }
 
-    private void initFabAdd () {
-        this.fabAdd = findViewById(R.id.fab_tasklist_add_task);
+    private void initFabAdd (View view) {
+        this.fabAdd = view.findViewById(R.id.fab_tasklist_add_task);
         this.fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TasklistActivity.this, AddTaskActivity.class);
+                Intent intent = new Intent(getActivity(), AddTaskActivity.class);
 
                 addActivityResultLauncher.launch(intent);
             }
