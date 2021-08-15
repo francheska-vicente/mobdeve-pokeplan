@@ -1,13 +1,23 @@
 package com.mobdeve.s11.pokeplan;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.widget.CompoundButtonCompat;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -15,6 +25,7 @@ import android.widget.TimePicker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -30,6 +41,20 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final String KEY_END_TIME = "KEY_END_TIME";
     public static final String KEY_NOTES = "KEY_NOTES";
 
+    private String category;
+    private String priority;
+
+    private EditText etTaskName;
+    private EditText etTaskNotes;
+    private EditText etStartDate;
+    private EditText etEndDate;
+    private EditText etStartTime;
+    private EditText etEndTime;
+    private Button btnCreate;
+
+    private ArrayList<View> btnPriority;
+    private ArrayList<View> btnCategory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +64,88 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private void initComponents () {
         this.initCalendar ();
+
+        this.intent ();
     }
 
+    private void intent () {
+        this.initPriority ();
+        this.initCategory ();
+
+        this.btnCreate = findViewById(R.id.btn_add_task_create);
+        this.btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void initPriority () {
+        this.btnPriority = new ArrayList<>();
+        ConstraintLayout clPriority = findViewById(R.id.cl_add_task_priority);
+        for(int i = 0; i < clPriority.getChildCount(); i++){
+            View v = clPriority.getChildAt(i);
+            if(v instanceof Button){
+                btnPriority.add((Button) v);
+                btnPriority.get(i).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Button b = (Button) v;
+                        priority = b.getText().toString();
+
+                        ConstraintLayout clPriority = findViewById(R.id.cl_add_task_priority);
+                        for(int i = 0; i < clPriority.getChildCount(); i++) {
+                            View view = clPriority.getChildAt(i);
+                            if(view instanceof Button && !view.equals(v)) {
+                                Drawable buttonDrawable = view.getBackground();
+                                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.lighter_gray) );
+                                view.setBackground(buttonDrawable);
+                            } else if (view.equals(v)) {
+                                Drawable buttonDrawable = v.getBackground();
+                                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.pink_button));
+                                v.setBackground(buttonDrawable);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    private void initCategory () {
+        this.btnCategory = new ArrayList<>();
+        ConstraintLayout clCategory = findViewById(R.id.cl_add_task_category);
+        for(int i = 0; i < clCategory.getChildCount(); i++){
+            View v = clCategory.getChildAt(i);
+            if(v instanceof Button){
+                btnCategory.add((Button) v);
+                btnCategory.get(i).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Button b = (Button) v;
+                        category = b.getText().toString();
+
+                        ConstraintLayout clPriority = findViewById(R.id.cl_add_task_category);
+                        for(int i = 0; i < clPriority.getChildCount(); i++) {
+                            View view = clPriority.getChildAt(i);
+                            if(view instanceof Button && !view.equals(v)) {
+                                Drawable buttonDrawable = view.getBackground();
+                                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.lighter_gray) );
+                                view.setBackground(buttonDrawable);
+                            } else if (view.equals(v)) {
+                                Drawable buttonDrawable = v.getBackground();
+                                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.pink_button));
+                                v.setBackground(buttonDrawable);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
 
     private void initCalendar () {
         EditText startDate = (EditText) findViewById(R.id.et_add_task_start_date);
@@ -58,7 +163,6 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 startDate.setText(sdf.format(calendarStart.getTime()));
             }
-
         };
 
         startDate.setOnClickListener(new View.OnClickListener() {
