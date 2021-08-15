@@ -7,8 +7,10 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.CompoundButtonCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -72,10 +74,37 @@ public class AddTaskActivity extends AppCompatActivity {
         this.initPriority ();
         this.initCategory ();
 
+        this.etTaskName = findViewById(R.id.et_add_task_name);
+        this.etTaskNotes = findViewById(R.id.et_add_task_notes);
+        this.etStartTime = findViewById(R.id.et_add_task_start_time);
+        this.etStartDate = findViewById(R.id.et_add_task_start_date);
+        this.etEndDate = findViewById(R.id.et_add_task_end_date);
+        this.etEndTime = findViewById(R.id.et_add_task_end_time);
+
         this.btnCreate = findViewById(R.id.btn_add_task_create);
         this.btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent();
+
+                String taskName = etTaskName.getText().toString();
+                String taskNotes = etTaskNotes.getText().toString();
+                String startTime = etStartTime.getText().toString();
+                String endTime = etEndTime.getText().toString();
+                String startDate = etStartDate.getText().toString();
+                String endDate = etEndDate.getText().toString();
+
+                intent.putExtra(KEY_TASKNAME, taskName);
+                intent.putExtra(KEY_NOTES, taskNotes);
+                intent.putExtra(KEY_PRIORITY, Integer.valueOf(priority));
+                intent.putExtra(KEY_CATEGORY, category);
+                intent.putExtra(KEY_START_DATE, startDate);
+                intent.putExtra(KEY_START_TIME, startTime);
+                intent.putExtra(KEY_END_DATE, endDate);
+                intent.putExtra(KEY_END_TIME, endTime);
+
+                setResult(Activity.RESULT_OK, intent);
+                finish();
 
             }
         });
