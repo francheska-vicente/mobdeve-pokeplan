@@ -38,7 +38,7 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void initDeadline () {
-        EditText edittext= (EditText) findViewById(R.id.et_add_task_due_date);
+        EditText edittext= (EditText) findViewById(R.id.et_add_task_start_date);
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override

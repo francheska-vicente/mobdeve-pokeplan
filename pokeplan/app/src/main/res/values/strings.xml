@@ -58,8 +58,10 @@
     <string name="add_task_title">ADD TASK</string>
     <string name="add_task_name">Name of Task</string>
     <string name="add_task_type">Type of Task</string>
-    <string name="add_task_date_due">Due Date</string>
-    <string name="add_task_time_due">Time Due</string>
+    <string name="add_task_start_date">Start Date</string>
+    <string name="add_task_start_time">Start Time</string>
+    <string name="add_task_end_date">End Date</string>
+    <string name="add_task_end_time">End Time</string>
     <string name="add_task_priority">Priority</string>
     <string name="add_task_notes">Notes</string>
 
@@ -72,14 +74,10 @@
     <string name="task_category_social">Social</string>
     <string name="task_category_others">Others</string>
 
-    <string-array name="add_task_type_array">
-            <item>Chores</item>
-            <item>Health</item>
-            <item>Hobby</item>
-            <item>Leisure</item>
-            <item>School</item>
-            <item>Social</item>
-            <item>Work</item>
-            <item>Others</item>
-    </string-array>
+    <string name="task_priority_trivial">Trivial</string>
+    <string name="task_priority_low">Low</string>
+    <string name="task_priority_mid">Mid</string>
+    <string name="task_priority_high">High</string>
+    <string name="task_priority_critical">Critical</string>
+
 </resources>
