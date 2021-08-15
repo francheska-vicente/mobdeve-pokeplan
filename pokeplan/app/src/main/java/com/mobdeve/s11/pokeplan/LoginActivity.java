@@ -25,8 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         btnloginback = findViewById(R.id.ib_login_back);
         btnloginback.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), MainActivity.class);
-                view.getContext().startActivity(i);
+                onBackPressed();
             }
         });
     }
