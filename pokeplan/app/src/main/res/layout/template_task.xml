@@ -38,7 +38,7 @@
             android:fontFamily="@font/raleway_semibold"
             android:text="STUDY"
             android:textAllCaps="true"
-            android:textColor="@color/darker_gray"
+            android:textColor="@color/darkest_gray"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintHorizontal_bias="0.0"
