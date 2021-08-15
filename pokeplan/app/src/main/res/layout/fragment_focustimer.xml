@@ -131,7 +131,7 @@
             android:id="@+id/tv_focustimer_start_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/raleway_bold"
+            android:fontFamily="@font/raleway_semibold"
             android:text="@string/focustimer_title"
             android:textColor="@color/darker_gray"
             android:textSize="28sp"
@@ -180,14 +180,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="150dp" />
+        app:layout_constraintGuide_begin="160dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline23"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="400dp" />
+        app:layout_constraintGuide_begin="450dp" />
 
     <TextView
         android:id="@+id/tv_focustimer_hours"
@@ -243,7 +243,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView7"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintVertical_bias="0.35" />
 
     <ImageButton
         android:id="@+id/ib_focustimer_info"
