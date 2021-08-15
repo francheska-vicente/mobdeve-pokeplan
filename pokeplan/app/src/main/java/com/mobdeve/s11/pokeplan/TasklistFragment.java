@@ -49,8 +49,6 @@ public class TasklistFragment extends Fragment {
                 // ongoingList.add(0 , new Task(name, priority, category, notes));
                 taskAdapterOngoing.notifyItemChanged(0);
                 taskAdapterOngoing.notifyItemRangeChanged(0, taskAdapterOngoing.getItemCount());
-
-
             }
         }
     );
