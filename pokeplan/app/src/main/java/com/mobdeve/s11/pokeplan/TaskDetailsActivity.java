@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class TaskDetailsActivity extends AppCompatActivity {
-    private ImageButton btnregisterback;
+    private ImageButton btnback;
     private TextView tvTaskName;
     private TextView tvCategory;
     private ImageView ivCategory;
@@ -25,6 +25,13 @@ public class TaskDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
+
+        btnback = findViewById(R.id.ib_taskdetails_back);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         this.tvTaskName = findViewById(R.id.tv_taskdetails_name);
         this.tvCategory = findViewById(R.id.tv_taskdetails_category);
@@ -62,16 +69,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         this.setCategoryIcon(category);
         this.setPriorityIcon(priority);
-    }
-
-    private void initBackBtn() {
-        btnregisterback = findViewById(R.id.ib_register_back);
-        btnregisterback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), MainActivity.class);
-                view.getContext().startActivity(i);
-            }
-        });
     }
 
     private void setCategoryIcon (String category) {
