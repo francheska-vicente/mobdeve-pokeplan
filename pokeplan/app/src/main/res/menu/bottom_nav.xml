@@ -7,7 +7,7 @@
         android:icon="@drawable/nav_egg"
         android:title="Focus Timer" />
     <item
-        android:id="@+id/taskListActivity"
+        android:id="@+id/tasklistFragment"
         android:icon="@drawable/nav_task"
         android:title="Task List" />
     <item
