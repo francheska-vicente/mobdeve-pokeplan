@@ -64,36 +64,41 @@ public class TasklistFragment extends Fragment {
                     String endTime = intent.getStringExtra(AddTaskActivity.KEY_END_TIME);
                     String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
 
-                    int monthStart = Integer.parseInt(startDate.substring(3, 5));
-                    int dayStart = Integer.parseInt(startDate.substring(0, 2));
-                    int yearStart = Integer.parseInt(startDate.substring(6, 8));
-
                     int monthEnd = Integer.parseInt(endDate.substring(3, 5));
                     int dayEnd = Integer.parseInt(endDate.substring(0, 2));
                     int yearEnd = Integer.parseInt(endDate.substring(6, 8));
-
-                    int hourStart = Integer.parseInt(startTime.substring(0, 2));
-                    int minuteStart = Integer.parseInt(startTime.substring(3, 5));
-
-                    hourStart = this.convertHour (hourStart, startTime.substring(6, 8));
 
                     int hourEnd = Integer.parseInt(endTime.substring(0, 2));
                     int minuteEnd = Integer.parseInt(endTime.substring(3, 5));
 
                     hourEnd = this.convertHour(hourEnd, endTime.substring(6, 8));
 
-                    ongoingList.add(0 , new Task(name, priority, category,
-                            new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
-                            new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes));
+                    if (startDate.equals("")) {
+                        ongoingList.add(0 , new Task(name, priority, category,
+                                new CustomDate(),
+                                new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes));
+                    } else {
+                        int monthStart = Integer.parseInt(startDate.substring(3, 5));
+                        int dayStart = Integer.parseInt(startDate.substring(0, 2));
+                        int yearStart = Integer.parseInt(startDate.substring(6, 8));
+
+                        int hourStart = Integer.parseInt(startTime.substring(0, 2));
+                        int minuteStart = Integer.parseInt(startTime.substring(3, 5));
+
+                        hourStart = this.convertHour (hourStart, startTime.substring(6, 8));
+
+                        ongoingList.add(0 , new Task(name, priority, category,
+                                new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
+                                new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes));
+                    }
+
                     taskAdapterOngoing.notifyItemChanged(0);
                     taskAdapterOngoing.notifyItemRangeChanged(0, taskAdapterOngoing.getItemCount());
                 }
             }
         }
     );
-
-
-
+    
     public TasklistFragment() {
     }
 
