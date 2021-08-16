@@ -25,7 +25,7 @@ public class CustomDate {
     }
 
     public CustomDate(int year, int month, int day_in_month, int hour, int minute) {
-        if (year <= 1970)
+        if (year <= 1000)
             this.year = 2000 + year;
         else
             this.year = year;
