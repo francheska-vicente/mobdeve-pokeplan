@@ -77,6 +77,8 @@ public class CustomDate {
             temp = "PM";
         } else if (hour == 12) {
             temp = "PM";
+        } else if (hour == 0) {
+            tempHour = 12;
         }
 
         date = date + new DecimalFormat("00").format(tempHour) + ":" + new DecimalFormat("00").format(minute) + " " + temp;
