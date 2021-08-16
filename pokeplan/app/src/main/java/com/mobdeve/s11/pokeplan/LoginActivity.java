@@ -17,15 +17,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
+        initBackBtn();
+        initSubmitBtn();
     }
 
     private void initBackBtn() {
         btnloginback = findViewById(R.id.ib_login_back);
         btnloginback.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), MainActivity.class);
-                view.getContext().startActivity(i);
+                onBackPressed();
             }
         });
     }

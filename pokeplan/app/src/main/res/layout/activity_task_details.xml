@@ -7,7 +7,46 @@
     android:layout_height="match_parent"
     tools:context=".TaskDetailsActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageView
+        android:id="@+id/iv_bell"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_taskdetails_notif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_label_notifs"
+        app:srcCompat="@drawable/notification"
+        app:tint="@color/darkest_gray" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_date" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_bell" />
+
+6    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_taskdetails_label"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -17,18 +56,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_taskdetails_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/raleway_bold"
-            android:text="@string/taskdetails_label"
-            android:textColor="@color/darker_gray"
-            android:textSize="28sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton
+        android:id="@+id/ib_taskdetails_back"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:scaleType="fitCenter"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/pink_button" />
+
+    <TextView
+        android:id="@+id/tv_taskdetails_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/raleway_semibold"
+        android:text="@string/taskdetails_label"
+        android:textColor="@color/darker_gray"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -45,7 +96,7 @@
         android:adjustViewBounds="true"
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerCrop"
-        android:tint="@color/pink_button"
+        app:tint="@color/pink_button"
         app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_name"
         app:layout_constraintEnd_toStartOf="@+id/ib_taskdetails_delete"
         app:layout_constraintTop_toTopOf="@+id/tv_taskdetails_name"
@@ -59,46 +110,34 @@
         android:adjustViewBounds="true"
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerCrop"
-        android:tint="@color/pink_button"
+        app:tint="@color/pink_button"
         app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_taskdetails_name"
         app:srcCompat="@drawable/delete" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_tasklist_ver3p2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_tasklist_ver97p2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.95" />
-
     <TextView
         android:id="@+id/tv_taskdetails_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/raleway_bold"
         android:text="Study For Finals Week"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/cl_taskdetails_category"
+        android:textSize="30sp"
         app:layout_constraintEnd_toStartOf="@+id/ib_taskdetails_edit"
-        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
-        app:layout_constraintTop_toBottomOf="@+id/cl_taskdetails_label" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_taskdetails_label"
+        app:lineHeight="38dp" />
 
     <Button
         android:id="@+id/btn_task_finish"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_rectangle"
@@ -109,24 +148,29 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_notes"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_taskdetails_category"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_rectangle"
         android:backgroundTint="@color/light_gray"
         android:paddingEnd="10dp"
-        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
-        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_name">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_label_dateandtime2">
 
         <ImageView
             android:id="@+id/iv_taskdetails_category"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:adjustViewBounds="true"
             android:foregroundTint="@color/darkest_gray"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -163,11 +207,13 @@
             android:id="@+id/tv_taskdetails_priorty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
             android:fontFamily="@font/raleway_semibold"
             android:text="Mid Priority"
             android:textColor="#000000"
             app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_priority_symbol"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_taskdetails_priority_symbol"
             app:layout_constraintTop_toTopOf="@+id/tv_taskdetails_priority_symbol" />
 
@@ -175,70 +221,151 @@
             android:id="@+id/tv_taskdetails_priority_symbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="12dp"
             android:fontFamily="@font/raleway_semibold"
             android:text="!!!"
             android:textColor="@color/darkest_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tv_taskdetails_time_start"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="@font/raleway_light_italic"
         android:text="Starts @ August 8, 2021 6:00 PM"
         android:textColor="#0C0C0C"
-        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
-        app:layout_constraintTop_toBottomOf="@+id/cl_taskdetails_category" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_date"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_label_dateandtime" />
+
+    <TextView
+        android:id="@+id/tv_taskdetails_notif"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="10 Minutes before Start"
+        android:textColor="#101010"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_bell"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_bell"
+        app:layout_constraintTop_toTopOf="@+id/iv_bell" />
 
     <TextView
         android:id="@+id/tv_taskdetails_time_end"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="@font/raleway_light_italic"
         android:text="Ends @ August 8, 2021 8:00 PM"
         android:textColor="#101010"
-        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
-        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_taskdetails_time_start"
         app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_time_start" />
 
     <TextView
         android:id="@+id/tv_taskdetails_label_notes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="NOTES: "
-        android:textColor="#0C0B0B"
-        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
-        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver3p2"
-        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_time_end" />
+        android:text="NOTES:"
+        android:textColor="@color/darkest_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+    <TextView
+        android:id="@+id/tv_taskdetails_label_notifs"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="NOTIFICATIONS"
+        android:textColor="@color/darkest_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider4" />
+
+    <TextView
+        android:id="@+id/tv_taskdetails_label_dateandtime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="DATE AND TIME"
+        android:textColor="@color/darkest_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+    <TextView
+        android:id="@+id/tv_taskdetails_label_dateandtime2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="DETAILS"
+        android:textColor="@color/darkest_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <TextView
         android:id="@+id/tv_taskdetails_notes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="3dp"
-        android:fontFamily="@font/raleway_light_italic"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/raleway_light"
         android:text="Once upon a time..."
-        app:layout_constraintBottom_toTopOf="@+id/btn_task_finish"
-        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p2"
-        app:layout_constraintStart_toStartOf="@+id/gl_tasklist_ver6p"
-        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_label_notes"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_taskdetails_label_notes"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_label_notes" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_tasklist_ver6p"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.08" />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_name" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_taskdetails_category" />
+
+    <ImageView
+        android:id="@+id/iv_date"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_time_end"
+        app:layout_constraintEnd_toStartOf="@+id/tv_taskdetails_time_start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_taskdetails_time_start"
+        app:srcCompat="@drawable/date"
+        app:tint="@color/darkest_gray" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

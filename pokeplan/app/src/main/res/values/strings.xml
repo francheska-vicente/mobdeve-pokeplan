@@ -80,4 +80,7 @@
     <string name="task_priority_high">High</string>
     <string name="task_priority_critical">Critical</string>
 
+    <!-- Home -->
+    <string name="home_title">HOME</string>
+    <string name="home_party_label">Your Party</string>
 </resources>

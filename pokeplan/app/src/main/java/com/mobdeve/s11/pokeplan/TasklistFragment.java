@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -22,9 +23,13 @@ public class TasklistFragment extends Fragment {
 
     private ArrayList<Task> ongoingList;
     private RecyclerView rvOngoing;
+    private ImageButton ibOngoingToggle;
+    private boolean ongoingIsVisible;
 
     private ArrayList<Task> completedList;
     private RecyclerView rvCompleted;
+    private ImageButton ibCompletedToggle;
+    private boolean completedIsVisible;
 
     private TaskAdapter taskAdapterCompleted;
     private TaskAdapter taskAdapterOngoing;
@@ -128,6 +133,41 @@ public class TasklistFragment extends Fragment {
         this.rvCompleted.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         this.taskAdapterCompleted = new TaskAdapter(this.completedList);
         this.rvCompleted.setAdapter(this.taskAdapterCompleted);
+
+        this.ibOngoingToggle = view.findViewById(R.id.ib_tasklist_toggleongoing);
+        this.ongoingIsVisible = true;
+        this.ibOngoingToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ongoingIsVisible) {
+                    ongoingIsVisible = false;
+                    ibOngoingToggle.setImageResource(R.drawable.arrow_down);
+                    rvOngoing.setVisibility(View.GONE);
+                }
+                else {
+                    ongoingIsVisible = true;
+                    ibOngoingToggle.setImageResource(R.drawable.arrow_up);
+                    rvOngoing.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        this.ibCompletedToggle = view.findViewById(R.id.ib_tasklist_togglecompleted);
+        this.completedIsVisible = true;
+        this.ibCompletedToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(completedIsVisible) {
+                    completedIsVisible = false;
+                    ibCompletedToggle.setImageResource(R.drawable.arrow_down);
+                    rvCompleted.setVisibility(View.GONE);
+                }
+                else {
+                    completedIsVisible = true;
+                    ibCompletedToggle.setImageResource(R.drawable.arrow_up);
+                    rvCompleted.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     private void initFabAdd (View view) {

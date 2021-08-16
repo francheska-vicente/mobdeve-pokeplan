@@ -20,7 +20,7 @@
             android:id="@+id/tv_tasklist_start_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/raleway_bold"
+            android:fontFamily="@font/raleway_semibold"
             android:text="@string/tasklist_title"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -61,6 +61,7 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="@string/tasklist_ongoing_label"
+                android:textColor="@color/darkest_gray"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -92,9 +93,10 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="@string/tasklist_completed_label"
+                android:textColor="@color/darkest_gray"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_tasklist_ongoing"
+                app:layout_constraintTop_toBottomOf="@+id/divider2"
                 tools:layout_conversion_absoluteHeight="43dp"
                 tools:layout_conversion_absoluteWidth="387dp" />
 
@@ -114,6 +116,42 @@
                 tools:layout_conversion_absoluteHeight="194dp"
                 tools:layout_conversion_absoluteWidth="387dp" />
 
+            <ImageButton
+                android:id="@+id/ib_tasklist_toggleongoing"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:backgroundTint="#00FFFFFF"
+                android:scaleType="fitCenter"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_tasklist_label_ongoing"
+                app:layout_constraintStart_toEndOf="@+id/tv_tasklist_label_ongoing"
+                app:layout_constraintTop_toTopOf="@+id/tv_tasklist_label_ongoing"
+                app:tint="@color/pink_button" />
+
+            <ImageButton
+                android:id="@+id/ib_tasklist_togglecompleted"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:backgroundTint="#00FFFFFF"
+                android:scaleType="fitCenter"
+                android:src="@drawable/arrow_up"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_tasklist_label_completed"
+                app:layout_constraintStart_toEndOf="@+id/tv_tasklist_label_completed"
+                app:layout_constraintTop_toTopOf="@+id/tv_tasklist_label_completed"
+                app:tint="@color/pink_button" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="0.5dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_tasklist_ongoing" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
@@ -125,7 +163,7 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:tint="@color/darkest_gray"
-        app:backgroundTint="@color/light_gray"
+        app:backgroundTint="@color/pink_button"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p"

@@ -5,11 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class TaskDetailsActivity extends AppCompatActivity {
-
+    private ImageButton btnback;
     private TextView tvTaskName;
     private TextView tvCategory;
     private ImageView ivCategory;
@@ -24,6 +25,13 @@ public class TaskDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
+
+        btnback = findViewById(R.id.ib_taskdetails_back);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         this.tvTaskName = findViewById(R.id.tv_taskdetails_name);
         this.tvCategory = findViewById(R.id.tv_taskdetails_category);
