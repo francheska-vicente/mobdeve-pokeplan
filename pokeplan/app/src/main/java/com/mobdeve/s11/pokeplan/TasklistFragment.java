@@ -41,9 +41,9 @@ public class TasklistFragment extends Fragment {
 
             private int convertHour (int hour, String temp) {
                     if (hour == 12) {
-                        if (temp == "AM")
+                        if (temp.equalsIgnoreCase("AM"))
                             hour = 0;
-                    } else if (temp.equals("PM") || temp.equals("pm")) {
+                    } else if (temp.equalsIgnoreCase("PM")) {
                         hour = hour + 12;
                     }
 
