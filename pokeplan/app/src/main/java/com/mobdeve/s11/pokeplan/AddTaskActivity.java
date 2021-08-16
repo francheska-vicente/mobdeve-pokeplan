@@ -9,6 +9,7 @@ import androidx.core.widget.CompoundButtonCompat;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,14 +25,19 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class AddTaskActivity extends AppCompatActivity {
 
@@ -57,6 +63,8 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private ArrayList<View> btnPriority;
     private ArrayList<View> btnCategory;
+
+    private Dialog errorDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +92,25 @@ public class AddTaskActivity extends AppCompatActivity {
 
         this.btnCreate = findViewById(R.id.btn_add_task_create);
         this.btnCreate.setOnClickListener(new View.OnClickListener() {
+
+            private long getDiff (String endDate, String startDate, String endTime, String startTime) {
+                long diff = -1;
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm a");
+
+                try {
+                    Date dateStart = simpleDateFormat.parse(startDate + " " + startTime);
+                    Date dateEnd = simpleDateFormat.parse(endDate + " " + endTime);
+
+                    diff = dateEnd.getTime() - dateStart.getTime();
+                } catch (Exception e) {
+                }
+
+                return diff;
+            }
+
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
 
                 String taskName = etTaskName.getText().toString();
                 String taskNotes = etTaskNotes.getText().toString();
@@ -95,17 +119,136 @@ public class AddTaskActivity extends AppCompatActivity {
                 String startDate = etStartDate.getText().toString();
                 String endDate = etEndDate.getText().toString();
 
-                intent.putExtra(KEY_TASKNAME, taskName);
-                intent.putExtra(KEY_NOTES, taskNotes);
-                intent.putExtra(KEY_PRIORITY, Integer.valueOf(priority.length()));
-                intent.putExtra(KEY_CATEGORY, category);
-                intent.putExtra(KEY_START_DATE, startDate);
-                intent.putExtra(KEY_START_TIME, startTime);
-                intent.putExtra(KEY_END_DATE, endDate);
-                intent.putExtra(KEY_END_TIME, endTime);
+                String error = "";
+                Boolean checker = false;
 
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+                // checking task name for errors
+                if (taskName == null) {
+                    error = "Task name is required!\n";
+                    checker = true;
+                } else if (!(taskName.length() > 0 && taskName.length() <= 25)) {
+                    error = "Length of task name should be from 1 to 25 characters.\n";
+                    checker = true;
+                }
+
+                if (!endDate.equals("")) {
+
+                    if (!startDate.equals("") && !startTime.equals("")) {
+
+                        if (!startTime.equals("")) {
+                            String tempStartDate = startDate.substring(0, 6) + "20" + startDate.substring(6, 8);
+                            String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
+
+                            String tempEndDate = endDate.substring(0, 6) + "20" + endDate.substring(6, 8);
+                            String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
+
+                            long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
+
+                            if (diff < 0) {
+                                error = "End date should be later than the Start date.\n";
+                                checker = true;
+                            } else if (diff == 0) {
+                                error = "Your task should not start and end at the same day and time!\n";
+                                checker = true;
+                            }
+                        }
+                        else {
+                            error = "Start time is requierd if start date is provided.\n";
+                            checker = true;
+                        }
+                    }
+
+                    Calendar c = Calendar.getInstance();
+                    c.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                    int currentYear = c.get(Calendar.YEAR);
+                    int currentDay = c.get(Calendar.DAY_OF_MONTH);
+                    int currentMonth = c.get(Calendar.MONTH) + 1;
+                    int currentHour = c.get(Calendar.HOUR_OF_DAY);
+                    int currentMinute = c.get(Calendar.MINUTE);
+
+                    String temp = "AM";
+                    if (currentHour >= 12) {
+                        temp = "PM";
+                    }
+
+                    if (currentHour > 12) {
+                        currentHour = currentHour - 12;
+                    }
+
+                    String currentDate = new DecimalFormat("00").format(currentDay) + "." +
+                            new DecimalFormat("00").format(currentMonth) + "." + currentYear;
+                    String currentTime = new DecimalFormat("00").format(currentHour) + ":" +
+                            new DecimalFormat("00").format(currentMinute)+ " " + temp;
+
+                    String tempEndDate = endDate.substring(0, 6) + "20" + endDate.substring(6, 8);
+                    String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
+                    long diff = getDiff(tempEndDate, currentDate, tempEndTime, currentTime);
+
+                    if (diff < 0) {
+                        error = "Your end date should be later than the curent time and date!\n";
+                        checker = true;
+                    } else if (diff == 0) {
+                        error = "Your task cannot be currently ending!\n";
+                        checker = true;
+                    }
+                } else {
+                    error = "End date is required!\n";
+                    checker = true;
+                }
+
+                if (endTime == null) {
+                    error = "End time is required\n";
+                    checker = true;
+                }
+
+                if (priority == null) {
+                    error = "Priority level for this task is required.\n";
+                    checker = true;
+                }
+
+                if (category == null) {
+                    error = "The category of this task is required\n";
+                    checker = true;
+                }
+
+                if (!checker) {
+                    Intent intent = new Intent();
+                    intent.putExtra(KEY_TASKNAME, taskName);
+                    intent.putExtra(KEY_NOTES, taskNotes);
+                    intent.putExtra(KEY_PRIORITY, Integer.valueOf(priority.length()));
+                    intent.putExtra(KEY_CATEGORY, category);
+                    intent.putExtra(KEY_START_DATE, startDate);
+                    intent.putExtra(KEY_START_TIME, startTime);
+                    intent.putExtra(KEY_END_DATE, endDate);
+                    intent.putExtra(KEY_END_TIME, endTime);
+
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                } else {
+                    errorDialog = new Dialog(v.getContext());
+                    errorDialog.setContentView(R.layout.dialog_error);
+
+                    int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+                    int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+                    errorDialog.getWindow().setLayout(width, height);
+                    errorDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+                    TextView tvdialogtitle = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_title);
+                    tvdialogtitle.setText("Invalid input!");
+                    TextView tvdialogtext = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_text);
+                    tvdialogtext.setText(error);
+
+                    Button btndialogerror = (Button) errorDialog.findViewById(R.id.btn_dialog_error);
+                    btndialogerror.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            errorDialog.dismiss();
+                        }
+                    });
+                    errorDialog.show();
+                }
             }
         });
     }
