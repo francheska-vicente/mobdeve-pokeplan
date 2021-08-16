@@ -43,7 +43,7 @@ public class TasklistFragment extends Fragment {
                     if (hour == 12) {
                         if (temp == "AM")
                             hour = 0;
-                    } else if (temp == "PM") {
+                    } else if (temp.equals("PM") || temp.equals("pm")) {
                         hour = hour + 12;
                     }
 
