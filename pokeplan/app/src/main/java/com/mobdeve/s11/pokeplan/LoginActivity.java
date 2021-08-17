@@ -8,9 +8,13 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class LoginActivity extends AppCompatActivity {
     private ImageButton btnloginback;
     private Button btnloginsubmit;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
 
         initBackBtn();
         initSubmitBtn();
+
     }
 
     private void initBackBtn() {
