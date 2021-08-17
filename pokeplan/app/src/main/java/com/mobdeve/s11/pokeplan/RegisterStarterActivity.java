@@ -9,7 +9,15 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -22,6 +30,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
             R.id.ib_pkmn6, R.id.ib_pkmn7, R.id.ib_pkmn8, R.id.ib_pkmn9, R.id.ib_pkmn10,
             R.id.ib_pkmn11, R.id.ib_pkmn12, R.id.ib_pkmn13, R.id.ib_pkmn14, R.id.ib_pkmn15,
     };
+
+    private FirebaseAuth mAuth;
 
     private String name;
     private String email;
@@ -48,6 +58,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_starter);
 
+        mAuth = FirebaseAuth.getInstance();
+
         initBackBtn();
         initPkmnBtns();
     }
@@ -62,14 +74,27 @@ public class RegisterStarterActivity extends AppCompatActivity {
         });
     }
 
+    private void registerUser (String pokemonName) {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
+                new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+
+                    }
+                }
+        );
+
+    }
+
     private void initPkmnBtns() {
         btnspkmn = new ArrayList<ImageButton>();
         for(int id : BUTTON_IDS) {
             ImageButton button = (ImageButton)findViewById(id);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    Intent i = new Intent(view.getContext(), MainActivity.class);
-                    view.getContext().startActivity(i);
+                    String pokemonName = (String) view.getTag ();
+
+                    registerUser (pokemonName);
                 }
             });
             btnspkmn.add(button);
