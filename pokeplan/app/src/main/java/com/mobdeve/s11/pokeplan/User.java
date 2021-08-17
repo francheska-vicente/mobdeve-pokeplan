@@ -21,11 +21,17 @@ public class User {
         this.email = email;
         this.password = password;
         this.userName = userName;
+
+        addPokemon();
     }
 
     public void addPokemon() {
         UserPokemon pokemon = new UserPokemon(new Pokedex().getPokemon(0));
         userPokemonList.add(pokemon);
         userPokemonParty.add(pokemon);
+    }
+
+    public ArrayList<UserPokemon> getUserPokemonParty() {
+        return userPokemonParty;
     }
 }
