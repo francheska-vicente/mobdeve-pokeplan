@@ -22,7 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageButton btnregisterback;
     private Button btnregistersubmit;
 
-    private FirebaseAuth mAuth;
+
     private EditText etName;
     private EditText etEmail;
     private EditText etUsername;
@@ -40,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         initBackBtn();
         initSubmitBtn();
-        mAuth = FirebaseAuth.getInstance();
+
 
         this.etName = findViewById(R.id.et_register_name);
         this.etEmail = findViewById(R.id.et_register_email);

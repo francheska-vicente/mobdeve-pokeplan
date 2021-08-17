@@ -10,6 +10,7 @@ public class Pokemon {
     private String type_2;
 
 
+
     /**
      *  full constructor
      */
