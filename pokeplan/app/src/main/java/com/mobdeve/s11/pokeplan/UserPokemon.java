@@ -10,6 +10,7 @@ public class UserPokemon {
     public UserPokemon(Pokemon details) {
         this.details = details;
         this.nickname = details.getSpecies();
+        this.pokemonID = details.getSpecies() + new java.util.Date();
         this.level = 1;
         this.fedcandy = 0;
     }
@@ -34,11 +35,15 @@ public class UserPokemon {
         return nickname;
     }
 
+    public String getPokemonID() {
+        return pokemonID;
+    }
+
     public int getLevel() {
         return level;
     }
 
-    public int getFedcandy() {
+    public int getFedCandy() {
         return fedcandy;
     }
 
@@ -46,11 +51,15 @@ public class UserPokemon {
         this.nickname = nickname;
     }
 
+    public void setPokemonID(String id) {
+        this.pokemonID = id;
+    }
+
     public void setLevel(int level) {
         this.level = level;
     }
 
-    public void setFedcandy(int fedcandy) {
+    public void setFedCandy(int fedcandy) {
         this.fedcandy = fedcandy;
     }
 }
