@@ -74,12 +74,15 @@ public class RegisterStarterActivity extends AppCompatActivity {
         });
     }
 
-    private void registerUser (String pokemonName) {
+    private void registerUser (int pokeNum) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                        Pokedex pokedex = new Pokedex();
+                        Pokemon pokemon = pokedex.getPokemon(pokeNum);
 
+                        User user = new User (name, email, username, new UserPokemon (pokemon));
                     }
                 }
         );
@@ -92,9 +95,9 @@ public class RegisterStarterActivity extends AppCompatActivity {
             ImageButton button = (ImageButton)findViewById(id);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    String pokemonName = (String) view.getTag ();
+                    int pokeNum = Integer.valueOf((String) view.getTag ());
 
-                    registerUser (pokemonName);
+                    registerUser (pokeNum);
                 }
             });
             btnspkmn.add(button);
