@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -18,6 +22,26 @@ public class RegisterStarterActivity extends AppCompatActivity {
             R.id.ib_pkmn6, R.id.ib_pkmn7, R.id.ib_pkmn8, R.id.ib_pkmn9, R.id.ib_pkmn10,
             R.id.ib_pkmn11, R.id.ib_pkmn12, R.id.ib_pkmn13, R.id.ib_pkmn14, R.id.ib_pkmn15,
     };
+
+    private String name;
+    private String email;
+    private String password;
+    private String username;
+
+    private ActivityResultLauncher addActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Intent intent = result.getData();
+
+                    name =  intent.getStringExtra(RegisterActivity.KEY_NAME);
+                    email = intent.getStringExtra(RegisterActivity.KEY_EMAIL);
+                    password = intent.getStringExtra(RegisterActivity.KEY_PASSWORD);
+                    username = intent.getStringExtra(RegisterActivity.KEY_USERNAME);
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

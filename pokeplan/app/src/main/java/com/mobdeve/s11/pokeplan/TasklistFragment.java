@@ -98,7 +98,7 @@ public class TasklistFragment extends Fragment {
             }
         }
     );
-    
+
     public TasklistFragment() {
     }
 
