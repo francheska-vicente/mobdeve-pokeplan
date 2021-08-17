@@ -3,6 +3,7 @@ package com.mobdeve.s11.pokeplan;
 public class UserPokemon {
     private Pokemon details;
     private String nickname;
+    private String pokemonID;
     private int level;
     private int fedcandy;
 

@@ -42,6 +42,10 @@ public class Pokedex {
         return pokemonList.get(dexNum);
     }
 
+    public Pokemon getPokemonUsingName (String name) {
+        
+    }
+
     public ArrayList<Pokemon> getCommonPokemonList() {
         ArrayList<Pokemon> common = new ArrayList<>();
 

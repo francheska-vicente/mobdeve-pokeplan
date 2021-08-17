@@ -88,4 +88,8 @@ public class Pokemon {
     public String getType2() {
         return type_2;
     }
+
+    public Pokemon getPokemon () {
+        return this;
+    }
 }
