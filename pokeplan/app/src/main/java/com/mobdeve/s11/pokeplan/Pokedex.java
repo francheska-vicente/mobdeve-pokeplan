@@ -39,7 +39,7 @@ public class Pokedex {
     }
 
     public Pokemon getPokemon(int dexNum) {
-        return pokemonList.get(dexNum);
+        return pokemonList.get(dexNum-1);
     }
 
 
