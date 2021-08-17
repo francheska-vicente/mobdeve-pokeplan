@@ -1,9 +1,11 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -16,6 +18,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +35,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
     };
 
     private FirebaseAuth mAuth;
+    private Dialog successDialog;
 
     private String name;
     private String email;
@@ -79,10 +83,27 @@ public class RegisterStarterActivity extends AppCompatActivity {
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                        Pokedex pokedex = new Pokedex();
-                        Pokemon pokemon = pokedex.getPokemon(pokeNum);
+                        if(task.isSuccessful()) {
+                            Pokedex pokedex = new Pokedex();
+                            Pokemon pokemon = pokedex.getPokemon(pokeNum);
 
-                        User user = new User (name, email, username, new UserPokemon (pokemon));
+                            User user = new User (name, email, username, new UserPokemon (pokemon));
+
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
+                                    .addOnCompleteListener(new OnCompleteListener<Void> () {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                            if(task.isSuccessful()) {
+                                                Toast.makeText(RegisterStarterActivity.this, "User has been registered,",
+                                                        Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(RegisterStarterActivity.this, "User has not been registered,",
+                                                        Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                        }
                     }
                 }
         );

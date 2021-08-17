@@ -62,4 +62,8 @@ public class UserPokemon {
     public void setFedCandy(int fedcandy) {
         this.fedcandy = fedcandy;
     }
+
+    public String toString () {
+        return this.pokemonID;
+    }
 }
