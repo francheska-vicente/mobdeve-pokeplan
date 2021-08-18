@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkmndetails_metdate" />
+
+    <ImageButton
+        android:id="@+id/ib_pkmndetails_edit"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:adjustViewBounds="true"
+        android:backgroundTint="#00FFFFFF"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_pkmndetails_nickname"
+        app:srcCompat="@drawable/edit"
+        app:tint="@color/pink_button" />
+
+    <TextView
+        android:id="@+id/tv_pkmndetails_species"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_bold"
+        android:gravity="bottom"
+        android:text="Altaria"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_pkmndetails_nickname"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkmndetails_nickname"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkmndetails_type"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/raleway_medium_italic"
+        android:text="Dragon/Flying"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_pkmndetails_type_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkmndetails_type_label"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkmndetails_type_label"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="TYPE"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/divider7"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkmndetails_nature_label"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="NATURE"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_pkmndetails_type"
+        app:layout_constraintTop_toTopOf="@+id/tv_pkmndetails_type_label"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkmndetails_nature"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/raleway_medium_italic"
+        android:text="Modest"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_pkmndetails_nature_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkmndetails_nature_label"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkmndetails_metdate_label"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="MET DATE"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_pkmndetails_type_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkmndetails_type"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkmndetails_metdate"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/raleway_medium_italic"
+        android:text="August 18, 2021"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_pkmndetails_metdate_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkmndetails_metdate_label"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkmndetails_level"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_semibold"
+        android:text="Level 100"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/pb_pkmndetails_level"
+        app:layout_constraintStart_toStartOf="@+id/pb_pkmndetails_level" />
+
+    <TextView
+        android:id="@+id/tv_pkmndetails_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/raleway_medium_italic"
+        android:text="Aria"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+    <TextView
+        android:id="@+id/tv_slash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/raleway_medium_italic"
+        android:text="/"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_pkmndetails_nickname"
+        tools:layout_editor_absoluteY="80dp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p2"
+        app:srcCompat="@drawable/circle" />
+
+    <ImageView
+        android:id="@+id/iv_pkmndetails_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:srcCompat="@drawable/pkmn_96" />
+
+    <Button
+        android:id="@+id/btn_pkmndetails_pc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/rounded_rectangle"
+        android:fontFamily="@font/raleway_bold"
+        android:text="MOVE TO PC"
+        android:textColor="@color/darkest_gray"
+        app:backgroundTint="@color/pink_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_taskdetails_notes"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/btn_pkmndetails_supercandy"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_rectangle"
+        android:fontFamily="@font/raleway_bold"
+        android:text="Feed 1 Super Candy"
+        android:textColor="@color/darkest_gray"
+        app:backgroundTint="@color/pink_button"
+        app:layout_constraintEnd_toEndOf="@+id/btn_pkmndetails_rarecandy"
+        app:layout_constraintStart_toStartOf="@+id/btn_pkmndetails_rarecandy"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pkmndetails_rarecandy" />
+
+    <Button
+        android:id="@+id/btn_pkmndetails_rarecandy"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_rectangle"
+        android:fontFamily="@font/raleway_bold"
+        android:text="Feed 1 Rare Candy"
+        android:textColor="@color/darkest_gray"
+        app:backgroundTint="@color/pink_button"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_tasklist_hor8p2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_taskdetails_label"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/green"
+        app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor8p2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/ib_taskdetails_back"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/pink_button" />
+
+        <TextView
+            android:id="@+id/tv_taskdetails_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="@string/taskdetails_label"
+            android:textColor="@color/darker_gray"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_pkmndetails_level"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/imageView4" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_pkmndetails_supercandy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_pkmndetails_supercandy"
+        app:layout_constraintTop_toTopOf="@+id/btn_pkmndetails_supercandy">
+
+        <TextView
+            android:id="@+id/tv_pkmndetails_rarecandyctr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/raleway_medium"
+            android:text="10"
+            android:textAllCaps="false"
+            android:textColor="@color/darkest_gray"
+            android:textSize="20sp"
+            app:lineHeight="38dp" />
+
+        <ImageView
+            android:id="@+id/iv_pkmndetails_rarecandyicon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/supercandy" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_pkmndetails_rarecandy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_pkmndetails_rarecandy"
+        app:layout_constraintTop_toTopOf="@+id/btn_pkmndetails_rarecandy">
+
+        <TextView
+            android:id="@+id/tv_pkmndetails_supercandyctr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/raleway_medium"
+            android:text="1000"
+            android:textAllCaps="false"
+            android:textColor="@color/darkest_gray"
+            android:textSize="20sp"
+            app:lineHeight="38dp" />
+
+        <ImageView
+            android:id="@+id/iv_pkmndetails_supercandyicon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/rarecandy" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
