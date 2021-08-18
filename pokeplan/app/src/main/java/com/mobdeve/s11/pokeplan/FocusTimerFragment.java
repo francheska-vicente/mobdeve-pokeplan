@@ -417,7 +417,7 @@ public class FocusTimerFragment extends Fragment {
         return "" + num;
     }
 
-    public static int getImageId(Context context, String imageName) {
+    private int getImageId(Context context, String imageName) {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
 }
