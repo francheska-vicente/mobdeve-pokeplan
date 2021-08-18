@@ -262,6 +262,40 @@ public class Pokedex {
         pokemonList.add(new Pokemon("Blissey",75,"",
                 -1,"", "Normal"));
 
+        // Mareep Line
+        pokemonList.add(new Pokemon("Mareep",76,"Common",
+                15,"Flaaffy","Electric"));
+        pokemonList.add(new Pokemon("Flaaffy",77,"",
+                30,"Ampharos", "Electric"));
+        pokemonList.add(new Pokemon("Ampharos",78,"",
+                -1,"", "Electric"));
+
+        // Chinchou Line
+        pokemonList.add(new Pokemon("Chinchou",79,"Common",
+                27,"Lanturn", "Water", "Electric"));
+        pokemonList.add(new Pokemon("Lanturn",80,"",
+                -1,"", "Water", "Electric"));
+
+        // Aron Line
+        pokemonList.add(new Pokemon("Aron",81,"Uncommon",
+                32,"Lairon", "Steel", "Rock"));
+        pokemonList.add(new Pokemon("Lairon",82,"",
+                42,"Aggron", "Steel", "Rock"));
+        pokemonList.add(new Pokemon("Aggron",83,"",
+                -1,"", "Steel", "Rock"));
+
+        // Joltik Line
+        pokemonList.add(new Pokemon("Joltik",84,"Common",
+                36,"Galvantula", "Bug", "Electric"));
+        pokemonList.add(new Pokemon("Galvantula",85,"",
+                -1,"", "Bug", "Electric"));
+
+        // Vulpix Line
+        pokemonList.add(new Pokemon("Vulpix",86,"Common",
+                30,"Ninetales", "Fire"));
+        pokemonList.add(new Pokemon("Ninetales",87,"",
+                -1,"", "Fire"));
+
         // Dratini Line
         pokemonList.add(new Pokemon("Dratini",123,"Rare",
                 30,"Dragonair","Dragon"));
