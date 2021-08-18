@@ -349,6 +349,28 @@ public class Pokedex {
         pokemonList.add(new Pokemon("Mismagius",105,"",
                 -1,"", "Ghost"));
 
+        // Golett Line
+        pokemonList.add(new Pokemon("Golett",106,"Uncommon",
+                43,"Golurk", "Ground", "Ghost"));
+        pokemonList.add(new Pokemon("Golurk",107,"",
+                -1,"", "Ground", "Ghost"));
+
+        // Gastly Line
+        pokemonList.add(new Pokemon("Gastly",108,"Uncommon",
+                25,"Haunter", "Ghost", "Poison"));
+        pokemonList.add(new Pokemon("Haunter",109,"",
+                35,"Gengar", "Ghost", "Poison"));
+        pokemonList.add(new Pokemon("Gengar",110,"",
+                -1,"", "Ghost", "Poison"));
+
+        // Duskull Line
+
+        // Trapinch Line
+
+        // Sandile Line
+
+        // Axew Line
+
         // Dratini Line
         pokemonList.add(new Pokemon("Dratini",123,"Rare",
                 30,"Dragonair","Dragon"));
@@ -361,7 +383,7 @@ public class Pokedex {
         pokemonList.add(new Pokemon("Bagon",129,"Rare",
                 30,"Shelgon","Dragon"));
 
-        // Mew
+        // Mew 
         pokemonList.add(new Pokemon("Mew",140,"Super Rare",
                 "Psychic"));
         // Celebi
