@@ -190,21 +190,44 @@ public class Pokedex {
         // Zigzagoon Line
         pokemonList.add(new Pokemon("Zigzagoon",48,"Common",
                 20,"Linoone","Normal"));
-        pokemonList.add(new Pokemon("Linoone",49,"Common",
+        pokemonList.add(new Pokemon("Linoone",49,"",
                 -1,"","Normal"));
         
         // Pidgey Line
         pokemonList.add(new Pokemon("Pidgey",50,"Common",
                 18,"Pidgeotto","Normal","Flying"));
-        pokemonList.add(new Pokemon("Pidgeotto",51,"Common",
+        pokemonList.add(new Pokemon("Pidgeotto",51,"",
                 36,"Pidgeot","Normal","Flying"));
-        pokemonList.add(new Pokemon("Pidgeot",52,"Common",
+        pokemonList.add(new Pokemon("Pidgeot",52,"",
                 -1,"","Normal","Flying"));
 
+        // Hoothoot Line
+        pokemonList.add(new Pokemon("Hoothoot",53,"Common",
+                20,"Noctowl","Normal","Flying"));
+        pokemonList.add(new Pokemon("Noctowl",54,"",
+                -1,"","Normal","Flying"));
+
+        // Spinarak Line
+        pokemonList.add(new Pokemon("Spinarak",55,"Common",
+                22,"Ariados","Bug","Poison"));
+        pokemonList.add(new Pokemon("Ariados",56,"",
+                -1,"","Bug","Poison"));
 
         // Lillipup Line
         pokemonList.add(new Pokemon("Lillipup",57,"Common",
                 16,"Herdier","Normal"));
+        pokemonList.add(new Pokemon("Herdier",58,"",
+                32,"Stoutland","Normal"));
+        pokemonList.add(new Pokemon("Stoutland",59,"",
+                -1,"","Normal"));
+
+        // Pichu Line
+        pokemonList.add(new Pokemon("Pichu",60,"Common",
+                20,"Pikachu","Electric"));
+        pokemonList.add(new Pokemon("Pikachu",61,"",
+                30,"Raichu","Electric"));
+        pokemonList.add(new Pokemon("Raichu",62,"",
+                -1,"","Electric"));
 
         // Dratini Line
         pokemonList.add(new Pokemon("Dratini",123,"Rare",
