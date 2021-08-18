@@ -419,6 +419,14 @@ public class Pokedex {
         pokemonList.add(new Pokemon("Salamence",131,"",
                 -1,"","Dragon","Flying"));
 
+        // Gible Line
+        pokemonList.add(new Pokemon("Gible",132,"Rare",
+                24,"Gabite","Dragon", "Ground"));
+        pokemonList.add(new Pokemon("Gabite",133,"",
+                48,"Garchomp","Dragon", "Ground"));
+        pokemonList.add(new Pokemon("Garchomp",134,"",
+                -1,"","Dragon", "Ground"));
+
         // Mew 
         pokemonList.add(new Pokemon("Mew",140,"Super Rare",
                 "Psychic"));
