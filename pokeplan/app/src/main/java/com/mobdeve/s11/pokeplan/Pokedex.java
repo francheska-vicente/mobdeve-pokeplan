@@ -296,6 +296,34 @@ public class Pokedex {
         pokemonList.add(new Pokemon("Ninetales",87,"",
                 -1,"", "Fire"));
 
+        // Growlithe Line
+        pokemonList.add(new Pokemon("Growlithe",88,"Common",
+                30,"Arcanine", "Fire"));
+        pokemonList.add(new Pokemon("Arcanine",89,"",
+                -1,"", "Fire"));
+
+        // Zubat Line
+        pokemonList.add(new Pokemon("Zubat",90,"Common",
+                22,"Golbat", "Poison", "Flying"));
+        pokemonList.add(new Pokemon("Golbat",91,"",
+                30,"Crobat", "Poison", "Flying"));
+        pokemonList.add(new Pokemon("Crobat",92,"",
+                -1,"", "Poison", "Flying"));
+
+        // Woobat Line
+        pokemonList.add(new Pokemon("Woobat",93,"Common",
+                25,"Swoobat", "Psychic", "Flying"));
+        pokemonList.add(new Pokemon("Swoobat",94,"",
+                -1,"", "Psychic", "Flying"));
+
+        // Swablu Line
+        pokemonList.add(new Pokemon("Swablu",95,"Common",
+                35,"Altaria", "Normal", "Flying"));
+        pokemonList.add(new Pokemon("Altaria",96,"",
+                -1,"", "Dragon", "Flying"));
+
+        
+
         // Dratini Line
         pokemonList.add(new Pokemon("Dratini",123,"Rare",
                 30,"Dragonair","Dragon"));
