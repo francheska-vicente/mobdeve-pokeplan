@@ -1,16 +1,30 @@
 package com.mobdeve.s11.pokeplan;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
+
 public class UserPokemon {
+    private final String[] NATURES = {
+            "Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold", "Docile",
+            "Relaxed", "Impish", "Lax", "Timid", "Hasty", "Serious", "Jolly",
+            "Naive", "Modest", "Mild", "Quiet", "Bashful", "Rash", "Calm",
+            "Gentle", "Sassy", "Careful", "Quirky"
+    };
     private Pokemon details;
     private String nickname;
+    private String nature;
     private String pokemonID;
+    private Date metDate;
     private int level;
     private int fedcandy;
 
     public UserPokemon(Pokemon details) {
         this.details = details;
         this.nickname = details.getSpecies();
-        this.pokemonID = details.getSpecies() + new java.util.Date();
+        this.nature = NATURES[new Random().nextInt(NATURES.length + 1)];
+        this.metDate = new java.util.Date();
+        this.pokemonID = details.getSpecies() + metDate;
         this.level = 1;
         this.fedcandy = 0;
     }
