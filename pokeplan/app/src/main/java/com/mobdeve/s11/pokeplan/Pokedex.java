@@ -388,10 +388,20 @@ public class Pokedex {
                 -1,"", "Ground", "Dark"));
 
         // Axew Line
+        pokemonList.add(new Pokemon("Axew",120,"Rare",
+                38,"Fraxure", "Dragon"));
+        pokemonList.add(new Pokemon("Fraxure",121,"",
+                48,"Haxorus", "Dragon"));
+        pokemonList.add(new Pokemon("Haxorus",122,"",
+                -1,"", "Dragon"));
 
         // Dratini Line
         pokemonList.add(new Pokemon("Dratini",123,"Rare",
                 30,"Dragonair","Dragon"));
+        pokemonList.add(new Pokemon("Dragonair",124,"Rare",
+                55,"Dragonite","Dragon"));
+        pokemonList.add(new Pokemon("Dragonite",125,"Rare",
+                -1,"","Dragon", "Flying"));
 
         // Larvitar Line
         pokemonList.add(new Pokemon("Larvitar",126,"Rare",
