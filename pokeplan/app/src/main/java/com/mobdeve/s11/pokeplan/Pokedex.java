@@ -322,7 +322,20 @@ public class Pokedex {
         pokemonList.add(new Pokemon("Altaria",96,"",
                 -1,"", "Dragon", "Flying"));
 
-        
+        // Buneary Line
+        pokemonList.add(new Pokemon("Buneary",97,"Uncommon",
+                25,"Lopunny", "Normal"));
+        pokemonList.add(new Pokemon("Lopunny",98,"",
+                -1,"", "Normal"));
+
+        // Riolu Line
+        pokemonList.add(new Pokemon("Riolu",99,"Uncommon",
+                25,"Lucario", "Fighting"));
+        pokemonList.add(new Pokemon("Lucario",100,"",
+                -1,"", "Fighting", "Steel"));
+
+        pokemonList.add(new Pokemon("Absol",101,"Rare",
+                -1,"", "Dark"));
 
         // Dratini Line
         pokemonList.add(new Pokemon("Dratini",123,"Rare",
