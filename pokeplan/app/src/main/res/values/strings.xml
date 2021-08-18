@@ -19,7 +19,7 @@
     <string name="focustimer_stop_button">STOP TIMER</string>
     <string name="focustimer_finish_button">MAKE A NEW TIMER</string>
     <string name="focustimer_start_tagline">
-        Avoid distractions with the focus timer!</string>
+        Ready to hatch an egg?</string>
     <string name="focustimer_ongoing_tagline">
         Stay focused! Don\'t leave this screen!</string>
     <string name="focustimer_finish_tagline">Congratulations!</string>
@@ -82,5 +82,13 @@
 
     <!-- Home -->
     <string name="home_title">HOME</string>
+    <string name="home_userprofile_btn">User Profile</string>
+    <string name="home_pokemonpc_btn">Pokemon PC</string>
+    <string name="home_party_label">Your Party</string>
+
+    <!-- Pokemon Details (Party) -->
+    <string name="pkmndetails_title">VIEW POKEMON</string>
+    <string name="home_userprofile_btn">User Profile</string>
+    <string name="home_pokemonpc_btn">Pokemon PC</string>
     <string name="home_party_label">Your Party</string>
 </resources>
