@@ -11,7 +11,7 @@ public class User {
     private String email;
     private String userName;
 
-    public User(String fullName, String email, String userName, UserPokemon starter) {
+    public User(String fullName, String email, String userName, int dexNumber) {
         userPokemonList = new ArrayList<>();
         userPokemonParty = new ArrayList<>(6);
         userPokedex = new boolean[150];
@@ -20,11 +20,11 @@ public class User {
         this.email = email;
         this.userName = userName;
 
-        addPokemon();
+        addPokemon(dexNumber);
     }
 
-    public void addPokemon() {
-        UserPokemon pokemon = new UserPokemon(new Pokedex().getPokemon(0));
+    public void addPokemon(int dexNumber) {
+        UserPokemon pokemon = new UserPokemon(new Pokedex().getPokemon(dexNumber));
         userPokemonList.add(pokemon);
         userPokemonParty.add(pokemon);
     }

@@ -3,6 +3,7 @@ package com.mobdeve.s11.pokeplan;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -42,30 +43,23 @@ public class RegisterStarterActivity extends AppCompatActivity {
     private String password;
     private String username;
 
-    private ActivityResultLauncher addActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    Intent intent = result.getData();
-
-                    name =  intent.getStringExtra(RegisterActivity.KEY_NAME);
-                    email = intent.getStringExtra(RegisterActivity.KEY_EMAIL);
-                    password = intent.getStringExtra(RegisterActivity.KEY_PASSWORD);
-                    username = intent.getStringExtra(RegisterActivity.KEY_USERNAME);
-                }
-            }
-    );
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_starter);
 
         mAuth = FirebaseAuth.getInstance();
-
+        initValues ();
         initBackBtn();
         initPkmnBtns();
+    }
+
+    private void initValues () {
+        Intent intent = getIntent();
+        this.name =  intent.getStringExtra(RegisterActivity.KEY_NAME);
+        this.email = intent.getStringExtra(RegisterActivity.KEY_EMAIL);
+        this.password = intent.getStringExtra(RegisterActivity.KEY_PASSWORD);
+        this.username = intent.getStringExtra(RegisterActivity.KEY_USERNAME);
     }
 
     private void initBackBtn() {
@@ -84,10 +78,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            Pokedex pokedex = new Pokedex();
-                            Pokemon pokemon = pokedex.getPokemon(pokeNum);
 
-                            User user = new User (name, email, username, new UserPokemon (pokemon));
+                            Users user = new Users (name, email, username);
 
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
@@ -97,9 +89,11 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                             if(task.isSuccessful()) {
                                                 Toast.makeText(RegisterStarterActivity.this, "User has been registered,",
                                                         Toast.LENGTH_LONG).show();
+                                                Log.d("YAY", "User was created");
                                             } else {
                                                 Toast.makeText(RegisterStarterActivity.this, "User has not been registered,",
                                                         Toast.LENGTH_LONG).show();
+                                                Log.d("ERROR", "User was not created");
                                             }
                                         }
                                     });
