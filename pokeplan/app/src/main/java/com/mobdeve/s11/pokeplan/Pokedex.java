@@ -337,6 +337,18 @@ public class Pokedex {
         pokemonList.add(new Pokemon("Absol",101,"Rare",
                 -1,"", "Dark"));
 
+        // Murkrow Line
+        pokemonList.add(new Pokemon("Murkrow",102,"Uncommon",
+                30,"Honchkrow", "Dark", "Flying"));
+        pokemonList.add(new Pokemon("Honchkrow",103,"",
+                -1,"", "Dark", "Flying"));
+
+        // Misdreavus Line
+        pokemonList.add(new Pokemon("Misdreavus",104,"Uncommon",
+                30,"Mismagius", "Ghost"));
+        pokemonList.add(new Pokemon("Mismagius",105,"",
+                -1,"", "Ghost"));
+
         // Dratini Line
         pokemonList.add(new Pokemon("Dratini",123,"Rare",
                 30,"Dragonair","Dragon"));
