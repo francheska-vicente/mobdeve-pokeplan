@@ -398,18 +398,26 @@ public class Pokedex {
         // Dratini Line
         pokemonList.add(new Pokemon("Dratini",123,"Rare",
                 30,"Dragonair","Dragon"));
-        pokemonList.add(new Pokemon("Dragonair",124,"Rare",
+        pokemonList.add(new Pokemon("Dragonair",124,"",
                 55,"Dragonite","Dragon"));
-        pokemonList.add(new Pokemon("Dragonite",125,"Rare",
+        pokemonList.add(new Pokemon("Dragonite",125,"",
                 -1,"","Dragon", "Flying"));
 
         // Larvitar Line
         pokemonList.add(new Pokemon("Larvitar",126,"Rare",
                 30,"Pupitar","Rock","Ground"));
+        pokemonList.add(new Pokemon("Pupitar",127,"",
+                55,"Tyranitar","Rock","Ground"));
+        pokemonList.add(new Pokemon("Tyranitar",128,"",
+                -1,"","Rock","Dark"));
 
         // Bagon Line
         pokemonList.add(new Pokemon("Bagon",129,"Rare",
                 30,"Shelgon","Dragon"));
+        pokemonList.add(new Pokemon("Shelgon",130,"",
+                55,"Salamence","Dragon"));
+        pokemonList.add(new Pokemon("Salamence",131,"",
+                -1,"","Dragon","Flying"));
 
         // Mew 
         pokemonList.add(new Pokemon("Mew",140,"Super Rare",
