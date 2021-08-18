@@ -364,10 +364,28 @@ public class Pokedex {
                 -1,"", "Ghost", "Poison"));
 
         // Duskull Line
+        pokemonList.add(new Pokemon("Duskull",111,"Uncommon",
+                37,"Dusclops", "Ghost"));
+        pokemonList.add(new Pokemon("Dusclops",112,"",
+                45,"Dusknoir", "Ghost"));
+        pokemonList.add(new Pokemon("Dusknoir",113,"",
+                -1,"", "Ghost"));
 
         // Trapinch Line
+        pokemonList.add(new Pokemon("Trapinch",114,"Uncommon",
+                35,"Vibrava", "Ground"));
+        pokemonList.add(new Pokemon("Vibrava",115,"",
+                45,"Flygon", "Ground", "Dragon"));
+        pokemonList.add(new Pokemon("Flygon",116,"",
+                -1,"", "Ground", "Dragon"));
 
         // Sandile Line
+        pokemonList.add(new Pokemon("Sandile",117,"Uncommon",
+                29,"Krokorok", "Ground", "Dark"));
+        pokemonList.add(new Pokemon("Krokorok",118,"",
+                40,"Krookodile", "Ground", "Dark"));
+        pokemonList.add(new Pokemon("Krookodile",119,"",
+                -1,"", "Ground", "Dark"));
 
         // Axew Line
 
