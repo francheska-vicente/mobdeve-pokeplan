@@ -427,6 +427,20 @@ public class Pokedex {
         pokemonList.add(new Pokemon("Garchomp",134,"",
                 -1,"","Dragon", "Ground"));
 
+        // Deino Line
+        pokemonList.add(new Pokemon("Deino",135,"Rare",
+                50,"Zweilous","Dark", "Dragon"));
+        pokemonList.add(new Pokemon("Zweilous",136,"",
+                64,"Hydreigon","Dark", "Dragon"));
+        pokemonList.add(new Pokemon("Hydreigon",137,"",
+                -1,"","Dark", "Dragon"));
+
+        // Larvesta Line
+        pokemonList.add(new Pokemon("Larvesta",138,"Rare",
+                59,"Volcarona","Bug", "Fire"));
+        pokemonList.add(new Pokemon("Volcarona",139,"",
+                -1,"","Bug", "Fire"));
+
         // Mew 
         pokemonList.add(new Pokemon("Mew",140,"Super Rare",
                 "Psychic"));
@@ -436,5 +450,37 @@ public class Pokedex {
         // Jirachi
         pokemonList.add(new Pokemon("Jirachi",142,"Super Rare",
                 "Steel","Psychic"));
+
+        // Uxie
+        pokemonList.add(new Pokemon("Uxie",143,"Super Rare",
+                "Psychic"));
+
+        // Mesprit
+        pokemonList.add(new Pokemon("Mesprit",144,"Super Rare",
+                "Psychic"));
+
+        // Azelf
+        pokemonList.add(new Pokemon("Azelf",145,"Super Rare",
+                "Psychic"));
+
+        // Phione
+        pokemonList.add(new Pokemon("Phione",146,"Rare",
+                "Water"));
+
+        // Manaphy
+        pokemonList.add(new Pokemon("Manaphy",147,"Super Rare",
+                "Water"));
+
+        // Shaymin
+        pokemonList.add(new Pokemon("Shaymin",148,"Super Rare",
+                "Grass"));
+
+        // Victini
+        pokemonList.add(new Pokemon("Victini",149,"Super Rare",
+                "Psychic","Fire"));
+
+        // Keldeo
+        pokemonList.add(new Pokemon("Keldeo",150,"Super Rare",
+                "Water","Fighting"));
     }
 }
