@@ -229,6 +229,39 @@ public class Pokedex {
         pokemonList.add(new Pokemon("Raichu",62,"",
                 -1,"","Electric"));
 
+        // Azurill Line
+        pokemonList.add(new Pokemon("Azurill",63,"Common",
+                13,"Marill","Normal", "Fairy"));
+        pokemonList.add(new Pokemon("Marill",64,"",
+                18,"Azumarill", "Water", "Fairy"));
+        pokemonList.add(new Pokemon("Azumarill",65,"",
+                -1,"","Water", "Fairy"));
+
+        pokemonList.add(new Pokemon("Plusle",66,"Common",
+                "Electric"));
+        pokemonList.add(new Pokemon("Minun",67,"Common",
+                "Electric"));
+        pokemonList.add(new Pokemon("Pachirisu",68,"Common",
+                "Electric"));
+        pokemonList.add(new Pokemon("Emolga",69,"Common",
+                "Electric", "Flying"));
+
+        // Togepi Line
+        pokemonList.add(new Pokemon("Togepi",70,"Common",
+                25,"Togetic","Fairy"));
+        pokemonList.add(new Pokemon("Togetic",71,"",
+                35,"Togekiss", "Fairy", "Flying"));
+        pokemonList.add(new Pokemon("Togekiss",72,"",
+                -1,"", "Fairy", "Flying"));
+
+        // Happiny Line
+        pokemonList.add(new Pokemon("Happiny",73,"Common",
+                20,"Chansey","Normal"));
+        pokemonList.add(new Pokemon("Chansey",74,"",
+                30,"Blissey", "Normal"));
+        pokemonList.add(new Pokemon("Blissey",75,"",
+                -1,"", "Normal"));
+
         // Dratini Line
         pokemonList.add(new Pokemon("Dratini",123,"Rare",
                 30,"Dragonair","Dragon"));
