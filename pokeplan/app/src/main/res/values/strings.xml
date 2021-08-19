@@ -88,7 +88,10 @@
 
     <!-- Pokemon Details (Party) -->
     <string name="pkmndetails_title">VIEW POKEMON</string>
-    <string name="home_userprofile_btn">User Profile</string>
-    <string name="home_pokemonpc_btn">Pokemon PC</string>
-    <string name="home_party_label">Your Party</string>
+    <string name="pkmndetails_type_label">TYPE</string>
+    <string name="pkmndetails_nature_label">NATURE</string>
+    <string name="pkmndetails_metdate_label">MET DATE</string>
+    <string name="pkmndetails_rarecandy_btn">Feed 1 Rare Candy</string>
+    <string name="pkmndetails_supercandy_btn">Feed 1 Super Candy</string>
+    <string name="pkmndetails_movetopc_btn">Move to PC</string>
 </resources>
