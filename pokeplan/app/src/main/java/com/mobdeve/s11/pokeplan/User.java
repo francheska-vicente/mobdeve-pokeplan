@@ -20,9 +20,21 @@ public class User {
     public User(){
         // for testing purposes
         userPokemonParty = new ArrayList<>(6);
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(1)));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(2)));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(3)));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(22)));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(68)));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(84)));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(93)));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(95)));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(138)));
+
+        userPokedex = new Boolean[150];
+        Arrays.fill(userPokedex, Boolean.FALSE);
+        userPokedex[21] = true;
+        userPokedex[67] = true;
+        userPokedex[83] = true;
+        userPokedex[92] = true;
+        userPokedex[94] = true;
+        userPokedex[137] = true;
     }
 
     public User(String fullName, String email, String userName, UserPokemon starter) {
@@ -63,6 +75,10 @@ public class User {
 
         // temp
         return new UserPokemon(new Pokedex().getPokemon(1));
+    }
+
+    public Boolean[] getUserPokedex() {
+        return userPokedex;
     }
 
     public int getRareCandy() {
