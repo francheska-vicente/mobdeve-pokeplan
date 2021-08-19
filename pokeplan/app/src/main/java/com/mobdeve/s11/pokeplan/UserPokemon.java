@@ -22,7 +22,7 @@ public class UserPokemon {
     public UserPokemon(Pokemon details) {
         this.details = details;
         this.nickname = details.getSpecies();
-        this.nature = NATURES[new Random().nextInt(NATURES.length + 1)];
+        this.nature = NATURES[new Random().nextInt(NATURES.length)];
         this.metDate = new java.util.Date();
         this.pokemonID = details.getSpecies() + metDate;
         this.level = 1;
@@ -30,11 +30,13 @@ public class UserPokemon {
     }
 
     public void feedCandy() {
-
+        fedcandy++;
+        if (fedcandy%10 == 0)
+            levelUpPokemon();
     }
 
     public void levelUpPokemon() {
-
+        level++;
     }
 
     public void evolvePokemon() {
@@ -49,12 +51,24 @@ public class UserPokemon {
         return nickname;
     }
 
+    public String getNature() {
+        return nature;
+    }
+
+    public Date getMetDate() {
+        return metDate;
+    }
+
     public String getPokemonID() {
         return pokemonID;
     }
 
     public int getLevel() {
         return level;
+    }
+
+    public int getPercentToNextLevel() {
+        return fedcandy % 10 * 10;
     }
 
     public int getFedCandy() {
