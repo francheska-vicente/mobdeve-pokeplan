@@ -16,6 +16,10 @@ public class Pokedex {
         return pokemonList.get(dexNum-1);
     }
 
+    public ArrayList<Pokemon> getAllPokemon() {
+        return pokemonList;
+    }
+
     public ArrayList<Pokemon> getCommonPokemonList() {
         ArrayList<Pokemon> common = new ArrayList<>();
 
