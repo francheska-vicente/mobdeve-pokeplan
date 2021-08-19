@@ -79,7 +79,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="TYPE"
+        android:text="@string/pkmndetails_type_label"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
@@ -93,7 +93,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="32dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="NATURE"
+        android:text="@string/pkmndetails_nature_label"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
@@ -121,7 +121,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="MET DATE"
+        android:text="@string/pkmndetails_metdate_label"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
@@ -164,7 +164,7 @@
         android:text="Aria"
         android:textAllCaps="false"
         android:textColor="@color/darker_gray"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
@@ -177,9 +177,9 @@
         android:text="/"
         android:textAllCaps="false"
         android:textColor="@color/darker_gray"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/tv_pkmndetails_nickname"
-        tools:layout_editor_absoluteY="80dp" />
+        app:layout_constraintTop_toTopOf="@+id/tv_pkmndetails_nickname" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -211,7 +211,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_rectangle"
         android:fontFamily="@font/raleway_bold"
-        android:text="MOVE TO PC"
+        android:text="@string/pkmndetails_movetopc_btn"
         android:textColor="@color/darkest_gray"
         app:backgroundTint="@color/pink_button"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -228,7 +228,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_rectangle"
         android:fontFamily="@font/raleway_bold"
-        android:text="Feed 1 Super Candy"
+        android:text="@string/pkmndetails_supercandy_btn"
         android:textColor="@color/darkest_gray"
         app:backgroundTint="@color/pink_button"
         app:layout_constraintEnd_toEndOf="@+id/btn_pkmndetails_rarecandy"
@@ -243,7 +243,7 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded_rectangle"
         android:fontFamily="@font/raleway_bold"
-        android:text="Feed 1 Rare Candy"
+        android:text="@string/pkmndetails_rarecandy_btn"
         android:textColor="@color/darkest_gray"
         app:backgroundTint="@color/pink_button"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
@@ -258,7 +258,7 @@
         app:layout_constraintGuide_percent="0.08" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_taskdetails_label"
+        android:id="@+id/cl_pkmndetails_label"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/green"
@@ -268,7 +268,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/ib_taskdetails_back"
+            android:id="@+id/ib_pkmndetails_back"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:backgroundTint="#00FFFFFF"
@@ -284,7 +284,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_semibold"
-            android:text="@string/taskdetails_label"
+            android:text="@string/pkmndetails_title"
             android:textColor="@color/darker_gray"
             android:textSize="28sp"
             app:layout_constraintBottom_toBottomOf="parent"
