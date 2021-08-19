@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_template_pokedex"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_pokedex_circlebg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tintMode="src_atop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p2"
+        app:srcCompat="@drawable/circle" />
+
+    <ImageView
+        android:id="@+id/iv_pokedex_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_pokedex_circlebg"
+        app:layout_constraintEnd_toEndOf="@+id/iv_pokedex_circlebg"
+        app:layout_constraintStart_toStartOf="@+id/iv_pokedex_circlebg"
+        app:layout_constraintTop_toTopOf="@+id/iv_pokedex_circlebg"
+        app:srcCompat="@drawable/pkmn_96"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_pokedex_dexnum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/raleway_medium"
+        android:text="#150"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iv_pokedex_circlebg"
+        app:layout_constraintTop_toBottomOf="@+id/iv_pokedex_circlebg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
