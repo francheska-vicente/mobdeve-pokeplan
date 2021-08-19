@@ -1,30 +1,49 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.util.Log;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class User {
-    private ArrayList<UserPokemon> userPokemonPC;
-    private ArrayList<UserPokemon> userPokemonParty;
-    private boolean[] userPokedex;
-
     private String fullName;
     private String email;
     private String userName;
 
-    public User(){
+    private ArrayList<UserPokemon> userPokemonPC;
+    private ArrayList<UserPokemon> userPokemonParty;
+    private Boolean[] userPokedex;
 
+    private int rarecandy;
+    private int supercandy;
+
+    public User(){
+        // for testing purposes
+        userPokemonParty = new ArrayList<>(6);
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(1)));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(2)));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(3)));
     }
 
     public User(String fullName, String email, String userName, UserPokemon starter) {
+        // initializes user pc
         userPokemonPC = new ArrayList<>();
+
+        // puts starter in party
         userPokemonParty = new ArrayList<>(6);
-        userPokedex = new boolean[150];
+        userPokemonParty.add(starter);
+
+        // initializes the pokedex, puts starter in pokedex
+        userPokedex = new Boolean[150];
+        Arrays.fill(userPokedex, Boolean.FALSE);
+        userPokedex[starter.getPokemonDetails().getDexNum()-1] = true;
+
+        rarecandy = 0;
+        supercandy = 0;
 
         this.fullName = fullName;
         this.email = email;
         this.userName = userName;
-
-        addPokemon();
     }
 
     public void addPokemon() {
@@ -34,12 +53,31 @@ public class User {
     }
 
     public ArrayList<UserPokemon> getUserPokemonParty() {
-        ArrayList<UserPokemon> data = new ArrayList<>();
-        data.add(new UserPokemon(new Pokedex().getPokemon(1)));
-        data.add(new UserPokemon(new Pokedex().getPokemon(2)));
-        data.add(new UserPokemon(new Pokedex().getPokemon(3)));
-        return data;
+        return userPokemonParty;
+    }
 
-        //return userPokemonParty;
+    public UserPokemon getPokemonInParty(String id) {
+        for(int j = 0; j < userPokemonParty.size(); j++)
+            if(userPokemonParty.get(j).getPokemonID().equals(id))
+                return userPokemonParty.get(j);
+
+        // temp
+        return new UserPokemon(new Pokedex().getPokemon(1));
+    }
+
+    public int getRareCandy() {
+        return rarecandy;
+    }
+
+    public void setRareCandy(int rarecandy) {
+        this.rarecandy = rarecandy;
+    }
+
+    public int getSuperCandy() {
+        return supercandy;
+    }
+
+    public void setSuperCandy(int supercandy) {
+        this.supercandy = supercandy;
     }
 }
