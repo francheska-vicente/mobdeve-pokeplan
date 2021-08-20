@@ -73,30 +73,30 @@ public class RegisterStarterActivity extends AppCompatActivity {
     }
 
     private void registerUser (int pokeNum) {
-        Log.d("are", "plsplspls");
+        Log.d("hello pare 1", "plsplspls");
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()) {
-                            Log.d("THIS ONE", "1");
+                            Log.d("hello pare 2", "1");
                             Users user = new Users (name, email, username);
-                            Log.d("THIS TWO", "2");
+                            Log.d("hello pare 3", "2");
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
                                     .addOnCompleteListener(new OnCompleteListener<Void> () {
                                         @Override
                                         public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                            Log.d("AHHHHHHHHHHHHHHHH", "baket");
+                                            Log.d("hello pare 4", "baket");
                                             if(task.isSuccessful()) {
                                                 Toast.makeText(RegisterStarterActivity.this, "User has been registered,",
                                                         Toast.LENGTH_LONG).show();
-                                                Log.d("YAY", "User was created");
+                                                Log.d("hello pare 5", "User was created");
                                             } else {
                                                 Toast.makeText(RegisterStarterActivity.this, "User has not been registered,",
                                                         Toast.LENGTH_LONG).show();
-                                                Log.d("ERROR", "User was not created");
+                                                Log.d("hello pare 6", "User was not created");
                                             }
                                         }
                                     });
