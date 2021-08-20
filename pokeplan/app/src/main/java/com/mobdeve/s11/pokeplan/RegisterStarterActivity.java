@@ -73,19 +73,22 @@ public class RegisterStarterActivity extends AppCompatActivity {
     }
 
     private void registerUser (int pokeNum) {
+        Log.d("are", "plsplspls");
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+
                         if(task.isSuccessful()) {
-
+                            Log.d("1", "1");
                             Users user = new Users (name, email, username);
-
+                            Log.d("2", "2");
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
                                     .addOnCompleteListener(new OnCompleteListener<Void> () {
                                         @Override
                                         public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                            Log.d("AHHHHHHHHHHHHHHHH", "baket");
                                             if(task.isSuccessful()) {
                                                 Toast.makeText(RegisterStarterActivity.this, "User has been registered,",
                                                         Toast.LENGTH_LONG).show();
@@ -97,6 +100,10 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
+                        }
+                        else {
+                            Toast.makeText(RegisterStarterActivity.this, task.getException().toString(),
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 }
