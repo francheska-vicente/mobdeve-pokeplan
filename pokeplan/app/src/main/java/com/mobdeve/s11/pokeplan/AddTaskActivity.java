@@ -119,22 +119,23 @@ public class AddTaskActivity extends AppCompatActivity {
                 String startDate = etStartDate.getText().toString();
                 String endDate = etEndDate.getText().toString();
 
+
                 String error = "";
-                Boolean checker = false;
+                boolean checker = false;
 
                 // checking task name for errors
                 if (taskName == null) {
-                    error = "Task name is required!\n";
-                    checker = true;
+                    etTaskName.setError("Task name is required!");
+                    etTaskName.requestFocus();
+                    return;
                 } else if (!(taskName.length() > 0 && taskName.length() <= 25)) {
-                    error = "Length of task name should be from 1 to 25 characters.\n";
-                    checker = true;
+                    etTaskName.setError("Length of task name should be from 1 to 25 characters.");
+                    etTaskName.requestFocus();
+                    return;
                 }
 
                 if (!endDate.equals("")) {
-
                     if (!startDate.equals("") && !startTime.equals("")) {
-
                         if (!startTime.equals("")) {
                             String tempStartDate = startDate.substring(0, 6) + "20" + startDate.substring(6, 8);
                             String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
@@ -145,16 +146,18 @@ public class AddTaskActivity extends AppCompatActivity {
                             long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
 
                             if (diff < 0) {
-                                error = "End date should be later than the Start date.\n";
-                                checker = true;
+                                etEndDate.setError("End date should be later than the Start date.");
+                                etEndDate.requestFocus();
+                                return;
                             } else if (diff == 0) {
-                                error = "Your task should not start and end at the same day and time!\n";
+                                error = "Your task should not start and end at the same day and time!";
                                 checker = true;
                             }
                         }
                         else {
-                            error = "Start time is requierd if start date is provided.\n";
-                            checker = true;
+                            etStartTime.setError("Start time is required if start date is provided.");
+                            etStartTime.requestFocus();
+                            return;
                         }
                     }
 
@@ -186,20 +189,23 @@ public class AddTaskActivity extends AppCompatActivity {
                     long diff = getDiff(tempEndDate, currentDate, tempEndTime, currentTime);
 
                     if (diff < 0) {
-                        error = "Your end date should be later than the curent time and date!\n";
-                        checker = true;
+                        etEndDate.setError("Your end date should be later than the current time and date!");
+                        etEndDate.requestFocus();
+                        return;
                     } else if (diff == 0) {
                         error = "Your task cannot be currently ending!\n";
                         checker = true;
                     }
                 } else {
-                    error = "End date is required!\n";
-                    checker = true;
+                    etEndDate.setError("End date is required.");
+                    etEndDate.requestFocus();
+                    return;
                 }
 
                 if (endTime == null) {
-                    error = "End time is required\n";
-                    checker = true;
+                    etEndTime.setError("End time is required");
+                    etEndTime.requestFocus();
+                    return;
                 }
 
                 if (priority == null) {
