@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -13,12 +14,17 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +34,7 @@ import java.util.ArrayList;
 public class RegisterStarterActivity extends AppCompatActivity {
     private ImageButton btnregisterstartback;
     private ArrayList<ImageButton> btnspkmn;
+    private ProgressBar pbLoading;
 
     private static final int[] BUTTON_IDS = {
             R.id.ib_pkmn1, R.id.ib_pkmn2, R.id.ib_pkmn3, R.id.ib_pkmn4, R.id.ib_pkmn5,
@@ -49,6 +56,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register_starter);
 
         mAuth = FirebaseAuth.getInstance();
+        pbLoading = findViewById(R.id.pb_register_starter);
+        pbLoading.setVisibility(View.GONE);
         initValues ();
         initBackBtn();
         initPkmnBtns();
@@ -73,36 +82,44 @@ public class RegisterStarterActivity extends AppCompatActivity {
     }
 
     private void registerUser (int pokeNum) {
-        Log.d("hello pare 1", "plsplspls");
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()) {
-                            Log.d("hello pare 2", "1");
                             Users user = new Users (name, email, username);
-                            Log.d("hello pare 3", "2");
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
-                                    .addOnCompleteListener(new OnCompleteListener<Void> () {
-                                        @Override
-                                        public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                            Log.d("hello pare 4", "baket");
-                                            if(task.isSuccessful()) {
-                                                Toast.makeText(RegisterStarterActivity.this, "User has been registered,",
-                                                        Toast.LENGTH_LONG).show();
-                                                Log.d("hello pare 5", "User was created");
-                                            } else {
-                                                Toast.makeText(RegisterStarterActivity.this, "User has not been registered,",
-                                                        Toast.LENGTH_LONG).show();
-                                                Log.d("hello pare 6", "User was not created");
-                                            }
-                                        }
-                                    });
-                        }
-                        else {
-                            Toast.makeText(RegisterStarterActivity.this, task.getException().toString(),
+
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users");
+
+                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                            DatabaseReference temp = databaseRef.child(uid);
+
+                            temp.setValue(user).addOnCompleteListener(new OnCompleteListener<Void> () {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        Toast.makeText(RegisterStarterActivity.this, "User has been registered!",
+                                                Toast.LENGTH_LONG).show();
+                                        pbLoading.setVisibility(View.GONE);
+                                        Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
+                                        startActivity(intent);
+
+                                    } else {
+                                        Toast.makeText(RegisterStarterActivity.this, "User has not been registered!",
+                                                Toast.LENGTH_LONG).show();
+                                        pbLoading.setVisibility(View.GONE);
+                                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
+                        } else {
+                            Toast.makeText(RegisterStarterActivity.this, "User has not been registered!",
                                     Toast.LENGTH_LONG).show();
                         }
                     }
@@ -118,7 +135,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     int pokeNum = Integer.valueOf((String) view.getTag ());
-
+                    pbLoading.setVisibility(View.VISIBLE);
                     registerUser (pokeNum);
                 }
             });

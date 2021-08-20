@@ -59,10 +59,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser (View view) {
-        String name = this.etName.getText().toString();
-        String email = this.etEmail.getText().toString();
-        String username = this.etUsername.getText().toString();
-        String password = this.etPassword.getText().toString();
+        String name = this.etName.getText().toString().trim();
+        String email = this.etEmail.getText().toString().trim();
+        String username = this.etUsername.getText().toString().trim();
+        String password = this.etPassword.getText().toString().trim();
 
         if (name.isEmpty()) {
             etName.setError("Name is required.");
