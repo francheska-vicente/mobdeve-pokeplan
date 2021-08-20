@@ -70,6 +70,12 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        if(email.isEmpty()) {
+            etEmail.setError("Email is required.");
+            etEmail.requestFocus();
+            return;
+        }
+
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             etEmail.setError("Please provide a valid e-mail address.");
             etEmail.requestFocus();
@@ -84,6 +90,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (password.isEmpty()) {
             etPassword.setError("Password is required.");
+            etPassword.requestFocus();
+            return;
+        } else if (password.length() < 6) {
+            etPassword.setError("Password length should be at least six characters.");
             etPassword.requestFocus();
             return;
         }

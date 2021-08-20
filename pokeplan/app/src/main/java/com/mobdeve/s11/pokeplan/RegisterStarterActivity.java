@@ -103,6 +103,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                         Toast.makeText(RegisterStarterActivity.this, "User has been registered!",
                                                 Toast.LENGTH_LONG).show();
                                         pbLoading.setVisibility(View.GONE);
+                                        finish();
                                         Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
                                         startActivity(intent);
 
@@ -112,16 +113,14 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                         pbLoading.setVisibility(View.GONE);
                                     }
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                }
                             });
                         } else {
                             Toast.makeText(RegisterStarterActivity.this, "User has not been registered!",
                                     Toast.LENGTH_LONG).show();
                         }
+
+                        Intent intent = new Intent(RegisterStarterActivity.this, InitActivity.class);
+                        startActivity(intent);
                     }
                 }
         );
