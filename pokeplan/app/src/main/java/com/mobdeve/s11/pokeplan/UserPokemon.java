@@ -1,5 +1,6 @@
 package com.mobdeve.s11.pokeplan;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -55,8 +56,9 @@ public class UserPokemon {
         return nature;
     }
 
-    public Date getMetDate() {
-        return metDate;
+    public String getMetDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd, yyyy");
+        return formatter.format(metDate);
     }
 
     public String getPokemonID() {
