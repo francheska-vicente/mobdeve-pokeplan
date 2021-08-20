@@ -1,6 +1,7 @@
 package com.mobdeve.s11.pokeplan;
+import com.google.firebase.database.IgnoreExtraProperties;
 
-
+@IgnoreExtraProperties
 public class Users {
         private boolean[] userPokedex;
 
@@ -17,5 +18,15 @@ public class Users {
 
         }
 
+        public String getName () {
+            return this.fullName;
+        }
 
+        public String getEmail () {
+            return this.email;
+        }
+
+        public String getUserName () {
+            return this.userName;
+        }
 }
