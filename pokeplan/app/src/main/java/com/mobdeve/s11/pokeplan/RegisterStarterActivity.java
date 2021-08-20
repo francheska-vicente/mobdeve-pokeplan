@@ -80,9 +80,9 @@ public class RegisterStarterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()) {
-                            Log.d("1", "1");
+                            Log.d("THIS ONE", "1");
                             Users user = new Users (name, email, username);
-                            Log.d("2", "2");
+                            Log.d("THIS TWO", "2");
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
                                     .addOnCompleteListener(new OnCompleteListener<Void> () {
