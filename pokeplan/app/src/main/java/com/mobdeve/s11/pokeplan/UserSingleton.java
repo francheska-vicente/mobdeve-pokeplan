@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UserSingleton {
     private static UserSingleton user;
@@ -35,7 +36,6 @@ public class UserSingleton {
     private DatabaseReference mPokemon;
 
     public static UserSingleton getUser() {
-        //instantiate a new CustomerLab if we didn't instantiate one yet
         if (user == null) {
             user = new UserSingleton();
         }
@@ -56,6 +56,7 @@ public class UserSingleton {
         userPokemonParty = new ArrayList<>();
         userPokemonPC = new ArrayList<>();
         userPokedex = new Boolean[150];
+        Arrays.fill(userPokedex, false);
 
         mUser.addValueEventListener(new ValueEventListener() {
             @Override
