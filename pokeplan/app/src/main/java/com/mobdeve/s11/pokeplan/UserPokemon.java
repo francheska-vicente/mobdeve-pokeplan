@@ -1,43 +1,42 @@
 package com.mobdeve.s11.pokeplan;
 
+import com.google.firebase.database.Exclude;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
 public class UserPokemon {
-    private final String[] NATURES = {
-            "Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold", "Docile",
-            "Relaxed", "Impish", "Lax", "Timid", "Hasty", "Serious", "Jolly",
-            "Naive", "Modest", "Mild", "Quiet", "Bashful", "Rash", "Calm",
-            "Gentle", "Sassy", "Careful", "Quirky"
-    };
 
     private Pokemon details;
     private String nickname;
     private String nature;
-    private String pokemonID;
 
-    private Date metDate;
+    private Date dMetDate;
 
     private boolean inParty;
 
     private int level;
-    private int fedcandy;
+    private int fedCandy;
+
+    private String userPokemonID;
+
+    public UserPokemon () {
+
+    }
 
     public UserPokemon(Pokemon details, boolean inParty) {
         this.details = details;
         this.nickname = details.getSpecies();
-        this.nature = NATURES[new Random().nextInt(NATURES.length)];
-        this.metDate = new java.util.Date();
-        this.pokemonID = details.getSpecies() + metDate;
+        this.nature = this.setNature();
+        this.dMetDate = new java.util.Date();
         this.level = 1;
-        this.fedcandy = 0;
+        this.fedCandy = 0;
     }
 
     public void feedCandy() {
-        fedcandy++;
-        if (fedcandy%10 == 0)
+        fedCandy++;
+        if (fedCandy%10 == 0)
             levelUpPokemon();
     }
 
@@ -45,41 +44,51 @@ public class UserPokemon {
         level++;
     }
 
+    @Exclude
     public void evolvePokemon() {
-        this.details = new Pokedex().getPokemon(this.details.getEvolvesTo());
+        Pokedex pokedex = new Pokedex();
+        this.details = pokedex.getPokemon(this.details.getEvolvesTo());
     }
 
+    @Exclude
     public Pokemon getPokemonDetails() {
-        return details;
+        return this.details;
+    }
+
+    public Pokemon getDetails () {
+        return this.details;
     }
 
     public String getNickname() {
-        return nickname;
+        return this.nickname;
     }
 
     public String getNature() {
-        return nature;
+        return this.nature;
     }
 
     public String getMetDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd, yyyy");
-        return formatter.format(metDate);
+        return formatter.format(dMetDate);
     }
 
-    public String getPokemonID() {
-        return pokemonID;
+    public Date getDMetDate () {
+        return this.dMetDate;
+    }
+    public String getUserPokemonID() {
+        return this.userPokemonID;
     }
 
     public int getLevel() {
-        return level;
+        return this.level;
     }
 
     public int getPercentToNextLevel() {
-        return fedcandy % 10 * 10;
+        return fedCandy % 10 * 10;
     }
 
     public int getFedCandy() {
-        return fedcandy;
+        return this.fedCandy;
     }
 
     public boolean isInParty () {
@@ -90,8 +99,8 @@ public class UserPokemon {
         this.nickname = nickname;
     }
 
-    public void setPokemonID(String id) {
-        this.pokemonID = id;
+    public void setUserPokemonID(String id) {
+        this.userPokemonID = id;
     }
 
     public void setLevel(int level) {
@@ -99,7 +108,7 @@ public class UserPokemon {
     }
 
     public void setFedCandy(int fedcandy) {
-        this.fedcandy = fedcandy;
+        this.fedCandy = fedcandy;
     }
 
     public void setInParty(boolean inParty) {
@@ -107,6 +116,17 @@ public class UserPokemon {
     }
 
     public String toString () {
-        return this.pokemonID;
+        return this.userPokemonID;
+    }
+
+    public String setNature () {
+        String[] NATURES = {
+                "Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold", "Docile",
+                "Relaxed", "Impish", "Lax", "Timid", "Hasty", "Serious", "Jolly",
+                "Naive", "Modest", "Mild", "Quiet", "Bashful", "Rash", "Calm",
+                "Gentle", "Sassy", "Careful", "Quirky"
+        };
+
+        return NATURES[new Random().nextInt(NATURES.length)];
     }
 }
