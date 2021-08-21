@@ -2,15 +2,12 @@ package com.mobdeve.s11.pokeplan;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
 
 public class PokedexFragment extends Fragment {
     private Boolean[] pokedex;
@@ -39,7 +36,7 @@ public class PokedexFragment extends Fragment {
     }
 
     private void initComponents (View view) {
-        User helper = new User();
+        UserSingleton helper = new UserSingleton();
 
         this.pokedex = helper.getUserPokedex();
         this.rvPokedex = view.findViewById(R.id.rv_pokedex);
