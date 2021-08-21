@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class UserSingleton {
     private static UserSingleton user;
 
-    private UserDatails userDetails;
+    private UserDetails userDetails;
     private ArrayList<Task> tasks;
     private ArrayList<UserPokemon> userPokemonPC;
     private ArrayList<UserPokemon> userPokemonParty;
@@ -46,66 +46,105 @@ public class UserSingleton {
         supercandy = 5;
     }
 
-    private UserSingleton(String fullName, String email, String userName, UserPokemon starter) {
-        // initializes user pc
-        userPokemonPC = new ArrayList<>();
-
-        // puts starter in party
-        userPokemonParty = new ArrayList<>(6);
-        userPokemonParty.add(starter);
-
-        // initializes the pokedex, puts starter in pokedex
-        userPokedex = new Boolean[150];
-        Arrays.fill(userPokedex, Boolean.FALSE);
-        userPokedex[starter.getPokemonDetails().getDexNum()-1] = true;
-
-        rarecandy = 0;
-        supercandy = 0;
+    // user details
+    public UserDetails getUserDetails() {
+        return userDetails;
+    }
+    public void setUserDetails(UserDetails details) {
+        this.userDetails = details;
     }
 
-    public void addPokemon() {
-        UserPokemon pokemon = new UserPokemon(new Pokedex().getPokemon(0));
-        userPokemonPC.add(pokemon);
-        userPokemonParty.add(pokemon);
+    // tasks
+    public ArrayList<Task> getTasks() {
+        return tasks;
+    }
+    public void setTasks(ArrayList<Task> tasks) {
+        this.tasks = tasks;
+    }
+    public void addTask(Task task) {
+        this.tasks.add(task);
     }
 
+    // pokemons
+    public void addPokemon(int dexnum) {
+        UserPokemon pkmn = new UserPokemon(new Pokedex().getPokemon(dexnum));
+        userPokedex[dexnum-1] = true;
+        if (userPokemonParty.size() < 6) {
+            userPokemonParty.add(pkmn);
+        }
+        else {
+            userPokemonPC.add(pkmn);
+        }
+    }
+
+    // party pokemon
     public ArrayList<UserPokemon> getUserPokemonParty() {
         return userPokemonParty;
     }
-
+    public void setUserPokemonParty(ArrayList<UserPokemon> party) {
+        this.userPokemonParty = party;
+    }
     public UserPokemon getPokemonInParty(String id) {
         for(int j = 0; j < userPokemonParty.size(); j++)
             if(userPokemonParty.get(j).getPokemonID().equals(id))
                 return userPokemonParty.get(j);
 
-        // temp
-        return new UserPokemon(new Pokedex().getPokemon(1));
+        return null;
+    }
+    public void movePokemonToPC(UserPokemon pkmn) {
+        for(int j = 0; j < userPokemonParty.size(); j++)
+            if(userPokemonParty.get(j).equals(pkmn))
+                userPokemonParty.remove(j);
+
+        userPokemonPC.add(pkmn);
     }
 
+    // pc pokemon
+    public ArrayList<UserPokemon> getUserPokemonPC() {
+        return userPokemonPC;
+    }
+    public void setUserPokemonPC(ArrayList<UserPokemon> pc) {
+        this.userPokemonPC = pc;
+    }
+    public UserPokemon getPokemonInPC(String id) {
+        for(int j = 0; j < userPokemonPC.size(); j++)
+            if(userPokemonPC.get(j).getPokemonID().equals(id))
+                return userPokemonPC.get(j);
+
+        return null;
+    }
+    public void movePokemonToParty(UserPokemon pkmn) {
+        for(int j = 0; j < userPokemonPC.size(); j++)
+            if(userPokemonPC.get(j).equals(pkmn))
+                userPokemonPC.remove(j);
+
+        userPokemonParty.add(pkmn);
+    }
+
+    // pokedex
     public Boolean[] getUserPokedex() {
         return userPokedex;
     }
+    public void setUserPokedex(Boolean[] pokedex) {
+        this.userPokedex = pokedex;
+    }
 
+    // items
     public int getRareCandy() {
         return rarecandy;
     }
-
     public void addRareCandy(int candy) {
         this.rarecandy += candy;
     }
-
     public void subtractRareCandy(int candy) {
         this.rarecandy -= candy;
     }
-
     public int getSuperCandy() {
         return supercandy;
     }
-
     public void addSuperCandy(int candy) {
         this.supercandy += candy;
     }
-
     public void subtractSuperCandy(int candy) {
         this.supercandy -= candy;
     }
