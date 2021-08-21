@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +15,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
+    private UserSingleton userSingleton;
+
     private ImageButton btnback;
     private ImageButton btnedit;
 
     private Button btnrare;
     private Button btnsuper;
+    private Button btnpc;
 
     private ImageView ivPkmnIcon;
     private TextView tvPkmnNickname;
@@ -37,10 +39,10 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_details);
+
+        userSingleton = new UserSingleton();
         initComponents();
         setAllComponents();
-
-
     }
 
     private void initComponents() {
@@ -52,8 +54,9 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         });
 
         this.btnedit = findViewById(R.id.ib_pkmndetails_edit);
-
         this.btnrare = findViewById(R.id.btn_pkmndetails_rarecandy);
+        this.btnsuper = findViewById(R.id.btn_pkmndetails_supercandy);
+        this.btnpc = findViewById(R.id.btn_pkmndetails_pc);
 
         this.ivPkmnIcon = findViewById(R.id.iv_pkmndetails_icon);
         this.tvPkmnNickname = findViewById(R.id.tv_pkmndetails_nickname);
@@ -68,15 +71,15 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private void setAllComponents() {
         Intent intent = getIntent();
         String pkmnid = intent.getStringExtra(PokemonPartyAdapter.KEY_POKEMONID);
-        UserPokemon pkmn = new User().getPokemonInParty(pkmnid);
 
+        UserPokemon pkmn = userSingleton.getPokemonInParty(pkmnid);
 
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
         this.tvPkmnNickname.setText(pkmn.getNickname());
         this.tvPkmnSpecies.setText(pkmn.getPokemonDetails().getSpecies());
         this.tvPkmnNature.setText(pkmn.getNature());
-        this.tvPkmnMetDate.setText(pkmn.getMetDate().toString());
+        this.tvPkmnMetDate.setText(pkmn.getMetDate());
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
 
         String level = "Level " + pkmn.getLevel();
@@ -93,11 +96,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             }
         });
 
-        this.btnrare.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
+        if (new UserSingleton().getRareCandy() > 0 && pkmn.getLevel() < 100)
+            this.btnrare.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
                 feedPokemon(pkmn);
             }
-        });
+            });
     }
 
     private void editNickname(UserPokemon pkmn) {
@@ -110,7 +114,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         editdialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         TextView tvdialogtitle = editdialog.findViewById(R.id.iv_dialog_stringinput_title);
-        tvdialogtitle.setText("Name your Pokemon!");
+        tvdialogtitle.setText(R.string.pokemondetails_rename_caption);
         EditText etdialoginput = editdialog.findViewById(R.id.et_dialog_stringinput);
         ImageView ivdialogicon = editdialog.findViewById(R.id.iv_dialog_stringinput_icon);
         ivdialogicon.setImageResource(getImageId(getApplicationContext(),
@@ -139,9 +143,23 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
     private void feedPokemon(UserPokemon pkmn) {
         pkmn.feedCandy();
+        userSingleton.subtractRareCandy(1);
+
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
         String level = "Level " + pkmn.getLevel();
         this.tvPkmnLevel.setText(level);
+    }
+
+    private void evolvePokemon(UserPokemon pkmn) {
+        if (pkmn.getPokemonDetails().getEvolveLvl() <= pkmn.getLevel()
+                && pkmn.getPokemonDetails().getEvolveLvl() != -1) {
+            pkmn.evolvePokemon();
+            userSingleton.subtractSuperCandy(1);
+
+            this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
+                    "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
+            this.tvPkmnSpecies.setText(pkmn.getPokemonDetails().getSpecies());
+        }
     }
 
     private int getImageId(Context context, String imageName) {
