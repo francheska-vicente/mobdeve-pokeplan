@@ -55,6 +55,7 @@ public class UserSingleton {
         completedTasks = new ArrayList<>();
         userPokemonParty = new ArrayList<>();
         userPokemonPC = new ArrayList<>();
+        userPokedex = new Boolean[150];
 
         mUser.addValueEventListener(new ValueEventListener() {
             @Override
