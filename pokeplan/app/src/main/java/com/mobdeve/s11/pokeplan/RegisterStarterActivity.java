@@ -82,7 +82,6 @@ public class RegisterStarterActivity extends AppCompatActivity {
                         if(task.isSuccessful()) {
                             UserDetails user = new UserDetails (name, email, username);
 
-
                             DatabaseReference databaseRef = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users");
 
                             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -97,6 +96,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                                 Toast.LENGTH_LONG).show();
                                         pbLoading.setVisibility(View.GONE);
                                         finish();
+
+                                        UserSingleton.getUser().addPokemon(new Pokedex().getPokemon(pokeNum));
                                         Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
                                         startActivity(intent);
 
