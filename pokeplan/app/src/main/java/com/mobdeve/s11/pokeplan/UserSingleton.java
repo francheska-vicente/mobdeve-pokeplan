@@ -132,11 +132,12 @@ public class UserSingleton {
         this.completedTasks = tasks;
     }
 
-    public boolean addOngoingTask(Task taskCreated) {
+    public String addOngoingTask(Task taskCreated) {
         String key = mTask.push().getKey();
         taskCreated.setTaskID(key);
 
         final boolean[] checker = new boolean[1];
+        final String[] error = {"no error"};
         mTask.child(key).setValue(taskCreated).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
@@ -144,11 +145,12 @@ public class UserSingleton {
                     checker[0] = true;
                 } else {
                     checker[0] = false;
+                    error[0] = task.getException().toString();
                 }
             }
         });
 
-        return checker[0];
+        return error[0];
     }
 
     public void moveToCompletedTask (Task task) {
