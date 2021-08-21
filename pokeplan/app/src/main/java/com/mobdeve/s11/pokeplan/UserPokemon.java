@@ -41,7 +41,7 @@ public class UserPokemon {
     }
 
     public void evolvePokemon() {
-
+        this.details = new Pokedex().getPokemon(this.details.getEvolvesTo());
     }
 
     public Pokemon getPokemonDetails() {
