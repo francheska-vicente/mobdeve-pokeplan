@@ -109,7 +109,7 @@ public class AddTaskActivity extends AppCompatActivity {
         Task taskCreated;
         if (startDate.equals("")) {
             taskCreated = new Task(currentUserUid, name, priority, category,
-                    new CustomDate(),
+                    new CustomDate(true),
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
         } else {
             int monthStart = Integer.parseInt(startDate.substring(3, 5));
