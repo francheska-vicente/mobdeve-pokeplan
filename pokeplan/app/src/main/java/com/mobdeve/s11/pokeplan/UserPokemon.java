@@ -16,11 +16,12 @@ public class UserPokemon {
     private String nickname;
     private String nature;
     private String pokemonID;
+    private boolean inParty;
     private Date metDate;
     private int level;
     private int fedcandy;
 
-    public UserPokemon(Pokemon details) {
+    public UserPokemon(Pokemon details, boolean inParty) {
         this.details = details;
         this.nickname = details.getSpecies();
         this.nature = NATURES[new Random().nextInt(NATURES.length)];
