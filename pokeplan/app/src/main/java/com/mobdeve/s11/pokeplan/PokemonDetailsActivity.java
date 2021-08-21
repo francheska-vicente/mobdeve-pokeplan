@@ -92,7 +92,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             }
         });
 
-        if (UserSingleton.getUser().getRareCandy() > 0 && pkmn.getLevel() < 100)
+        if (UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100)
             this.btnrare.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                 feedPokemon(pkmn);
@@ -139,7 +139,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
     private void feedPokemon(UserPokemon pkmn) {
         pkmn.feedCandy();
-        UserSingleton.getUser().subtractRareCandy(1);
+        UserSingleton.getUser().getUserDetails().subtractRareCandy(1);
 
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
         String level = "Level " + pkmn.getLevel();
@@ -150,7 +150,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         if (pkmn.getPokemonDetails().getEvolveLvl() <= pkmn.getLevel()
                 && pkmn.getPokemonDetails().getEvolveLvl() != -1) {
             pkmn.evolvePokemon();
-            UserSingleton.getUser().subtractSuperCandy(1);
+            UserSingleton.getUser().getUserDetails().subtractSuperCandy(1);
 
             this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                     "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
