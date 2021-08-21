@@ -97,7 +97,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                         pbLoading.setVisibility(View.GONE);
                                         finish();
 
-                                        UserSingleton.getUser().addPokemon(new Pokedex().getPokemon(pokeNum));
+                                        Pokemon pokemon = new Pokedex().getPokemon(pokeNum - 1);
+                                        UserSingleton.getUser().addPokemon(pokemon);
                                         Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
                                         startActivity(intent);
 
@@ -109,7 +110,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            Toast.makeText(RegisterStarterActivity.this, "User has not been registered!",
+                            Toast.makeText(RegisterStarterActivity.this, task.getException().toString(),
                                     Toast.LENGTH_LONG).show();
                         }
 
