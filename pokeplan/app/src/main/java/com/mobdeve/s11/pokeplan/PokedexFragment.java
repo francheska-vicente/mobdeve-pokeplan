@@ -36,9 +36,7 @@ public class PokedexFragment extends Fragment {
     }
 
     private void initComponents (View view) {
-        UserSingleton helper = new UserSingleton();
-
-        this.pokedex = helper.getUserPokedex();
+        this.pokedex = UserSingleton.getUser().getUserPokedex();
         this.rvPokedex = view.findViewById(R.id.rv_pokedex);
         this.rvPokedex.setLayoutManager(new GridLayoutManager(getActivity(), 5));
 

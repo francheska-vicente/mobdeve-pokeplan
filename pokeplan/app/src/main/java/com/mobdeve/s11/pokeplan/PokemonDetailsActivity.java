@@ -15,8 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
-    private UserSingleton userSingleton;
-
     private ImageButton btnback;
     private ImageButton btnedit;
 
@@ -40,7 +38,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_details);
 
-        userSingleton = new UserSingleton();
         initComponents();
         setAllComponents();
     }
@@ -71,8 +68,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private void setAllComponents() {
         Intent intent = getIntent();
         String pkmnid = intent.getStringExtra(PokemonPartyAdapter.KEY_POKEMONID);
-
-        UserPokemon pkmn = userSingleton.getPokemonInParty(pkmnid);
+        UserPokemon pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);
 
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
@@ -96,7 +92,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             }
         });
 
-        if (new UserSingleton().getRareCandy() > 0 && pkmn.getLevel() < 100)
+        if (UserSingleton.getUser().getRareCandy() > 0 && pkmn.getLevel() < 100)
             this.btnrare.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                 feedPokemon(pkmn);
@@ -143,7 +139,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
     private void feedPokemon(UserPokemon pkmn) {
         pkmn.feedCandy();
-        userSingleton.subtractRareCandy(1);
+        UserSingleton.getUser().subtractRareCandy(1);
 
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
         String level = "Level " + pkmn.getLevel();
@@ -154,7 +150,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         if (pkmn.getPokemonDetails().getEvolveLvl() <= pkmn.getLevel()
                 && pkmn.getPokemonDetails().getEvolveLvl() != -1) {
             pkmn.evolvePokemon();
-            userSingleton.subtractSuperCandy(1);
+            UserSingleton.getUser().subtractSuperCandy(1);
 
             this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                     "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
