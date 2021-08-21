@@ -126,11 +126,8 @@ public class AddTaskActivity extends AppCompatActivity {
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
         }
 
-        if (UserSingleton.getUser().addOngoingTask(taskCreated)) {
-            Toast.makeText(AddTaskActivity.this, "Task is successfully created.", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(AddTaskActivity.this, "Task was not created.", Toast.LENGTH_LONG).show();
-        }
+            Toast.makeText(AddTaskActivity.this, UserSingleton.getUser().addOngoingTask(taskCreated), Toast.LENGTH_LONG).show();
+
     }
 
     private void intent () {
