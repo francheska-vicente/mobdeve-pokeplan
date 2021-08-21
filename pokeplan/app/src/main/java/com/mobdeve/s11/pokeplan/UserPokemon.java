@@ -12,12 +12,16 @@ public class UserPokemon {
             "Naive", "Modest", "Mild", "Quiet", "Bashful", "Rash", "Calm",
             "Gentle", "Sassy", "Careful", "Quirky"
     };
+
     private Pokemon details;
     private String nickname;
     private String nature;
     private String pokemonID;
-    private boolean inParty;
+
     private Date metDate;
+
+    private boolean inParty;
+
     private int level;
     private int fedcandy;
 
