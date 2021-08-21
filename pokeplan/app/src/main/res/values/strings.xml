@@ -94,4 +94,5 @@
     <string name="pkmndetails_rarecandy_btn">Feed 1 Rare Candy</string>
     <string name="pkmndetails_supercandy_btn">Feed 1 Super Candy</string>
     <string name="pkmndetails_movetopc_btn">Move to PC</string>
+    <string name="pokemondetails_rename_caption">Name your Pokemon!</string>
 </resources>
