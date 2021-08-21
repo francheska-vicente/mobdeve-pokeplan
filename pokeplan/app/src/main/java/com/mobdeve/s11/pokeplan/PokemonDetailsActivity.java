@@ -82,7 +82,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.tvPkmnLevel.setText(level);
 
         String pkmntype = pkmn.getPokemonDetails().getType1();
-        if (!pkmn.getPokemonDetails().getType2().isEmpty())
+        if (pkmn.getPokemonDetails().getType2() != null)
             pkmntype = pkmntype + "/" + pkmn.getPokemonDetails().getType2();
         this.tvPkmnType.setText(pkmntype);
 
