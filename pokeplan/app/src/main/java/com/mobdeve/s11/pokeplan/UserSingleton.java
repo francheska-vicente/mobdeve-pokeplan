@@ -71,11 +71,14 @@ public class UserSingleton {
         mTask.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ongoingTasks = new ArrayList<>();
+                completedTasks = new ArrayList<>();
+
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     Task temp = ds.getValue(Task.class);
-                    if(!temp.isFinished() && !ongoingTasks.contains(temp)) {
+                    if(!temp.isFinished()) {
                         ongoingTasks.add(temp);
-                    } else if (temp.isFinished() && !completedTasks.contains(temp)) {
+                    } else {
                         completedTasks.add(temp);
                     }
                 }
