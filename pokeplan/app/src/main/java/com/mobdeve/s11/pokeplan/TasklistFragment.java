@@ -66,18 +66,13 @@ public class TasklistFragment extends Fragment {
     }
 
     private void initComponents (View view) {
-        TaskDataHelper helper = new TaskDataHelper();
-
-        this.ongoingList = helper.getOngoingList();
-
+        this.ongoingList = UserSingleton.getUser().getOngoingTasks();
         this.rvOngoing = view.findViewById(R.id.rv_tasklist_ongoing);
         this.rvOngoing.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-
         this.taskAdapterOngoing = new TaskAdapter(this.ongoingList);
         this.rvOngoing.setAdapter(this.taskAdapterOngoing);
 
-        this.completedList = helper.getCompletedList();
-
+        this.completedList = UserSingleton.getUser().getCompletedTasks();
         this.rvCompleted = view.findViewById(R.id.rv_tasklist_completed);
         this.rvCompleted.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         this.taskAdapterCompleted = new TaskAdapter(this.completedList);
@@ -125,7 +120,6 @@ public class TasklistFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddTaskActivity.class);
-
                 startActivity(intent);
             }
         });
