@@ -123,6 +123,7 @@ public class FocusTimerFragment extends Fragment {
         Egg egg = new Egg(timer);
         Pokemon hatch = egg.generatePokemon();
         createHatchEggDialog(getView(), hatch);
+        UserSingleton.getUser().addPokemon(hatch);
     }
 
     private void resetTimer() {
