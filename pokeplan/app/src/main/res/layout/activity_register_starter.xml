@@ -566,4 +566,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.92" />
 
+    <ProgressBar
+        android:id="@+id/pb_register_starter"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cl_add_task_label" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

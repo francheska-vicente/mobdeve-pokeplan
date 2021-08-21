@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,8 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -34,70 +42,6 @@ public class TasklistFragment extends Fragment {
     private TaskAdapter taskAdapterCompleted;
     private TaskAdapter taskAdapterOngoing;
     private FloatingActionButton fabAdd;
-
-    private ActivityResultLauncher addActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-
-            private int convertHour (int hour, String temp) {
-                    if (hour == 12) {
-                        if (temp.equalsIgnoreCase("AM"))
-                            hour = 0;
-                    } else if (temp.equalsIgnoreCase("PM")) {
-                        hour = hour + 12;
-                    }
-
-                    return hour;
-            }
-
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                Intent intent = result.getData();
-
-                if (intent != null) {
-                    String name =  intent.getStringExtra(AddTaskActivity.KEY_TASKNAME);
-                    String category =  intent.getStringExtra(AddTaskActivity.KEY_CATEGORY);
-                    int priority = intent.getIntExtra(AddTaskActivity.KEY_PRIORITY, 1);
-                    String startDate = intent.getStringExtra(AddTaskActivity.KEY_START_DATE);
-                    String endDate = intent.getStringExtra(AddTaskActivity.KEY_END_DATE);
-                    String startTime = intent.getStringExtra(AddTaskActivity.KEY_START_TIME);
-                    String endTime = intent.getStringExtra(AddTaskActivity.KEY_END_TIME);
-                    String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
-
-                    int monthEnd = Integer.parseInt(endDate.substring(3, 5));
-                    int dayEnd = Integer.parseInt(endDate.substring(0, 2));
-                    int yearEnd = Integer.parseInt(endDate.substring(6, 8));
-
-                    int hourEnd = Integer.parseInt(endTime.substring(0, 2));
-                    int minuteEnd = Integer.parseInt(endTime.substring(3, 5));
-
-                    hourEnd = this.convertHour(hourEnd, endTime.substring(6, 8));
-
-                    if (startDate.equals("")) {
-                        ongoingList.add(0 , new Task(name, priority, category,
-                                new CustomDate(),
-                                new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes));
-                    } else {
-                        int monthStart = Integer.parseInt(startDate.substring(3, 5));
-                        int dayStart = Integer.parseInt(startDate.substring(0, 2));
-                        int yearStart = Integer.parseInt(startDate.substring(6, 8));
-
-                        int hourStart = Integer.parseInt(startTime.substring(0, 2));
-                        int minuteStart = Integer.parseInt(startTime.substring(3, 5));
-
-                        hourStart = this.convertHour (hourStart, startTime.substring(6, 8));
-
-                        ongoingList.add(0 , new Task(name, priority, category,
-                                new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
-                                new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes));
-                    }
-
-                    taskAdapterOngoing.notifyItemChanged(0);
-                    taskAdapterOngoing.notifyItemRangeChanged(0, taskAdapterOngoing.getItemCount());
-                }
-            }
-        }
-    );
 
     public TasklistFragment() {
     }
@@ -182,7 +126,7 @@ public class TasklistFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddTaskActivity.class);
 
-                addActivityResultLauncher.launch(intent);
+                startActivity(intent);
             }
         });
 

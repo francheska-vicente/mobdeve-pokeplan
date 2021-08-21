@@ -59,14 +59,20 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser (View view) {
-        String name = this.etName.getText().toString();
-        String email = this.etEmail.getText().toString();
-        String username = this.etUsername.getText().toString();
-        String password = this.etPassword.getText().toString();
+        String name = this.etName.getText().toString().trim();
+        String email = this.etEmail.getText().toString().trim();
+        String username = this.etUsername.getText().toString().trim();
+        String password = this.etPassword.getText().toString().trim();
 
         if (name.isEmpty()) {
             etName.setError("Name is required.");
             etName.requestFocus();
+            return;
+        }
+
+        if(email.isEmpty()) {
+            etEmail.setError("Email is required.");
+            etEmail.requestFocus();
             return;
         }
 
@@ -84,6 +90,10 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (password.isEmpty()) {
             etPassword.setError("Password is required.");
+            etPassword.requestFocus();
+            return;
+        } else if (password.length() < 6) {
+            etPassword.setError("Password length should be at least six characters.");
             etPassword.requestFocus();
             return;
         }

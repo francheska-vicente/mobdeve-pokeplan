@@ -11,8 +11,10 @@ public class Task {
     private CustomDate endDate;
     private String description;
     private boolean isFinished;
+    private String taskID;
 
-    public Task (String taskName, int priority, String category, CustomDate startDate, CustomDate endDate, String description) {
+    public Task (String taskID, String taskName, int priority, String category, CustomDate startDate, CustomDate endDate, String description) {
+        this.taskID = taskID;
         this.taskName = taskName;
         this.priority = priority;
         this.category = category;
@@ -76,5 +78,9 @@ public class Task {
 
     public void setFinished(boolean finished) {
         this.isFinished = finished;
+    }
+
+    public void setTaskID (String ID) {
+        this.taskID = ID;
     }
 }
