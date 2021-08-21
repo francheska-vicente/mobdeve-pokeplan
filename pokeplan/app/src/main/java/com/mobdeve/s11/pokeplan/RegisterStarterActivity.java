@@ -87,10 +87,10 @@ public class RegisterStarterActivity extends AppCompatActivity {
                             Pokedex pokedex = new Pokedex();
                             Pokemon pokemon = pokedex.getPokemon(pokeNum);
 
-                            User user = new User (name, email, username, new UserPokemon (pokemon));
+                            UserSingleton userSingleton = new UserSingleton(name, email, username, new UserPokemon (pokemon));
 
                             FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user)
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userSingleton)
                                     .addOnCompleteListener(new OnCompleteListener<Void> () {
                                         @Override
                                         public void onComplete(@NonNull @NotNull Task<Void> task) {
