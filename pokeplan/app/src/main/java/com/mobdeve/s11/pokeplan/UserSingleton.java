@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class UserSingleton {
+    private static UserSingleton user;
+
+    private UserDatails userDetails;
+    private ArrayList<Task> tasks;
     private ArrayList<UserPokemon> userPokemonPC;
     private ArrayList<UserPokemon> userPokemonParty;
     private Boolean[] userPokedex;
@@ -11,7 +15,15 @@ public class UserSingleton {
     private int rarecandy;
     private int supercandy;
 
-    public UserSingleton(){
+    public static UserSingleton getUser() {
+        //instantiate a new CustomerLab if we didn't instantiate one yet
+        if (user == null) {
+            user = new UserSingleton();
+        }
+        return user;
+    }
+
+    private UserSingleton(){
         // for testing purposes
         userPokemonParty = new ArrayList<>(6);
         userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(22)));
@@ -34,7 +46,7 @@ public class UserSingleton {
         supercandy = 5;
     }
 
-    public UserSingleton(String fullName, String email, String userName, UserPokemon starter) {
+    private UserSingleton(String fullName, String email, String userName, UserPokemon starter) {
         // initializes user pc
         userPokemonPC = new ArrayList<>();
 
