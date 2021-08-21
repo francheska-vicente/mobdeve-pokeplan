@@ -16,6 +16,14 @@ public class Pokedex {
         return pokemonList.get(dexNum-1);
     }
 
+    public Pokemon getPokemon(String name) {
+        for(int j=0; j<pokemonList.size(); j++) {
+            if (pokemonList.get(j).getSpecies().equals(name))
+                return pokemonList.get(j);
+        }
+        return null;
+    }
+
     public ArrayList<Pokemon> getAllPokemon() {
         return pokemonList;
     }
