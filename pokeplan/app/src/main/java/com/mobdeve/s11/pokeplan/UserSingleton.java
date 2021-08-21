@@ -167,20 +167,25 @@ public class UserSingleton {
         userPokedex[details.getDexNum()-1] = true;
 
         UserPokemon userPokemon;
+        String key = mPokemon.push().getKey();
+
         if (userPokemonParty.size() < 6) {
-            userPokemonParty.add(new UserPokemon(details, true));
-            userPokemon = userPokemonParty.get(userPokemonParty.size() - 1);
+            userPokemon = new UserPokemon(details, true);
+            userPokemon.setUserPokemonID(key);
+            userPokemonParty.add(userPokemon);
         }
         else {
-            userPokemonPC.add(new UserPokemon(details, false));
-            userPokemon = userPokemonPC.get(userPokemonPC.size() - 1);
+            userPokemon = new UserPokemon(details, false);
+            userPokemon.setUserPokemonID(key);
+            userPokemonPC.add(userPokemon);
         }
 
-        String key = mPokemon.push().getKey();
-        userPokemon.setPokemonID(key);
-
         final boolean[] checker = new boolean[1];
-        mPokemon.child(key).setValue(userPokemon).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+        DatabaseReference temp = mPokemon.child(key);
+
+        temp.setValue(userPokemon)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -203,7 +208,7 @@ public class UserSingleton {
     }
     public UserPokemon getPokemonInParty(String id) {
         for(int j = 0; j < userPokemonParty.size(); j++)
-            if(userPokemonParty.get(j).getPokemonID().equals(id))
+            if(userPokemonParty.get(j).getUserPokemonID().equals(id))
                 return userPokemonParty.get(j);
 
         return null;
@@ -225,7 +230,7 @@ public class UserSingleton {
     }
     public UserPokemon getPokemonInPC(String id) {
         for(int j = 0; j < userPokemonPC.size(); j++)
-            if(userPokemonPC.get(j).getPokemonID().equals(id))
+            if(userPokemonPC.get(j).getUserPokemonID().equals(id))
                 return userPokemonPC.get(j);
 
         return null;
