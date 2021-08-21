@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class UserSingleton {
     private static UserSingleton user;
@@ -73,14 +74,12 @@ public class UserSingleton {
         mTask.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                ongoingTasks = new ArrayList<>();
-                completedTasks = new ArrayList<>();
 
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     Task temp = ds.getValue(Task.class);
-                    if(!temp.isFinished()) {
+                    if(!temp.isFinished() && !ongoingTasks.contains(temp)) {
                         ongoingTasks.add(temp);
-                    } else {
+                    } else if (temp.isFinished() && completedTasks.contains(temp)) {
                         completedTasks.add(temp);
                     }
                 }
@@ -95,8 +94,19 @@ public class UserSingleton {
         mPokemon.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+
                 for(DataSnapshot ds : snapshot.getChildren()) {
-                    UserPokemon temp = ds.getValue(UserPokemon.class);
+                    Pokemon pokemon = ds.child("details").getValue(Pokemon.class);
+                    String nickname = ds.child("nickname").getValue(String.class);
+                    String nature = ds.child("nature").getValue(String.class);
+                    Date metDate = ds.child("dMetDate").getValue(Date.class);
+                    Boolean inParty = ds.child("inParty").getValue(Boolean.class);
+                    int level = ds.child("level").getValue(int.class);
+                    int fedCandy = ds.child("fedCandy").getValue(int.class);
+                    String pokemonID = ds.child("userPokemonID").getValue(String.class);
+
+                    UserPokemon temp = new UserPokemon(pokemon, nickname, nature, metDate, inParty, level, fedCandy, pokemonID);
+                    userPokedex [temp.getPokemonDetails().getDexNum() - 1] = true;
                     if (temp.isInParty()) {
                         userPokemonParty.add(temp);
                     } else {
