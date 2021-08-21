@@ -25,11 +25,11 @@ public class UserSingleton {
     private UserSingleton(){
         // for testing purposes
         userPokemonParty = new ArrayList<>(6);
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(22)));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(68)));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(84)));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(95)));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(138)));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(22), true));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(68), true));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(84), true));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(95), true));
+        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(138), true));
 
         userPokedex = new Boolean[150];
         Arrays.fill(userPokedex, Boolean.FALSE);
@@ -39,8 +39,9 @@ public class UserSingleton {
         userPokedex[94] = true;
         userPokedex[137] = true;
 
-        rarecandy = 5;
-        supercandy = 5;
+        userDetails = new UserDetails("rawr", "ror@gmail.com", "rororor");
+        userDetails.addRareCandy(5);
+        userDetails.addSuperCandy(5);
     }
 
     // user details
@@ -82,13 +83,12 @@ public class UserSingleton {
 
     // pokemons
     public void addPokemon(Pokemon details) {
-        UserPokemon pkmn = new UserPokemon(details);
         userPokedex[details.getDexNum()-1] = true;
         if (userPokemonParty.size() < 6) {
-            userPokemonParty.add(pkmn);
+            userPokemonParty.add(new UserPokemon(details, true));
         }
         else {
-            userPokemonPC.add(pkmn);
+            userPokemonPC.add(new UserPokemon(details, false));
         }
     }
 
