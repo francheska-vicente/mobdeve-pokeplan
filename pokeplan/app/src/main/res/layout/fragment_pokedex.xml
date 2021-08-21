@@ -6,19 +6,6 @@
     android:layout_height="match_parent">
 
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_pkmndetails_label">
-
-    </ScrollView>
-
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -28,25 +15,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p3">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="Caught Pokemon: 5"
+                app:layout_constraintBottom_toTopOf="@+id/rv_pokedex"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_pokedex"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false">
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
 
             </androidx.recyclerview.widget.RecyclerView>
-        </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
     <androidx.constraintlayout.widget.Guideline
