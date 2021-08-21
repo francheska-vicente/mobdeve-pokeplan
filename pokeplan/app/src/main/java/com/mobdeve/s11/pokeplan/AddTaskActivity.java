@@ -106,9 +106,9 @@ public class AddTaskActivity extends AppCompatActivity {
 
         hourEnd = this.convertHour(hourEnd, endTime.substring(6, 8));
 
-        Task task;
+        Task taskCreated;
         if (startDate.equals("")) {
-            task = new Task(currentUserUid, name, priority, category,
+            taskCreated = new Task(currentUserUid, name, priority, category,
                     new CustomDate(),
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
         } else {
@@ -121,21 +121,21 @@ public class AddTaskActivity extends AppCompatActivity {
 
             hourStart = this.convertHour (hourStart, startTime.substring(6, 8));
 
-            task = new Task(currentUserUid, name, priority, category,
+            taskCreated = new Task(currentUserUid, name, priority, category,
                     new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
         }
         String key = mTask.push().getKey();
-        task.setTaskID(key);
+        taskCreated.setTaskID(key);
         DatabaseReference taskDb = mTask.child(currentUserUid).child(key);
 
-        taskDb.setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
+        taskDb.setValue(taskCreated).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
                 if(task.isSuccessful()) {
                     Toast.makeText(AddTaskActivity.this, "Task has been successfully added!",
                             Toast.LENGTH_LONG).show();
-
+                    UserSingleton.getUser().addTask(taskCreated);
                     finish();
 
                 } else {
