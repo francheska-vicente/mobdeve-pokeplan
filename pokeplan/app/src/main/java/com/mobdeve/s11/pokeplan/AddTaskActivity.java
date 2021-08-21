@@ -1,32 +1,32 @@
 package com.mobdeve.s11.pokeplan;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.widget.CompoundButtonCompat;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -66,17 +66,84 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private Dialog errorDialog;
 
+    private DatabaseReference mTask;
+    private String currentUserUid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
         this.initComponents();
     }
 
     private void initComponents () {
+        this.mTask =  FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Tasks");
+        this.currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.initCalendar ();
-
         this.intent ();
+    }
+
+    private int convertHour (int hour, String temp) {
+        if (hour == 12) {
+            if (temp.equalsIgnoreCase("AM"))
+                hour = 0;
+        } else if (temp.equalsIgnoreCase("PM")) {
+            hour = hour + 12;
+        }
+
+        return hour;
+    }
+
+    public void addToDatabase (String name, int priority, String category, String startDate,
+                               String endDate, String startTime, String endTime, String notes) {
+        int monthEnd = Integer.parseInt(endDate.substring(3, 5));
+        int dayEnd = Integer.parseInt(endDate.substring(0, 2));
+        int yearEnd = Integer.parseInt(endDate.substring(6, 8));
+
+        int hourEnd = Integer.parseInt(endTime.substring(0, 2));
+        int minuteEnd = Integer.parseInt(endTime.substring(3, 5));
+
+        hourEnd = this.convertHour(hourEnd, endTime.substring(6, 8));
+
+        Task task;
+        if (startDate.equals("")) {
+            task = new Task(currentUserUid, name, priority, category,
+                    new CustomDate(),
+                    new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
+        } else {
+            int monthStart = Integer.parseInt(startDate.substring(3, 5));
+            int dayStart = Integer.parseInt(startDate.substring(0, 2));
+            int yearStart = Integer.parseInt(startDate.substring(6, 8));
+
+            int hourStart = Integer.parseInt(startTime.substring(0, 2));
+            int minuteStart = Integer.parseInt(startTime.substring(3, 5));
+
+            hourStart = this.convertHour (hourStart, startTime.substring(6, 8));
+
+            task = new Task(currentUserUid, name, priority, category,
+                    new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
+                    new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
+        }
+        String key = mTask.push().getKey();
+        task.setTaskID(key);
+        DatabaseReference taskDb = mTask.child(currentUserUid).child(key);
+
+        taskDb.setValue(task).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                if(task.isSuccessful()) {
+                    Toast.makeText(AddTaskActivity.this, "Task has been successfully added!",
+                            Toast.LENGTH_LONG).show();
+
+                    finish();
+
+                } else {
+                    Toast.makeText(AddTaskActivity.this, "Task was not added.",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void intent () {
@@ -124,11 +191,11 @@ public class AddTaskActivity extends AppCompatActivity {
                 boolean checker = false;
 
                 // checking task name for errors
-                if (taskName == null) {
+                if (taskName.isEmpty()) {
                     etTaskName.setError("Task name is required!");
                     etTaskName.requestFocus();
                     return;
-                } else if (!(taskName.length() > 0 && taskName.length() <= 25)) {
+                } else if (taskName.length() >= 25) {
                     etTaskName.setError("Length of task name should be from 1 to 25 characters.");
                     etTaskName.requestFocus();
                     return;
@@ -219,17 +286,8 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
 
                 if (!checker) {
-                    Intent intent = new Intent();
-                    intent.putExtra(KEY_TASKNAME, taskName);
-                    intent.putExtra(KEY_NOTES, taskNotes);
-                    intent.putExtra(KEY_PRIORITY, Integer.valueOf(priority.length()));
-                    intent.putExtra(KEY_CATEGORY, category);
-                    intent.putExtra(KEY_START_DATE, startDate);
-                    intent.putExtra(KEY_START_TIME, startTime);
-                    intent.putExtra(KEY_END_DATE, endDate);
-                    intent.putExtra(KEY_END_TIME, endTime);
+                    addToDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes);
 
-                    setResult(Activity.RESULT_OK, intent);
                     finish();
                 } else {
                     errorDialog = new Dialog(v.getContext());
