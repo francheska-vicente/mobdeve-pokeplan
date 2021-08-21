@@ -25,6 +25,18 @@ public class UserPokemon {
 
     }
 
+    public UserPokemon (Pokemon pokemon, String nickname, String nature, Date metDate,
+                        Boolean inParty, int level, int fedCandy, String pokemonID) {
+        this.details = pokemon;
+        this.nickname = nickname;
+        this.nature = nature;
+        this.dMetDate = metDate;
+        this.inParty = inParty;
+        this.level = level;
+        this.fedCandy = fedCandy;
+        this.userPokemonID = pokemonID;
+    }
+
     public UserPokemon(Pokemon details, boolean inParty) {
         this.details = details;
         this.nickname = details.getSpecies();
