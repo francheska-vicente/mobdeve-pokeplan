@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:id="@+id/divider7"
+        android:id="@+id/div_evolvefrom"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:layout_marginStart="24dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <View
-        android:id="@+id/divider8"
+        android:id="@+id/div_evolveto"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
         android:layout_marginStart="24dp"
@@ -84,7 +84,7 @@
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/divider7"
+        app:layout_constraintTop_toBottomOf="@+id/div_evolvefrom"
         app:lineHeight="38dp" />
 
     <TextView
@@ -248,7 +248,7 @@
         app:backgroundTint="@color/pink_button"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider8" />
+        app:layout_constraintTop_toBottomOf="@+id/div_evolveto" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_tasklist_hor8p2"
