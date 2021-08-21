@@ -12,8 +12,7 @@ public class UserSingleton {
     private ArrayList<UserPokemon> userPokemonParty;
     private Boolean[] userPokedex;
 
-    private int rarecandy;
-    private int supercandy;
+
 
     public static UserSingleton getUser() {
         //instantiate a new CustomerLab if we didn't instantiate one yet
@@ -143,25 +142,5 @@ public class UserSingleton {
     }
     public void setUserPokedex(Boolean[] pokedex) {
         this.userPokedex = pokedex;
-    }
-
-    // items
-    public int getRareCandy() {
-        return rarecandy;
-    }
-    public void addRareCandy(int candy) {
-        this.rarecandy += candy;
-    }
-    public void subtractRareCandy(int candy) {
-        this.rarecandy -= candy;
-    }
-    public int getSuperCandy() {
-        return supercandy;
-    }
-    public void addSuperCandy(int candy) {
-        this.supercandy += candy;
-    }
-    public void subtractSuperCandy(int candy) {
-        this.supercandy -= candy;
     }
 }
