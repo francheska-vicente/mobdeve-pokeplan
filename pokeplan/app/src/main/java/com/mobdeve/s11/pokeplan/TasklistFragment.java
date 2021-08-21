@@ -123,6 +123,11 @@ public class TasklistFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initComponents(getView());
     }
 }
