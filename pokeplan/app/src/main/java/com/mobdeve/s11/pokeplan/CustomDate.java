@@ -15,12 +15,16 @@ import java.util.concurrent.TimeUnit;
 
 public class CustomDate {
     private static final String[] monthString = new String[]{"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    private final int day_in_month, month, year, hour, minute;
+    private int day, month, year, hour, minute;
 
     public CustomDate () {
+
+    }
+
+    public CustomDate (boolean checker) {
         Calendar c = Calendar.getInstance();
         this.year = c.get(Calendar.YEAR);
-        this.day_in_month = c.get(Calendar.DAY_OF_MONTH);
+        this.day = c.get(Calendar.DAY_OF_MONTH);
         this.month = c.get(Calendar.MONTH) + 1;
         this.hour = c.get(Calendar.HOUR_OF_DAY);
         this.minute = c.get(Calendar.MINUTE);
@@ -32,7 +36,7 @@ public class CustomDate {
         else
             this.year = year;
 
-        this.day_in_month = day_in_month;
+        this.day = day_in_month;
         this.month = month;
         this.hour = hour;
         this.minute = minute;
@@ -40,7 +44,7 @@ public class CustomDate {
     }
 
     public int getDay () {
-        return this.day_in_month;
+        return this.day;
     }
 
     public int getMonth () {
@@ -62,14 +66,14 @@ public class CustomDate {
     @Override
     public String toString() {
         String tempTime = new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
-        String tempDate = this.day_in_month + "." + this.month + "." + this.year;
+        String tempDate = this.day + "." + this.month + "." + this.year;
 
         return printData(tempDate, tempTime);
     }
 
     public String storeData () {
         String tempTime = new DecimalFormat("00").format(this.hour) + ":" + new DecimalFormat("00").format(this.minute);
-        String tempDate = new DecimalFormat("00").format(this.day_in_month) + "." + new DecimalFormat("00").format(this.month) + "." + this.year;
+        String tempDate = new DecimalFormat("00").format(this.day) + "." + new DecimalFormat("00").format(this.month) + "." + this.year;
         return tempDate + " " + tempTime;
     }
 
