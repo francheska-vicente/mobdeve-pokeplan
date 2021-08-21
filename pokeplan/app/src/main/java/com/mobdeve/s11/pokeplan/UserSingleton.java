@@ -143,4 +143,18 @@ public class UserSingleton {
     public void setUserPokedex(Boolean[] pokedex) {
         this.userPokedex = pokedex;
     }
+    public int getNumCaught() {
+        int ctr = 0;
+        for(int j = 0; j < userPokedex.length; j++)
+            if(userPokedex[j] == true)
+                ctr++;
+        return ctr;
+    }
+    public int getNumNotCaught() {
+        int ctr = 0;
+        for(int j = 0; j < userPokedex.length; j++)
+            if(userPokedex[j] == false)
+                ctr++;
+        return ctr;
+    }
 }
