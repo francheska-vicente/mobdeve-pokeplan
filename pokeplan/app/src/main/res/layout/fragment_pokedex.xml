@@ -42,7 +42,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_pokedex"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false">
 
             </androidx.recyclerview.widget.RecyclerView>
         </LinearLayout>
