@@ -63,7 +63,7 @@ public class CustomDate {
     public String toString() {
         String tempTime = new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
         String tempDate = this.day_in_month + "." + this.month + "." + this.year;
-        Log.d("Hello pare inside custom date", tempDate);
+
         return printData(tempDate, tempTime);
     }
 
@@ -95,11 +95,13 @@ public class CustomDate {
         long diff = 0;
         try {
             Date dateStart = simpleDateFormat.parse(currentDay + "." + currentMonth + "." + currentYear);
-            Date dateEnd = simpleDateFormat.parse(dateToConvert);
+            String temp = new DecimalFormat("00").format(day_in_month) + "." + new DecimalFormat("00").format(month) + "." + year;
+            Date dateEnd = simpleDateFormat.parse(temp);
 
             diff = dateEnd.getTime() - dateStart.getTime();
+            Log.d("hello custom date 2", temp);
             diff = TimeUnit.MILLISECONDS.toDays(diff);
-
+            Log.d("hello pare custom date", Long.toString(diff));
             if (diff == 0) {
                 date = "Today @ ";
             } else if (diff <= 6 && diff > 0) {
