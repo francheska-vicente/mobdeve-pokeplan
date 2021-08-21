@@ -11,11 +11,7 @@
         android:theme="@style/Theme.PokePlan"
         android:usesCleartextTraffic="true">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
@@ -23,7 +19,11 @@
         <activity android:name=".TaskDetailsActivity" />
         <activity android:name=".AddTaskActivity" />
         <activity android:name=".InitActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".PokemonDetailsActivity" />
 

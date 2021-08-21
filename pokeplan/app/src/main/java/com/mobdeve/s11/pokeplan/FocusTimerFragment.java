@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -123,7 +124,12 @@ public class FocusTimerFragment extends Fragment {
         Egg egg = new Egg(timer);
         Pokemon hatch = egg.generatePokemon();
         createHatchEggDialog(getView(), hatch);
-        UserSingleton.getUser().addPokemon(hatch);
+
+        if (UserSingleton.getUser().addPokemon(hatch)) {
+            Toast.makeText(getActivity(), "Pokemon was added to the list.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getActivity(), "Pokemon was not added to the list.", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void resetTimer() {

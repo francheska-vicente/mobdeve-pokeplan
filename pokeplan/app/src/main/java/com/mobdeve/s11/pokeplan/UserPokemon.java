@@ -82,6 +82,10 @@ public class UserPokemon {
         return fedcandy;
     }
 
+    public boolean isInParty () {
+        return this.inParty;
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -96,6 +100,10 @@ public class UserPokemon {
 
     public void setFedCandy(int fedcandy) {
         this.fedcandy = fedcandy;
+    }
+
+    public void setInParty(boolean inParty) {
+        this.inParty = inParty;
     }
 
     public String toString () {

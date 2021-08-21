@@ -125,25 +125,12 @@ public class AddTaskActivity extends AppCompatActivity {
                     new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
         }
-        String key = mTask.push().getKey();
-        taskCreated.setTaskID(key);
-        DatabaseReference taskDb = mTask.child(currentUserUid).child(key);
 
-        taskDb.setValue(taskCreated).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                if(task.isSuccessful()) {
-                    Toast.makeText(AddTaskActivity.this, "Task has been successfully added!",
-                            Toast.LENGTH_LONG).show();
-                    UserSingleton.getUser().addTask(taskCreated);
-                    finish();
-
-                } else {
-                    Toast.makeText(AddTaskActivity.this, "Task was not added.",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        if (UserSingleton.getUser().addOngoingTask(taskCreated)) {
+            Toast.makeText(AddTaskActivity.this, "Task is successfully created.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(AddTaskActivity.this, "Task was not created.", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void intent () {

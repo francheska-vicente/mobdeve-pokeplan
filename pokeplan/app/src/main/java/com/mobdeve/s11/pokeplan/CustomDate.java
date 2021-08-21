@@ -39,14 +39,6 @@ public class CustomDate {
 
     }
 
-    public CustomDate (@NotNull String date) {
-        this.month = Integer.parseInt(date.substring(3, 5));
-        this.day_in_month = Integer.parseInt(date.substring(0, 2));
-        this.year = Integer.parseInt(date.substring(6, 10));
-        this.hour = Integer.parseInt(date.substring(11, 13));
-        this.minute = Integer.parseInt(date.substring(14, 16));
-    }
-
     public int getDay () {
         return this.day_in_month;
     }
@@ -71,6 +63,7 @@ public class CustomDate {
     public String toString() {
         String tempTime = new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
         String tempDate = this.day_in_month + "." + this.month + "." + this.year;
+        Log.d("Hello pare inside custom date", tempDate);
         return printData(tempDate, tempTime);
     }
 
@@ -90,11 +83,13 @@ public class CustomDate {
         int currentDay = c.get(Calendar.DAY_OF_MONTH);
         int currentMonth = c.get(Calendar.MONTH) + 1;
 
-        int month = Integer.valueOf(dateToConvert.substring(3, 5));
-        int day_in_month = Integer.valueOf(dateToConvert.substring(0, 2));
-        int year = Integer.valueOf(dateToConvert.substring(7, 10));
-        int hour = Integer.valueOf(time.substring(0, 2));
-        int minute = Integer.valueOf(time.substring(3, 5));
+        String [] tempDate = dateToConvert.split("\\.");
+        String [] tempTime = time.split(":");
+        int month = Integer.valueOf(tempDate[1]);
+        int day_in_month = Integer.valueOf(tempDate[0]);
+        int year = Integer.valueOf(tempDate[2]);
+        int hour = Integer.valueOf(tempTime[0]);
+        int minute = Integer.valueOf(tempTime[1]);
 
         String date = "";
         long diff = 0;

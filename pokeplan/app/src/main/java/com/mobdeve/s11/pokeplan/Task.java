@@ -24,6 +24,10 @@ public class Task {
         this.isFinished = false;
     }
 
+    public Task () {
+
+    }
+
     public String getTaskName () {
         return this.taskName;
     }

@@ -1,18 +1,38 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class UserSingleton {
     private static UserSingleton user;
 
     private UserDetails userDetails;
-    private ArrayList<Task> tasks;
+    private ArrayList<Task> ongoingTasks;
+    private ArrayList<Task> completedTasks;
     private ArrayList<UserPokemon> userPokemonPC;
     private ArrayList<UserPokemon> userPokemonParty;
     private Boolean[] userPokedex;
 
+    private final String userID;
 
+    private DatabaseReference mUser;
+    private DatabaseReference mTask;
+    private DatabaseReference mPokemon;
 
     public static UserSingleton getUser() {
         //instantiate a new CustomerLab if we didn't instantiate one yet
@@ -23,25 +43,68 @@ public class UserSingleton {
     }
 
     private UserSingleton(){
-        // for testing purposes
-        userPokemonParty = new ArrayList<>(6);
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(22), true));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(68), true));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(84), true));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(95), true));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(138), true));
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
-        userPokedex = new Boolean[150];
-        Arrays.fill(userPokedex, Boolean.FALSE);
-        userPokedex[21] = true;
-        userPokedex[67] = true;
-        userPokedex[83] = true;
-        userPokedex[94] = true;
-        userPokedex[137] = true;
+        this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        userDetails = new UserDetails("rawr", "ror@gmail.com", "rororor");
-        userDetails.addRareCandy(5);
-        userDetails.addSuperCandy(5);
+        this.mUser = mDatabase.getReference("Users").child(this.userID);
+        this.mTask = mDatabase.getReference("Tasks").child(this.userID);
+        this.mPokemon = mDatabase.getReference("UserPokemon").child(this.userID);
+
+        ongoingTasks = new ArrayList<>();
+        completedTasks = new ArrayList<>();
+        userPokemonParty = new ArrayList<>();
+        userPokemonPC = new ArrayList<>();
+
+        mUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userDetails = dataSnapshot.getValue(UserDetails.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("DEBUG USER ERROR: ", Integer.toString(databaseError.getCode()));
+            }
+        });
+
+        mTask.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    Task temp = ds.getValue(Task.class);
+                    if(!temp.isFinished() && !ongoingTasks.contains(temp)) {
+                        ongoingTasks.add(temp);
+                    } else if (temp.isFinished() && !completedTasks.contains(temp)) {
+                        completedTasks.add(temp);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.d("DEBUG TASKS ERROR: ", Integer.toString(error.getCode()));
+            }
+        });
+
+        mPokemon.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    UserPokemon temp = ds.getValue(UserPokemon.class);
+                    if (temp.isInParty()) {
+                        userPokemonParty.add(temp);
+                    } else {
+                        userPokemonPC.add(temp);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.d("DEBUG POKEMON ERROR: ", Integer.toString(error.getCode()));
+            }
+        });
     }
 
     // user details
@@ -53,43 +116,76 @@ public class UserSingleton {
     }
 
     // tasks
-    public ArrayList<Task> getTasks() {
-        return tasks;
-    }
-    public void setTasks(ArrayList<Task> tasks) {
-        this.tasks = tasks;
-    }
-    public void addTask(Task task) {
-        this.tasks.add(task);
-    }
     public ArrayList<Task> getOngoingTasks() {
-        ArrayList<Task> ongoing = new ArrayList<>();
-        for(int j=0; j<tasks.size(); j++) {
-            if (!tasks.get(j).isFinished())
-                ongoing.add(tasks.get(j));
-        }
-
-        return ongoing;
+        return this.ongoingTasks;
     }
-    public ArrayList<Task> getCompletedTasks() {
-        ArrayList<Task> completed = new ArrayList<>();
-        for(int j=0; j<tasks.size(); j++) {
-            if (tasks.get(j).isFinished())
-                completed.add(tasks.get(j));
-        }
 
-        return completed;
+    public ArrayList<Task> getCompletedTasks () {
+        return this.completedTasks;
+    }
+
+    public void setOngoingTasks(ArrayList<Task> tasks) {
+        this.ongoingTasks = tasks;
+    }
+
+    public void setCompletedTasks(ArrayList<Task> tasks) {
+        this.completedTasks = tasks;
+    }
+
+    public boolean addOngoingTask(Task taskCreated) {
+        String key = mTask.push().getKey();
+        taskCreated.setTaskID(key);
+
+        final boolean[] checker = new boolean[1];
+        mTask.child(key).setValue(taskCreated).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                if(task.isSuccessful()) {
+                    checker[0] = true;
+                } else {
+                    checker[0] = false;
+                }
+            }
+        });
+
+        return checker[0];
+    }
+
+    public void moveToCompletedTask (Task task) {
+        this.ongoingTasks.remove(task);
+        this.completedTasks.add(task);
     }
 
     // pokemons
-    public void addPokemon(Pokemon details) {
+    public boolean addPokemon(Pokemon details) {
         userPokedex[details.getDexNum()-1] = true;
+
+        UserPokemon userPokemon;
         if (userPokemonParty.size() < 6) {
             userPokemonParty.add(new UserPokemon(details, true));
+            userPokemon = userPokemonParty.get(userPokemonParty.size() - 1);
         }
         else {
             userPokemonPC.add(new UserPokemon(details, false));
+            userPokemon = userPokemonPC.get(userPokemonPC.size() - 1);
         }
+
+        String key = mPokemon.push().getKey();
+        userPokemon.setPokemonID(key);
+
+        final boolean[] checker = new boolean[1];
+        mPokemon.child(key).setValue(userPokemon).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                if (task.isSuccessful()) {
+                    checker[0] = true;
+                } else {
+                    checker[0] = false;
+                }
+            }
+        });
+
+        return checker[0];
     }
 
     // party pokemon

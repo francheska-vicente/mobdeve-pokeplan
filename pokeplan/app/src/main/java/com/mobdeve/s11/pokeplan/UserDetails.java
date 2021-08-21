@@ -19,6 +19,15 @@ public class UserDetails {
         this.supercandy = 5;
     }
 
+    public UserDetails () {
+        this.fullName = "";
+        this.email = "";
+        this.userName = "";
+
+        this.rarecandy = 5;
+        this.supercandy = 5;
+    }
+
     public String getName () {
         return this.fullName;
     }
