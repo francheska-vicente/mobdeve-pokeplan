@@ -2,14 +2,14 @@ package com.mobdeve.s11.pokeplan;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
-public class Users {
+public class UserDetails {
 
 
         private String fullName;
         private String email;
         private String userName;
 
-        public Users(String fullName, String email, String userName) {
+        public UserDetails(String fullName, String email, String userName) {
 
 
             this.fullName = fullName;

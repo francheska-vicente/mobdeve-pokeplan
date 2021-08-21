@@ -1,10 +1,12 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.util.Log;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -13,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CustomDate {
     private static final String[] monthString = new String[]{"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    private int day_in_month, month, year, hour, minute;
+    private final int day_in_month, month, year, hour, minute;
 
     public CustomDate () {
         Calendar c = Calendar.getInstance();
@@ -34,10 +36,51 @@ public class CustomDate {
         this.month = month;
         this.hour = hour;
         this.minute = minute;
+
+    }
+
+    public CustomDate (@NotNull String date) {
+        this.month = Integer.parseInt(date.substring(3, 5));
+        this.day_in_month = Integer.parseInt(date.substring(0, 2));
+        this.year = Integer.parseInt(date.substring(6, 10));
+        this.hour = Integer.parseInt(date.substring(11, 13));
+        this.minute = Integer.parseInt(date.substring(14, 16));
+    }
+
+    public int getDay () {
+        return this.day_in_month;
+    }
+
+    public int getMonth () {
+        return this.month;
+    }
+
+    public int getYear () {
+        return this.year;
+    }
+
+    public int getHour () {
+        return this.hour;
+    }
+
+    public int getMinute () {
+        return this.minute;
     }
 
     @Override
     public String toString() {
+        String tempTime = new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
+        String tempDate = this.day_in_month + "." + this.month + "." + this.year;
+        return printData(tempDate, tempTime);
+    }
+
+    public String storeData () {
+        String tempTime = new DecimalFormat("00").format(this.hour) + ":" + new DecimalFormat("00").format(this.minute);
+        String tempDate = new DecimalFormat("00").format(this.day_in_month) + "." + new DecimalFormat("00").format(this.month) + "." + this.year;
+        return tempDate + " " + tempTime;
+    }
+
+    public static String printData (String dateToConvert, String time) {
         Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT"));
 
@@ -47,11 +90,17 @@ public class CustomDate {
         int currentDay = c.get(Calendar.DAY_OF_MONTH);
         int currentMonth = c.get(Calendar.MONTH) + 1;
 
+        int month = Integer.valueOf(dateToConvert.substring(3, 5));
+        int day_in_month = Integer.valueOf(dateToConvert.substring(0, 2));
+        int year = Integer.valueOf(dateToConvert.substring(7, 10));
+        int hour = Integer.valueOf(time.substring(0, 2));
+        int minute = Integer.valueOf(time.substring(3, 5));
+
         String date = "";
         long diff = 0;
         try {
             Date dateStart = simpleDateFormat.parse(currentDay + "." + currentMonth + "." + currentYear);
-            Date dateEnd = simpleDateFormat.parse(this.day_in_month + "." + this.month + "." + this.year);
+            Date dateEnd = simpleDateFormat.parse(dateToConvert);
 
             diff = dateEnd.getTime() - dateStart.getTime();
             diff = TimeUnit.MILLISECONDS.toDays(diff);
@@ -64,13 +113,13 @@ public class CustomDate {
 
                 date = formatter.format(dateEnd) + " @ ";
             } else {
-                date = monthString[month] + " " + this.day_in_month + ", " + this.year + " @";
+                date = monthString[month] + " " + day_in_month + ", " + year + " @";
             }
         } catch (Exception e) {
 
         }
 
-        int tempHour = this.hour;
+        int tempHour = hour;
         String temp = "AM";
         if (hour > 12) {
             tempHour = hour - 12;
@@ -84,6 +133,5 @@ public class CustomDate {
         date = date + new DecimalFormat("00").format(tempHour) + ":" + new DecimalFormat("00").format(minute) + " " + temp;
         return  date;
     }
-
 }
 

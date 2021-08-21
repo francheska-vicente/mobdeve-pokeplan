@@ -88,7 +88,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()) {
-                            Users user = new Users (name, email, username);
+                            UserDetails user = new UserDetails (name, email, username);
+
 
                             DatabaseReference databaseRef = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users");
 
