@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/div_evolveto"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <View
+        android:id="@+id/divider9"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_type_label6" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_species"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/raleway_bold"
+        android:gravity="bottom"
+        android:text="Flaaffy"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="Electric"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_species"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_species"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_dexnum"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:gravity="center"
+        android:text="#095"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_type4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="Level 16"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView6"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        app:layout_constraintTop_toBottomOf="@+id/imageView6"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_evolveto_label"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="EVOLVES TO"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/div_evolveto"
+        app:layout_constraintTop_toBottomOf="@+id/div_evolveto"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_type_label7"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="DOES NOT EVOLVE"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/divider9"
+        app:layout_constraintTop_toBottomOf="@+id/divider9"
+        app:lineHeight="38dp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p2"
+        app:srcCompat="@drawable/circle" />
+
+    <ImageView
+        android:id="@+id/iv_pkdexdetails_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/pkmn_77" />
+
+    <ImageView
+        android:id="@+id/iv_pkdexdetails_icon5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_pkdexdetails_type4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label"
+        app:srcCompat="@drawable/pkmn_77" />
+
+    <ImageView
+        android:id="@+id/iv_pkdexdetails_icon6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_type_label7"
+        app:srcCompat="@drawable/pkmn_77" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_type_label5"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="Ampharos"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_icon3"
+        app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_icon3"
+        app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_icon3"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_type_label6"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="Flaaffy"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_icon5"
+        app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_icon5"
+        app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_icon5"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_type_label9"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="Flaaffy"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_icon6"
+        app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_icon6"
+        app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_icon6"
+        app:lineHeight="38dp" />
+
+    <ImageView
+        android:id="@+id/iv_pkdexdetails_icon3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_pkdexdetails_type4"
+        app:layout_constraintTop_toTopOf="@+id/iv_pkdexdetails_icon5"
+        app:srcCompat="@drawable/pkmn_78" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_tasklist_hor8p2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_pkdexdetails_label"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/green"
+        app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor8p2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ImageButton
+            android:id="@+id/ib_pkdexdetails_back"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/pink_button" />
+
+        <TextView
+            android:id="@+id/tv_taskdetails_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="@string/pkdexdetails_title"
+            android:textColor="@color/darker_gray"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="23dp"
+        android:layout_height="24dp"
+        app:tint="@color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_pkdexdetails_icon5"
+        app:layout_constraintEnd_toStartOf="@+id/iv_pkdexdetails_icon3"
+        app:layout_constraintStart_toEndOf="@+id/iv_pkdexdetails_icon5"
+        app:layout_constraintTop_toTopOf="@+id/iv_pkdexdetails_icon5"
+        app:srcCompat="@drawable/arrow_next" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
