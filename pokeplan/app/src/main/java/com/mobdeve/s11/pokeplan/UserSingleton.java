@@ -29,7 +29,6 @@ public class UserSingleton {
         userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(22)));
         userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(68)));
         userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(84)));
-        userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(93)));
         userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(95)));
         userPokemonParty.add(new UserPokemon(new Pokedex().getPokemon(138)));
 
@@ -38,7 +37,6 @@ public class UserSingleton {
         userPokedex[21] = true;
         userPokedex[67] = true;
         userPokedex[83] = true;
-        userPokedex[92] = true;
         userPokedex[94] = true;
         userPokedex[137] = true;
 
@@ -64,11 +62,29 @@ public class UserSingleton {
     public void addTask(Task task) {
         this.tasks.add(task);
     }
+    public ArrayList<Task> getOngoingTasks() {
+        ArrayList<Task> ongoing = new ArrayList<>();
+        for(int j=0; j<tasks.size(); j++) {
+            if (!tasks.get(j).isFinished())
+                ongoing.add(tasks.get(j));
+        }
+
+        return ongoing;
+    }
+    public ArrayList<Task> getCompletedTasks() {
+        ArrayList<Task> completed = new ArrayList<>();
+        for(int j=0; j<tasks.size(); j++) {
+            if (tasks.get(j).isFinished())
+                completed.add(tasks.get(j));
+        }
+
+        return completed;
+    }
 
     // pokemons
-    public void addPokemon(int dexnum) {
-        UserPokemon pkmn = new UserPokemon(new Pokedex().getPokemon(dexnum));
-        userPokedex[dexnum-1] = true;
+    public void addPokemon(Pokemon details) {
+        UserPokemon pkmn = new UserPokemon(details);
+        userPokedex[details.getDexNum()-1] = true;
         if (userPokemonParty.size() < 6) {
             userPokemonParty.add(pkmn);
         }
