@@ -38,14 +38,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void initComponents (View view) {
-        UserSingleton helper = new UserSingleton();
-
-        this.pokemonPartyList = helper.getUserPokemonParty();
+        this.pokemonPartyList = UserSingleton.getUser().getUserPokemonParty();
         this.rvPokemonParty = view.findViewById(R.id.rv_home_party);
         this.rvPokemonParty.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
         this.ppAdapter = new PokemonPartyAdapter(this.pokemonPartyList);
         this.rvPokemonParty.setAdapter(this.ppAdapter);
-
     }
 }
