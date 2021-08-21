@@ -14,6 +14,9 @@ public class UserDetails {
         this.fullName = fullName;
         this.email = email;
         this.userName = userName;
+
+        this.rarecandy = 5;
+        this.supercandy = 5;
     }
 
     public String getName () {
