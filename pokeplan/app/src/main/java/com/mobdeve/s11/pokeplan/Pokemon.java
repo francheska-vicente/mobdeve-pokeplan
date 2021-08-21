@@ -2,14 +2,12 @@ package com.mobdeve.s11.pokeplan;
 
 public class Pokemon {
     private String species;
-    private int dexnum;
+    private int dexNum;
     private String rarity;
-    private int evolve_lvl;
-    private String evolves_to;
-    private String type_1;
-    private String type_2;
-
-
+    private int evolveLvl;
+    private String evolvesTo;
+    private String type1;
+    private String type2;
 
     /**
      *  full constructor
@@ -17,12 +15,12 @@ public class Pokemon {
     public Pokemon (String species, int dexnum, String rarity, int evolve_lvl,
                     String evolves_to, String type_1, String type_2) {
         this.species = species;
-        this.dexnum = dexnum;
+        this.dexNum = dexnum;
         this.rarity = rarity;
-        this.evolve_lvl = evolve_lvl;
-        this.evolves_to = evolves_to;
-        this.type_1 = type_1;
-        this.type_2 = type_2;
+        this.evolveLvl = evolve_lvl;
+        this.evolvesTo = evolves_to;
+        this.type1 = type_1;
+        this.type2 = type_2;
     }
 
     /**
@@ -31,10 +29,12 @@ public class Pokemon {
     public Pokemon (String species, int dexnum, String rarity,
                     String type_1, String type_2) {
         this.species = species;
-        this.dexnum = dexnum;
+        this.dexNum = dexnum;
         this.rarity = rarity;
-        this.type_1 = type_1;
-        this.type_2 = type_2;
+        this.type1 = type_1;
+        this.type2 = type_2;
+        this.evolveLvl = -1;
+        this.evolvesTo = "";
     }
 
     /**
@@ -43,9 +43,12 @@ public class Pokemon {
     public Pokemon (String species, int dexnum, String rarity,
                     String type_1) {
         this.species = species;
-        this.dexnum = dexnum;
+        this.dexNum = dexnum;
         this.rarity = rarity;
-        this.type_1 = type_1;
+        this.type1 = type_1;
+        this.evolveLvl = -1;
+        this.type2 = "";
+        this.evolvesTo = "";
     }
 
     /**
@@ -54,11 +57,15 @@ public class Pokemon {
     public Pokemon (String species, int dexnum, String rarity, int evolve_lvl,
                     String evolves_to, String type_1) {
         this.species = species;
-        this.dexnum = dexnum;
-        this.evolve_lvl = evolve_lvl;
-        this.evolves_to = evolves_to;
+        this.dexNum = dexnum;
+        this.evolveLvl = evolve_lvl;
+        this.evolvesTo = evolves_to;
         this.rarity = rarity;
-        this.type_1 = type_1;
+        this.type1 = type_1;
+    }
+
+    public Pokemon () {
+
     }
 
     public String getSpecies() {
@@ -66,7 +73,7 @@ public class Pokemon {
     }
 
     public int getDexNum() {
-        return dexnum;
+        return dexNum;
     }
 
     public String getRarity() {
@@ -74,22 +81,46 @@ public class Pokemon {
     }
 
     public int getEvolveLvl() {
-        return evolve_lvl;
+        return evolveLvl;
     }
 
     public String getEvolvesTo() {
-        return evolves_to;
+        return evolvesTo;
     }
 
     public String getType1() {
-        return type_1;
+        return type1;
     }
 
     public String getType2() {
-        return type_2;
+        return type2;
     }
 
-    public Pokemon getPokemon () {
-        return this;
+    public void setSpecies (String species) {
+        this.species = species;
+    }
+
+    public void setDexNum (int num) {
+        this.dexNum = num;
+    }
+
+    public void setRarity (String rare) {
+        this.rarity = rare;
+    }
+
+    public void setEvolveLvl (int evolve) {
+        this.evolveLvl = evolve;
+    }
+
+    public void setEvolvesTo (String pokemon) {
+        this.evolvesTo = pokemon;
+    }
+
+    public void setType1 (String type) {
+        this.type1 = type;
+    }
+
+    public void setType2 (String type) {
+        this.type2 = type;
     }
 }
