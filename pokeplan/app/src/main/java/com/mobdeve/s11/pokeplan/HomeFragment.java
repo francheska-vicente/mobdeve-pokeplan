@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initComponents (View view) {
-        User helper = new User();
+        UserSingleton helper = new UserSingleton();
 
         this.pokemonPartyList = helper.getUserPokemonParty();
         this.rvPokemonParty = view.findViewById(R.id.rv_home_party);
