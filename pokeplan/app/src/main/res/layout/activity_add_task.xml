@@ -56,10 +56,11 @@
         android:id="@+id/tv_add_task_label_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/raleway_light_italic"
+        android:fontFamily="@font/raleway_bold"
         android:text="@string/add_task_name"
-        android:textColor="@color/darker_gray"
-        android:textSize="16sp"
+        android:textAllCaps="true"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
         app:layout_constraintTop_toTopOf="@+id/gl_add_task_hor10p" />
 
@@ -95,10 +96,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/raleway_light_italic"
+        android:fontFamily="@font/raleway_bold"
         android:text="@string/add_task_type"
-        android:textColor="@color/darker_gray"
-        android:textSize="16sp"
+        android:textAllCaps="true"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
         app:layout_constraintTop_toBottomOf="@+id/et_add_task_name" />
 
@@ -107,10 +109,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/raleway_light_italic"
+        android:fontFamily="@font/raleway_bold"
         android:text="@string/add_task_start_date"
-        android:textColor="@color/darker_gray"
-        android:textSize="16sp"
+        android:textAllCaps="true"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
         app:layout_constraintTop_toBottomOf="@+id/cl_add_task_category"></TextView>
 
@@ -135,10 +138,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/raleway_light_italic"
+        android:fontFamily="@font/raleway_bold"
         android:text="@string/add_task_start_time"
+        android:textAllCaps="true"
         android:textColor="@color/darkest_gray"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver50p"
         app:layout_constraintTop_toBottomOf="@+id/cl_add_task_category" />
 
@@ -334,10 +338,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/raleway_light_italic"
+        android:fontFamily="@font/raleway_bold"
         android:text="@string/add_task_end_date"
+        android:textAllCaps="true"
         android:textColor="@color/darkest_gray"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
         app:layout_constraintTop_toBottomOf="@+id/et_add_task_start_date" />
 
@@ -346,10 +351,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/raleway_light_italic"
+        android:fontFamily="@font/raleway_bold"
         android:text="@string/add_task_end_time"
+        android:textAllCaps="true"
         android:textColor="@color/darkest_gray"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver50p"
         app:layout_constraintTop_toBottomOf="@+id/et_add_task_start_time" />
 
@@ -389,13 +395,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/raleway_light_italic"
+        android:fontFamily="@font/raleway_bold"
         android:text="@string/add_task_priority"
-        android:textColor="#000000"
-        android:textSize="16sp"
+        android:textAllCaps="true"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
         app:layout_constraintTop_toBottomOf="@+id/et_add_task_end_date" />
 
+
+    <TextView
+        android:id="@+id/tv_add_task_label_notif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="Notifications"
+        android:textAllCaps="true"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
+        app:layout_constraintTop_toBottomOf="@+id/cl_add_task_priority" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_add_task_priority"
@@ -522,18 +542,6 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/tv_add_task_label_notes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/raleway_light_italic"
-        android:text="@string/add_task_notes"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
-        app:layout_constraintTop_toBottomOf="@+id/cl_add_task_priority" />
-
     <EditText
         android:id="@+id/et_add_task_notes"
         android:layout_width="0dp"
@@ -551,6 +559,19 @@
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
         app:layout_constraintTop_toBottomOf="@+id/tv_add_task_label_notes"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tv_add_task_label_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="@string/add_task_notes"
+        android:textAllCaps="true"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
+        app:layout_constraintTop_toBottomOf="@+id/spin_add_task_notiftime" />
 
     <Button
         android:id="@+id/btn_add_task_create"
@@ -571,6 +592,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gl_add_task_hor90p"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Spinner
+        android:id="@+id/spin_add_task_notiftime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cb_add_task_notifs"
+        app:layout_constraintStart_toEndOf="@+id/cb_add_task_notifs"
+        app:layout_constraintTop_toTopOf="@+id/cb_add_task_notifs" />
+
+    <Spinner
+        android:id="@+id/spin_add_task_notifwhen"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cb_add_task_notifs"
+        app:layout_constraintEnd_toStartOf="@+id/gl_add_task_ver95p"
+        app:layout_constraintStart_toEndOf="@+id/spin_add_task_notiftime"
+        app:layout_constraintTop_toTopOf="@+id/cb_add_task_notifs" />
+
+    <CheckBox
+        android:id="@+id/cb_add_task_notifs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
+        app:layout_constraintTop_toBottomOf="@+id/tv_add_task_label_notif" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
