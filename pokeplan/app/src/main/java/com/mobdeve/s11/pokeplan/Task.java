@@ -13,6 +13,7 @@ public class Task {
     private boolean isFinished;
     private String taskID;
 
+
     public Task (String taskID, String taskName, int priority, String category, CustomDate startDate, CustomDate endDate, String description) {
         this.taskID = taskID;
         this.taskName = taskName;
@@ -57,7 +58,7 @@ public class Task {
     }
 
     public boolean getIsFinished() {
-        return this.isFinished;
+        return this.    isFinished;
     }
 
     public void setTaskName (String name) {
