@@ -59,7 +59,7 @@ public class UserPokemon {
 
     @Exclude
     public void evolvePokemon() {
-        Pokedex pokedex = new Pokedex();
+        Pokedex pokedex = Pokedex.getPokedex();
         this.details = pokedex.getPokemon(this.details.getEvolvesTo());
     }
 
