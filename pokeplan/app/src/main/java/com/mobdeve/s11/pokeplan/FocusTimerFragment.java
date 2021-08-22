@@ -223,6 +223,7 @@ public class FocusTimerFragment extends Fragment {
             }
         });
         hatcheggdialog.show();
+        hatch.playPokemonCry();
     }
 
     private void createTimeErrorDialog(View view) {
