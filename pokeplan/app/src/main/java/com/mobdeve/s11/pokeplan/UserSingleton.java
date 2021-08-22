@@ -188,7 +188,6 @@ public class UserSingleton {
             }
         });
     }
-
     public void editTask (String name, int priority, String category, CustomDate startDate,
                           CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
