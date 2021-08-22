@@ -51,6 +51,7 @@ public class FocusTimerFragment extends Fragment {
     private Dialog timererrordialog;
     private Dialog confirmstoptimerdialog;
     private Dialog hatcheggdialog;
+    private Dialog stopTimerdialog;
 
     public FocusTimerFragment() {
     }
@@ -115,6 +116,7 @@ public class FocusTimerFragment extends Fragment {
     private void stopTimer() {
         countdown.cancel();
         resetTimer();
+        stopTimerDialog();
     }
 
     private void finishTimer() {
@@ -428,9 +430,36 @@ public class FocusTimerFragment extends Fragment {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
 
+    public void stopTimerDialog () {
+        stopTimerdialog = new Dialog(getView().getContext());
+
+        stopTimerdialog.setContentView(R.layout.dialog_ok);
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        stopTimerdialog.getWindow().setLayout(width, height);
+        stopTimerdialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) stopTimerdialog.findViewById(R.id.tv_dialog_ok_title);
+        tvdialogtitle.setText(R.string.focustimer_dialog_egg_break_title);
+        TextView tvdialogtext = (TextView) stopTimerdialog.findViewById(R.id.tv_dialog_ok_text);
+        tvdialogtext.setText(R.string.focustimer_dialog_egg_break_text);
+        ImageView ivdialogicon = (ImageView) stopTimerdialog.findViewById(R.id.iv_dialog_ok_icon);
+        ivdialogicon.setImageResource(R.drawable.sunny_side_up);
+
+        Button btndialogcancel = (Button) stopTimerdialog.findViewById(R.id.btn_dialog_ok);
+        btndialogcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopTimerdialog.dismiss();
+            }
+        });
+
+        stopTimerdialog.show();
+    }
+
     public void onPause() {
         super.onPause();
         stopTimer();
-        createConfirmStopTimerDialog(getView());
     }
 }
