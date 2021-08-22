@@ -1,5 +1,10 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+
+import java.io.IOException;
+
 public class Pokemon {
     private String species;
     private int dexNum;
@@ -123,5 +128,22 @@ public class Pokemon {
 
     public void setType2 (String type) {
         this.type2 = type;
+    }
+
+    public void playPokemonCry() {
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        String audioUrl = "https://play.pokemonshowdown.com/audio/cries/";
+        audioUrl = audioUrl +
+                species.toLowerCase() + ".mp3";
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        try {
+            mediaPlayer.setDataSource(audioUrl);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
