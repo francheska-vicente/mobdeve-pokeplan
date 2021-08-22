@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -35,6 +36,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -52,6 +54,8 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private String category;
     private String priority;
+
+    private TextView tvTitle;
 
     private EditText etTaskName;
     private EditText etTaskNotes;
@@ -137,7 +141,7 @@ public class AddTaskActivity extends AppCompatActivity {
         DrawableCompat.setTint(priorityDrawable, getResources().getColor(R.color.pink_button));
         btnPriority.get(priority).setBackground(priorityDrawable);
 
-        this.priority = priority + 1 + "";
+        this.priority = (priority + 1) + "";
         String category = intent.getStringExtra(TaskDetailsActivity.KEY_CATEGORY);
         for (int i = 0; i < btnCategory.size(); i++) {
             Button temp = (Button) btnCategory.get(i);
@@ -152,9 +156,24 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     public void editDatabase (String name, int priority, String category, String startDate,
-                              String endDate, String startTime, String endTime, String notes) {
-        UserSingleton.getUser().editTask(name, priority, category, startDate, endDate, startTime, endTime, notes,
-                TaskDetailsActivity.KEY_ID);
+                              String endDate, String startTime, String endTime, String notes, String taskID) {
+
+        CustomDate cEndDate = new CustomDate (endDate, endTime);
+        CustomDate cStartDate = new CustomDate(startDate, startTime);
+
+        UserSingleton.getUser().editTask(name, priority, category, cStartDate, cEndDate, notes, taskID);
+
+        Intent intent = new Intent();
+
+        intent.putExtra(AddTaskActivity.KEY_TASKNAME, name);
+        intent.putExtra(AddTaskActivity.KEY_NOTES, notes);
+        intent.putExtra(AddTaskActivity.KEY_END_DATE, cEndDate.toString());
+        intent.putExtra(AddTaskActivity.KEY_START_DATE, cStartDate.toString());
+        intent.putExtra(AddTaskActivity.KEY_CATEGORY, category);
+        intent.putExtra(AddTaskActivity.KEY_PRIORITY, this.priority);
+
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 
     private void intent () {
@@ -167,13 +186,16 @@ public class AddTaskActivity extends AppCompatActivity {
         this.etStartDate = findViewById(R.id.et_add_task_start_date);
         this.etEndDate = findViewById(R.id.et_add_task_end_date);
         this.etEndTime = findViewById(R.id.et_add_task_end_time);
-
-        this.btnCreate = findViewById(R.id.btn_add_task_create);
+        tvTitle = findViewById(R.id.tv_add_task_start_title);
+        this.btnCreate = (Button) findViewById(R.id.btn_add_task_create);
 
         Intent intent = getIntent();
-
-        if (intent != null) {
+        String checker = intent.getStringExtra(TaskDetailsActivity.KEY_ID);
+        if (intent != null && checker != null) {
             setValues (intent);
+
+            tvTitle.setText("EDIT TASK");
+            btnCreate.setText("EDIT TASK");
         }
 
         this.btnCreate.setOnClickListener(new View.OnClickListener() {
@@ -203,7 +225,6 @@ public class AddTaskActivity extends AppCompatActivity {
                 String endTime = etEndTime.getText().toString();
                 String startDate = etStartDate.getText().toString();
                 String endDate = etEndDate.getText().toString();
-
 
                 String error = "";
                 boolean checker = false;
@@ -305,8 +326,10 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 if (!checker) {
                     Intent intent = getIntent();
-                    if (intent.getStringExtra(TaskDetailsActivity.KEY_ID) != null) {
-                        editDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes);
+                    String taskID = intent.getStringExtra(TaskDetailsActivity.KEY_ID);
+                    if (taskID != null) {
+                        editDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes,
+                                taskID);
                     } else {
                         addToDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes);
                         finish();
@@ -423,16 +446,36 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         };
 
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+
+        DecimalFormat format = new DecimalFormat("00");
+
+        Intent intent = getIntent();
+        String sStartDate = intent.getStringExtra(TaskDetailsActivity.KEY_C_START_DATE);
+        if (sStartDate != null && !sStartDate.isEmpty()) {
+            String [] temp = sStartDate.split("\\.");
+            day = Integer.parseInt(temp[0]);
+            month = Integer.parseInt(temp[1]) - 1;
+
+            if (temp[2].length() == 4) {
+                temp[2] = temp[2].substring(2,4);
+            }
+
+            startDate.setText(format.format(day) + "." + format.format(month + 1) + "." + temp[2]);
+        }
+
+        int finalSYear = year;
+        int finalSDay = day;
+        int finalSMonth = month;
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(AddTaskActivity.this, dateStart, calendarStart
-                        .get(Calendar.YEAR), calendarStart.get(Calendar.MONTH),
-                        calendarStart.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(AddTaskActivity.this, dateStart, finalSYear, finalSMonth,
+                        finalSDay).show();
             }
         });
-
-
 
         EditText endDate = (EditText) findViewById(R.id.et_add_task_end_date);
         Calendar calendarEnd = Calendar.getInstance();
@@ -452,12 +495,31 @@ public class AddTaskActivity extends AppCompatActivity {
 
         };
 
+        month = Calendar.getInstance().get(Calendar.MONTH);
+        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        year = Calendar.getInstance().get(Calendar.YEAR);
+
+        String sEndDate = intent.getStringExtra(TaskDetailsActivity.KEY_C_END_DATE);
+        if (sStartDate != null && !sEndDate.isEmpty()) {
+            String [] temp = sEndDate.split("\\.");
+            day = Integer.parseInt(temp[0]);
+            month = Integer.parseInt(temp[1]) - 1;
+
+            if (temp[2].length() == 4) {
+                temp[2] = temp[2].substring(2,4);
+            }
+
+            endDate.setText(format.format(day) + "." + format.format(month + 1) + "." + temp[2]);
+        }
+
+        int finalYear = year;
+        int finalMonth = month;
+        int finalDay = day;
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(AddTaskActivity.this, dateEnd, calendarEnd
-                        .get(Calendar.YEAR), calendarEnd.get(Calendar.MONTH),
-                        calendarEnd.get(Calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(AddTaskActivity.this, dateEnd, finalYear, finalMonth,
+                        finalDay).show();
             }
         });
 
@@ -477,10 +539,35 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         };
 
+        int hour = 0;
+        int minute = 0;
+
+        String sTime = intent.getStringExtra(TaskDetailsActivity.KEY_C_START_TIME);
+        if (sTime != null && !sTime.isEmpty()) {
+            String [] temp = sTime.split(":");
+            hour = Integer.parseInt(temp[0]);
+            minute = Integer.parseInt(temp[1]);
+
+            int tempHour = hour;
+            String tempM = "AM";
+            if (hour > 12) {
+                tempHour = hour - 12;
+                tempM = "PM";
+            } else if (hour == 0) {
+                tempHour = 12;
+            } else if (hour == 12) {
+                tempM = "PM";
+            }
+
+            startTime.setText(format.format(hour) + ":" + format.format(minute) + " " + tempM);
+        }
+
+        int finalSHour = hour;
+        int finalSMinute = minute;
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new TimePickerDialog(AddTaskActivity.this, timeStart, 0, 0, false).show();
+                new TimePickerDialog(AddTaskActivity.this, timeStart, finalSHour, finalSMinute, false).show();
             }
         });
 
@@ -500,10 +587,36 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         };
 
+        hour = 0;
+        minute = 0;
+
+        String eTime = intent.getStringExtra(TaskDetailsActivity.KEY_C_END_TIME);
+        if (sTime != null && !sTime.isEmpty()) {
+            String [] temp = eTime.split(":");
+            hour = Integer.parseInt(temp[0]);
+            minute = Integer.parseInt(temp[1]);
+
+            int tempHour = hour;
+            String tempM = "AM";
+            if (hour > 12) {
+                tempHour = hour - 12;
+                tempM = "PM";
+            } else if (hour == 0) {
+                tempHour = 12;
+            } else if (hour == 12) {
+                tempM = "PM";
+            }
+
+            endTime.setText(format.format(hour) + ":" + format.format(minute) + " " + tempM);
+        }
+
+        int finalEHour = hour;
+        int finalEMinute = minute;
+
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new TimePickerDialog(AddTaskActivity.this, timeEnd, 0, 0, false).show();
+                new TimePickerDialog(AddTaskActivity.this, timeEnd, finalEHour, finalEMinute, false).show();
             }
         });
     }
