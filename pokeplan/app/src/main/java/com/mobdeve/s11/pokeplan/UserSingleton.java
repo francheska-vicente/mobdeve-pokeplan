@@ -153,7 +153,7 @@ public class UserSingleton {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
                 if(task.isSuccessful()) {
-                    
+
                 } else {
 
                 }
@@ -223,6 +223,18 @@ public class UserSingleton {
         });
 
         return checker[0];
+    }
+
+    public void editNickname (String key, String nickname) {
+        HashMap hash = new HashMap();
+        hash.put("nickname", nickname);
+
+        mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+                
+            }
+        });
     }
 
     // party pokemon

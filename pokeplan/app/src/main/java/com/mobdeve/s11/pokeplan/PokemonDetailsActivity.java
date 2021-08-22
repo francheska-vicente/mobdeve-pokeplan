@@ -151,6 +151,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 pkmn.setNickname(etdialoginput.getText().toString());
                 tvPkmnNickname.setText(pkmn.getNickname());
                 editdialog.dismiss();
+                UserSingleton.getUser().editNickname(pkmn.getUserPokemonID(), pkmn.getNickname());
             }
         });
 
