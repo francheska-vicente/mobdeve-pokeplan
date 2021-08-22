@@ -5,38 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/div_evolveto"
-        android:layout_width="0dp"
-        android:layout_height="0.5dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-
-    <View
-        android:id="@+id/divider9"
-        android:layout_width="0dp"
-        android:layout_height="0.5dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_type_label6" />
-
     <TextView
         android:id="@+id/tv_pkdexdetails_species"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="24dp"
         android:fontFamily="@font/raleway_bold"
         android:gravity="bottom"
         android:text="Flaaffy"
@@ -78,7 +52,7 @@
         app:lineHeight="38dp" />
 
     <TextView
-        android:id="@+id/tv_pkdexdetails_type4"
+        android:id="@+id/tv_pkdexdetails_evolveto_level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -87,39 +61,55 @@
         android:textAllCaps="false"
         android:textColor="@color/darker_gray"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView6"
-        app:layout_constraintStart_toStartOf="@+id/imageView6"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6"
+        app:layout_constraintEnd_toEndOf="@+id/iv_evolveto_arrow"
+        app:layout_constraintStart_toStartOf="@+id/iv_evolveto_arrow"
+        app:layout_constraintTop_toBottomOf="@+id/iv_evolveto_arrow"
         app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="40dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="Flaaffy’s wool quality changes so that it can generate a high amount of static electricity with a small amount of wool. The bare and slick parts of its hide are shielded against electricity."
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label2" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_evolveto_label"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/raleway_bold"
         android:text="EVOLVES TO"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/div_evolveto"
-        app:layout_constraintTop_toBottomOf="@+id/div_evolveto"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_info"
         app:lineHeight="38dp" />
 
     <TextView
-        android:id="@+id/tv_pkdexdetails_type_label7"
+        android:id="@+id/tv_pkdexdetails_evolveto_label2"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="DOES NOT EVOLVE"
+        android:text="INFORMATION"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/divider9"
-        app:layout_constraintTop_toBottomOf="@+id/divider9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
         app:lineHeight="38dp" />
 
     <ImageView
@@ -145,28 +135,18 @@
         app:srcCompat="@drawable/pkmn_77" />
 
     <ImageView
-        android:id="@+id/iv_pkdexdetails_icon5"
+        android:id="@+id/iv_pkdexdetails_evolveto_ogicon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_pkdexdetails_type4"
+        app:layout_constraintEnd_toStartOf="@+id/tv_pkdexdetails_evolveto_level"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label"
         app:srcCompat="@drawable/pkmn_77" />
 
-    <ImageView
-        android:id="@+id/iv_pkdexdetails_icon6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_type_label7"
-        app:srcCompat="@drawable/pkmn_77" />
-
     <TextView
-        android:id="@+id/tv_pkdexdetails_type_label5"
+        android:id="@+id/tv_pkdexdetails_evolveto_evospecies"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:fontFamily="@font/raleway_bold"
@@ -174,13 +154,13 @@
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_icon3"
-        app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_icon3"
-        app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_icon3"
+        app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_evolveto_evoicon"
+        app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_evolveto_evoicon"
+        app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_evolveto_evoicon"
         app:lineHeight="38dp" />
 
     <TextView
-        android:id="@+id/tv_pkdexdetails_type_label6"
+        android:id="@+id/tv_pkdexdetails_evolveto_ogspecies"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:fontFamily="@font/raleway_bold"
@@ -188,33 +168,19 @@
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_icon5"
-        app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_icon5"
-        app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_icon5"
-        app:lineHeight="38dp" />
-
-    <TextView
-        android:id="@+id/tv_pkdexdetails_type_label9"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="Flaaffy"
-        android:textAllCaps="false"
-        android:textColor="@color/darkest_gray"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_icon6"
-        app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_icon6"
-        app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_icon6"
+        app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_evolveto_ogicon"
+        app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_evolveto_ogicon"
+        app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_evolveto_ogicon"
         app:lineHeight="38dp" />
 
     <ImageView
-        android:id="@+id/iv_pkdexdetails_icon3"
+        android:id="@+id/iv_pkdexdetails_evolveto_evoicon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_pkdexdetails_type4"
-        app:layout_constraintTop_toTopOf="@+id/iv_pkdexdetails_icon5"
+        app:layout_constraintStart_toEndOf="@+id/tv_pkdexdetails_evolveto_level"
+        app:layout_constraintTop_toTopOf="@+id/iv_pkdexdetails_evolveto_ogicon"
         app:srcCompat="@drawable/pkmn_78" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -263,14 +229,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/iv_evolveto_arrow"
         android:layout_width="23dp"
         android:layout_height="24dp"
         app:tint="@color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_pkdexdetails_icon5"
-        app:layout_constraintEnd_toStartOf="@+id/iv_pkdexdetails_icon3"
-        app:layout_constraintStart_toEndOf="@+id/iv_pkdexdetails_icon5"
-        app:layout_constraintTop_toTopOf="@+id/iv_pkdexdetails_icon5"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_pkdexdetails_evolveto_ogicon"
+        app:layout_constraintEnd_toStartOf="@+id/iv_pkdexdetails_evolveto_evoicon"
+        app:layout_constraintStart_toEndOf="@+id/iv_pkdexdetails_evolveto_ogicon"
+        app:layout_constraintTop_toTopOf="@+id/iv_pkdexdetails_evolveto_ogicon"
         app:srcCompat="@drawable/arrow_next" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

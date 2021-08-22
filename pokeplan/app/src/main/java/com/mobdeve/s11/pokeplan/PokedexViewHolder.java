@@ -54,6 +54,9 @@ public class PokedexViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+    public void setButtonEnabled(int dexnum, boolean caught) {
+        layout.setEnabled(caught);
+    }
 
     public void setDexNum(int dexnum) {
         String text = "#" + dexnum;
