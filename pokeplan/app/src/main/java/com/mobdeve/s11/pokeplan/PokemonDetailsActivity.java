@@ -39,6 +39,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private Dialog editdialog;
     private Dialog confirmDialog;
 
+    private UserPokemon pkmn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +79,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private void setAllComponents() {
         Intent intent = getIntent();
         String pkmnid = intent.getStringExtra(PokemonPartyAdapter.KEY_POKEMONID);
-        UserPokemon pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);
+        pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);
 
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
@@ -100,21 +102,21 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         this.btnedit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                editNickname(pkmn);
+                editNickname();
             }
         });
 
         this.btnpc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                movePokemonToPC(pkmn);
+                movePokemonToPC();
             }
         });
 
         if (UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100)
             this.btnrare.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    feedPokemon(pkmn);
+                    feedPokemon();
                 }
             });
         else {
@@ -126,7 +128,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 pkmn.getLevel() >= pkmn.getPokemonDetails().getEvolveLvl())
             this.btnsuper.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    evolvePokemon(pkmn);
+                    evolvePokemon();
                 }
             });
         else {
@@ -136,7 +138,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         }
     }
 
-    private void movePokemonToPC (UserPokemon pkmn) {
+    private void movePokemonToPC () {
         confirmDialog = new Dialog(this);
 
         confirmDialog.setContentView(R.layout.dialog_confirm);
@@ -175,7 +177,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         confirmDialog.show();
     }
 
-    private void editNickname(UserPokemon pkmn) {
+    private void editNickname() {
         editdialog = new Dialog(this);
         editdialog.setContentView(R.layout.dialog_stringinput);
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
@@ -213,7 +215,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         editdialog.show();
     }
 
-    private void feedPokemon(UserPokemon pkmn) {
+    private void feedPokemon() {
         pkmn.feedCandy();
         UserSingleton.getUser().getUserDetails().subtractRareCandy(1);
         this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
@@ -226,7 +228,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             btnrare.setEnabled(false);
     }
 
-    private void evolvePokemon(UserPokemon pkmn) {
+    private void evolvePokemon() {
         if (pkmn.getPokemonDetails().getEvolveLvl() <= pkmn.getLevel()
                 && pkmn.getPokemonDetails().getEvolveLvl() != -1) {
             pkmn.evolvePokemon();
@@ -246,6 +248,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        // UserSingleton.getUser().updatePokemon ();
+        UserSingleton.getUser().updatePokemon (pkmn);
     }
 }
