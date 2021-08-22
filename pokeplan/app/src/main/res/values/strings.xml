@@ -67,6 +67,21 @@
     <string name="add_task_end_date">End Date</string>
     <string name="add_task_end_time">End Time</string>
     <string name="add_task_priority">Priority</string>
+    <string-array name="notifs_time">
+        <item>0 Minutes</item>
+        <item>10 Minutes</item>
+        <item>30 Minutes</item>
+        <item>1 Hour</item>
+        <item>2 Hours</item>
+        <item>4 Hours</item>
+        <item>8 Hours</item>
+        <item>12 Hours</item>
+        <item>1 Day</item>
+    </string-array>
+    <string-array name="notifs_when">
+        <item>Before Start Time</item>
+        <item>Before End Time</item>
+    </string-array>
     <string name="add_task_notes">Notes</string>
 
     <string name="task_category_school">School</string>
@@ -85,7 +100,7 @@
     <string name="task_priority_critical">Critical</string>
 
     <!-- Home -->
-    <string name="home_title">HOME</string>
+    <string name="home_title">PokéPlan</string>
     <string name="home_userprofile_btn">User Profile</string>
     <string name="home_pokemonpc_btn">Pokemon PC</string>
     <string name="home_party_label">Your Party</string>

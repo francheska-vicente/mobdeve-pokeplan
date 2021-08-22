@@ -1,27 +1,25 @@
 package com.mobdeve.s11.pokeplan;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,14 +30,12 @@ import org.w3c.dom.Text;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 public class AddTaskActivity extends AppCompatActivity {
 
@@ -67,6 +63,10 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private ArrayList<View> btnPriority;
     private ArrayList<View> btnCategory;
+
+    private CheckBox cbNotif;
+    private Spinner spinNotifTime;
+    private Spinner spinNotifWhen;
 
     private Dialog errorDialog;
 
@@ -179,6 +179,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private void intent () {
         this.initPriority ();
         this.initCategory ();
+        this.initNotifications ();
 
         this.etTaskName = findViewById(R.id.et_add_task_name);
         this.etTaskNotes = findViewById(R.id.et_add_task_notes);
@@ -619,5 +620,38 @@ public class AddTaskActivity extends AppCompatActivity {
                 new TimePickerDialog(AddTaskActivity.this, timeEnd, finalEHour, finalEMinute, false).show();
             }
         });
+    }
+
+    private void initNotifications () {
+        spinNotifTime = findViewById(R.id.spin_add_task_notiftime);
+        ArrayAdapter<CharSequence> adapterTime = ArrayAdapter.createFromResource(this,
+                R.array.notifs_time, R.layout.spinner_item);
+        adapterTime.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinNotifTime.setAdapter(adapterTime);
+
+        spinNotifWhen = findViewById(R.id.spin_add_task_notifwhen);
+        ArrayAdapter<CharSequence> adapterWhen = ArrayAdapter.createFromResource(this,
+                R.array.notifs_when, R.layout.spinner_item);
+        adapterWhen.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinNotifWhen.setAdapter(adapterWhen);
+
+        spinNotifTime.setEnabled(false);
+        spinNotifWhen.setEnabled(false);
+
+        cbNotif = findViewById(R.id.cb_add_task_notifs);
+        cbNotif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!cbNotif.isChecked()) {
+                    spinNotifTime.setEnabled(false);
+                    spinNotifWhen.setEnabled(false);
+                }
+                else {
+                    spinNotifTime.setEnabled(true);
+                    spinNotifWhen.setEnabled(true);
+                }
+            }
+        });
+
     }
 }

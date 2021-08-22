@@ -65,9 +65,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
         this.ivStarterIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ user.getStarterDexNum()));
-        this.tvUsername.setText(user.getUserName());
+
+        String username = "@" + user.getUserName();
+        this.tvUsername.setText(username);
         this.tvEmail.setText(user.getEmail());
-        this.tvName.setText(user.getUserName());
+        this.tvName.setText(user.getFullName());
 
         String egg = user.getHatchedPkmnCount() + " Pokemon Hatched";
         this.tvEggHatchCtr.setText(egg);
