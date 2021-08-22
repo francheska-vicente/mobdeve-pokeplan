@@ -25,12 +25,7 @@ public class UserDetails {
         this.finishedtaskscount = 0;
     }
     public UserDetails () {
-        this.fullName = "";
-        this.email = "";
-        this.userName = "";
 
-        this.rarecandy = 5;
-        this.supercandy = 5;
     }
 
     public String getName () {
@@ -75,5 +70,33 @@ public class UserDetails {
     }
     public void addFinishedTask() {
         this.finishedtaskscount++;
+    }
+
+    public void setFullName (String name) {
+        this.fullName = name;
+    }
+
+    public void setEmail (String email) {
+        this.email = email;
+    }
+
+    public void setUserName (String username) {
+        this.userName = username;
+    }
+
+    public void setRareCandy (int rarecandy) {
+        this.rarecandy = rarecandy;
+    }
+
+    public void setSuperCandy (int supercandy) {
+        this.supercandy = supercandy;
+    }
+
+    public void setHatchedPkmnCount (int num) {
+        this.hatchedpkmncount = num;
+    }
+
+    public void setFinishedTaskCount (int num) {
+        this.finishedtaskscount = num;
     }
 }
