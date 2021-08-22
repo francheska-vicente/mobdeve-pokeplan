@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -144,25 +145,21 @@ public class UserSingleton {
         this.completedTasks = tasks;
     }
 
-    public String addOngoingTask(Task taskCreated) {
+    public void addOngoingTask(Task taskCreated) {
         String key = mTask.push().getKey();
         taskCreated.setTaskID(key);
 
-        final boolean[] checker = new boolean[1];
-        final String[] error = {"no error"};
         mTask.child(key).setValue(taskCreated).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
                 if(task.isSuccessful()) {
-                    checker[0] = true;
+                    
                 } else {
-                    checker[0] = false;
-                    error[0] = task.getException().toString();
+
                 }
             }
         });
 
-        return error[0];
     }
 
     public void moveToCompletedTask (String key) {
@@ -176,14 +173,27 @@ public class UserSingleton {
         });
     }
 
+    public void deleteTask (String key) {
+        Query query = mTask.child(key);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
     // pokemons
     public boolean addPokemon(Pokemon details) {
         userPokedex[details.getDexNum()-1] = true;
 
         UserPokemon userPokemon;
         String key = mPokemon.push().getKey();
-
-        Log.d("hello pare", Integer.toString(userPokemonParty.size()));
 
         if (userPokemonParty.size() < 6) {
             userPokemon = new UserPokemon(details, true);

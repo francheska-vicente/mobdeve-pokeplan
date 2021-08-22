@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Task;
+
 public class TaskDetailsActivity extends AppCompatActivity {
     private ImageButton btnback;
     private TextView tvTaskName;
@@ -25,7 +27,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private TextView tvNotesLabel;
 
     private Button btnFinishTask;
+    private ImageButton ibDeleteTask;
     private Dialog confirmFinish;
+    private Dialog confirmDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.tvNotesLabel = findViewById(R.id.tv_taskdetails_label_notes);
         this.tvPriorityName = findViewById(R.id.tv_taskdetails_priorty);
         this.btnFinishTask = findViewById(R.id.btn_task_finish);
+        this.ibDeleteTask = findViewById(R.id.ib_taskdetails_delete);
 
         Intent intent = getIntent();
 
@@ -84,6 +89,52 @@ public class TaskDetailsActivity extends AppCompatActivity {
                createDialog(v, taskID);
             }
         });
+
+        this.ibDeleteTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog(v, taskID);
+            }
+        });
+    }
+
+    protected void deleteDialog(View v, String taskID) {
+        confirmDelete = new Dialog(v.getContext());
+
+        confirmDelete.setContentView(R.layout.dialog_confirm);
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        confirmDelete.getWindow().setLayout(width, height);
+        confirmDelete.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) confirmDelete.findViewById(R.id.tv_dialog_title);
+        tvdialogtitle.setText(R.string.task_details_delete_task_title);
+        TextView tvdialogtext = (TextView) confirmDelete.findViewById(R.id.tv_dialog_text);
+        tvdialogtext.setText(R.string.task_details_delete_task_text);
+        ImageView ivdialogicon = (ImageView) confirmDelete.findViewById(R.id.iv_dialog_icon);
+        ivdialogicon.setImageResource(R.drawable.warning);
+
+        Button btndialogcancel = (Button) confirmDelete.findViewById(R.id.btn_dialog_cancel);
+        btndialogcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDelete.dismiss();
+            }
+        });
+
+        Button btndialogconfirm = (Button) confirmDelete.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setText(R.string.task_details_delete_task_button);
+        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDelete.dismiss();
+                UserSingleton.getUser().deleteTask(taskID);
+                finish();
+            }
+        });
+        confirmDelete.show();
     }
 
     protected void createDialog (View v, String taskID) {
@@ -125,7 +176,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     }
 
     protected void hatchEgg () {
-
+        finish();
     }
 
     private void setCategoryIcon (String category) {

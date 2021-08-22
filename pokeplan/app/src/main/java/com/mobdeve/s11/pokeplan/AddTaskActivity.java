@@ -126,7 +126,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
         }
 
-            Toast.makeText(AddTaskActivity.this, UserSingleton.getUser().addOngoingTask(taskCreated), Toast.LENGTH_LONG).show();
+        UserSingleton.getUser().addOngoingTask(taskCreated);
 
     }
 
