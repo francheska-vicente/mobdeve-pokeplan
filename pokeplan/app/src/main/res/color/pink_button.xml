@@ -10,5 +10,8 @@
         android:state_pressed="true"
         android:color="@color/dark_pink" />
 
+    <item android:state_enabled="false"
+        android:color="@color/light_gray" />
+
     <item android:color="@color/pink"/>
 </selector>

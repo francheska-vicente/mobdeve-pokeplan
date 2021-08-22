@@ -45,4 +45,10 @@ public class HomeFragment extends Fragment {
         this.ppAdapter = new PokemonPartyAdapter(this.pokemonPartyList);
         this.rvPokemonParty.setAdapter(this.ppAdapter);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initComponents(getView());
+    }
 }
