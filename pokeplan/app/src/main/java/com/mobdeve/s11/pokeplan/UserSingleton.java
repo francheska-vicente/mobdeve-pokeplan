@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 
 public class UserSingleton {
@@ -36,17 +35,6 @@ public class UserSingleton {
     private DatabaseReference mUser;
     private DatabaseReference mTask;
     private DatabaseReference mPokemon;
-
-    public static UserSingleton getUser() {
-        if (user == null) {
-            user = new UserSingleton();
-        }
-        return user;
-    }
-
-    public static void removeUser() {
-        user = null;
-    }
 
     private UserSingleton(){
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
@@ -69,6 +57,17 @@ public class UserSingleton {
         initDbPokemon();
     }
 
+    public static UserSingleton getUser() {
+        if (user == null) {
+            user = new UserSingleton();
+        }
+        return user;
+    }
+    public static void removeUser() {
+        user = null;
+    }
+
+    // initialize data from db
     private void initDbUser () {
         mUser.addValueEventListener(new ValueEventListener() {
             @Override
@@ -83,7 +82,6 @@ public class UserSingleton {
             }
         });
     }
-
     private void initDbTask () {
         mTask.addValueEventListener(new ValueEventListener() {
             @Override
@@ -107,7 +105,6 @@ public class UserSingleton {
             }
         });
     }
-
     private void initDbPokemon () {
         mPokemon.addValueEventListener(new ValueEventListener() {
             @Override
@@ -145,19 +142,15 @@ public class UserSingleton {
     public ArrayList<Task> getOngoingTasks() {
         return this.ongoingTasks;
     }
-
     public ArrayList<Task> getCompletedTasks () {
         return this.completedTasks;
     }
-
     public void setOngoingTasks(ArrayList<Task> tasks) {
         this.ongoingTasks = tasks;
     }
-
     public void setCompletedTasks(ArrayList<Task> tasks) {
         this.completedTasks = tasks;
     }
-
     public void addOngoingTask(Task taskCreated) {
         String key = mTask.push().getKey();
         taskCreated.setTaskID(key);
@@ -170,9 +163,9 @@ public class UserSingleton {
             }
         });
     }
-
     public void moveToCompletedTask (String key) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
+        this.getUserDetails().addCompletedTask();
         hash.put("isFinished", true);
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
@@ -181,7 +174,6 @@ public class UserSingleton {
             }
         });
     }
-
     public void deleteTask (String key) {
         Query query = mTask.child(key);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -254,7 +246,6 @@ public class UserSingleton {
 
         return checker[0];
     }
-
     public void editNickname (String key, String nickname) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("nickname", nickname);
@@ -266,7 +257,6 @@ public class UserSingleton {
             }
         });
     }
-
     public void updatePokemon (UserPokemon pokemon) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("details", pokemon.getPokemonDetails());
@@ -300,7 +290,6 @@ public class UserSingleton {
     public ArrayList<UserPokemon> getUserPokemonParty() {
         return userPokemonParty;
     }
-
     public void setUserPokemonParty(ArrayList<UserPokemon> party) {
         this.userPokemonParty = party;
     }
