@@ -1,6 +1,7 @@
 package com.mobdeve.s11.pokeplan;
 
 import android.content.Intent;
+import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.FormatFlagsConversionMismatchException;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     private ArrayList<Task> tasks;
@@ -23,6 +26,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public static final String KEY_NOTES = "KEY_NOTES";
     public static final String KEY_ID = "KEY_ID";
 
+    public static final String KEY_C_START_DATE = "KEY_C_START_DATE";
+    public static final String KEY_C_END_DATE = "KEY_C_END_DATE";
+    public static final String KEY_C_START_TIME = "KEY_C_START_TIME";
+    public static final String KEY_C_END_TIME = "KEY_C_END_TIME";
 
     public TaskAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
@@ -47,6 +54,25 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 i.putExtra(KEY_START_DATE, tasks.get(vh.getBindingAdapterPosition()).getStartDate().toString());
                 i.putExtra(KEY_NOTES, tasks.get(vh.getBindingAdapterPosition()).getDescription());
                 i.putExtra(KEY_ID, tasks.get(vh.getBindingAdapterPosition()).getTaskID());
+
+                Task task = tasks.get(vh.getBindingAdapterPosition());
+                CustomDate endDate = task.getEndDate();
+                CustomDate startDate = task.getStartDate();
+
+                DecimalFormat formatter = new DecimalFormat("00");
+
+                String sEndDate = formatter.format(endDate.getDay()) + "." + formatter.format(endDate.getMonth()) + "." +
+                        endDate.getYear();
+                String sStartDate = formatter.format(startDate.getDay()) + "." + formatter.format(startDate.getMonth()) + "." +
+                        startDate.getYear();
+                String sEndTime = formatter.format(endDate.getHour()) + ":" + formatter.format(endDate.getMinute());
+                String sStartTime = formatter.format(startDate.getHour()) + ":" + formatter.format(startDate.getMinute());
+
+                i.putExtra(KEY_C_START_DATE, sStartDate);
+                i.putExtra(KEY_C_END_DATE, sEndDate);
+                i.putExtra(KEY_C_START_TIME, sStartTime);
+                i.putExtra(KEY_C_END_TIME, sEndTime);
+
                 view.getContext().startActivity(i);
             }
         });
