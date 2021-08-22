@@ -53,6 +53,8 @@ public class FocusTimerFragment extends Fragment {
     private Dialog hatcheggdialog;
     private Dialog stopTimerdialog;
 
+    private boolean checker;
+
     public FocusTimerFragment() {
     }
 
@@ -73,10 +75,12 @@ public class FocusTimerFragment extends Fragment {
 
         initComponents(view);
         timer = new Timer();
+        this.checker = false;
         return view;
     }
 
     private void initComponents(View view) {
+
         tvhours = view.findViewById(R.id.tv_focustimer_hours);
         tvmins = view.findViewById(R.id.tv_focustimer_mins);
         tvsecs = view.findViewById(R.id.tv_focustimer_secs);
@@ -111,12 +115,14 @@ public class FocusTimerFragment extends Fragment {
             }
         };
         countdown.start();
+        checker = true;
     }
 
     private void stopTimer() {
         countdown.cancel();
         resetTimer();
         stopTimerDialog();
+        checker = false;
     }
 
     private void finishTimer() {
@@ -460,6 +466,10 @@ public class FocusTimerFragment extends Fragment {
 
     public void onPause() {
         super.onPause();
-        stopTimer();
+
+        if (checker) {
+            stopTimer();
+        }
+
     }
 }
