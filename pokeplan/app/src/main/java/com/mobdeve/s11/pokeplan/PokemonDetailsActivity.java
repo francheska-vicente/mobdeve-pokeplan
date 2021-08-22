@@ -37,6 +37,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private TextView tvSuperCandyCtr;
 
     private Dialog editdialog;
+    private Dialog confirmDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +104,13 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             }
         });
 
+        this.btnpc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                movePokemonToPC(pkmn);
+            }
+        });
+
         if (UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100)
             this.btnrare.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -126,6 +134,45 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             btnsuper.setTextColor(ColorStateList.valueOf(
                     ContextCompat.getColor(getApplicationContext(), R.color.darker_gray)));
         }
+    }
+
+    private void movePokemonToPC (UserPokemon pkmn) {
+        confirmDialog = new Dialog(this);
+
+        confirmDialog.setContentView(R.layout.dialog_confirm);
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        confirmDialog.getWindow().setLayout(width, height);
+        confirmDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_title);
+        tvdialogtitle.setText(R.string.pkmndetails_movetopcdiag_title);
+        TextView tvdialogtext = (TextView) confirmDialog.findViewById(R.id.tv_dialog_text);
+        tvdialogtext.setText(R.string.pkmndetails_movetopcdiag_text);
+        ImageView ivdialogicon = (ImageView) confirmDialog.findViewById(R.id.iv_dialog_icon);
+        ivdialogicon.setImageResource(R.drawable.warning);
+
+        Button btndialogcancel = (Button) confirmDialog.findViewById(R.id.btn_dialog_cancel);
+        btndialogcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog.dismiss();
+            }
+        });
+
+        Button btndialogconfirm = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setText(R.string.pkmndetails_movetopcdiag_button);
+        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog.dismiss();
+                UserSingleton.getUser().deleteTask(pkmn.getUserPokemonID());
+                finish();
+            }
+        });
+        confirmDialog.show();
     }
 
     private void editNickname(UserPokemon pkmn) {

@@ -232,7 +232,7 @@ public class UserSingleton {
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-                
+
             }
         });
     }
@@ -251,12 +251,16 @@ public class UserSingleton {
 
         return null;
     }
-    public void movePokemonToPC(UserPokemon pkmn) {
-        for(int j = 0; j < userPokemonParty.size(); j++)
-            if(userPokemonParty.get(j).equals(pkmn))
-                userPokemonParty.remove(j);
+    public void movePokemonToPC(String key) {
+        HashMap hash = new HashMap();
+        hash.put("inParty", false);
 
-        userPokemonPC.add(pkmn);
+        mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+
+            }
+        });
     }
 
     // pc pokemon

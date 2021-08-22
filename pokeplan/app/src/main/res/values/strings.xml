@@ -96,6 +96,9 @@
     <string name="pkmndetails_movetopc_btn">Move to PC</string>
     <string name="pokemondetails_rename_caption">Name your Pokemon!</string>
     <string name="pkdexdetails_title">VIEW POKEDEX</string>
+    <string name="pkmndetails_movetopcdiag_title">Transferring of Pokemon from Party to PC</string>
+    <string name="pkmndetails_movetopcdiag_text">This would remove the pokemon from your party.</string>
+    <string name="pkmndetails_movetopcdiag_button">Move to PC</string>
 
     <!-- Task Details -->
     <string name="task_details_confirm_finish_title">Completion of Task</string>
