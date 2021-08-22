@@ -317,7 +317,7 @@
         app:layout_constraintTop_toTopOf="@+id/btn_pkmndetails_supercandy">
 
         <TextView
-            android:id="@+id/tv_pkmndetails_rarecandyctr"
+            android:id="@+id/tv_pkmndetails_supercandyctr"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/raleway_medium"
@@ -346,7 +346,7 @@
         app:layout_constraintTop_toTopOf="@+id/btn_pkmndetails_rarecandy">
 
         <TextView
-            android:id="@+id/tv_pkmndetails_supercandyctr"
+            android:id="@+id/tv_pkmndetails_rarecandyctr"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="@font/raleway_medium"
