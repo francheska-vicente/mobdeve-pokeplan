@@ -67,7 +67,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 "pkmn_"+ user.getStarterDexNum()));
         this.tvUsername.setText(user.getUserName());
         this.tvEmail.setText(user.getEmail());
-        this.tvName.setText(user.getName());
+        this.tvName.setText(user.getUserName());
 
         String egg = user.getHatchedPkmnCount() + " Pokemon Hatched";
         this.tvEggHatchCtr.setText(egg);
