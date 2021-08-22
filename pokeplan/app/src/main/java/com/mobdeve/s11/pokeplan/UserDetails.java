@@ -10,6 +10,9 @@ public class UserDetails {
     private int rarecandy;
     private int supercandy;
 
+    private int hatchedpkmncount;
+    private int finishedtaskscount;
+
     public UserDetails(String fullName, String email, String userName) {
         this.fullName = fullName;
         this.email = email;
@@ -17,8 +20,9 @@ public class UserDetails {
 
         this.rarecandy = 5;
         this.supercandy = 5;
-    }
 
+
+    }
     public UserDetails () {
         this.fullName = "";
         this.email = "";
@@ -31,11 +35,9 @@ public class UserDetails {
     public String getName () {
         return this.fullName;
     }
-
     public String getEmail () {
         return this.email;
     }
-
     public String getUserName () {
         return this.userName;
     }
@@ -58,5 +60,19 @@ public class UserDetails {
     }
     public void subtractSuperCandy(int candy) {
         this.supercandy -= candy;
+    }
+
+    // stats
+    public int getHatchedPkmnCount() {
+        return hatchedpkmncount;
+    }
+    public void addHatchedPkmn() {
+        this.hatchedpkmncount++;
+    }
+    public int getFinishedTaskCount() {
+        return finishedtaskscount;
+    }
+    public void addFinishedTask() {
+        this.finishedtaskscount++;
     }
 }
