@@ -52,6 +52,10 @@ public class Task {
         return this.description;
     }
 
+    public String getTaskID () {
+        return this.taskID;
+    }
+
     public boolean isFinished() {
         return this.isFinished;
     }
