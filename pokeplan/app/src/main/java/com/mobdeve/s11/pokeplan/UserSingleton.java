@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.api.Property;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -115,6 +116,7 @@ public class UserSingleton {
                 userPokemonPC = new ArrayList<>();
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     UserPokemon temp = ds.getValue(UserPokemon.class);
+
                     userPokedex [temp.getPokemonDetails().getDexNum() - 1] = true;
                     if (temp.isInParty()) {
                         userPokemonParty.add(temp);
@@ -160,21 +162,17 @@ public class UserSingleton {
         String key = mTask.push().getKey();
         taskCreated.setTaskID(key);
 
+        assert key != null;
         mTask.child(key).setValue(taskCreated).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                if(task.isSuccessful()) {
-
-                } else {
-
-                }
+                task.isSuccessful();
             }
         });
-
     }
 
     public void moveToCompletedTask (String key) {
-        HashMap hash = new HashMap();
+        HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("isFinished", true);
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
@@ -198,6 +196,27 @@ public class UserSingleton {
             }
         });
     }
+
+    public void editTask (String name, int priority, String category, String startDate,
+                          String endDate, String startTime, String endTime, String notes, String key) {
+        HashMap <String, Object> hash = new HashMap <String, Object>();
+        hash.put("taskName", name);
+        CustomDate cEndDate = new CustomDate(endDate, endTime);
+        hash.put("endDate", cEndDate);
+        CustomDate cStartDate = new CustomDate(startDate, startTime);
+        hash.put("startDate", cStartDate);
+        hash.put("priority", priority);
+        hash.put("category", category);
+        hash.put("description", notes);
+
+        mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+
+            }
+        });
+    }
+
 
     // pokemons
     public boolean addPokemon(Pokemon details) {
@@ -237,7 +256,7 @@ public class UserSingleton {
     }
 
     public void editNickname (String key, String nickname) {
-        HashMap hash = new HashMap();
+        HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("nickname", nickname);
 
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
@@ -249,7 +268,7 @@ public class UserSingleton {
     }
 
     public void updatePokemon (UserPokemon pokemon) {
-        HashMap hash = new HashMap();
+        HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("details", pokemon.getPokemonDetails());
         hash.put("fedCandy", pokemon.getFedCandy());
         hash.put("level", pokemon.getLevel());
@@ -261,7 +280,7 @@ public class UserSingleton {
             }
         });
 
-        HashMap userHash = new HashMap();
+        HashMap <String, Object> userHash = new HashMap <String, Object>();
         userHash .put("rareCandy", userDetails.getRareCandy());
         userHash .put("superCandy", userDetails.getSuperCandy());
 
@@ -293,7 +312,7 @@ public class UserSingleton {
         return null;
     }
     public void movePokemon(String key, boolean checker) {
-        HashMap hash = new HashMap();
+        HashMap <String, Object> hash = new HashMap<String, Object>();
         hash.put("inParty", checker);
 
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
