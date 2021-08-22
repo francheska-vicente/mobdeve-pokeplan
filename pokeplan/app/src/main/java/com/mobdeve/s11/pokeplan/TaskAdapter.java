@@ -21,6 +21,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public static final String KEY_PRIORITY = "KEY_PRIORITY";
     public static final String KEY_START_DATE = "KEY_START_DATE";
     public static final String KEY_NOTES = "KEY_NOTES";
+    public static final String KEY_ID = "KEY_ID";
 
 
     public TaskAdapter(ArrayList<Task> tasks) {
@@ -45,6 +46,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 i.putExtra(KEY_DEADLINE, tasks.get(vh.getBindingAdapterPosition()).getEndDate().toString());
                 i.putExtra(KEY_START_DATE, tasks.get(vh.getBindingAdapterPosition()).getStartDate().toString());
                 i.putExtra(KEY_NOTES, tasks.get(vh.getBindingAdapterPosition()).getDescription());
+                i.putExtra(KEY_ID, tasks.get(vh.getBindingAdapterPosition()).getTaskID());
                 view.getContext().startActivity(i);
             }
         });
