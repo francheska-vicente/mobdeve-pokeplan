@@ -12,9 +12,12 @@ public class Task {
     private String description;
     private boolean isFinished;
     private String taskID;
+    private String notifWhen;
+    private boolean beforeStartTime;
+    private boolean isNotif;
 
-
-    public Task (String taskID, String taskName, int priority, String category, CustomDate startDate, CustomDate endDate, String description) {
+    public Task (String taskID, String taskName, int priority, String category, CustomDate startDate, CustomDate endDate, String description,
+                 String notifWhen, boolean beforeStartTime, boolean isNotif) {
         this.taskID = taskID;
         this.taskName = taskName;
         this.priority = priority;
@@ -23,6 +26,9 @@ public class Task {
         this.endDate = endDate;
         this.description = description;
         this.isFinished = false;
+        this.notifWhen = notifWhen;
+        this.beforeStartTime = beforeStartTime;
+        this.isNotif = isNotif;
     }
 
     public Task () {
@@ -58,7 +64,19 @@ public class Task {
     }
 
     public boolean getIsFinished() {
-        return this.    isFinished;
+        return this.isFinished;
+    }
+
+    public boolean getBeforeStartTime () {
+        return this.beforeStartTime;
+    }
+
+    public String getNotifWhen () {
+        return this.notifWhen;
+    }
+
+    public boolean getIsNotif () {
+        return this.isNotif;
     }
 
     public void setTaskName (String name) {
@@ -91,5 +109,17 @@ public class Task {
 
     public void setTaskID (String ID) {
         this.taskID = ID;
+    }
+
+    public void setIsNotif (boolean isNotif) {
+        this.isNotif = isNotif;
+    }
+
+    public void setBeforeStartTime (boolean when) {
+        this.beforeStartTime = when;
+    }
+
+    public void setNotifWhen (String when) {
+        this.notifWhen = when;
     }
 }
