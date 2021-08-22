@@ -43,6 +43,10 @@ public class UserSingleton {
         return user;
     }
 
+    public static void removeUser() {
+        user = null;
+    }
+
     private UserSingleton(){
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
