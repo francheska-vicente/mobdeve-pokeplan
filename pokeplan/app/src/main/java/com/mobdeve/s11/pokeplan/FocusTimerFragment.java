@@ -427,4 +427,10 @@ public class FocusTimerFragment extends Fragment {
     private int getImageId(Context context, String imageName) {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
+
+    public void onPause() {
+        super.onPause();
+        stopTimer();
+        createConfirmStopTimerDialog(getView());
+    }
 }
