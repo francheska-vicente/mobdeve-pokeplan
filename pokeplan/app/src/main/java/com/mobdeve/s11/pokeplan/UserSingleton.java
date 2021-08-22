@@ -99,18 +99,10 @@ public class UserSingleton {
         mPokemon.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-
+                userPokemonParty = new ArrayList<>();
+                userPokemonPC = new ArrayList<>();
                 for(DataSnapshot ds : snapshot.getChildren()) {
-                    Pokemon pokemon = ds.child("details").getValue(Pokemon.class);
-                    String nickname = ds.child("nickname").getValue(String.class);
-                    String nature = ds.child("nature").getValue(String.class);
-                    Date metDate = ds.child("dmetDate").getValue(Date.class);
-                    Boolean inParty = ds.child("inParty").getValue(Boolean.class);
-                    int level = ds.child("level").getValue(int.class);
-                    int fedCandy = ds.child("fedCandy").getValue(int.class);
-                    String pokemonID = ds.child("userPokemonID").getValue(String.class);
-
-                    UserPokemon temp = new UserPokemon(pokemon, nickname, nature, metDate, inParty, level, fedCandy, pokemonID);
+                    UserPokemon temp = ds.getValue(UserPokemon.class);
                     userPokedex [temp.getPokemonDetails().getDexNum() - 1] = true;
                     if (temp.isInParty()) {
                         userPokemonParty.add(temp);
