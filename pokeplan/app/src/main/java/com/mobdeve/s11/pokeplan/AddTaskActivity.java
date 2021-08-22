@@ -125,7 +125,36 @@ public class AddTaskActivity extends AppCompatActivity {
         }
 
         UserSingleton.getUser().addOngoingTask(taskCreated);
+    }
 
+    public void setValues (Intent intent) {
+        this.etTaskName.setText(intent.getStringExtra(TaskDetailsActivity.KEY_TASKNAME));
+        this.etTaskNotes.setText(intent.getStringExtra(TaskDetailsActivity.KEY_NOTES));
+
+        int priority = intent.getIntExtra(TaskDetailsActivity.KEY_PRIORITY, 1) - 1;
+        Drawable priorityDrawable = btnPriority.get(priority).getBackground();
+        priorityDrawable = DrawableCompat.wrap(priorityDrawable);
+        DrawableCompat.setTint(priorityDrawable, getResources().getColor(R.color.pink_button));
+        btnPriority.get(priority).setBackground(priorityDrawable);
+
+        this.priority = priority + 1 + "";
+        String category = intent.getStringExtra(TaskDetailsActivity.KEY_CATEGORY);
+        for (int i = 0; i < btnCategory.size(); i++) {
+            Button temp = (Button) btnCategory.get(i);
+            if(temp.getText().toString().equalsIgnoreCase(category)) {
+                Drawable categoryDrawable = temp.getBackground();
+                categoryDrawable = DrawableCompat.wrap(categoryDrawable);
+                DrawableCompat.setTint(categoryDrawable, getResources().getColor(R.color.pink_button));
+                temp.setBackground(categoryDrawable);
+                this.category = temp.getText().toString();
+            }
+        }
+    }
+
+    public void editDatabase (String name, int priority, String category, String startDate,
+                              String endDate, String startTime, String endTime, String notes) {
+        UserSingleton.getUser().editTask(name, priority, category, startDate, endDate, startTime, endTime, notes,
+                TaskDetailsActivity.KEY_ID);
     }
 
     private void intent () {
@@ -140,6 +169,13 @@ public class AddTaskActivity extends AppCompatActivity {
         this.etEndTime = findViewById(R.id.et_add_task_end_time);
 
         this.btnCreate = findViewById(R.id.btn_add_task_create);
+
+        Intent intent = getIntent();
+
+        if (intent != null) {
+            setValues (intent);
+        }
+
         this.btnCreate.setOnClickListener(new View.OnClickListener() {
 
             private long getDiff (String endDate, String startDate, String endTime, String startTime) {
@@ -268,9 +304,13 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
 
                 if (!checker) {
-                    addToDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes);
-
-                    finish();
+                    Intent intent = getIntent();
+                    if (intent.getStringExtra(TaskDetailsActivity.KEY_ID) != null) {
+                        editDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes);
+                    } else {
+                        addToDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes);
+                        finish();
+                    }
                 } else {
                     errorDialog = new Dialog(v.getContext());
                     errorDialog.setContentView(R.layout.dialog_error);
