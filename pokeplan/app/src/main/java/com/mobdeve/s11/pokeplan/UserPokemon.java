@@ -47,10 +47,13 @@ public class UserPokemon {
         this.inParty = inParty;
     }
 
-    public void feedCandy() {
+    public boolean feedCandy() {
         fedCandy++;
-        if (fedCandy%10 == 0)
+        if (fedCandy%10 == 0) {
             levelUpPokemon();
+            return true;
+        }
+        return false;
     }
 
     public void levelUpPokemon() {
