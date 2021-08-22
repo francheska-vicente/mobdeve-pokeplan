@@ -21,7 +21,8 @@ public class UserDetails {
         this.rarecandy = 5;
         this.supercandy = 5;
 
-
+        this.hatchedpkmncount = 0;
+        this.finishedtaskscount = 0;
     }
     public UserDetails () {
         this.fullName = "";
