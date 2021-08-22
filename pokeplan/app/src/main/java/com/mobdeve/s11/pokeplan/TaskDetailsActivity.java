@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -72,6 +73,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.ibDeleteTask = findViewById(R.id.ib_taskdetails_delete);
         this.ibEditTask = findViewById(R.id.ib_taskdetails_edit);
 
+        initComponents();
+    }
+
+    private void initComponents () {
         Intent intent = getIntent();
 
         String taskName = intent.getStringExtra(TaskAdapter.KEY_TASKNAME);
@@ -86,6 +91,33 @@ public class TaskDetailsActivity extends AppCompatActivity {
         String cEndTime = intent.getStringExtra(TaskAdapter.KEY_C_END_TIME);
         String cStartTime = intent.getStringExtra(TaskAdapter.KEY_C_START_TIME);
 
+        setValues (taskName, category, startDate, endDate,
+                notes, priority);
+
+        this.btnFinishTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createDialog(v, taskID);
+            }
+        });
+
+        this.ibDeleteTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDialog(v, taskID);
+            }
+        });
+
+        this.ibEditTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editIntent(taskName, category, priority, notes, taskID, cEndDate, cStartDate, cEndTime, cStartTime);
+            }
+        });
+    }
+
+    private void setValues (String taskName, String category, String startDate, String endDate,
+                            String notes, int priority) {
         this.tvTaskName.setText(taskName);
         this.tvCategory.setText(category);
 
@@ -103,27 +135,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         this.setCategoryIcon(category);
         this.setPriorityIcon(priority);
-
-        this.btnFinishTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               createDialog(v, taskID);
-            }
-        });
-
-        this.ibDeleteTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteDialog(v, taskID);
-            }
-        });
-
-        this.ibEditTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editIntent(taskName, category, priority, notes, taskID, cEndDate, cStartDate, cEndTime, cStartTime);
-            }
-        });
     }
 
     private void editIntent (String taskName, String category, int priority, String notes, String taskID,
@@ -149,8 +160,22 @@ public class TaskDetailsActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    Intent intent = result.getData();
 
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+
+                        String name = intent.getStringExtra(AddTaskActivity.KEY_TASKNAME);
+                        String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
+                        String endDate = intent.getStringExtra(AddTaskActivity.KEY_END_DATE);
+                        String startDate = intent.getStringExtra(AddTaskActivity.KEY_START_DATE);
+                        String priority = intent.getStringExtra(AddTaskActivity.KEY_PRIORITY);
+                        String category = intent.getStringExtra(AddTaskActivity.KEY_CATEGORY);
+
+                        setValues(name, category, startDate, endDate,
+                                notes, priority.length());
+                    } else {
+                        initComponents();
+                    }
                 }
             }
     );
@@ -282,5 +307,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
     public void onRestart() {
         super.onRestart();
 
+        initComponents();
     }
 }

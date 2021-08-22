@@ -189,14 +189,12 @@ public class UserSingleton {
         });
     }
 
-    public void editTask (String name, int priority, String category, String startDate,
-                          String endDate, String startTime, String endTime, String notes, String key) {
+    public void editTask (String name, int priority, String category, CustomDate startDate,
+                          CustomDate endDate, String notes, String key) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("taskName", name);
-        CustomDate cEndDate = new CustomDate(endDate, endTime);
-        hash.put("endDate", cEndDate);
-        CustomDate cStartDate = new CustomDate(startDate, startTime);
-        hash.put("startDate", cStartDate);
+        hash.put("endDate", endDate);
+        hash.put("startDate", startDate);
         hash.put("priority", priority);
         hash.put("category", category);
         hash.put("description", notes);

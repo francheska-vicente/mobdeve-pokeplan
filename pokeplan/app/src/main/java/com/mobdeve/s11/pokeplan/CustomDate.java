@@ -49,8 +49,21 @@ public class CustomDate {
         this.month = Integer.parseInt(tempDate[1]);
         this.day = Integer.parseInt(tempDate[0]);
         this.year = Integer.parseInt(tempDate[2]);
+
         this.hour = Integer.parseInt(tempTime[0]);
-        this.minute = Integer.parseInt(tempTime[1]);
+        tempTime = tempTime[1].split(" ");
+        this.minute = Integer.parseInt(tempTime[0]);
+
+        if (tempTime[1].trim().equalsIgnoreCase("pm") && this.hour != 12) {
+            this.hour = hour + 12;
+        } else if (tempTime[1].trim().equalsIgnoreCase("am") && this.hour == 12) {
+            this.hour = 0;
+        }
+
+        if (year <= 1000)
+            this.year = 2000 + year;
+        else
+            this.year = year;
     }
 
     public int getDay () {
