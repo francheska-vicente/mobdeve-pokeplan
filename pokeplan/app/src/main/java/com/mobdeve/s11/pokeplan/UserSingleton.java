@@ -73,6 +73,7 @@ public class UserSingleton {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userDetails = dataSnapshot.getValue(UserDetails.class);
+                userDetails.setUserName(dataSnapshot.child("userName").getValue(String.class));
             }
 
             @Override
