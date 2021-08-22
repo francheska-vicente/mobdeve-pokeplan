@@ -80,7 +80,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()) {
-                            UserDetails user = new UserDetails (name, email, username);
+                            UserDetails user = new UserDetails (name, email, username, pokeNum);
 
                             DatabaseReference databaseRef = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users");
 
@@ -97,7 +97,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                         pbLoading.setVisibility(View.GONE);
                                         finish();
 
-                                        Pokemon pokemon = new Pokedex().getPokemon(pokeNum);
+                                        Pokemon pokemon = Pokedex.getPokedex().getPokemon(pokeNum);
                                         UserSingleton.getUser().addPokemon(pokemon);
                                         UserSingleton.removeUser();
 
