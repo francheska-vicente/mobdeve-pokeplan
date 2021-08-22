@@ -43,6 +43,16 @@ public class CustomDate {
 
     }
 
+    public CustomDate(String date, String time) {
+        String [] tempDate = date.split("\\.");
+        String [] tempTime = time.split(":");
+        this.month = Integer.parseInt(tempDate[1]);
+        this.day = Integer.parseInt(tempDate[0]);
+        this.year = Integer.parseInt(tempDate[2]);
+        this.hour = Integer.parseInt(tempTime[0]);
+        this.minute = Integer.parseInt(tempTime[1]);
+    }
+
     public int getDay () {
         return this.day;
     }
