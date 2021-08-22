@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 
 public class UserSingleton {
     private static UserSingleton user;
@@ -175,6 +176,16 @@ public class UserSingleton {
     public void moveToCompletedTask (Task task) {
         this.ongoingTasks.remove(task);
         this.completedTasks.add(task);
+
+        String key = task.getTaskID();
+        HashMap hash = new HashMap();
+        hash.put("isFinished", true);
+        mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+
+            }
+        });
     }
 
     // pokemons
@@ -183,6 +194,8 @@ public class UserSingleton {
 
         UserPokemon userPokemon;
         String key = mPokemon.push().getKey();
+
+        Log.d("hello pare", Integer.toString(userPokemonParty.size()));
 
         if (userPokemonParty.size() < 6) {
             userPokemon = new UserPokemon(details, true);
