@@ -23,4 +23,10 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_fragment);
         NavigationUI.setupWithNavController(navView, navController);
     }
+
+    @Override
+    public void onRestart () {
+        super.onRestart();
+
+    }
 }
