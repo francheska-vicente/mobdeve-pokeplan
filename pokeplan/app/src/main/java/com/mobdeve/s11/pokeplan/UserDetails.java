@@ -31,7 +31,6 @@ public class UserDetails {
         this.completedtaskscount = 0;
     }
 
-
     public String getFullName () {
         return this.fullName;
     }
@@ -41,10 +40,22 @@ public class UserDetails {
     public String getUserName () {
         return this.userName;
     }
+    public void setFullName (String name) {
+        this.fullName = name;
+    }
+    public void setEmail (String email) {
+        this.email = email;
+    }
+    public void setUserName (String username) {
+        this.userName = username;
+    }
 
     // starter
     public int getStarterDexNum() {
         return starterdexnum;
+    }
+    public void setStarterDexNum(int starterdexnum) {
+         this.starterdexnum = starterdexnum;
     }
 
     // items
@@ -57,6 +68,9 @@ public class UserDetails {
     public void subtractRareCandy(int candy) {
         this.rarecandy -= candy;
     }
+    public void setRareCandy (int rarecandy) {
+        this.rarecandy = rarecandy;
+    }
     public int getSuperCandy() {
         return supercandy;
     }
@@ -66,6 +80,9 @@ public class UserDetails {
     public void subtractSuperCandy(int candy) {
         this.supercandy -= candy;
     }
+    public void setSuperCandy (int supercandy) {
+        this.supercandy = supercandy;
+    }
 
     // stats
     public int getHatchedPkmnCount() {
@@ -74,37 +91,15 @@ public class UserDetails {
     public void addHatchedPkmn() {
         this.hatchedpkmncount++;
     }
+    public void setHatchedPkmnCount (int num) {
+        this.hatchedpkmncount = num;
+    }
     public int getCompletedTaskCount() {
         return completedtaskscount;
     }
     public void addCompletedTask() {
         this.completedtaskscount++;
     }
-
-    public void setFullName (String name) {
-        this.fullName = name;
-    }
-
-    public void setEmail (String email) {
-        this.email = email;
-    }
-
-    public void setUserName (String username) {
-        this.userName = username;
-    }
-
-    public void setRareCandy (int rarecandy) {
-        this.rarecandy = rarecandy;
-    }
-
-    public void setSuperCandy (int supercandy) {
-        this.supercandy = supercandy;
-    }
-
-    public void setHatchedPkmnCount (int num) {
-        this.hatchedpkmncount = num;
-    }
-
     public void setFinishedTaskCount (int num) {
         this.completedtaskscount = num;
     }
