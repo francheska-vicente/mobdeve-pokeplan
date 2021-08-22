@@ -32,7 +32,7 @@ public class UserDetails {
     }
 
 
-    public String getName () {
+    public String getFullName () {
         return this.fullName;
     }
     public String getEmail () {
