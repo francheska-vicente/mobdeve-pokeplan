@@ -97,8 +97,10 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                         pbLoading.setVisibility(View.GONE);
                                         finish();
 
-                                        Pokemon pokemon = new Pokedex().getPokemon(pokeNum - 1);
+                                        Pokemon pokemon = new Pokedex().getPokemon(pokeNum);
                                         UserSingleton.getUser().addPokemon(pokemon);
+                                        UserSingleton.removeUser();
+
                                         Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
                                         startActivity(intent);
 
