@@ -44,6 +44,7 @@ public class UserPokemon {
         this.dMetDate = new java.util.Date();
         this.level = 1;
         this.fedCandy = 0;
+        this.inParty = inParty;
     }
 
     public void feedCandy() {
