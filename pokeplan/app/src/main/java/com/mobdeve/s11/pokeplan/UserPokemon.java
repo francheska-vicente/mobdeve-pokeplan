@@ -96,6 +96,14 @@ public class UserPokemon {
         return this.level;
     }
 
+    public void setDMetDate (Date date) {
+        this.dMetDate = date;
+    }
+
+    public void setdMetDate (Date date) {
+        this.dMetDate = date;
+    }
+
     public int getPercentToNextLevel() {
         return fedCandy % 10 * 10;
     }
