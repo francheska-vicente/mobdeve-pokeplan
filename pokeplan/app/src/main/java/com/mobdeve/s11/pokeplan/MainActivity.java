@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                 NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_fragment);
                 NavigationUI.setupWithNavController(navView, navController);
             }
-        }, 690);
+        }, 1000);
     }
 
 }
