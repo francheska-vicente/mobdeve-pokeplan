@@ -126,9 +126,7 @@ public class CustomDate {
             Date dateEnd = simpleDateFormat.parse(temp);
 
             diff = dateEnd.getTime() - dateStart.getTime();
-            Log.d("hello custom date 2", temp);
             diff = TimeUnit.MILLISECONDS.toDays(diff);
-            Log.d("hello pare custom date", Long.toString(diff));
             if (diff == 0) {
                 date = "Today @ ";
             } else if (diff <= 6 && diff > 0) {

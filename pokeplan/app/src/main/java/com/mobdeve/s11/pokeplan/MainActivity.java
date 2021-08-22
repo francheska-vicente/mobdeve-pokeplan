@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UserSingleton.getUser();
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override

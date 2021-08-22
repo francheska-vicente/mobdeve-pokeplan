@@ -28,7 +28,7 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
     @Override
     public PokedexViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.template_pokedex, parent, false);
+        View view = inflater.inflate(R.layout.template_pokemonlist, parent, false);
 
         PokedexViewHolder vh = new PokedexViewHolder(view);
 
