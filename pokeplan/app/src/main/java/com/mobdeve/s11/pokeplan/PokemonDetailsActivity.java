@@ -168,7 +168,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirmDialog.dismiss();
-                UserSingleton.getUser().deleteTask(pkmn.getUserPokemonID());
+                UserSingleton.getUser().movePokemon(pkmn.getUserPokemonID(), false);
                 finish();
             }
         });
