@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
@@ -171,6 +172,21 @@ public class UserSingleton {
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+
+            }
+        });
+    }
+
+    public void deleteTask (String key) {
+        Query query = mTask.child(key);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
             }
         });
