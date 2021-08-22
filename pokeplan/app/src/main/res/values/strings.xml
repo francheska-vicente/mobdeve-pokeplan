@@ -96,4 +96,9 @@
     <string name="pkmndetails_movetopc_btn">Move to PC</string>
     <string name="pokemondetails_rename_caption">Name your Pokemon!</string>
     <string name="pkdexdetails_title">VIEW POKEDEX</string>
+
+    <!-- Task Details -->
+    <string name="task_details_confirm_finish_title">Completion of Task</string>
+    <string name="task_details_confirm_finish_text">This would transfer the task from ongoing list to completed list.</string>
+    <string name="task_details_confirm_finish_button">Task Completed</string>
 </resources>
