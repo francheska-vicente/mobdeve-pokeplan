@@ -36,8 +36,13 @@ public class PokedexDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokedex_details);
 
+        Intent intent = getIntent();
+        int dexnum = intent.getIntExtra(PokedexAdapter.KEY_POKEMONDEXNUM, 1);
+        Pokemon pkmn = Pokedex.getPokedex().getPokemon(dexnum);
+
         initComponents();
-        setAllComponents();
+        setAllComponents(pkmn);
+        pkmn.playPokemonCry();
     }
 
     private void initComponents() {
@@ -62,16 +67,14 @@ public class PokedexDetailsActivity extends AppCompatActivity {
         this.tvEvoLevel = findViewById(R.id.tv_pkdexdetails_evolveto_level);
     }
 
-    private void setAllComponents() {
-        Intent intent = getIntent();
-        int dexnum = intent.getIntExtra(PokedexAdapter.KEY_POKEMONDEXNUM, 1);
-        Pokemon pkmn = Pokedex.getPokedex().getPokemon(dexnum);
+    private void setAllComponents(Pokemon pkmn) {
+
 
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ pkmn.getDexNum()));
         this.tvPkmnSpecies.setText(pkmn.getSpecies());
 
-        String pkmndexnum = "#" + String.format("%03d", dexnum);
+        String pkmndexnum = "#" + String.format("%03d", pkmn.getDexNum());
         this.tvDexNum.setText(pkmndexnum);
 
         String pkmntype = pkmn.getType1();
