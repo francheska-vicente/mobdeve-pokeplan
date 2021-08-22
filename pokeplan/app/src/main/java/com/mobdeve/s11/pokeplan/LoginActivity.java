@@ -87,8 +87,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
+                    UserSingleton.getUser();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
                     startActivity(intent);
                 } else {
                     Toast.makeText(LoginActivity.this, "Login failed. Please check your email and password.", Toast.LENGTH_LONG).show();
