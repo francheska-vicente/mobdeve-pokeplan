@@ -56,7 +56,7 @@ public class Task {
         return this.taskID;
     }
 
-    public boolean isFinished() {
+    public boolean getIsFinished() {
         return this.isFinished;
     }
 
@@ -84,7 +84,7 @@ public class Task {
         this.description = description;
     }
 
-    public void setFinished(boolean finished) {
+    public void setIsFinished(boolean finished) {
         this.isFinished = finished;
     }
 
