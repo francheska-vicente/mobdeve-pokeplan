@@ -106,7 +106,7 @@ public class UserSingleton {
                     Pokemon pokemon = ds.child("details").getValue(Pokemon.class);
                     String nickname = ds.child("nickname").getValue(String.class);
                     String nature = ds.child("nature").getValue(String.class);
-                    Date metDate = ds.child("dMetDate").getValue(Date.class);
+                    Date metDate = ds.child("dmetDate").getValue(Date.class);
                     Boolean inParty = ds.child("inParty").getValue(Boolean.class);
                     int level = ds.child("level").getValue(int.class);
                     int fedCandy = ds.child("fedCandy").getValue(int.class);
