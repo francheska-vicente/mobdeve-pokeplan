@@ -15,7 +15,7 @@ public class Pool {
         uncommon = new ArrayList<>();
         rare = new ArrayList<>();
         superrare = new ArrayList<>();
-        pokemonList = new Pokedex();
+        pokemonList = Pokedex.getPokedex();
     }
 
     public static Pokemon generateCommonPokemon() {
