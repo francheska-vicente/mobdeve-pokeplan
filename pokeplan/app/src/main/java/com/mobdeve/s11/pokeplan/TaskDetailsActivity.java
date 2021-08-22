@@ -2,9 +2,12 @@ package com.mobdeve.s11.pokeplan;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +23,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private TextView tvEndTime;
     private TextView tvNotesDesc;
     private TextView tvNotesLabel;
+
+    private Button btnFinishTask;
+    private Dialog confirmFinish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.tvNotesDesc = findViewById(R.id.tv_taskdetails_notes);
         this.tvNotesLabel = findViewById(R.id.tv_taskdetails_label_notes);
         this.tvPriorityName = findViewById(R.id.tv_taskdetails_priorty);
+        this.btnFinishTask = findViewById(R.id.btn_task_finish);
 
         Intent intent = getIntent();
 
@@ -51,6 +58,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         String startDate = intent.getStringExtra(TaskAdapter.KEY_START_DATE);
         String endDate = intent.getStringExtra(TaskAdapter.KEY_DEADLINE);
         String notes = intent.getStringExtra(TaskAdapter.KEY_NOTES);
+        String taskID = intent.getStringExtra(TaskAdapter.KEY_ID);
 
         this.tvTaskName.setText(taskName);
         this.tvCategory.setText(category);
@@ -69,6 +77,55 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         this.setCategoryIcon(category);
         this.setPriorityIcon(priority);
+
+        this.btnFinishTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               createDialog(v, taskID);
+            }
+        });
+    }
+
+    protected void createDialog (View v, String taskID) {
+        confirmFinish = new Dialog(v.getContext());
+        confirmFinish.setContentView(R.layout.dialog_confirm);
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        confirmFinish.getWindow().setLayout(width, height);
+        confirmFinish.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) confirmFinish.findViewById(R.id.tv_dialog_title);
+        tvdialogtitle.setText(R.string.task_details_confirm_finish_title);
+        TextView tvdialogtext = (TextView) confirmFinish.findViewById(R.id.tv_dialog_text);
+        tvdialogtext.setText(R.string.task_details_confirm_finish_text);
+        ImageView ivdialogicon = (ImageView) confirmFinish.findViewById(R.id.iv_dialog_icon);
+        ivdialogicon.setImageResource(R.drawable.warning);
+
+        Button btndialogcancel = (Button) confirmFinish.findViewById(R.id.btn_dialog_cancel);
+        btndialogcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmFinish.dismiss();
+            }
+        });
+
+        Button btndialogconfirm = (Button) confirmFinish.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setText(R.string.task_details_confirm_finish_button);
+        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmFinish.dismiss();
+                UserSingleton.getUser().moveToCompletedTask(taskID);
+                hatchEgg();
+            }
+        });
+        confirmFinish.show();
+    }
+
+    protected void hatchEgg () {
+
     }
 
     private void setCategoryIcon (String category) {
