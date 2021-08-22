@@ -91,13 +91,12 @@
         android:id="@+id/tv_pkmndetails_nature_label"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="32dp"
         android:fontFamily="@font/raleway_bold"
         android:text="@string/pkmndetails_nature_label"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/tv_pkmndetails_type"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/tv_pkmndetails_type_label"
         app:lineHeight="38dp" />
 
@@ -257,6 +256,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.08" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_pkmndetails_label"
         android:layout_width="0dp"
@@ -291,6 +297,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
