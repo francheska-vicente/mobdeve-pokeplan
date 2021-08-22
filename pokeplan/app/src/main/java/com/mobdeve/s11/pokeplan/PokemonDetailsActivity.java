@@ -7,6 +7,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.io.IOException;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
     private ImageButton btnback;
@@ -46,8 +50,13 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_details);
 
+        Intent intent = getIntent();
+        String pkmnid = intent.getStringExtra(PokemonPartyAdapter.KEY_POKEMONID);
+        pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);
+
         initComponents();
-        setAllComponents();
+        setAllComponents(pkmn);
+        pkmn.getPokemonDetails().playPokemonCry();
     }
 
     private void initComponents() {
@@ -76,11 +85,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.tvSuperCandyCtr = findViewById(R.id.tv_pkmndetails_supercandyctr);
     }
 
-    private void setAllComponents() {
-        Intent intent = getIntent();
-        String pkmnid = intent.getStringExtra(PokemonPartyAdapter.KEY_POKEMONID);
-        pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);
-
+    private void setAllComponents(UserPokemon pkmn) {
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
         this.tvPkmnNickname.setText(pkmn.getNickname());
@@ -113,29 +118,24 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             }
         });
 
-        if (UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100)
-            this.btnrare.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    feedPokemon();
-                }
-            });
-        else {
+        this.btnrare.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                feedPokemon();
+            }
+        });
+
+        this.btnsuper.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                evolvePokemon();
+            }
+        });
+
+        if (UserSingleton.getUser().getUserDetails().getRareCandy() <= 0 || pkmn.getLevel() >= 100)
             btnrare.setEnabled(false);
-            btnrare.setTextColor(ColorStateList.valueOf(
-                    ContextCompat.getColor(getApplicationContext(), R.color.darker_gray)));
-        }
-        if (UserSingleton.getUser().getUserDetails().getSuperCandy() > 0 &&
-                pkmn.getLevel() >= pkmn.getPokemonDetails().getEvolveLvl())
-            this.btnsuper.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    evolvePokemon();
-                }
-            });
-        else {
+
+        if (UserSingleton.getUser().getUserDetails().getSuperCandy() <= 0 ||
+                pkmn.getLevel() < pkmn.getPokemonDetails().getEvolveLvl())
             btnsuper.setEnabled(false);
-            btnsuper.setTextColor(ColorStateList.valueOf(
-                    ContextCompat.getColor(getApplicationContext(), R.color.darker_gray)));
-        }
     }
 
     private void movePokemonToPC () {
@@ -216,13 +216,20 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     }
 
     private void feedPokemon() {
-        pkmn.feedCandy();
+        if (pkmn.feedCandy()) {
+            MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.levelup);
+            mediaPlayer.start();
+            String level = "Level " + pkmn.getLevel();
+            this.tvPkmnLevel.setText(level);
+
+            if (pkmn.getPokemonDetails().getEvolveLvl() <= pkmn.getLevel()
+                    && pkmn.getPokemonDetails().getEvolveLvl() != -1)
+                this.btnsuper.setEnabled(true);
+        }
+
         UserSingleton.getUser().getUserDetails().subtractRareCandy(1);
         this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
-
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
-        String level = "Level " + pkmn.getLevel();
-        this.tvPkmnLevel.setText(level);
 
         if (!(UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100))
             btnrare.setEnabled(false);
@@ -232,6 +239,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         if (pkmn.getPokemonDetails().getEvolveLvl() <= pkmn.getLevel()
                 && pkmn.getPokemonDetails().getEvolveLvl() != -1) {
             pkmn.evolvePokemon();
+            pkmn.getPokemonDetails().playPokemonCry();
+
             UserSingleton.getUser().getUserDetails().subtractSuperCandy(1);
             this.tvSuperCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getSuperCandy()));
 
@@ -239,6 +248,10 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                     "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
             this.tvPkmnSpecies.setText(pkmn.getPokemonDetails().getSpecies());
         }
+
+        if (pkmn.getPokemonDetails().getEvolveLvl() > pkmn.getLevel()
+                || pkmn.getPokemonDetails().getEvolveLvl() == -1)
+            this.btnsuper.setEnabled(false);
     }
 
     private int getImageId(Context context, String imageName) {
