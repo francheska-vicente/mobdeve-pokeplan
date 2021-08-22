@@ -75,7 +75,7 @@ public class PokedexDetailsActivity extends AppCompatActivity {
         this.tvDexNum.setText(pkmndexnum);
 
         String pkmntype = pkmn.getType1();
-        if (pkmn.getType2() != null)
+        if (!pkmn.getType2().isEmpty())
             pkmntype = pkmntype + "/" + pkmn.getType2();
         this.tvPkmnType.setText(pkmntype);
 
