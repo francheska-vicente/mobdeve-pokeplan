@@ -46,6 +46,10 @@
     <string name="focustimer_dialog_error_text">
         Minimum time is 5 minutes.</string>
 
+    <!-- Focus Timer egg break -->
+    <string name="focustimer_dialog_egg_break_title">Oh no!</string>
+    <string name="focustimer_dialog_egg_break_text">Because you stopped your timer, the egg broke.</string>
+
     <!-- Task List -->
     <string name="tasklist_title">TASK LIST</string>
     <string name="tasklist_ongoing_label">Ongoing Tasks</string>
