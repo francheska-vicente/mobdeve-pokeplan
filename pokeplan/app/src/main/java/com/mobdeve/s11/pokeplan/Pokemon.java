@@ -62,6 +62,7 @@ public class Pokemon {
         this.evolvesTo = evolves_to;
         this.rarity = rarity;
         this.type1 = type_1;
+        this.type2 = "";
     }
 
     public Pokemon () {
