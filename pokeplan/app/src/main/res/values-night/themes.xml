@@ -5,12 +5,20 @@
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryVariant">@color/green</item>
         <item name="colorOnPrimary">@color/white</item>
+
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/pink</item>
         <item name="colorSecondaryVariant">@color/pink</item>
         <item name="colorOnSecondary">@color/black</item>
+
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/green</item>
+
         <!-- Customize your theme here. -->
+        <item name="android:datePickerDialogTheme">@style/MyPickerDialogTheme</item>
+        <item name="android:timePickerDialogTheme">@style/MyPickerDialogTheme</item>
+    </style>
+    <style name="MyPickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">@color/dark_green</item>
     </style>
 </resources>
