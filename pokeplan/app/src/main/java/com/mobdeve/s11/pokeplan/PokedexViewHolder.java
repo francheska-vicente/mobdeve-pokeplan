@@ -44,17 +44,9 @@ public class PokedexViewHolder extends RecyclerView.ViewHolder {
                     ColorStateList.valueOf(
                             ContextCompat.getColor(itemView.getContext(), R.color.lighter_gray)));
         }
-
-        else {
-            ImageViewCompat.setImageTintList(ivpkmnicon,null);
-            ImageViewCompat.setImageTintList(ivcirclebg,
-                    ColorStateList.valueOf(
-                            ContextCompat.getColor(itemView.getContext(), R.color.green)));
-        }
-
     }
 
-    public void setButtonEnabled(int dexnum, boolean caught) {
+    public void setButtonEnabled(boolean caught) {
         layout.setEnabled(caught);
     }
 
