@@ -183,8 +183,6 @@ public class UserSingleton {
         UserPokemon userPokemon;
         String key = mPokemon.push().getKey();
 
-        Log.d("hello pare", Integer.toString(userPokemonParty.size()));
-
         if (userPokemonParty.size() < 6) {
             userPokemon = new UserPokemon(details, true);
             userPokemon.setUserPokemonID(key);
