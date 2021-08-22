@@ -31,9 +31,10 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".AddTaskActivity"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".PokemonDetailsActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".UserProfileActivity" 
+        	 android:screenOrientation="portrait"/>
 
         <activity android:name=".PokedexDetailsActivity"
             android:screenOrientation="portrait"/>

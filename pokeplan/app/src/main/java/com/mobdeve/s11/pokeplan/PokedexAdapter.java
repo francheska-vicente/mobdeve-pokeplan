@@ -20,7 +20,7 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
 
     public PokedexAdapter(Boolean[] pokedex) {
         this.pokedex = pokedex;
-        pokemonList = new Pokedex().getAllPokemon();
+        pokemonList = Pokedex.getPokedex().getAllPokemon();
     }
 
     @NonNull

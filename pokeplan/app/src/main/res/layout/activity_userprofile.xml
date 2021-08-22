@@ -6,7 +6,42 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_pkmndetails_species3"
+        android:id="@+id/tv_userprofile_egghatchctr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="1000 Eggs Hatched"
+        android:textColor="#101010"
+        app:layout_constraintEnd_toEndOf="@+id/iv_userprofile_egg"
+        app:layout_constraintStart_toStartOf="@+id/iv_userprofile_egg"
+        app:layout_constraintTop_toBottomOf="@+id/iv_userprofile_egg" />
+
+    <TextView
+        android:id="@+id/tv_userprofile_taskcompletedctr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="736 Tasks Completed"
+        android:textColor="#101010"
+        app:layout_constraintEnd_toEndOf="@+id/iv_userprofile_tasks"
+        app:layout_constraintStart_toStartOf="@+id/iv_userprofile_tasks"
+        app:layout_constraintTop_toBottomOf="@+id/iv_userprofile_tasks" />
+
+    <TextView
+        android:id="@+id/tv_userprofile_stats_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="STATS"
+        android:textColor="@color/darkest_gray"
+        app:layout_constraintStart_toStartOf="@+id/tv_userprofile_email_label"
+        app:layout_constraintTop_toBottomOf="@+id/div_evolveto2" />
+
+    <TextView
+        android:id="@+id/tv_userprofile_username"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -63,9 +98,109 @@
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p5"
         app:srcCompat="@drawable/circle" />
+
+    <TextView
+        android:id="@+id/tv_userprofile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="rororoorr"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_userprofile_name_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_name_label"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_userprofile_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="NAME"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_userprofile_email_label"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="EMAIL"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_userprofile_name_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_name"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_userprofile_email"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="rororoorr@rororo.com"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_userprofile_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_email_label"
+        app:lineHeight="38dp" />
+
+    <ImageView
+        android:id="@+id/iv_userprofile_starter"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p5"
+        app:srcCompat="@drawable/pkmn_96" />
+
+    <View
+        android:id="@+id/div_evolveto2"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_email" />
+
+    <ImageView
+        android:id="@+id/iv_userprofile_egg"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:tint="@color/darkest_gray"
+        app:layout_constraintEnd_toStartOf="@+id/iv_userprofile_tasks"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_stats_label"
+        app:srcCompat="@drawable/nav_egg" />
+
+    <ImageView
+        android:id="@+id/iv_userprofile_tasks"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:tint="@color/darkest_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_userprofile_egg"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_stats_label"
+        app:srcCompat="@drawable/nav_task" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

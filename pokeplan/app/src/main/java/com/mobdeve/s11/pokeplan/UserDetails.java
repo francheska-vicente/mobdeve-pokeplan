@@ -7,26 +7,30 @@ public class UserDetails {
     private String email;
     private String userName;
 
+    private int starterdexnum;
+
     private int rarecandy;
     private int supercandy;
 
     private int hatchedpkmncount;
-    private int finishedtaskscount;
+    private int completedtaskscount;
 
-    public UserDetails(String fullName, String email, String userName) {
+    public UserDetails () {
+    }
+    public UserDetails(String fullName, String email, String userName, int dexnum) {
         this.fullName = fullName;
         this.email = email;
         this.userName = userName;
+
+        this.starterdexnum = dexnum;
 
         this.rarecandy = 5;
         this.supercandy = 5;
 
         this.hatchedpkmncount = 0;
-        this.finishedtaskscount = 0;
+        this.completedtaskscount = 0;
     }
-    public UserDetails () {
 
-    }
 
     public String getName () {
         return this.fullName;
@@ -36,6 +40,11 @@ public class UserDetails {
     }
     public String getUserName () {
         return this.userName;
+    }
+
+    // starter
+    public int getStarterDexNum() {
+        return starterdexnum;
     }
 
     // items
@@ -65,11 +74,11 @@ public class UserDetails {
     public void addHatchedPkmn() {
         this.hatchedpkmncount++;
     }
-    public int getFinishedTaskCount() {
-        return finishedtaskscount;
+    public int getCompletedTaskCount() {
+        return completedtaskscount;
     }
-    public void addFinishedTask() {
-        this.finishedtaskscount++;
+    public void addCompletedTask() {
+        this.completedtaskscount++;
     }
 
     public void setFullName (String name) {
@@ -97,6 +106,6 @@ public class UserDetails {
     }
 
     public void setFinishedTaskCount (int num) {
-        this.finishedtaskscount = num;
+        this.completedtaskscount = num;
     }
 }
