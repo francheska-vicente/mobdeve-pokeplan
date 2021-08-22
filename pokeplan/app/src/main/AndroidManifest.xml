@@ -25,6 +25,7 @@
         <activity android:name=".TaskDetailsActivity" />
         <activity android:name=".AddTaskActivity" />
 
+        <activity android:name=".UserProfileActivity" />
         <activity android:name=".PokemonDetailsActivity" />
 
         <activity android:name=".PokedexDetailsActivity" />
