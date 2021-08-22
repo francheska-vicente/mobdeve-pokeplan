@@ -241,6 +241,7 @@ public class UserSingleton {
         HashMap hash = new HashMap();
         hash.put("details", pokemon.getPokemonDetails());
         hash.put("fedCandy", pokemon.getFedCandy());
+        hash.put("level", pokemon.getLevel());
 
         mPokemon.child(pokemon.getUserPokemonID()).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
@@ -250,13 +251,17 @@ public class UserSingleton {
         });
 
         HashMap userHash = new HashMap();
-        hash.put("rareCandy", userDetails.getRareCandy());
-        hash.put("superCandy", userDetails.getSuperCandy());
+        userHash .put("rareCandy", userDetails.getRareCandy());
+        userHash .put("superCandy", userDetails.getSuperCandy());
 
-        mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
+        mUser.updateChildren(userHash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-
+                if (task.isSuccessful()) {
+                    Log.d("hello pare yes", "meme");
+                } else {
+                    Log.d("hello pare no", task.getResult().toString());
+                }
             }
         });
     }
