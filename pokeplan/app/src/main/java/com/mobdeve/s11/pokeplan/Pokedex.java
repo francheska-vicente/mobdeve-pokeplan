@@ -5,11 +5,19 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class Pokedex {
+    private static Pokedex pokedex;
     private ArrayList<Pokemon> pokemonList;
 
-    public Pokedex() {
+    private Pokedex() {
         pokemonList = new ArrayList<>();
         fillPokedex();
+    }
+
+    public static Pokedex getPokedex() {
+        if (pokedex == null) {
+            pokedex = new Pokedex();
+        }
+        return pokedex;
     }
 
     public Pokemon getPokemon(int dexNum) {
