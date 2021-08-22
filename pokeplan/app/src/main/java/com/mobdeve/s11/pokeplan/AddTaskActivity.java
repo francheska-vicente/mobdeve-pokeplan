@@ -51,6 +51,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private String category;
     private String priority;
+    private boolean checkerNotif;
 
     private TextView tvTitle;
 
@@ -77,7 +78,7 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
-
+        checkerNotif = false;
         this.initComponents();
     }
 
@@ -99,7 +100,7 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     public void addToDatabase (String name, int priority, String category, String startDate,
-                               String endDate, String startTime, String endTime, String notes) {
+                               String endDate, String startTime, String endTime, String notes, String notif, boolean val) {
         int monthEnd = Integer.parseInt(endDate.substring(3, 5));
         int dayEnd = Integer.parseInt(endDate.substring(0, 2));
         int yearEnd = Integer.parseInt(endDate.substring(6, 8));
@@ -113,7 +114,7 @@ public class AddTaskActivity extends AppCompatActivity {
         if (startDate.equals("")) {
             taskCreated = new Task(currentUserUid, name, priority, category,
                     new CustomDate(true),
-                    new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
+                    new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes, notif, val, checkerNotif);
         } else {
             int monthStart = Integer.parseInt(startDate.substring(3, 5));
             int dayStart = Integer.parseInt(startDate.substring(0, 2));
@@ -126,7 +127,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
             taskCreated = new Task(currentUserUid, name, priority, category,
                     new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
-                    new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes);
+                    new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes, notif, val, checkerNotif);
         }
 
         UserSingleton.getUser().addOngoingTask(taskCreated);
@@ -157,12 +158,12 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     public void editDatabase (String name, int priority, String category, String startDate,
-                              String endDate, String startTime, String endTime, String notes, String taskID) {
+                              String endDate, String startTime, String endTime, String notes, String taskID, String notif, boolean val) {
 
         CustomDate cEndDate = new CustomDate (endDate, endTime);
         CustomDate cStartDate = new CustomDate(startDate, startTime);
 
-        UserSingleton.getUser().editTask(name, priority, category, cStartDate, cEndDate, notes, taskID);
+        UserSingleton.getUser().editTask(name, priority, category, cStartDate, cEndDate, notes, taskID, notif, val, checkerNotif);
 
         Intent intent = new Intent();
 
@@ -190,6 +191,9 @@ public class AddTaskActivity extends AppCompatActivity {
         this.etEndTime = findViewById(R.id.et_add_task_end_time);
         tvTitle = findViewById(R.id.tv_add_task_start_title);
         this.btnCreate = (Button) findViewById(R.id.btn_add_task_create);
+        this.cbNotif = findViewById(R.id.cb_add_task_notifs);
+        this.spinNotifTime = findViewById(R.id.spin_add_task_notiftime);
+        this.spinNotifWhen = findViewById(R.id.spin_add_task_notifwhen);
 
         Intent intent = getIntent();
         String checker = intent.getStringExtra(TaskDetailsActivity.KEY_ID);
@@ -199,6 +203,17 @@ public class AddTaskActivity extends AppCompatActivity {
             tvTitle.setText("EDIT TASK");
             btnCreate.setText("EDIT TASK");
         }
+
+        this.cbNotif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkerNotif) {
+                    checkerNotif = false;
+                } else {
+                    checkerNotif = true;
+                }
+            }
+        });
 
         this.btnCreate.setOnClickListener(new View.OnClickListener() {
 
@@ -227,6 +242,25 @@ public class AddTaskActivity extends AppCompatActivity {
                 String endTime = etEndTime.getText().toString();
                 String startDate = etStartDate.getText().toString();
                 String endDate = etEndDate.getText().toString();
+                String notif = spinNotifTime.getSelectedItem().toString();
+                String when = spinNotifWhen.getSelectedItem().toString();
+
+                boolean val = false;
+                if(when != null && !when.isEmpty() && when.equalsIgnoreCase("Before Start Time")) {
+                    val = true;
+                }
+
+                if (checkerNotif) {
+                    if (notif.isEmpty()) {
+                        ((TextView) spinNotifTime.getSelectedView()).setError("Notification information is required if check box is clicked.");
+                        ((TextView) spinNotifTime.getSelectedView()).requestFocus();
+                        return;
+                    } else if (when.isEmpty()) {
+                        ((TextView) spinNotifWhen.getSelectedView()).setError("Notification information is required if check box is clicked.");
+                        ((TextView) spinNotifWhen.getSelectedView()).requestFocus();
+                        return;
+                    }
+                }
 
                 String error = "";
                 boolean checker = false;
@@ -331,9 +365,9 @@ public class AddTaskActivity extends AppCompatActivity {
                     String taskID = intent.getStringExtra(TaskDetailsActivity.KEY_ID);
                     if (taskID != null) {
                         editDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes,
-                                taskID);
+                                taskID, notif, val);
                     } else {
-                        addToDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes);
+                        addToDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                         finish();
                     }
                 } else {

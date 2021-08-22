@@ -190,7 +190,7 @@ public class UserSingleton {
     }
 
     public void editTask (String name, int priority, String category, CustomDate startDate,
-                          CustomDate endDate, String notes, String key) {
+                          CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("taskName", name);
         hash.put("endDate", endDate);
@@ -198,6 +198,9 @@ public class UserSingleton {
         hash.put("priority", priority);
         hash.put("category", category);
         hash.put("description", notes);
+        hash.put("notifWhen", notif);
+        hash.put("beforeStartTime", val);
+        hash.put("isNotif", isNotif);
 
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
