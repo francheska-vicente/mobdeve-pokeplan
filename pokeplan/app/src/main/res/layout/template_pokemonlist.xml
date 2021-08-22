@@ -25,14 +25,12 @@
         app:layout_constraintEnd_toEndOf="@+id/iv_pokedex_circlebg"
         app:layout_constraintStart_toStartOf="@+id/iv_pokedex_circlebg"
         app:layout_constraintTop_toTopOf="@+id/iv_pokedex_circlebg"
-        app:srcCompat="@drawable/pkmn_96"
-        app:tint="@color/black" />
+        app:srcCompat="@drawable/pkmn_96" />
 
     <TextView
         android:id="@+id/tv_pokedex_dexnum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
         android:fontFamily="@font/raleway_medium"
         android:text="#150"
         app:layout_constraintEnd_toEndOf="parent"
