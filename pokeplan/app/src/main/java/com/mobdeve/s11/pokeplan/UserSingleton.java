@@ -79,12 +79,14 @@ public class UserSingleton {
         mTask.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                ongoingTasks = new ArrayList<>();
+                completedTasks = new ArrayList<>();
 
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     Task temp = ds.getValue(Task.class);
-                    if(!temp.isFinished() && !ongoingTasks.contains(temp)) {
+                    if(!temp.getIsFinished()) {
                         ongoingTasks.add(temp);
-                    } else if (temp.isFinished() && completedTasks.contains(temp)) {
+                    } else {
                         completedTasks.add(temp);
                     }
                 }
@@ -173,11 +175,7 @@ public class UserSingleton {
         return error[0];
     }
 
-    public void moveToCompletedTask (Task task) {
-        this.ongoingTasks.remove(task);
-        this.completedTasks.add(task);
-
-        String key = task.getTaskID();
+    public void moveToCompletedTask (String key) {
         HashMap hash = new HashMap();
         hash.put("isFinished", true);
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
