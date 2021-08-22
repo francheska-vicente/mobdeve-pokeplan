@@ -1,17 +1,24 @@
 package com.mobdeve.s11.pokeplan;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class PokedexFragment extends Fragment {
     private Boolean[] pokedex;
@@ -19,6 +26,8 @@ public class PokedexFragment extends Fragment {
     private PokedexAdapter pdAdapter;
 
     private TextView tvcaught;
+
+    private ProgressBar pbload;
 
     public PokedexFragment() {
     }
@@ -42,15 +51,40 @@ public class PokedexFragment extends Fragment {
     }
 
     private void initComponents (View view) {
-        this.pokedex = UserSingleton.getUser().getUserPokedex();
+        this.pbload = view.findViewById(R.id.pb_pkdex_load);
+        pbload.setVisibility(View.GONE);
+        pokedex = UserSingleton.getUser().getUserPokedex();
         this.rvPokedex = view.findViewById(R.id.rv_pokedex);
-        this.rvPokedex.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        this.pdAdapter = new PokedexAdapter(pokedex);
+        rvPokedex.setLayoutManager(new GridLayoutManager(getActivity(), 5));
+        rvPokedex.setAdapter(pdAdapter);
 
-        this.pdAdapter = new PokedexAdapter(this.pokedex);
-        this.rvPokedex.setAdapter(this.pdAdapter);
-
-        this.tvcaught = view.findViewById(R.id.tv_pokedex_caught);
+        tvcaught = view.findViewById(R.id.tv_pokedex_caught);
         String caught = "Caught Pokemon: " + UserSingleton.getUser().getNumCaught() +  "/150";
         tvcaught.setText(caught);
+    }
+
+    private class loadPokedexTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            pbload.setVisibility(View.VISIBLE);
+            rvPokedex.setVisibility(View.INVISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            rvPokedex.setAdapter(pdAdapter);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... voids) {
+        }
+
+        @Override
+        protected void onPostExecute(Void voids) {
+            pbload.setVisibility(View.GONE);
+            rvPokedex.setVisibility(View.VISIBLE);
+        }
     }
 }
