@@ -1,10 +1,12 @@
 package com.mobdeve.s11.pokeplan;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +32,9 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private TextView tvPkmnNature;
     private TextView tvPkmnMetDate;
     private ProgressBar pbPkmnLevel;
+
+    private TextView tvRareCandyCtr;
+    private TextView tvSuperCandyCtr;
 
     private Dialog editdialog;
 
@@ -63,6 +68,9 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.tvPkmnNature = findViewById(R.id.tv_pkmndetails_nature);
         this.tvPkmnMetDate = findViewById(R.id.tv_pkmndetails_metdate);
         this.pbPkmnLevel = findViewById(R.id.pb_pkmndetails_level);
+
+        this.tvRareCandyCtr = findViewById(R.id.tv_pkmndetails_rarecandyctr);
+        this.tvSuperCandyCtr = findViewById(R.id.tv_pkmndetails_supercandyctr);
     }
 
     private void setAllComponents() {
@@ -82,9 +90,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.tvPkmnLevel.setText(level);
 
         String pkmntype = pkmn.getPokemonDetails().getType1();
-        if (pkmn.getPokemonDetails().getType2() != null)
+        if (!pkmn.getPokemonDetails().getType2().isEmpty())
             pkmntype = pkmntype + "/" + pkmn.getPokemonDetails().getType2();
         this.tvPkmnType.setText(pkmntype);
+
+        this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
+        this.tvSuperCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getSuperCandy()));
 
         this.btnedit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -95,9 +106,26 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         if (UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100)
             this.btnrare.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                feedPokemon(pkmn);
-            }
+                    feedPokemon(pkmn);
+                }
             });
+        else {
+            btnrare.setEnabled(false);
+            btnrare.setTextColor(ColorStateList.valueOf(
+                    ContextCompat.getColor(getApplicationContext(), R.color.darker_gray)));
+        }
+        if (UserSingleton.getUser().getUserDetails().getSuperCandy() > 0 &&
+                pkmn.getLevel() >= pkmn.getPokemonDetails().getEvolveLvl())
+            this.btnsuper.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    evolvePokemon(pkmn);
+                }
+            });
+        else {
+            btnsuper.setEnabled(false);
+            btnsuper.setTextColor(ColorStateList.valueOf(
+                    ContextCompat.getColor(getApplicationContext(), R.color.darker_gray)));
+        }
     }
 
     private void editNickname(UserPokemon pkmn) {
@@ -140,10 +168,14 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private void feedPokemon(UserPokemon pkmn) {
         pkmn.feedCandy();
         UserSingleton.getUser().getUserDetails().subtractRareCandy(1);
+        this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
 
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
         String level = "Level " + pkmn.getLevel();
         this.tvPkmnLevel.setText(level);
+
+        if (!(UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100))
+            btnrare.setEnabled(false);
     }
 
     private void evolvePokemon(UserPokemon pkmn) {
@@ -151,6 +183,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 && pkmn.getPokemonDetails().getEvolveLvl() != -1) {
             pkmn.evolvePokemon();
             UserSingleton.getUser().getUserDetails().subtractSuperCandy(1);
+            this.tvSuperCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getSuperCandy()));
 
             this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                     "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
