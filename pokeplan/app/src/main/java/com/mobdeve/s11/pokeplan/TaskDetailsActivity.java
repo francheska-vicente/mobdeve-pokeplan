@@ -108,6 +108,33 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         confirmDelete.getWindow().setLayout(width, height);
         confirmDelete.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) confirmDelete.findViewById(R.id.tv_dialog_title);
+        tvdialogtitle.setText(R.string.task_details_delete_task_title);
+        TextView tvdialogtext = (TextView) confirmDelete.findViewById(R.id.tv_dialog_text);
+        tvdialogtext.setText(R.string.task_details_delete_task_text);
+        ImageView ivdialogicon = (ImageView) confirmDelete.findViewById(R.id.iv_dialog_icon);
+        ivdialogicon.setImageResource(R.drawable.warning);
+
+        Button btndialogcancel = (Button) confirmDelete.findViewById(R.id.btn_dialog_cancel);
+        btndialogcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDelete.dismiss();
+            }
+        });
+
+        Button btndialogconfirm = (Button) confirmDelete.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setText(R.string.task_details_delete_task_button);
+        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDelete.dismiss();
+                UserSingleton.getUser().deleteTask(taskID);
+                finish();
+            }
+        });
+        confirmDelete.show();
     }
 
     protected void createDialog (View v, String taskID) {
