@@ -10,14 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PokePlan"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity">
-
-        </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".RegisterStarterActivity" />
-        <activity android:name=".TaskDetailsActivity" />
-        <activity android:name=".AddTaskActivity" />
         <activity android:name=".InitActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,8 +17,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegisterStarterActivity" />
+        <activity android:name=".MainActivity" />
+
+        <activity android:name=".TaskDetailsActivity" />
+        <activity android:name=".AddTaskActivity" />
+
         <activity android:name=".PokemonDetailsActivity" />
 
+        <activity android:name=".PokedexDetailsActivity" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

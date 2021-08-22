@@ -34,7 +34,7 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
 
         vh.getConstraintLayout().setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), PokemonDetailsActivity.class);
+                Intent i = new Intent(view.getContext(), PokedexDetailsActivity.class);
                 i.putExtra(KEY_POKEMONDEXNUM,
                         pokemonList.get(vh.getBindingAdapterPosition()).getDexNum());
                 view.getContext().startActivity(i);
@@ -48,6 +48,7 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
     public void onBindViewHolder(@NonNull @NotNull PokedexViewHolder holder, int position) {
         holder.setPkmnIcon(this.pokemonList.get(position).getDexNum(), pokedex[position]);
         holder.setDexNum(this.pokemonList.get(position).getDexNum());
+        holder.setButtonEnabled(this.pokemonList.get(position).getDexNum(), pokedex[position]);
     }
 
     @Override

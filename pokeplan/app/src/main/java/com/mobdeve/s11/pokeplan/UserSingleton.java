@@ -1,8 +1,6 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
