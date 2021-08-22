@@ -66,7 +66,6 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private Dialog errorDialog;
 
-    private DatabaseReference mTask;
     private String currentUserUid;
 
     @Override
@@ -78,7 +77,6 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void initComponents () {
-        this.mTask =  FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Tasks");
         this.currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.initCalendar ();
         this.intent ();
