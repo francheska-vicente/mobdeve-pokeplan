@@ -1,5 +1,9 @@
 package com.mobdeve.s11.pokeplan;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -28,8 +32,20 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
     private Button btnFinishTask;
     private ImageButton ibDeleteTask;
+    private ImageButton ibEditTask;
     private Dialog confirmFinish;
     private Dialog confirmDelete;
+
+    public static final String KEY_TASKNAME = "KEY_TASKNAME";
+    public static final String KEY_CATEGORY = "KEY_CATEGORY";
+    public static final String KEY_PRIORITY = "KEY_PRIORITY";
+    public static final String KEY_C_START_DATE = "KEY_C_START_DATE";
+    public static final String KEY_C_END_DATE = "KEY_C_END_DATE";
+    public static final String KEY_C_START_TIME = "KEY_C_START_TIME";
+    public static final String KEY_C_END_TIME = "KEY_C_END_TIME";
+
+    public static final String KEY_NOTES = "KEY_NOTES";
+    public static final String KEY_ID = "KEY_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +70,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.tvPriorityName = findViewById(R.id.tv_taskdetails_priorty);
         this.btnFinishTask = findViewById(R.id.btn_task_finish);
         this.ibDeleteTask = findViewById(R.id.ib_taskdetails_delete);
+        this.ibEditTask = findViewById(R.id.ib_taskdetails_edit);
 
         Intent intent = getIntent();
 
@@ -64,6 +81,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
         String endDate = intent.getStringExtra(TaskAdapter.KEY_DEADLINE);
         String notes = intent.getStringExtra(TaskAdapter.KEY_NOTES);
         String taskID = intent.getStringExtra(TaskAdapter.KEY_ID);
+        String cEndDate = intent.getStringExtra(TaskAdapter.KEY_C_END_DATE);
+        String cStartDate = intent.getStringExtra(TaskAdapter.KEY_C_START_DATE);
+        String cEndTime = intent.getStringExtra(TaskAdapter.KEY_C_END_TIME);
+        String cStartTime = intent.getStringExtra(TaskAdapter.KEY_C_START_TIME);
 
         this.tvTaskName.setText(taskName);
         this.tvCategory.setText(category);
@@ -96,7 +117,43 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 deleteDialog(v, taskID);
             }
         });
+
+        this.ibEditTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editIntent(taskName, category, priority, notes, taskID, cEndDate, cStartDate, cEndTime, cStartTime);
+            }
+        });
     }
+
+    private void editIntent (String taskName, String category, int priority, String notes, String taskID,
+                             String endDate, String startDate, String endTime, String startTime) {
+        Intent intent = new Intent(TaskDetailsActivity.this, AddTaskActivity.class);
+
+        intent.putExtra(KEY_TASKNAME, taskName);
+        intent.putExtra(KEY_CATEGORY, category);
+        intent.putExtra(KEY_PRIORITY, priority);
+        intent.putExtra(KEY_NOTES, notes);
+        intent.putExtra(KEY_ID, taskID);
+        intent.putExtra(KEY_C_END_DATE, endDate);
+        intent.putExtra(KEY_C_START_DATE, startDate);
+        intent.putExtra(KEY_C_START_TIME, startTime);
+        intent.putExtra(KEY_C_END_TIME, endTime);
+
+        addActivityResultLauncher.launch(intent);
+    }
+
+
+    private ActivityResultLauncher addActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Intent intent = result.getData();
+
+                }
+            }
+    );
 
     protected void deleteDialog(View v, String taskID) {
         confirmDelete = new Dialog(v.getContext());
@@ -219,5 +276,11 @@ public class TaskDetailsActivity extends AppCompatActivity {
         }
         this.tvPriorityIcon.setText(priorityIcon);
         this.tvPriorityName.setText(priorityName);
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+
     }
 }
