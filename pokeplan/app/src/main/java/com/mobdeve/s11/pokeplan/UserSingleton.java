@@ -251,9 +251,9 @@ public class UserSingleton {
 
         return null;
     }
-    public void movePokemonToPC(String key) {
+    public void movePokemon(String key, boolean checker) {
         HashMap hash = new HashMap();
-        hash.put("inParty", false);
+        hash.put("inParty", checker);
 
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
