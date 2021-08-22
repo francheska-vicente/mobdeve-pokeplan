@@ -49,7 +49,7 @@ public class UserSingleton {
 
     private UserSingleton(){
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
-
+        Log.d("logging in", "heheheh");
         this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         this.mUser = mDatabase.getReference("Users").child(this.userID);
@@ -63,6 +63,12 @@ public class UserSingleton {
         userPokedex = new Boolean[150];
         Arrays.fill(userPokedex, false);
 
+        initDbTask();
+        initDbUser();
+        initDbPokemon();
+    }
+
+    private void initDbUser () {
         mUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -74,7 +80,9 @@ public class UserSingleton {
                 Log.d("DEBUG USER ERROR: ", Integer.toString(databaseError.getCode()));
             }
         });
+    }
 
+    private void initDbTask () {
         mTask.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -96,7 +104,9 @@ public class UserSingleton {
                 Log.d("DEBUG TASKS ERROR: ", Integer.toString(error.getCode()));
             }
         });
+    }
 
+    private void initDbPokemon () {
         mPokemon.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -270,6 +280,7 @@ public class UserSingleton {
     public ArrayList<UserPokemon> getUserPokemonParty() {
         return userPokemonParty;
     }
+
     public void setUserPokemonParty(ArrayList<UserPokemon> party) {
         this.userPokemonParty = party;
     }
