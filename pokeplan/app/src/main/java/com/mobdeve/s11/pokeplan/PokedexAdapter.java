@@ -1,6 +1,7 @@
 package com.mobdeve.s11.pokeplan;
 
 import android.content.Intent;
+import android.os.Debug;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,6 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
                 view.getContext().startActivity(i);
             }
         });
-
         return vh;
     }
 
@@ -48,7 +48,7 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
     public void onBindViewHolder(@NonNull @NotNull PokedexViewHolder holder, int position) {
         holder.setPkmnIcon(this.pokemonList.get(position).getDexNum(), pokedex[position]);
         holder.setDexNum(this.pokemonList.get(position).getDexNum());
-        holder.setButtonEnabled(this.pokemonList.get(position).getDexNum(), pokedex[position]);
+        holder.setButtonEnabled(pokedex[position]);
     }
 
     @Override
