@@ -237,6 +237,30 @@ public class UserSingleton {
         });
     }
 
+    public void updatePokemon (UserPokemon pokemon) {
+        HashMap hash = new HashMap();
+        hash.put("details", pokemon.getPokemonDetails());
+        hash.put("fedCandy", pokemon.getFedCandy());
+
+        mPokemon.child(pokemon.getUserPokemonID()).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+
+            }
+        });
+
+        HashMap userHash = new HashMap();
+        hash.put("rareCandy", userDetails.getRareCandy());
+        hash.put("superCandy", userDetails.getSuperCandy());
+
+        mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+
+            }
+        });
+    }
+
     // party pokemon
     public ArrayList<UserPokemon> getUserPokemonParty() {
         return userPokemonParty;
