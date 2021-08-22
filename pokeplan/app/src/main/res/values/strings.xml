@@ -48,7 +48,7 @@
 
     <!-- Focus Timer egg break -->
     <string name="focustimer_dialog_egg_break_title">Oh no!</string>
-    <string name="focustimer_dialog_egg_break_text">Because you stopped your timer, the egg broke.</string>
+    <string name="focustimer_dialog_egg_break_text">Because you stopped your timer, the egg cracked.</string>
 
     <!-- Task List -->
     <string name="tasklist_title">TASK LIST</string>
