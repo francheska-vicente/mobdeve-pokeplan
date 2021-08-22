@@ -65,7 +65,7 @@ public class PokedexDetailsActivity extends AppCompatActivity {
     private void setAllComponents() {
         Intent intent = getIntent();
         int dexnum = intent.getIntExtra(PokedexAdapter.KEY_POKEMONDEXNUM, 1);
-        Pokemon pkmn = new Pokedex().getPokemon(dexnum);
+        Pokemon pkmn = Pokedex.getPokedex().getPokemon(dexnum);
 
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ pkmn.getDexNum()));
@@ -100,7 +100,7 @@ public class PokedexDetailsActivity extends AppCompatActivity {
             tvPkmnOGSpecies.setText(pkmn.getSpecies());
             ivPkmnEvoIcon.setImageResource(getImageId(getApplicationContext(),
                     "pkmn_"+ (pkmn.getDexNum()+1)));
-            tvPkmnEvoSpecies.setText(new Pokedex().getPokemon(pkmn.getDexNum()+1).getSpecies());
+            tvPkmnEvoSpecies.setText(Pokedex.getPokedex().getPokemon(pkmn.getDexNum()+1).getSpecies());
 
             String pkmnlevel = "Level " + pkmn.getEvolveLvl();
             tvEvoLevel.setText(pkmnlevel);
