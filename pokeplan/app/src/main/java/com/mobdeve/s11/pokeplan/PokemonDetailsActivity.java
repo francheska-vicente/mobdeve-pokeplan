@@ -242,4 +242,10 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private int getImageId(Context context, String imageName) {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
+
+    protected void onStop() {
+        super.onStop();
+
+        // UserSingleton.getUser().updatePokemon ();
+    }
 }
