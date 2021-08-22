@@ -4,11 +4,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -16,6 +18,9 @@ public class HomeFragment extends Fragment {
     private ArrayList<UserPokemon> pokemonPartyList;
     private RecyclerView rvPokemonParty;
     private PokemonPartyAdapter ppAdapter;
+
+    private ImageButton ibuserprofile;
+    private ImageButton ibpokemonpc;
 
     public HomeFragment() {
     }
@@ -35,7 +40,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         initComponents(view);
-
+    initButtons(view);
         return view;
     }
 
@@ -46,6 +51,16 @@ public class HomeFragment extends Fragment {
 
         this.ppAdapter = new PokemonPartyAdapter(this.pokemonPartyList);
         this.rvPokemonParty.setAdapter(this.ppAdapter);
+    }
+
+    private void initButtons(View view) {
+        this.ibuserprofile = view.findViewById(R.id.ib_home_user);
+        this.ibuserprofile.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), UserProfileActivity.class);
+                view.getContext().startActivity(i);
+            }
+        });
     }
 
     @Override
