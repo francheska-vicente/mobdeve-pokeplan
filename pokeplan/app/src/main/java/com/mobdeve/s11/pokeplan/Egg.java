@@ -17,11 +17,11 @@ public class Egg {
 
     // rates of C, UC, R, SR respectively
     private final int[] first = {50, 30, 15, 5};
-    private final int[] second = {30, 35, 10, 5};
-    private final int[] third = {10, 45, 15, 10};
-    private final int[] fourth = {5, 40, 30, 20};
-    private final int[] fifth = {0, 30, 40, 25};
-    private final int[] sixth = {0, 5, 40, 50};
+    private final int[] second = {30, 40, 20, 10};
+    private final int[] third = {10, 50, 25, 15};
+    private final int[] fourth = {5, 35, 40, 20};
+    private final int[] fifth = {0, 30, 45, 25};
+    private final int[] sixth = {0, 10, 50, 40};
 
     private Pool pkmnpool;
 
