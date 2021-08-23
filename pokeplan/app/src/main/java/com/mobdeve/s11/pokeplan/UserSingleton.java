@@ -64,6 +64,7 @@ public class UserSingleton {
         }
         return user;
     }
+
     public static void removeUser() {
         user = null;
     }
@@ -75,6 +76,7 @@ public class UserSingleton {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userDetails = dataSnapshot.getValue(UserDetails.class);
                 userDetails.setUserName(dataSnapshot.child("userName").getValue(String.class));
+                Log.d("User DB", "User's information was successfully loaded to the application.");
             }
 
             @Override
@@ -84,6 +86,7 @@ public class UserSingleton {
         });
 
     }
+
     private void initDbTask () {
         ongoingTasks = new ArrayList<>();
         completedTasks = new ArrayList<>();
@@ -99,14 +102,17 @@ public class UserSingleton {
                         completedTasks.add(temp);
                     }
                 }
+
+                Log.d("Task DB", "User's task information was successfully loaded to the application.");
             }
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Log.d("DEBUG TASKS ERROR: ", Integer.toString(error.getCode()));
+                Log.e("DEBUG TASKS ERROR: ", Integer.toString(error.getCode()));
             }
         });
     }
+
     private void initDbPokemon () {
         userPokemonParty = new ArrayList<>();
         userPokemonPC = new ArrayList<>();
@@ -124,11 +130,13 @@ public class UserSingleton {
                         userPokemonPC.add(temp);
                     }
                 }
+
+                Log.d("Pokemon DB", "User's pokemon information was successfully loaded to the application.");
             }
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Log.d("DEBUG POKEMON ERROR: ", Integer.toString(error.getCode()));
+                Log.e("DEBUG POKEMON ERROR: ", Integer.toString(error.getCode()));
             }
         });
     }
@@ -137,6 +145,7 @@ public class UserSingleton {
     public UserDetails getUserDetails() {
         return userDetails;
     }
+
     public void setUserDetails(UserDetails details) {
         this.userDetails = details;
     }
@@ -154,15 +163,19 @@ public class UserSingleton {
     public ArrayList<Task> getOngoingTasks() {
         return this.ongoingTasks;
     }
+
     public ArrayList<Task> getCompletedTasks () {
         return this.completedTasks;
     }
+
     public void setOngoingTasks(ArrayList<Task> tasks) {
         this.ongoingTasks = tasks;
     }
+
     public void setCompletedTasks(ArrayList<Task> tasks) {
         this.completedTasks = tasks;
     }
+
     public void addOngoingTask(Task taskCreated) {
         String key = mTask.push().getKey();
         taskCreated.setTaskID(key);
@@ -172,11 +185,13 @@ public class UserSingleton {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
                 task.isSuccessful();
+                Log.d("Task DB", "Task was added to the list of ongoing tasks.");
             }
         });
 
         ongoingTasks.add(taskCreated);
     }
+
     public void moveToCompletedTask (String key) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         this.getUserDetails().addCompletedTask();
@@ -197,6 +212,7 @@ public class UserSingleton {
             }
         }
     }
+
     public void deleteTask (String key) {
         Query query = mTask.child(key);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -227,6 +243,7 @@ public class UserSingleton {
             }
         }
     }
+
     public void editTask (String name, int priority, String category, CustomDate startDate,
                           CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
@@ -280,9 +297,8 @@ public class UserSingleton {
 
     }
 
-
     // pokemons
-    public boolean addPokemon(Pokemon details) {
+    public void addPokemon(Pokemon details) {
         userDetails.setCaught(details.getDexNum());
 
         UserPokemon userPokemon;
@@ -299,7 +315,6 @@ public class UserSingleton {
             userPokemonPC.add(userPokemon);
         }
 
-        final boolean[] checker = new boolean[1];
 
         DatabaseReference temp = mPokemon.child(key);
 
@@ -308,15 +323,15 @@ public class UserSingleton {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
                 if (task.isSuccessful()) {
-                    checker[0] = true;
+                    Log.d("Pokemon DB", "Pokemon was successfully added to the database.");
                 } else {
-                    checker[0] = false;
+                    Log.e("Pokemon DB", "Pokemon was not added to the database.");
                 }
             }
         });
 
-        return checker[0];
     }
+
     public void editNickname (String key, String nickname) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("nickname", nickname);
@@ -324,7 +339,7 @@ public class UserSingleton {
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-
+                Log.d("Pokemon DB", "Pokemon's nickname was modified.");
             }
         });
 
@@ -343,6 +358,7 @@ public class UserSingleton {
             }
         }
     }
+
     public void updatePokemon (UserPokemon pokemon) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("details", pokemon.getPokemonDetails());
@@ -352,7 +368,7 @@ public class UserSingleton {
         mPokemon.child(pokemon.getUserPokemonID()).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-
+                Log.d("Pokemon DB", "Pokemon's information was modified.");
             }
         });
 
@@ -383,9 +399,9 @@ public class UserSingleton {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
                 if (task.isSuccessful()) {
-
+                    Log.d("User DB", "User's number of candies was modified.");
                 } else {
-
+                    Log.e("User DB", "User's number of candies was not modified.");
                 }
             }
         });
@@ -395,9 +411,11 @@ public class UserSingleton {
     public ArrayList<UserPokemon> getUserPokemonParty() {
         return userPokemonParty;
     }
+
     public void setUserPokemonParty(ArrayList<UserPokemon> party) {
         this.userPokemonParty = party;
     }
+
     public UserPokemon getPokemonInParty(String id) {
         for(int j = 0; j < userPokemonParty.size(); j++)
             if(userPokemonParty.get(j).getUserPokemonID().equals(id))
@@ -405,6 +423,7 @@ public class UserSingleton {
 
         return null;
     }
+
     public void movePokemon(String key, boolean checker) {
         HashMap <String, Object> hash = new HashMap<String, Object>();
         hash.put("inParty", checker);
@@ -412,7 +431,11 @@ public class UserSingleton {
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-
+                if (task.isSuccessful()) {
+                    Log.d("Pokemon DB", "Pokemon was moved.");
+                } else {
+                    Log.e("Pokemon DB", "Pokemon was not moved.");
+                }
             }
         });
     }
@@ -421,9 +444,11 @@ public class UserSingleton {
     public ArrayList<UserPokemon> getUserPokemonPC() {
         return userPokemonPC;
     }
+
     public void setUserPokemonPC(ArrayList<UserPokemon> pc) {
         this.userPokemonPC = pc;
     }
+
     public UserPokemon getPokemonInPC(String id) {
         for(int j = 0; j < userPokemonPC.size(); j++)
             if(userPokemonPC.get(j).getUserPokemonID().equals(id))
@@ -431,6 +456,7 @@ public class UserSingleton {
 
         return null;
     }
+
     public void movePokemonToParty(UserPokemon pkmn) {
         for(int j = 0; j < userPokemonPC.size(); j++)
             if(userPokemonPC.get(j).equals(pkmn))
