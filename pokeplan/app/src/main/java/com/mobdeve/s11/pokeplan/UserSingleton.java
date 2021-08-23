@@ -112,7 +112,7 @@ public class UserSingleton {
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     UserPokemon temp = ds.getValue(UserPokemon.class);
 
-                    userDetails.getUserPokedex()[temp.getPokemonDetails().getDexNum() - 1] = true;
+                    userDetails.getUserPokedex().set(temp.getPokemonDetails().getDexNum() - 1, true);
                     if (temp.isInParty()) {
                         userPokemonParty.add(temp);
                     } else {
@@ -210,7 +210,7 @@ public class UserSingleton {
 
     // pokemons
     public boolean addPokemon(Pokemon details) {
-        userDetails.getUserPokedex()[details.getDexNum()-1] = true;
+        userDetails.getUserPokedex().set(details.getDexNum()-1, true);
 
         UserPokemon userPokemon;
         String key = mPokemon.push().getKey();
