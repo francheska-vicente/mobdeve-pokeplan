@@ -195,14 +195,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
                         String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
                         String endDate = intent.getStringExtra(AddTaskActivity.KEY_END_DATE);
                         String startDate = intent.getStringExtra(AddTaskActivity.KEY_START_DATE);
-                        String priority = intent.getStringExtra(AddTaskActivity.KEY_PRIORITY);
+                        int priority = intent.getIntExtra(AddTaskActivity.KEY_PRIORITY, 1);
                         String category = intent.getStringExtra(AddTaskActivity.KEY_CATEGORY);
                         String notifWhen = intent.getStringExtra(AddTaskActivity.KEY_NOTIF_WHEN);
                         Boolean notifOn = intent.getBooleanExtra(AddTaskActivity.KEY_NOTIF_ON, false);
                         Boolean notifStartTime = intent.getBooleanExtra(AddTaskActivity.KEY_NOTIF_START_TIME, false);
 
                         setValues(name, category, startDate, endDate,
-                                notes, priority.length(), notifWhen, notifOn, notifStartTime);
+                                notes, priority, notifWhen, notifOn, notifStartTime);
                     } else {
                         initComponents();
                     }
