@@ -1,4 +1,6 @@
 package com.mobdeve.s11.pokeplan;
+import android.util.Log;
+
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
@@ -28,8 +30,10 @@ public class UserDetails {
         this.userName = userName;
 
         this.starterdexnum = dexnum;
-        userPokedex = new ArrayList<>(150);
-        Collections.fill(userPokedex, false);
+        Boolean[] userPokedexBool = new Boolean[150];
+        Arrays.fill(userPokedexBool, Boolean.FALSE);
+        userPokedex = new ArrayList<Boolean>(Arrays.asList(userPokedexBool));
+        Log.d("rororor", userPokedex.get(0).toString());
 
         this.rarecandy = 5;
         this.supercandy = 5;
