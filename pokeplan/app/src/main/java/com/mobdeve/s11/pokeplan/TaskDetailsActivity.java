@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.Task;
 
+import java.util.HashMap;
+import java.util.Random;
+
 public class TaskDetailsActivity extends AppCompatActivity {
     private ImageButton btnback;
     private TextView tvTaskName;
@@ -286,13 +289,53 @@ public class TaskDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 confirmFinish.dismiss();
                 UserSingleton.getUser().moveToCompletedTask(taskID);
-                hatchEgg();
+                giveCandies();
             }
         });
         confirmFinish.show();
     }
 
-    protected void hatchEgg () {
+    protected void giveCandies () {
+        int divider = 90, max = 5, min = 3;
+        int priority = this.tvPriorityIcon.getText().toString().trim().length();
+
+        switch (priority) {
+            case 2: divider = 85;
+                    max = 10;
+                    min = 4;
+                break;
+            case 3: divider = 80;
+                    max = 13;
+                    min = 5;
+                break;
+            case 4: divider = 70;
+                    max = 17;
+                    min = 6;
+                break;
+            case 5: divider = 60;
+                    max = 20;
+                    min = 7;
+                break;
+        }
+
+        Random random = new Random();
+        int numberGenerated = random.nextInt(100) + 1;
+        int numberOfCandies = (int) (Math.random () * (max - min + 1) + min);
+        String candyType = "rareCandy";
+
+        int totalNumberOfcandies = 0;
+        if (numberGenerated > divider) {
+            candyType = "superCandy";
+            UserSingleton.getUser().getUserDetails().addSuperCandy(numberOfCandies);
+            totalNumberOfcandies = UserSingleton.getUser().getUserDetails().getSuperCandy();
+        } else {
+            UserSingleton.getUser().getUserDetails().addRareCandy(numberOfCandies);
+            totalNumberOfcandies = UserSingleton.getUser().getUserDetails().getRareCandy();
+        }
+
+        HashMap<String, Object> hash = new HashMap<>();
+        hash.put(candyType, totalNumberOfcandies);
+        UserSingleton.getUser().updateUser(hash);
         finish();
     }
 
