@@ -33,7 +33,7 @@ public class UserDetails {
         Boolean[] userPokedexBool = new Boolean[150];
         Arrays.fill(userPokedexBool, Boolean.FALSE);
         userPokedex = new ArrayList<Boolean>(Arrays.asList(userPokedexBool));
-
+        Log.d("hello pare", "inside constructor");
         this.rarecandy = 5;
         this.supercandy = 5;
 
