@@ -45,10 +45,12 @@ public class AddTaskActivity extends AppCompatActivity {
     public static final String KEY_CATEGORY = "KEY_CATEGORY";
     public static final String KEY_PRIORITY = "KEY_PRIORITY";
     public static final String KEY_START_DATE = "KEY_START_DATE";
-    public static final String KEY_START_TIME = "KEY_START_TIME";
     public static final String KEY_END_DATE = "KEY_END_DATE";
-    public static final String KEY_END_TIME = "KEY_END_TIME";
     public static final String KEY_NOTES = "KEY_NOTES";
+
+    public static final String KEY_NOTIF_WHEN = "KEY_NOTIF_WHEN";
+    public static final String KEY_NOTIF_ON = "KEY_NOTIF_ON";
+    public static final String KEY_NOTIF_START_TIME = "KEY_NOTIF_START_TIME";
 
     private String category;
     private String priority;
@@ -146,6 +148,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
         this.priority = (priority + 1) + "";
         String category = intent.getStringExtra(TaskDetailsActivity.KEY_CATEGORY);
+
         for (int i = 0; i < btnCategory.size(); i++) {
             Button temp = (Button) btnCategory.get(i);
             if(temp.getText().toString().equalsIgnoreCase(category)) {
@@ -156,10 +159,29 @@ public class AddTaskActivity extends AppCompatActivity {
                 this.category = temp.getText().toString();
             }
         }
+
+        Boolean notifOn = intent.getBooleanExtra(TaskDetailsActivity.KEY_NOTIF_ON, false);
+        this.checkerNotif = notifOn;
+        this.cbNotif.setClickable(notifOn);
+
+        if (notifOn) {
+
+            String notifTime = intent.getStringExtra(TaskDetailsActivity.KEY_NOTIF_WHEN);
+
+            Boolean notifWhen = intent.getBooleanExtra(TaskDetailsActivity.KEY_NOTIF_START_TIME, false);
+            String temp = "Before End Time";
+            if (notifWhen) {
+                temp = "Before Start Time";
+            }
+
+            spinNotifWhen.setSelection(((ArrayAdapter<String>)spinNotifWhen.getAdapter()).getPosition(temp));
+            spinNotifTime.setSelection(((ArrayAdapter<String>)spinNotifTime.getAdapter()).getPosition(notifTime));
+        }
     }
 
     public void editDatabase (String name, int priority, String category, String startDate,
-                              String endDate, String startTime, String endTime, String notes, String taskID, String notif, boolean val) {
+                              String endDate, String startTime, String endTime, String notes,
+                              String taskID, String notif, boolean val) {
 
         CustomDate cEndDate = new CustomDate (endDate, endTime);
         CustomDate cStartDate = new CustomDate(startDate, startTime);
@@ -174,6 +196,9 @@ public class AddTaskActivity extends AppCompatActivity {
         intent.putExtra(AddTaskActivity.KEY_START_DATE, cStartDate.toString());
         intent.putExtra(AddTaskActivity.KEY_CATEGORY, category);
         intent.putExtra(AddTaskActivity.KEY_PRIORITY, this.priority);
+        intent.putExtra(AddTaskActivity.KEY_NOTIF_START_TIME, val);
+        intent.putExtra(AddTaskActivity.KEY_NOTIF_ON, checkerNotif);
+        intent.putExtra(AddTaskActivity.KEY_NOTIF_WHEN, notif);
 
         setResult(Activity.RESULT_OK, intent);
         finish();
