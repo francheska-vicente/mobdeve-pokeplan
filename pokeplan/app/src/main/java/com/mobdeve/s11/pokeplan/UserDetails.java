@@ -33,7 +33,6 @@ public class UserDetails {
         Boolean[] userPokedexBool = new Boolean[150];
         Arrays.fill(userPokedexBool, Boolean.FALSE);
         userPokedex = new ArrayList<Boolean>(Arrays.asList(userPokedexBool));
-        Log.d("rororor", userPokedex.get(0).toString());
 
         this.rarecandy = 5;
         this.supercandy = 5;
@@ -75,6 +74,9 @@ public class UserDetails {
     }
     public void setUserPokedex(ArrayList<Boolean> pokedex) {
         this.userPokedex = pokedex;
+    }
+    public void setCaught(int dexnum) {
+        this.userPokedex.set(dexnum-1, true);
     }
     public int getNumCaught() {
         int ctr = 0;
