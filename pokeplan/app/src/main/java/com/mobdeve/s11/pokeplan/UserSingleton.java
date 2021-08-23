@@ -141,6 +141,15 @@ public class UserSingleton {
         this.userDetails = details;
     }
 
+    public void updateUser(HashMap<String, Object> hash) {
+        mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+
+            }
+        });
+    }
+
     // tasks
     public ArrayList<Task> getOngoingTasks() {
         return this.ongoingTasks;
