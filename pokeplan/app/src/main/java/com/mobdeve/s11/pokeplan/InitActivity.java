@@ -26,19 +26,7 @@ public class InitActivity extends AppCompatActivity {
 
         if (email != null && password != null) {
             LoginActivity login = new LoginActivity();
-
-            if (login.logInUser(email, password)) {
-                Intent intent = new Intent(InitActivity.this, MainActivity.class);
-
-                startActivity(intent);
-            } else {
-                Toast.makeText(InitActivity.this, "Saved user does not exist in the database.", Toast.LENGTH_LONG).show();
-
-                sp.edit().remove(Keys.KEY_EMAIL.name()).apply();
-                sp.edit().remove(Keys.KEY_PASSWORD.name()).apply();
-                Intent intent = new Intent(InitActivity.this, InitActivity.class);
-                startActivity(intent);
-            }
+            login.logInUser(email, password, false);
         }
         else {
             setContentView(R.layout.activity_init);
