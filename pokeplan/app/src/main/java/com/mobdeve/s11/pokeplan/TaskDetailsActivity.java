@@ -99,6 +99,11 @@ public class TaskDetailsActivity extends AppCompatActivity {
         String notifWhen = intent.getStringExtra(TaskAdapter.KEY_NOTIF_WHEN);
         Boolean notifOn = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_ON, false);
         Boolean notifStartTime = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_START_TIME, false);
+        Boolean isFinished = intent.getBooleanExtra(TaskAdapter.KEY_IS_COMPLETED, false);
+
+        if (isFinished) {
+            this.btnFinishTask.setVisibility(View.GONE);
+        }
 
         setValues (taskName, category, startDate, endDate,
                 notes, priority, notifWhen, notifOn, notifStartTime);
