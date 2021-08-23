@@ -126,4 +126,5 @@
     <string name="task_details_delete_task_title">Deleting the Task</string>
     <string name="task_details_delete_task_text">This would remove the task from your ongoing or completed task list.</string>
     <string name="task_details_delete_task_button">Delete task</string>
+    <string name="task_details_candy_title">Congratulations!</string>
 </resources>
