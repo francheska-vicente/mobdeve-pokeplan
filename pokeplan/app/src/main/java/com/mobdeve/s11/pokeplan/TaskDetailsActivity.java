@@ -30,6 +30,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private TextView tvEndTime;
     private TextView tvNotesDesc;
     private TextView tvNotesLabel;
+    private TextView tvNotif;
 
     private Button btnFinishTask;
     private ImageButton ibDeleteTask;
@@ -44,6 +45,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
     public static final String KEY_C_END_DATE = "KEY_C_END_DATE";
     public static final String KEY_C_START_TIME = "KEY_C_START_TIME";
     public static final String KEY_C_END_TIME = "KEY_C_END_TIME";
+
+    public static final String KEY_NOTIF_WHEN = "KEY_NOTIF_WHEN";
+    public static final String KEY_NOTIF_ON = "KEY_NOTIF_ON";
+    public static final String KEY_NOTIF_START_TIME = "KEY_NOTIF_START_TIME";
 
     public static final String KEY_NOTES = "KEY_NOTES";
     public static final String KEY_ID = "KEY_ID";
@@ -72,6 +77,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.btnFinishTask = findViewById(R.id.btn_task_finish);
         this.ibDeleteTask = findViewById(R.id.ib_taskdetails_delete);
         this.ibEditTask = findViewById(R.id.ib_taskdetails_edit);
+        this.tvNotif = findViewById(R.id.tv_taskdetails_notif);
 
         initComponents();
     }
@@ -90,9 +96,12 @@ public class TaskDetailsActivity extends AppCompatActivity {
         String cStartDate = intent.getStringExtra(TaskAdapter.KEY_C_START_DATE);
         String cEndTime = intent.getStringExtra(TaskAdapter.KEY_C_END_TIME);
         String cStartTime = intent.getStringExtra(TaskAdapter.KEY_C_START_TIME);
+        String notifWhen = intent.getStringExtra(TaskAdapter.KEY_NOTIF_WHEN);
+        Boolean notifOn = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_ON, false);
+        Boolean notifStartTime = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_START_TIME, false);
 
         setValues (taskName, category, startDate, endDate,
-                notes, priority);
+                notes, priority, notifWhen, notifOn, notifStartTime);
 
         this.btnFinishTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,13 +120,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.ibEditTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editIntent(taskName, category, priority, notes, taskID, cEndDate, cStartDate, cEndTime, cStartTime);
+                editIntent(taskName, category, priority, notes, taskID, cEndDate, cStartDate, cEndTime, cStartTime,
+                        notifWhen, notifOn, notifStartTime);
             }
         });
     }
 
     private void setValues (String taskName, String category, String startDate, String endDate,
-                            String notes, int priority) {
+                            String notes, int priority, String notifWhen, Boolean notifOn, Boolean notifStartTime) {
         this.tvTaskName.setText(taskName);
         this.tvCategory.setText(category);
 
@@ -135,10 +145,24 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         this.setCategoryIcon(category);
         this.setPriorityIcon(priority);
+
+        String notif = "";
+        if (notifOn) {
+            if (notifStartTime) {
+                notif = notifWhen + " before Start";
+            } else {
+                notif = notifWhen + " before End";
+            }
+        } else {
+            notif = "No set notification for this task.";
+        }
+
+        this.tvNotif.setText(notif);
     }
 
     private void editIntent (String taskName, String category, int priority, String notes, String taskID,
-                             String endDate, String startDate, String endTime, String startTime) {
+                             String endDate, String startDate, String endTime, String startTime, String notifWhen,
+                             Boolean notifOn, Boolean notifStartTime) {
         Intent intent = new Intent(TaskDetailsActivity.this, AddTaskActivity.class);
 
         intent.putExtra(KEY_TASKNAME, taskName);
@@ -150,6 +174,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
         intent.putExtra(KEY_C_START_DATE, startDate);
         intent.putExtra(KEY_C_START_TIME, startTime);
         intent.putExtra(KEY_C_END_TIME, endTime);
+        intent.putExtra(KEY_NOTIF_WHEN, notifWhen);
+        intent.putExtra(KEY_NOTIF_ON, notifOn);
+        intent.putExtra(KEY_NOTIF_START_TIME, notifStartTime);
 
         addActivityResultLauncher.launch(intent);
     }
@@ -170,9 +197,12 @@ public class TaskDetailsActivity extends AppCompatActivity {
                         String startDate = intent.getStringExtra(AddTaskActivity.KEY_START_DATE);
                         String priority = intent.getStringExtra(AddTaskActivity.KEY_PRIORITY);
                         String category = intent.getStringExtra(AddTaskActivity.KEY_CATEGORY);
+                        String notifWhen = intent.getStringExtra(AddTaskActivity.KEY_NOTIF_WHEN);
+                        Boolean notifOn = intent.getBooleanExtra(AddTaskActivity.KEY_NOTIF_ON, false);
+                        Boolean notifStartTime = intent.getBooleanExtra(AddTaskActivity.KEY_NOTIF_START_TIME, false);
 
                         setValues(name, category, startDate, endDate,
-                                notes, priority.length());
+                                notes, priority.length(), notifWhen, notifOn, notifStartTime);
                     } else {
                         initComponents();
                     }
