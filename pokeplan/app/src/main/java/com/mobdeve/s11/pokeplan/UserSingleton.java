@@ -28,7 +28,7 @@ public class UserSingleton {
     private ArrayList<Task> completedTasks;
     private ArrayList<UserPokemon> userPokemonPC;
     private ArrayList<UserPokemon> userPokemonParty;
-    private Boolean[] userPokedex;
+
 
     private final String userID;
 
@@ -49,8 +49,6 @@ public class UserSingleton {
         completedTasks = new ArrayList<>();
         userPokemonParty = new ArrayList<>();
         userPokemonPC = new ArrayList<>();
-        userPokedex = new Boolean[150];
-        Arrays.fill(userPokedex, false);
 
         initDbTask();
         initDbUser();
@@ -114,7 +112,7 @@ public class UserSingleton {
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     UserPokemon temp = ds.getValue(UserPokemon.class);
 
-                    userPokedex [temp.getPokemonDetails().getDexNum() - 1] = true;
+                    userDetails.getUserPokedex()[temp.getPokemonDetails().getDexNum() - 1] = true;
                     if (temp.isInParty()) {
                         userPokemonParty.add(temp);
                     } else {
@@ -212,7 +210,7 @@ public class UserSingleton {
 
     // pokemons
     public boolean addPokemon(Pokemon details) {
-        userPokedex[details.getDexNum()-1] = true;
+        userDetails.getUserPokedex()[details.getDexNum()-1] = true;
 
         UserPokemon userPokemon;
         String key = mPokemon.push().getKey();
@@ -332,27 +330,5 @@ public class UserSingleton {
                 userPokemonPC.remove(j);
 
         userPokemonParty.add(pkmn);
-    }
-
-    // pokedex
-    public Boolean[] getUserPokedex() {
-        return userPokedex;
-    }
-    public void setUserPokedex(Boolean[] pokedex) {
-        this.userPokedex = pokedex;
-    }
-    public int getNumCaught() {
-        int ctr = 0;
-        for(int j = 0; j < userPokedex.length; j++)
-            if(userPokedex[j] == true)
-                ctr++;
-        return ctr;
-    }
-    public int getNumNotCaught() {
-        int ctr = 0;
-        for(int j = 0; j < userPokedex.length; j++)
-            if(userPokedex[j] == false)
-                ctr++;
-        return ctr;
     }
 }
