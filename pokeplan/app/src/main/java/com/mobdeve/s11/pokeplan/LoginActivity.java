@@ -41,8 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mAuth = FirebaseAuth.getInstance();
-
         etEmail = findViewById(R.id.et_login_email);
         etPassword = findViewById(R.id.et_login_password);
         btnLogin = findViewById(R.id.btn_login_submit);
@@ -90,21 +88,34 @@ public class LoginActivity extends AppCompatActivity {
 
         pbLoading.setVisibility(View.VISIBLE);
 
+        if (logInUser(email, password)) {
+            spEditor.putString(Keys.KEY_EMAIL.name(), email);
+            spEditor.putString(Keys.KEY_PASSWORD.name(), password);
+            spEditor.apply();
+
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(LoginActivity.this, "Login failed. Please check your email and password.", Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    public boolean logInUser (String email, String password) {
+
+        mAuth = FirebaseAuth.getInstance();
+
+        final boolean[] wasLoggedIn = {false};
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    spEditor.putString(Keys.KEY_EMAIL.name(), email);
-                    spEditor.putString(Keys.KEY_PASSWORD.name(), password);
-                    spEditor.apply();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(LoginActivity.this, "Login failed. Please check your email and password.", Toast.LENGTH_LONG).show();
-                    finish();
+                    wasLoggedIn[0] = true;
                 }
             }
         });
+
+        return wasLoggedIn[0];
     }
 
     private void initBackBtn() {
