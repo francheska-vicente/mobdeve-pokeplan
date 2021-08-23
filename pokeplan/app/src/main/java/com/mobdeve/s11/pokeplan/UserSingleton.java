@@ -210,7 +210,8 @@ public class UserSingleton {
 
     // pokemons
     public boolean addPokemon(Pokemon details) {
-        userDetails.getUserPokedex().set(details.getDexNum()-1, true);
+        Log.d("rorororOR", getUserDetails().getUserPokedex().toString());
+        userDetails.setCaught(details.getDexNum());
 
         UserPokemon userPokemon;
         String key = mPokemon.push().getKey();
