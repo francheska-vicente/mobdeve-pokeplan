@@ -23,6 +23,9 @@ public class UserDetails {
     private int completedtaskscount;
 
     public UserDetails () {
+        Boolean[] userPokedexBool = new Boolean[150];
+        Arrays.fill(userPokedexBool, Boolean.FALSE);
+        userPokedex = new ArrayList<Boolean>(Arrays.asList(userPokedexBool));
     }
     public UserDetails(String fullName, String email, String userName, int dexnum) {
         this.fullName = fullName;
