@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -670,23 +671,21 @@ public class AddTaskActivity extends AppCompatActivity {
         adapterWhen.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinNotifWhen.setAdapter(adapterWhen);
 
-        spinNotifTime.setEnabled(false);
-        spinNotifWhen.setEnabled(false);
-
         cbNotif = findViewById(R.id.cb_add_task_notifs);
-        cbNotif.setOnClickListener(new View.OnClickListener() {
+        cbNotif.setChecked(true);
+        cbNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (!cbNotif.isChecked()) {
-                    spinNotifTime.setEnabled(false);
-                    spinNotifWhen.setEnabled(false);
-                }
-                else {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (cbNotif.isChecked()) {
                     spinNotifTime.setEnabled(true);
                     spinNotifWhen.setEnabled(true);
                 }
-            }
-        });
+                else {
+                spinNotifTime.setEnabled(false);
+                spinNotifWhen.setEnabled(false);
+             }
+        }});
+
 
     }
 }
