@@ -117,7 +117,7 @@ public class UserSingleton {
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     UserPokemon temp = ds.getValue(UserPokemon.class);
 
-                    userDetails.setCaught(temp.getDetails().getDexNum() - 1);
+                    userDetails.setCaught(temp.getDetails().getDexNum());
                     if (temp.isInParty()) {
                         userPokemonParty.add(temp);
                     } else {
