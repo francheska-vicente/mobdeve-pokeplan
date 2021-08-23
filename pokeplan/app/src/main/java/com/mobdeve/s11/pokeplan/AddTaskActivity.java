@@ -136,6 +136,22 @@ public class AddTaskActivity extends AppCompatActivity {
         UserSingleton.getUser().addOngoingTask(taskCreated);
     }
 
+    public String setPriority (int num) {
+        String temp  = "!";
+        switch (num) {
+            case 2: temp = "!!";
+                break;
+            case 3: temp = "!!!";
+                break;
+            case 4: temp = "!!!!";
+                break;
+            case 5: temp = "!!!!!";
+                break;
+        }
+
+        return temp;
+    }
+
     public void setValues (Intent intent) {
         this.etTaskName.setText(intent.getStringExtra(TaskDetailsActivity.KEY_TASKNAME));
         this.etTaskNotes.setText(intent.getStringExtra(TaskDetailsActivity.KEY_NOTES));
@@ -146,7 +162,7 @@ public class AddTaskActivity extends AppCompatActivity {
         DrawableCompat.setTint(priorityDrawable, getResources().getColor(R.color.pink_button));
         btnPriority.get(priority).setBackground(priorityDrawable);
 
-        this.priority = (priority + 1) + "";
+        this.priority = this.setPriority(priority + 1);
         String category = intent.getStringExtra(TaskDetailsActivity.KEY_CATEGORY);
 
         for (int i = 0; i < btnCategory.size(); i++) {
@@ -195,7 +211,7 @@ public class AddTaskActivity extends AppCompatActivity {
         intent.putExtra(AddTaskActivity.KEY_END_DATE, cEndDate.toString());
         intent.putExtra(AddTaskActivity.KEY_START_DATE, cStartDate.toString());
         intent.putExtra(AddTaskActivity.KEY_CATEGORY, category);
-        intent.putExtra(AddTaskActivity.KEY_PRIORITY, this.priority);
+        intent.putExtra(AddTaskActivity.KEY_PRIORITY, priority);
         intent.putExtra(AddTaskActivity.KEY_NOTIF_START_TIME, val);
         intent.putExtra(AddTaskActivity.KEY_NOTIF_ON, checkerNotif);
         intent.putExtra(AddTaskActivity.KEY_NOTIF_WHEN, notif);
@@ -390,10 +406,10 @@ public class AddTaskActivity extends AppCompatActivity {
                     Intent intent = getIntent();
                     String taskID = intent.getStringExtra(TaskDetailsActivity.KEY_ID);
                     if (taskID != null) {
-                        editDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes,
+                        editDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes,
                                 taskID, notif, val);
                     } else {
-                        addToDatabase (taskName, Integer.valueOf(priority.length()), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
+                        addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                         finish();
                     }
                 } else {
