@@ -1,14 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_sejfhgbsdk"
+        android:id="@+id/tv_pkdexdetails_evolveto_label3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="FAQ"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:lineHeight="38dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="80dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_evolveto_label4"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="NOTIFICATIONS"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:lineHeight="38dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="244dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_evolveto_label5"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="NOTIFICATIONS"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:lineHeight="38dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="313dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_add_task_label"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/green"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_home_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="SETTINGS"
+            android:textColor="@color/darker_gray"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="settings!!!!"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="326dp" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
