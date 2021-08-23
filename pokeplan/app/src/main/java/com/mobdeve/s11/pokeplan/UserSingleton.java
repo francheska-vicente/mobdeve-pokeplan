@@ -86,35 +86,7 @@ public class UserSingleton {
                 Log.d("DEBUG USER ERROR: ", Integer.toString(databaseError.getCode()));
             }
         });
-
-        ArrayList<Boolean> temp = new ArrayList<>();
-
-
-        mUser.child("userPokedex").addChildEventListener(new ChildEventListener() {
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                temp.add((dataSnapshot.getValue(Boolean.class)));
-            }
-
-            @Override
-            public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
+        
     }
     private void initDbTask () {
         mTask.addValueEventListener(new ValueEventListener() {
