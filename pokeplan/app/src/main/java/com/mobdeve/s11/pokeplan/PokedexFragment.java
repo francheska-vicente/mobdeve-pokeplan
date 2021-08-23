@@ -53,14 +53,15 @@ public class PokedexFragment extends Fragment {
     private void initComponents (View view) {
         this.pbload = view.findViewById(R.id.pb_pkdex_load);
         pbload.setVisibility(View.GONE);
-        pokedex = UserSingleton.getUser().getUserPokedex();
+        pokedex = UserSingleton.getUser().getUserDetails().getUserPokedex();
         this.rvPokedex = view.findViewById(R.id.rv_pokedex);
         this.pdAdapter = new PokedexAdapter(pokedex);
         rvPokedex.setLayoutManager(new GridLayoutManager(getActivity(), 5));
         rvPokedex.setAdapter(pdAdapter);
 
         tvcaught = view.findViewById(R.id.tv_pokedex_caught);
-        String caught = "Caught Pokemon: " + UserSingleton.getUser().getNumCaught() +  "/150";
+        String caught = "Caught Pokemon: " +
+                UserSingleton.getUser().getUserDetails().getNumCaught() +  "/150";
         tvcaught.setText(caught);
     }
 
