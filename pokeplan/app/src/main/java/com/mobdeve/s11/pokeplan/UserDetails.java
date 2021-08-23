@@ -1,7 +1,9 @@
 package com.mobdeve.s11.pokeplan;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 @IgnoreExtraProperties
 public class UserDetails {
@@ -10,7 +12,7 @@ public class UserDetails {
     private String userName;
 
     private int starterdexnum;
-    private Boolean[] userPokedex;
+    private ArrayList<Boolean> userPokedex;
 
     private int rarecandy;
     private int supercandy;
@@ -26,8 +28,8 @@ public class UserDetails {
         this.userName = userName;
 
         this.starterdexnum = dexnum;
-        userPokedex = new Boolean[150];
-        Arrays.fill(userPokedex, false);
+        userPokedex = new ArrayList<>(150);
+        Collections.fill(userPokedex, false);
 
         this.rarecandy = 5;
         this.supercandy = 5;
@@ -64,23 +66,23 @@ public class UserDetails {
     }
 
     // pokedex
-    public Boolean[] getUserPokedex() {
+    public ArrayList<Boolean> getUserPokedex() {
         return userPokedex;
     }
-    public void setUserPokedex(Boolean[] pokedex) {
+    public void setUserPokedex(ArrayList<Boolean> pokedex) {
         this.userPokedex = pokedex;
     }
     public int getNumCaught() {
         int ctr = 0;
-        for(int j = 0; j < userPokedex.length; j++)
-            if(userPokedex[j] == true)
+        for(int j = 0; j < userPokedex.size(); j++)
+            if(userPokedex.get(j) == true)
                 ctr++;
         return ctr;
     }
     public int getNumNotCaught() {
         int ctr = 0;
-        for(int j = 0; j < userPokedex.length; j++)
-            if(userPokedex[j] == false)
+        for(int j = 0; j < userPokedex.size(); j++)
+            if(userPokedex.get(j) == false)
                 ctr++;
         return ctr;
     }
