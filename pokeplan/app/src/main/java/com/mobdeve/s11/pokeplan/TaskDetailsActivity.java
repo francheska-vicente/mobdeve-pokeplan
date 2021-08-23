@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.Task;
 
+import java.util.HashMap;
+import java.util.Random;
+
 public class TaskDetailsActivity extends AppCompatActivity {
     private ImageButton btnback;
     private TextView tvTaskName;
@@ -37,6 +40,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private ImageButton ibEditTask;
     private Dialog confirmFinish;
     private Dialog confirmDelete;
+    private Dialog candyDialog;
 
     public static final String KEY_TASKNAME = "KEY_TASKNAME";
     public static final String KEY_CATEGORY = "KEY_CATEGORY";
@@ -99,6 +103,11 @@ public class TaskDetailsActivity extends AppCompatActivity {
         String notifWhen = intent.getStringExtra(TaskAdapter.KEY_NOTIF_WHEN);
         Boolean notifOn = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_ON, false);
         Boolean notifStartTime = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_START_TIME, false);
+        Boolean isFinished = intent.getBooleanExtra(TaskAdapter.KEY_IS_COMPLETED, false);
+
+        if (isFinished) {
+            this.btnFinishTask.setVisibility(View.GONE);
+        }
 
         setValues (taskName, category, startDate, endDate,
                 notes, priority, notifWhen, notifOn, notifStartTime);
@@ -281,14 +290,108 @@ public class TaskDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 confirmFinish.dismiss();
                 UserSingleton.getUser().moveToCompletedTask(taskID);
-                hatchEgg();
+                giveCandies();
             }
         });
         confirmFinish.show();
     }
 
-    protected void hatchEgg () {
-        finish();
+    protected void giveCandies () {
+        int divider = 90, maxR = 5, minR = 3, maxS = 2, minS = 1;
+        int priority = this.tvPriorityIcon.getText().toString().trim().length();
+
+        switch (priority) {
+            case 2: divider = 85;
+                maxR = 10;
+                minR = 4;
+                maxS = 3;
+                minS = 2;
+                break;
+            case 3: divider = 80;
+                maxR = 13;
+                minR = 5;
+                maxS = 4;
+                minS = 3;
+                break;
+            case 4: divider = 70;
+                maxR = 17;
+                minR = 6;
+                maxS = 5;
+                minS = 4;
+                break;
+            case 5: divider = 60;
+                maxR = 20;
+                minR = 7;
+                maxS = 6;
+                minS = 7;
+                break;
+        }
+
+        Random random = new Random();
+        int numberGenerated = random.nextInt(100) + 1;
+        String candyType = "rareCandy";
+
+        int numberROfCandies = (int) (Math.random () * (maxR - minR + 1) + minR);
+        int numberSOfCandies = (int) (Math.random () * (maxS - minS + 1) + minS);
+
+        int totalNumberOfcandies = 0, numberOfCandies = numberROfCandies;
+        if (numberGenerated > divider) {
+            candyType = "superCandy";
+            numberOfCandies = numberSOfCandies;
+            UserSingleton.getUser().getUserDetails().addSuperCandy(numberSOfCandies);
+            totalNumberOfcandies = UserSingleton.getUser().getUserDetails().getSuperCandy();
+        } else {
+            UserSingleton.getUser().getUserDetails().addRareCandy(numberROfCandies);
+            totalNumberOfcandies = UserSingleton.getUser().getUserDetails().getRareCandy();
+        }
+
+        HashMap<String, Object> hash = new HashMap<>();
+        hash.put(candyType, totalNumberOfcandies);
+        UserSingleton.getUser().updateUser(hash);
+
+        createCandyDialog(candyType, numberOfCandies);
+    }
+
+    private void createCandyDialog (String candyType, int numberOfCandies) {
+        candyDialog = new Dialog(TaskDetailsActivity.this);
+
+        candyDialog.setContentView(R.layout.dialog_ok);
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        candyDialog.getWindow().setLayout(width, height);
+        candyDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) candyDialog.findViewById(R.id.tv_dialog_ok_title);
+        tvdialogtitle.setText(R.string.task_details_candy_title);
+        TextView tvdialogtext = (TextView) candyDialog.findViewById(R.id.tv_dialog_ok_text);
+
+        String text = "You got " + numberOfCandies;
+
+
+        ImageView ivdialogicon = (ImageView) candyDialog.findViewById(R.id.iv_dialog_ok_icon);
+
+        if (candyType.equalsIgnoreCase("rareCandy")) {
+            ivdialogicon.setImageResource(R.drawable.rarecandy);
+            text = text + " rare candies";
+        } else {
+            ivdialogicon.setImageResource(R.drawable.supercandy);
+            text = text + " super candies";
+        }
+
+        text = text + " because you completed this task.";
+        tvdialogtext.setText(text);
+
+        Button btndialogok = (Button) candyDialog.findViewById(R.id.btn_dialog_ok);
+        btndialogok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                candyDialog.dismiss();
+                finish();
+            }
+        });
+        candyDialog.show();
     }
 
     private void setCategoryIcon (String category) {

@@ -127,6 +127,10 @@ public class UserPokemon {
         this.level = level;
     }
 
+    public void setDetails (Pokemon pokemon) {
+        this.details = pokemon;
+    }
+
     public void setFedCandy(int fedcandy) {
         this.fedCandy = fedcandy;
     }
