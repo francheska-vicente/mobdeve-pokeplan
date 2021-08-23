@@ -29,7 +29,6 @@ public class UserSingleton {
     private ArrayList<UserPokemon> userPokemonPC;
     private ArrayList<UserPokemon> userPokemonParty;
 
-
     private final String userID;
 
     private DatabaseReference mUser;
@@ -42,9 +41,10 @@ public class UserSingleton {
         this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         this.mUser = mDatabase.getReference("Users").child(this.userID);
+        Log.d("hello pare", mUser.toString());
         this.mTask = mDatabase.getReference("Tasks").child(this.userID);
         this.mPokemon = mDatabase.getReference("UserPokemon").child(this.userID);
-
+        Log.d("hello pare", "inside user singleton constructor");
         ongoingTasks = new ArrayList<>();
         completedTasks = new ArrayList<>();
         userPokemonParty = new ArrayList<>();
@@ -67,11 +67,15 @@ public class UserSingleton {
 
     // initialize data from db
     private void initDbUser () {
+        Log.d("hello pare", "outisde db search for user");
+
         mUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userDetails = dataSnapshot.getValue(UserDetails.class);
                 userDetails.setUserName(dataSnapshot.child("userName").getValue(String.class));
+                userDetails.setUserPokedex(dataSnapshot.child("userPokedex").getValue(ArrayList.class));
+                Log.d("hello pare", "inside db search for user");
             }
 
             @Override
@@ -210,7 +214,7 @@ public class UserSingleton {
 
     // pokemons
     public boolean addPokemon(Pokemon details) {
-        Log.d("rorororOR", getUserDetails().getUserPokedex().toString());
+        // Log.d("rorororOR", getUserDetails().getUserPokedex().toString());
         userDetails.setCaught(details.getDexNum());
 
         UserPokemon userPokemon;
