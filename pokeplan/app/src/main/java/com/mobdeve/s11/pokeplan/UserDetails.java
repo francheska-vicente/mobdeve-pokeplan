@@ -1,6 +1,8 @@
 package com.mobdeve.s11.pokeplan;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Arrays;
+
 @IgnoreExtraProperties
 public class UserDetails {
     private String fullName;
@@ -8,6 +10,7 @@ public class UserDetails {
     private String userName;
 
     private int starterdexnum;
+    private Boolean[] userPokedex;
 
     private int rarecandy;
     private int supercandy;
@@ -23,6 +26,8 @@ public class UserDetails {
         this.userName = userName;
 
         this.starterdexnum = dexnum;
+        userPokedex = new Boolean[150];
+        Arrays.fill(userPokedex, false);
 
         this.rarecandy = 5;
         this.supercandy = 5;
@@ -56,6 +61,28 @@ public class UserDetails {
     }
     public void setStarterDexNum(int starterdexnum) {
          this.starterdexnum = starterdexnum;
+    }
+
+    // pokedex
+    public Boolean[] getUserPokedex() {
+        return userPokedex;
+    }
+    public void setUserPokedex(Boolean[] pokedex) {
+        this.userPokedex = pokedex;
+    }
+    public int getNumCaught() {
+        int ctr = 0;
+        for(int j = 0; j < userPokedex.length; j++)
+            if(userPokedex[j] == true)
+                ctr++;
+        return ctr;
+    }
+    public int getNumNotCaught() {
+        int ctr = 0;
+        for(int j = 0; j < userPokedex.length; j++)
+            if(userPokedex[j] == false)
+                ctr++;
+        return ctr;
     }
 
     // items
