@@ -16,12 +16,12 @@ public class Egg {
     private final String SR = "Super Rare";
 
     // rates of C, UC, R, SR respectively
-    private final int[] first = {80, 15, 4, 1};
-    private final int[] second = {50, 35, 10, 5};
-    private final int[] third = {30, 45, 15, 10};
-    private final int[] fourth = {10, 40, 30, 20};
-    private final int[] fifth = {5, 30, 40, 25};
-    private final int[] sixth = {0, 20, 30, 50};
+    private final int[] first = {50, 30, 15, 5};
+    private final int[] second = {30, 35, 10, 5};
+    private final int[] third = {10, 45, 15, 10};
+    private final int[] fourth = {5, 40, 30, 20};
+    private final int[] fifth = {0, 30, 40, 25};
+    private final int[] sixth = {0, 5, 40, 50};
 
     private Pool pkmnpool;
 
