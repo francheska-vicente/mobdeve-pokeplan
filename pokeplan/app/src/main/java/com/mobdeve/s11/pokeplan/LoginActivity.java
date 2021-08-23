@@ -1,5 +1,6 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -89,37 +90,27 @@ public class LoginActivity extends AppCompatActivity {
 
         pbLoading.setVisibility(View.VISIBLE);
 
-        logInUser(email, password, true);
-        
+        logInUser(email, password);
+
     }
 
-    public void logInUser (String email, String password, boolean checker) {
-
+    public void logInUser (String email, String password) {
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                   if (checker) {
                        spEditor.putString(Keys.KEY_EMAIL.name(), email);
                        spEditor.putString(Keys.KEY_PASSWORD.name(), password);
                        spEditor.apply();
-                   }
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    if (checker) {
-                        Toast.makeText(LoginActivity.this, "Login failed. Please check your email and password.", Toast.LENGTH_LONG).show();
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Saved user does not exist in the database.", Toast.LENGTH_LONG).show();
 
-                        sp.edit().remove(Keys.KEY_EMAIL.name()).apply();
-                        sp.edit().remove(Keys.KEY_PASSWORD.name()).apply();
-                        Intent intent = new Intent(getApplicationContext(), InitActivity.class);
-                        startActivity(intent);
-                    }
+                       Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                       startActivity(intent);
+
+                } else {
+                    Toast.makeText(LoginActivity.this, "Login failed. Please check your email and password.", Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         });
