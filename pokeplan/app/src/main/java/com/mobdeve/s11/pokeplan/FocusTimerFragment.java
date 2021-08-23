@@ -2,6 +2,7 @@ package com.mobdeve.s11.pokeplan;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -223,6 +224,8 @@ public class FocusTimerFragment extends Fragment {
             }
         });
         hatcheggdialog.show();
+        MediaPlayer mediaPlayer = MediaPlayer.create(getView().getContext(), R.raw.levelup);
+        mediaPlayer.start();
         hatch.playPokemonCry();
     }
 
