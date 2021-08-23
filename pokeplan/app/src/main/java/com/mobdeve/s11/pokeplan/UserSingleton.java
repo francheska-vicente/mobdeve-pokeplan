@@ -70,7 +70,6 @@ public class UserSingleton {
 
     // initialize data from db
     private void initDbUser () {
-
         mUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -86,12 +85,12 @@ public class UserSingleton {
 
     }
     private void initDbTask () {
-        mTask.addValueEventListener(new ValueEventListener() {
+        ongoingTasks = new ArrayList<>();
+        completedTasks = new ArrayList<>();
+
+        mTask.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                ongoingTasks = new ArrayList<>();
-                completedTasks = new ArrayList<>();
-
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     Task temp = ds.getValue(Task.class);
                     if(!temp.getIsFinished()) {
@@ -109,11 +108,12 @@ public class UserSingleton {
         });
     }
     private void initDbPokemon () {
-        mPokemon.addValueEventListener(new ValueEventListener() {
+        userPokemonParty = new ArrayList<>();
+        userPokemonPC = new ArrayList<>();
+
+        mPokemon.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                userPokemonParty = new ArrayList<>();
-                userPokemonPC = new ArrayList<>();
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     UserPokemon temp = ds.getValue(UserPokemon.class);
 
@@ -174,10 +174,13 @@ public class UserSingleton {
                 task.isSuccessful();
             }
         });
+
+        ongoingTasks.add(taskCreated);
     }
     public void moveToCompletedTask (String key) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         this.getUserDetails().addCompletedTask();
+
         hash.put("isFinished", true);
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
@@ -185,6 +188,14 @@ public class UserSingleton {
                 Log.d("Task DB", "Task was successfully moved from ongoing list to completed list.");
             }
         });
+
+        for (int i = 0; i < ongoingTasks.size(); i++) {
+            if (ongoingTasks.get(i).getTaskID().equalsIgnoreCase(key)) {
+                ongoingTasks.get(i).setIsFinished(true);
+                completedTasks.add(ongoingTasks.remove(i));
+                break;
+            }
+        }
     }
     public void deleteTask (String key) {
         Query query = mTask.child(key);
@@ -200,6 +211,21 @@ public class UserSingleton {
                 Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
             }
         });
+
+        boolean checker = true;
+        for (int i = 0; i < ongoingTasks.size() && checker; i++) {
+            if (ongoingTasks.get(i).getTaskID().equalsIgnoreCase(key)) {
+                ongoingTasks.remove(i);
+                checker = false;
+            }
+        }
+
+        for (int i = 0; i < completedTasks.size() && checker; i++) {
+            if (completedTasks.get(i).getTaskID().equalsIgnoreCase(key)) {
+                completedTasks.remove(i);
+                checker = false;
+            }
+        }
     }
     public void editTask (String name, int priority, String category, CustomDate startDate,
                           CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif) {
@@ -220,6 +246,38 @@ public class UserSingleton {
                 Log.d("Task DB", "Task information was modified.");
             }
         });
+
+        boolean checker = true;
+        for (int i = 0; i < ongoingTasks.size() && checker; i++) {
+            if (ongoingTasks.get(i).getTaskID().equalsIgnoreCase(key)) {
+                ongoingTasks.get(i).setTaskName(name);
+                ongoingTasks.get(i).setEndDate(endDate);
+                ongoingTasks.get(i).setStartDate(startDate);
+                ongoingTasks.get(i).setPriority(priority);
+                ongoingTasks.get(i).setCategory(category);
+                ongoingTasks.get(i).setDescription(notes);
+                ongoingTasks.get(i).setNotifWhen(notif);
+                ongoingTasks.get(i).setBeforeStartTime(val);
+                ongoingTasks.get(i).setIsNotif(isNotif);
+                checker = false;
+            }
+        }
+
+        for (int i = 0; i < completedTasks.size() && checker; i++) {
+            if (completedTasks.get(i).getTaskID().equalsIgnoreCase(key)) {
+                completedTasks.get(i).setTaskName(name);
+                completedTasks.get(i).setEndDate(endDate);
+                completedTasks.get(i).setStartDate(startDate);
+                completedTasks.get(i).setPriority(priority);
+                completedTasks.get(i).setCategory(category);
+                completedTasks.get(i).setDescription(notes);
+                completedTasks.get(i).setNotifWhen(notif);
+                completedTasks.get(i).setBeforeStartTime(val);
+                completedTasks.get(i).setIsNotif(isNotif);
+                checker = false;
+            }
+        }
+
     }
 
 
@@ -269,6 +327,21 @@ public class UserSingleton {
 
             }
         });
+
+        boolean checker = true;
+        for(int i = 0; i < userPokemonPC.size() && checker; i++) {
+            if (userPokemonPC.get(i).getUserPokemonID().equalsIgnoreCase(key)) {
+                userPokemonPC.get(i).setNickname(nickname);
+                checker = false;
+            }
+        }
+
+        for(int i = 0; i < userPokemonParty.size() && checker; i++) {
+            if (userPokemonParty.get(i).getUserPokemonID().equalsIgnoreCase(key)) {
+                userPokemonParty.get(i).setNickname(nickname);
+                checker = false;
+            }
+        }
     }
     public void updatePokemon (UserPokemon pokemon) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
@@ -283,17 +356,36 @@ public class UserSingleton {
             }
         });
 
+        boolean checker = true;
+        for(int i = 0; i < userPokemonPC.size() && checker; i++) {
+            if (userPokemonPC.get(i).getUserPokemonID().equalsIgnoreCase(pokemon.getUserPokemonID())) {
+                userPokemonPC.get(i).setDetails(pokemon.getPokemonDetails());
+                userPokemonPC.get(i).setFedCandy(pokemon.getFedCandy());
+                userPokemonPC.get(i).setLevel(pokemon.getLevel());
+                checker = false;
+            }
+        }
+
+        for(int i = 0; i < userPokemonParty.size() && checker; i++) {
+            if (userPokemonParty.get(i).getUserPokemonID().equalsIgnoreCase(pokemon.getUserPokemonID())) {
+                userPokemonParty.get(i).setDetails(pokemon.getPokemonDetails());
+                userPokemonParty.get(i).setFedCandy(pokemon.getFedCandy());
+                userPokemonParty.get(i).setLevel(pokemon.getLevel());
+                checker = false;
+            }
+        }
+
         HashMap <String, Object> userHash = new HashMap <String, Object>();
-        userHash .put("rareCandy", userDetails.getRareCandy());
-        userHash .put("superCandy", userDetails.getSuperCandy());
+        userHash.put("rareCandy", userDetails.getRareCandy());
+        userHash.put("superCandy", userDetails.getSuperCandy());
 
         mUser.updateChildren(userHash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
                 if (task.isSuccessful()) {
-                    Log.d("hello pare yes", "meme");
+
                 } else {
-                    Log.d("hello pare no", task.getResult().toString());
+
                 }
             }
         });
