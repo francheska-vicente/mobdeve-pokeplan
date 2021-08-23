@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -88,34 +89,40 @@ public class LoginActivity extends AppCompatActivity {
 
         pbLoading.setVisibility(View.VISIBLE);
 
-        if (logInUser(email, password)) {
-            spEditor.putString(Keys.KEY_EMAIL.name(), email);
-            spEditor.putString(Keys.KEY_PASSWORD.name(), password);
-            spEditor.apply();
-
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(LoginActivity.this, "Login failed. Please check your email and password.", Toast.LENGTH_LONG).show();
-            finish();
-        }
+        logInUser(email, password, true);
+        
     }
 
-    public boolean logInUser (String email, String password) {
+    public void logInUser (String email, String password, boolean checker) {
 
         mAuth = FirebaseAuth.getInstance();
 
-        final boolean[] wasLoggedIn = {false};
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
-                    wasLoggedIn[0] = true;
+                   if (checker) {
+                       spEditor.putString(Keys.KEY_EMAIL.name(), email);
+                       spEditor.putString(Keys.KEY_PASSWORD.name(), password);
+                       spEditor.apply();
+                   }
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    if (checker) {
+                        Toast.makeText(LoginActivity.this, "Login failed. Please check your email and password.", Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Saved user does not exist in the database.", Toast.LENGTH_LONG).show();
+
+                        sp.edit().remove(Keys.KEY_EMAIL.name()).apply();
+                        sp.edit().remove(Keys.KEY_PASSWORD.name()).apply();
+                        Intent intent = new Intent(getApplicationContext(), InitActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });
-
-        return wasLoggedIn[0];
     }
 
     private void initBackBtn() {
