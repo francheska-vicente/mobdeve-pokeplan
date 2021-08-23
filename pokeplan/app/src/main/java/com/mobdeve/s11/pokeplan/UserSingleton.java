@@ -3,10 +3,12 @@ package com.mobdeve.s11.pokeplan;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.api.Property;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,6 +53,8 @@ public class UserSingleton {
         userPokemonParty = new ArrayList<>();
         userPokemonPC = new ArrayList<>();
 
+        this.userDetails = new UserDetails();
+
         initDbTask();
         initDbUser();
         initDbPokemon();
@@ -74,13 +79,40 @@ public class UserSingleton {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userDetails = dataSnapshot.getValue(UserDetails.class);
                 userDetails.setUserName(dataSnapshot.child("userName").getValue(String.class));
-                userDetails.setUserPokedex(dataSnapshot.child("userPokedex").getValue(ArrayList.class));
-                Log.d("hello pare", "inside db search for user");
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("DEBUG USER ERROR: ", Integer.toString(databaseError.getCode()));
+            }
+        });
+
+        ArrayList<Boolean> temp = new ArrayList<>();
+
+
+        mUser.child("userPokedex").addChildEventListener(new ChildEventListener() {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                temp.add((dataSnapshot.getValue(Boolean.class)));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull @NotNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull @NotNull DataSnapshot snapshot, @Nullable @org.jetbrains.annotations.Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
             }
         });
     }
@@ -116,7 +148,7 @@ public class UserSingleton {
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     UserPokemon temp = ds.getValue(UserPokemon.class);
 
-                    userDetails.getUserPokedex().set(temp.getPokemonDetails().getDexNum() - 1, true);
+                    userDetails.setCaught(temp.getDetails().getDexNum() - 1);
                     if (temp.isInParty()) {
                         userPokemonParty.add(temp);
                     } else {
