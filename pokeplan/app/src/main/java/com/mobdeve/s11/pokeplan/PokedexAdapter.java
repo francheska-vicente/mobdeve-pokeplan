@@ -14,12 +14,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
-    private Boolean[] pokedex;
+    private ArrayList<Boolean> pokedex;
     private ArrayList<Pokemon> pokemonList;
 
     public static final String KEY_POKEMONDEXNUM = "KEY_POKEMONDEXNUM";
 
-    public PokedexAdapter(Boolean[] pokedex) {
+    public PokedexAdapter(ArrayList<Boolean> pokedex) {
         this.pokedex = pokedex;
         pokemonList = Pokedex.getPokedex().getAllPokemon();
     }
@@ -46,9 +46,9 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull PokedexViewHolder holder, int position) {
-        holder.setPkmnIcon(this.pokemonList.get(position).getDexNum(), pokedex[position]);
+        holder.setPkmnIcon(this.pokemonList.get(position).getDexNum(), pokedex.get(position));
         holder.setDexNum(this.pokemonList.get(position).getDexNum());
-        holder.setButtonEnabled(pokedex[position]);
+        holder.setButtonEnabled(pokedex.get(position));
     }
 
     @Override
