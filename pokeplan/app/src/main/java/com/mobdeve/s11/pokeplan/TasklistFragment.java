@@ -69,14 +69,12 @@ public class TasklistFragment extends Fragment {
         this.ongoingList = UserSingleton.getUser().getOngoingTasks();
         this.rvOngoing = view.findViewById(R.id.rv_tasklist_ongoing);
         this.rvOngoing.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        this.taskAdapterOngoing = new TaskAdapter(this.ongoingList);
-        this.rvOngoing.setAdapter(this.taskAdapterOngoing);
 
         this.completedList = UserSingleton.getUser().getCompletedTasks();
         this.rvCompleted = view.findViewById(R.id.rv_tasklist_completed);
         this.rvCompleted.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        this.taskAdapterCompleted = new TaskAdapter(this.completedList);
-        this.rvCompleted.setAdapter(this.taskAdapterCompleted);
+
+        initLists(this.ongoingList, this.completedList);
 
         this.ibOngoingToggle = view.findViewById(R.id.ib_tasklist_toggleongoing);
         this.ongoingIsVisible = true;
@@ -123,6 +121,36 @@ public class TasklistFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    private void initLists (ArrayList<Task> ongoingList, ArrayList<Task> completedList) {
+        this.taskAdapterOngoing = new TaskAdapter(this.ongoingList);
+        this.rvOngoing.setAdapter(this.taskAdapterOngoing);
+        this.taskAdapterCompleted = new TaskAdapter(this.completedList);
+        this.rvCompleted.setAdapter(this.taskAdapterCompleted);
+    }
+
+    private void filterTask (String category) {
+        if (category.equalsIgnoreCase("ALL")) {
+            initLists(this.ongoingList, this.completedList);
+        } else {
+            ArrayList<Task> tempCompleted = new ArrayList<>();
+            ArrayList<Task> tempOngoing = new ArrayList<>();
+
+            for (int i = 0; i < this.completedList.size(); i++) {
+                if (this.completedList.get(i).getCategory().equalsIgnoreCase(category)) {
+                    tempCompleted.add(this.completedList.get(i));
+                }
+            }
+
+            for (int i = 0; i < this.ongoingList.size(); i++) {
+                if (this.ongoingList.get(i).getCategory().equalsIgnoreCase(category)) {
+                    tempOngoing.add(this.ongoingList.get(i));
+                }
+            }
+
+            initLists(tempOngoing, tempCompleted);
+        }
     }
 
     @Override
