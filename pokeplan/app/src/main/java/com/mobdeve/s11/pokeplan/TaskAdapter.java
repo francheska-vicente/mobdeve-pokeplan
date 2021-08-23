@@ -31,6 +31,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     public static final String KEY_C_START_TIME = "KEY_C_START_TIME";
     public static final String KEY_C_END_TIME = "KEY_C_END_TIME";
 
+    public static final String KEY_NOTIF_WHEN = "KEY_NOTIF_WHEN";
+    public static final String KEY_NOTIF_ON = "KEY_NOTIF_ON";
+    public static final String KEY_NOTIF_START_TIME = "KEY_NOTIF_START_TIME";
+
     public TaskAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
@@ -54,6 +58,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 i.putExtra(KEY_START_DATE, tasks.get(vh.getBindingAdapterPosition()).getStartDate().toString());
                 i.putExtra(KEY_NOTES, tasks.get(vh.getBindingAdapterPosition()).getDescription());
                 i.putExtra(KEY_ID, tasks.get(vh.getBindingAdapterPosition()).getTaskID());
+                i.putExtra(KEY_NOTIF_WHEN, tasks.get(vh.getBindingAdapterPosition()).getNotifWhen());
+                i.putExtra(KEY_NOTIF_ON, tasks.get(vh.getBindingAdapterPosition()).getIsNotif());
+                i.putExtra(KEY_NOTIF_START_TIME, tasks.get(vh.getBindingAdapterPosition()).getBeforeStartTime());
 
                 Task task = tasks.get(vh.getBindingAdapterPosition());
                 CustomDate endDate = task.getEndDate();
