@@ -1,4 +1,5 @@
 # mobdeve-pokeplan
+In this version, the speed of updating the arraylist from the database and manually are compared. 
 
 # app flow
 **register/login**
