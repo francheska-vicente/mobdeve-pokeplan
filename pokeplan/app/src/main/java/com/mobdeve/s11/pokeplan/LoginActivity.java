@@ -142,7 +142,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull @NotNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    
+                    forgotPasswordDialog.dismiss();
+                    Intent intent = new Intent(LoginActivity.this, InitActivity.class);
+                    startActivity(intent);
                 } else {
                     etEmail.setError("Please input a valid email address.");
                     etEmail.requestFocus();
