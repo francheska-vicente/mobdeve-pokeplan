@@ -1,18 +1,16 @@
 package com.mobdeve.s11.pokeplan;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Locale;
 
 public class PokedexDetailsActivity extends AppCompatActivity {
     private ImageButton btnback;
@@ -30,14 +28,13 @@ public class PokedexDetailsActivity extends AppCompatActivity {
     private TextView tvPkmnEvoSpecies;
     private TextView tvEvoLevel;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokedex_details);
 
         Intent intent = getIntent();
-        int dexnum = intent.getIntExtra(PokedexAdapter.KEY_POKEMONDEXNUM, 1);
+        int dexnum = intent.getIntExtra(Keys.KEY_POKEMONDEXNUM.name(), 1);
         Pokemon pkmn = Pokedex.getPokedex().getPokemon(dexnum);
 
         initComponents();
@@ -45,13 +42,12 @@ public class PokedexDetailsActivity extends AppCompatActivity {
         pkmn.playPokemonCry();
     }
 
+    /**
+     * Initializes the layout's components
+     */
     private void initComponents() {
         this.btnback = findViewById(R.id.ib_pkdexdetails_back);
-        this.btnback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        this.btnback.setOnClickListener(view -> onBackPressed());
 
         this.ivPkmnIcon = findViewById(R.id.iv_pkdexdetails_icon);
         this.tvPkmnSpecies = findViewById(R.id.tv_pkdexdetails_species);
@@ -67,22 +63,32 @@ public class PokedexDetailsActivity extends AppCompatActivity {
         this.tvEvoLevel = findViewById(R.id.tv_pkdexdetails_evolveto_level);
     }
 
+    /**
+     * Sets values for all TextViews and ImageViews
+     */
     private void setAllComponents(Pokemon pkmn) {
+        // sets pokemon icon
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ pkmn.getDexNum()));
+
+        // sets pokemon species
         this.tvPkmnSpecies.setText(pkmn.getSpecies());
 
-        String pkmndexnum = "#" + String.format("%03d", pkmn.getDexNum());
+        // sets pokemon pokedex number
+        String pkmndexnum = "#" + String.format(Locale.getDefault(),"%03d", pkmn.getDexNum());
         this.tvDexNum.setText(pkmndexnum);
 
+        // sets pokemon type or types
         String pkmntype = pkmn.getType1();
         if (!pkmn.getType2().isEmpty())
             pkmntype = pkmntype + "/" + pkmn.getType2();
         this.tvPkmnType.setText(pkmntype);
 
-        String pkmninfo = new PokedexInfo().getPokemonInfo(pkmn.getDexNum());
+        // sets pokemon pokedex entries
+        String pkmninfo = Pokedex.getPokedex().getPokemonInfo(pkmn.getDexNum());
         this.tvPkmnInfo.setText(pkmninfo);
 
+        // sets evolution info if pokemon can evolve
         if (pkmn.getEvolvesTo().equals("")) {
             TextView tvlabel = findViewById(R.id.tv_pkdexdetails_evolveto_label);
             ImageView ivarrow = findViewById(R.id.iv_evolveto_arrow);
@@ -108,8 +114,9 @@ public class PokedexDetailsActivity extends AppCompatActivity {
         }
     }
 
-
-
+    /**
+     * Helper function to get Image ID from Image name
+     */
     private int getImageId(Context context, String imageName) {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
