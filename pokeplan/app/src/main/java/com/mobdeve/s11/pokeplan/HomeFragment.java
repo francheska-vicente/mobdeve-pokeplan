@@ -67,6 +67,14 @@ public class HomeFragment extends Fragment {
                 view.getContext().startActivity(i);
             }
         });
+
+        this.ibpokemonpc = view.findViewById(R.id.ib_home_pc);
+        this.ibpokemonpc.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), PokemonPCActivity.class);
+                view.getContext().startActivity(i);
+            }
+        });
     }
 
     @Override
