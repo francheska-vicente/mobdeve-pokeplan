@@ -15,18 +15,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.io.IOException;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
+    private String sourceActivity;
+
     private ImageButton btnback;
     private ImageButton btnedit;
 
     private Button btnrare;
     private Button btnsuper;
     private Button btnpc;
+
+    private LinearLayout llrare;
+    private LinearLayout llsuper;
 
     private ImageView ivPkmnIcon;
     private TextView tvPkmnNickname;
@@ -51,27 +57,18 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pokemon_details);
 
         Intent intent = getIntent();
-        String pkmnid = intent.getStringExtra(PokemonPartyAdapter.KEY_POKEMONID);
-        pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);
+        String pkmnid = intent.getStringExtra(PokemonPCAdapter.KEY_POKEMONID);
+        sourceActivity = intent.getStringExtra(PokemonPCAdapter.KEY_FROMWHERE);
+
+        pkmn = UserSingleton.getUser().getPokemonInPC(pkmnid);
 
         initComponents();
+        initButtons();
         setAllComponents(pkmn);
         pkmn.getPokemonDetails().playPokemonCry();
     }
 
     private void initComponents() {
-        this.btnback = findViewById(R.id.ib_pkmndetails_back);
-        this.btnback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-
-        this.btnedit = findViewById(R.id.ib_pkmndetails_edit);
-        this.btnrare = findViewById(R.id.btn_pkmndetails_rarecandy);
-        this.btnsuper = findViewById(R.id.btn_pkmndetails_supercandy);
-        this.btnpc = findViewById(R.id.btn_pkmndetails_pc);
-
         this.ivPkmnIcon = findViewById(R.id.iv_pkmndetails_icon);
         this.tvPkmnNickname = findViewById(R.id.tv_pkmndetails_nickname);
         this.tvPkmnSpecies = findViewById(R.id.tv_pkmndetails_species);
@@ -83,6 +80,51 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         this.tvRareCandyCtr = findViewById(R.id.tv_pkmndetails_rarecandyctr);
         this.tvSuperCandyCtr = findViewById(R.id.tv_pkmndetails_supercandyctr);
+        this.llrare = findViewById(R.id.ll_pkmndetails_rarecandy);
+        this.llsuper = findViewById(R.id.ll_pkmndetails_supercandy);
+    }
+
+    private void initButtons() {
+        this.btnback = findViewById(R.id.ib_pkmndetails_back);
+        this.btnback.setOnClickListener(view -> onBackPressed());
+
+        this.btnedit = findViewById(R.id.ib_pkmndetails_edit);
+        this.btnedit.setOnClickListener(view -> editNickname());
+
+        this.btnrare = findViewById(R.id.btn_pkmndetails_rarecandy);
+        this.btnrare.setOnClickListener(view -> feedPokemon());
+        if (UserSingleton.getUser().getUserDetails().getRareCandy() <= 0 ||
+                pkmn.getLevel() >= 100)
+            btnrare.setEnabled(false);
+
+
+        this.btnsuper = findViewById(R.id.btn_pkmndetails_supercandy);
+        this.btnsuper.setOnClickListener(view -> evolvePokemon());
+        if (UserSingleton.getUser().getUserDetails().getSuperCandy() <= 0
+                || pkmn.getLevel() < pkmn.getPokemonDetails().getEvolveLvl()
+                || pkmn.getPokemonDetails().getEvolvesTo().isEmpty())
+            btnsuper.setEnabled(false);
+
+        this.btnpc = findViewById(R.id.btn_pkmndetails_pc);
+
+        if (sourceActivity.equals("PARTY")) {
+            this.btnpc.setOnClickListener(view -> movePokemonToPC());
+            this.btnpc.setText("MOVE TO PC");
+            if (UserSingleton.getUser().getUserPokemonParty().size() <= 1)
+                btnpc.setVisibility(View.GONE);
+        }
+        else {
+            this.btnpc.setOnClickListener(view -> movePokemonToParty());
+            this.btnpc.setText("MOVE TO PARTY");
+            if (UserSingleton.getUser().getUserPokemonParty().size() >= 6)
+                btnpc.setVisibility(View.GONE);
+
+            btnrare.setVisibility(View.GONE);
+            btnsuper.setVisibility(View.GONE);
+            llrare.setVisibility(View.GONE);
+            llsuper.setVisibility(View.GONE);
+        }
+
     }
 
     private void setAllComponents(UserPokemon pkmn) {
@@ -104,43 +146,48 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
         this.tvSuperCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getSuperCandy()));
-
-        this.btnedit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                editNickname();
-            }
-        });
-
-        this.btnpc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                movePokemonToPC();
-            }
-        });
-
-        this.btnrare.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                feedPokemon();
-            }
-        });
-
-        this.btnsuper.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                evolvePokemon();
-            }
-        });
-
-        if (UserSingleton.getUser().getUserDetails().getRareCandy() <= 0 || pkmn.getLevel() >= 100)
-            btnrare.setEnabled(false);
-
-        if (UserSingleton.getUser().getUserDetails().getSuperCandy() <= 0 ||
-                pkmn.getLevel() < pkmn.getPokemonDetails().getEvolveLvl())
-            btnsuper.setEnabled(false);
     }
 
     private void movePokemonToPC () {
         confirmDialog = new Dialog(this);
+        confirmDialog.setContentView(R.layout.dialog_confirm);
 
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        confirmDialog.getWindow().setLayout(width, height);
+        confirmDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_title);
+        tvdialogtitle.setText(R.string.pkmndetails_movetopcdiag_title);
+        TextView tvdialogtext = (TextView) confirmDialog.findViewById(R.id.tv_dialog_text);
+        tvdialogtext.setText(R.string.pkmndetails_movetopcdiag_text);
+        ImageView ivdialogicon = (ImageView) confirmDialog.findViewById(R.id.iv_dialog_icon);
+        ivdialogicon.setImageResource(R.drawable.warning);
+
+        Button btndialogcancel = (Button) confirmDialog.findViewById(R.id.btn_dialog_cancel);
+        btndialogcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog.dismiss();
+            }
+        });
+
+        Button btndialogconfirm = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setText(R.string.pkmndetails_movetopcdiag_button);
+        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDialog.dismiss();
+                UserSingleton.getUser().movePokemon(pkmn.getUserPokemonID(), false);
+                finish();
+            }
+        });
+        confirmDialog.show();
+    }
+
+    private void movePokemonToParty () {
+        confirmDialog = new Dialog(this);
         confirmDialog.setContentView(R.layout.dialog_confirm);
 
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
