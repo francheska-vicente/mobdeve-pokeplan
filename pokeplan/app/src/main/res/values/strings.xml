@@ -148,4 +148,5 @@
     <string name="task_details_candy_title">Congratulations!</string>
     <string name="pokemon_pc">POKEMON PC</string>
     <string name="nopkmnpc">You have no Pokemon in the PC yet.</string>
+    <string name="birthday">Birthday</string>
 </resources>
