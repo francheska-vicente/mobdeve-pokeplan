@@ -1,9 +1,5 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.util.Log;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -136,7 +132,8 @@ public class CustomDate {
             } else {
                 date = monthString[month] + " " + day_in_month + ", " + year + " @";
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
 
         }
 
@@ -145,9 +142,11 @@ public class CustomDate {
         if (hour > 12) {
             tempHour = hour - 12;
             temp = "PM";
-        } else if (hour == 12) {
+        }
+        else if (hour == 12) {
             temp = "PM";
-        } else if (hour == 0) {
+        }
+        else if (hour == 0) {
             tempHour = 12;
         }
 
