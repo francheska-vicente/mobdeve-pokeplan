@@ -7,7 +7,10 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.api.Property;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -154,56 +157,75 @@ public class UserSingleton {
         mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-                Log.d("User DB", "User Information was successfully modified.");
+                if (task.isSuccessful()) {
+                    Log.d("User DB", "User Information was successfully modified.");
+                } else {
+                    Log.e("User DB", "There is an error encountered! " + task.getException().toString());
+                }
             }
         });
     }
 
-    public void deleteUser () {
-        Query query = mUser;
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                snapshot.getRef().removeValue();
-                Log.d("User DB", "User was deleted from the DB.");
-            }
+    public void deleteUser (String email, String password) {
 
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+
+        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Log.e("User DB", "There is an error encountered! " + error.toException().toString());
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                if (task.isSuccessful()) {
+                    user.delete();
+                    Query query = mUser;
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                            snapshot.getRef().removeValue();
+                            Log.d("User DB", "User was deleted from the DB.");
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                            Log.e("User DB", "There is an error encountered! " + error.toException().toString());
+                        }
+                    });
+
+                    query = mTask;
+
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                            snapshot.getRef().removeValue();
+                            Log.d("Task DB", "All of the tasks of this user were deleted from the DB.");
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                            Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
+                        }
+                    });
+
+                    query = mPokemon;
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                            snapshot.getRef().removeValue();
+                            Log.d("Pokemon DB", "All of the pokemons of this user were deleted from the DB.");
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                            Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
+                        }
+                    });
+
+                    removeUser();
+                } else {
+                    Log.d("USER DB", "A problem was encountered! " + task.getException().toString());
+                }
             }
         });
-
-        query = mTask;
-
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                snapshot.getRef().removeValue();
-                Log.d("Task DB", "All of the tasks of this user were deleted from the DB.");
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
-            }
-        });
-
-        query = mPokemon;
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                snapshot.getRef().removeValue();
-                Log.d("Pokemon DB", "All of the pokemons of this user were deleted from the DB.");
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
-            }
-        });
-
-        this.removeUser();
     }
 
     // tasks
@@ -533,6 +555,29 @@ public class UserSingleton {
                 } else {
                     Log.e("Pokemon DB", "Pokemon was not moved.");
                 }
+            }
+        });
+    }
+
+    public void deletePokemon (UserPokemon pokemon) {
+        Query query = mPokemon.child(pokemon.getUserPokemonID());
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+                Log.d("Pokemon DB", "Pokemon was deleted from the DB.");
+
+                if (userPokemonPC.contains(pokemon)) {
+                    userPokemonPC.remove(pokemon);
+                } else if (userPokemonParty.contains(pokemon)) {
+                    userPokemonParty.remove(pokemon);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
             }
         });
     }
