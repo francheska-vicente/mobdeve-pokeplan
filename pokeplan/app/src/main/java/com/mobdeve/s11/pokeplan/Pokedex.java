@@ -14,9 +14,8 @@ public class Pokedex {
     }
 
     public static Pokedex getPokedex() {
-        if (pokedex == null) {
+        if (pokedex == null)
             pokedex = new Pokedex();
-        }
         return pokedex;
     }
 
