@@ -76,7 +76,6 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         final Handler handler = new Handler();
-
         handler.postDelayed(() -> initComponents(getView()), 200);
     }
 }
