@@ -150,6 +150,8 @@
     <string name="nopkmnpc">You have no Pokemon in the PC yet.</string>
     <string name="birthday">Birthday</string>
 
-    <!-- FAQS -->
+    <!-- Settings Buttons -->
     <string name="faqs_title">FAQs</string>
+    <string name="about_title">ABOUT</string>
+    <string name="about_text">PokéPlan is a productivity application created solely for academic purposes. The Pokémon and their sounds are owned by Nintendo and The Pokémon Company. This application also made use of icons from Flaticon.</string>
 </resources>

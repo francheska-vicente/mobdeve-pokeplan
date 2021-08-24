@@ -3,16 +3,17 @@ package com.mobdeve.s11.pokeplan;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-<<<<<<< Updated upstream
+import android.view.WindowManager;
 import android.widget.Button;
-=======
->>>>>>> Stashed changes
+import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 
 public class SettingsFragment extends Fragment {
     private Switch swDeepFocus;
@@ -24,13 +25,7 @@ public class SettingsFragment extends Fragment {
     private Button btnEditAcc;
     private Button btnFreqQues;
     private Button btnAbout;
-
-    private Switch swPkmncries;
-    private Switch swNotifs;
-
-    private Switch swScreenOn;
-    private Switch swDimScreen;
-    private Switch swDeepFocus;
+    private Dialog dialogAbout;
 
     public SettingsFragment() {
     }
@@ -62,11 +57,9 @@ public class SettingsFragment extends Fragment {
         this.swDeepFocus = view.findViewById(R.id.sw_deepfocus);
         this.swDimScreen = view.findViewById(R.id.sw_dimscreen);
         this.swNotifs = view.findViewById(R.id.sw_notifs);
-        this.swPkmncries = view.findViewById(R.id.sw_pkmncries);
-        this.swScreenOn = view.findViewById(R.id.sw_screenon);
+        this.swPkmnCries = view.findViewById(R.id.sw_pkmncries);
+        this.swKeepScreenOn = view.findViewById(R.id.sw_screenon);
         setSwitchFont(view);
-
-
     }
 
     private void setButtonListeners () {
@@ -84,7 +77,33 @@ public class SettingsFragment extends Fragment {
     }
 
     private void initAbout (View v) {
+        dialogAbout = new Dialog(v.getContext());
+        dialogAbout.setContentView(R.layout.dialog_ok);
 
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        dialogAbout.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialogAbout.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) dialogAbout.findViewById(R.id.tv_dialog_ok_title);
+        tvdialogtitle.setText(R.string.about_title);
+        TextView tvdialogtext = (TextView) dialogAbout.findViewById(R.id.tv_dialog_ok_text);
+        tvdialogtext.setText(R.string.about_text);
+
+        ImageView ivIcon = (ImageView)  dialogAbout.findViewById(R.id.iv_dialog_ok_icon);
+        ivIcon.setImageResource(R.drawable.logo_xl);
+        ivIcon.setAdjustViewBounds(true);
+
+        Button btnDialogOk = (Button) dialogAbout.findViewById(R.id.btn_dialog_ok);
+        btnDialogOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogAbout.dismiss();
+            }
+        });
+
+        dialogAbout.show();
     }
 
     private void setSwitchFont(View view) {
