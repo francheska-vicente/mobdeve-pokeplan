@@ -36,5 +36,6 @@ public enum Keys {
 
     // pokemon
     KEY_POKEMONID,
-    KEY_FROMWHERE
+    KEY_FROMWHERE,
+    KEY_POKEMONDEXNUM
 }
