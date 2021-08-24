@@ -153,4 +153,10 @@
     <string name="faqs_title">FAQs</string>
     <string name="about_title">ABOUT</string>
     <string name="about_text">PokéPlan is a productivity application created solely for academic purposes. The Pokémon and their sounds are owned by Nintendo and The Pokémon Company. This application also made use of icons from Flaticon.</string>
+    <string name="pkdexdetails_information_label">INFORMATION</string>
+    <string name="pkdexdetails_evolvesto_label">EVOLVES TO</string>
+    <string name="init_welcometo_label">Welcome to</string>
+    <string name="init_register_btn">REGISTER</string>
+    <string name="init_login_btn">LOGIN</string>
+    <string name="login_label">Login</string>
 </resources>
