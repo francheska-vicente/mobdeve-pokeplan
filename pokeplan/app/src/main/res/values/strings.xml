@@ -134,6 +134,10 @@
     <string name="pkmndetails_movetopcdiag_text">This would remove the pokemon from your party.</string>
     <string name="pkmndetails_movetopcdiag_button">Move to PC</string>
 
+    <string name="pkmndetails_movetopartydiag_title">Move to Party</string>
+    <string name="pkmndetails_movetopartydiag_text">This would add the pokemon to your party.</string>
+    <string name="pkmndetails_movetopartydiag_button">Move to Party</string>
+
     <!-- Task Details -->
     <string name="task_details_confirm_finish_title">Completion of Task</string>
     <string name="task_details_confirm_finish_text">This would transfer the task from ongoing list to completed list.</string>
