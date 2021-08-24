@@ -197,9 +197,9 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         confirmDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_title);
-        tvdialogtitle.setText(R.string.pkmndetails_movetopcdiag_title);
+        tvdialogtitle.setText(R.string.pkmndetails_movetopartydiag_title);
         TextView tvdialogtext = (TextView) confirmDialog.findViewById(R.id.tv_dialog_text);
-        tvdialogtext.setText(R.string.pkmndetails_movetopcdiag_text);
+        tvdialogtext.setText(R.string.pkmndetails_movetopartydiag_text);
         ImageView ivdialogicon = (ImageView) confirmDialog.findViewById(R.id.iv_dialog_icon);
         ivdialogicon.setImageResource(R.drawable.warning);
 
@@ -212,12 +212,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         });
 
         Button btndialogconfirm = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm);
-        btndialogconfirm.setText(R.string.pkmndetails_movetopcdiag_button);
+        btndialogconfirm.setText(R.string.pkmndetails_movetopartydiag_button);
         btndialogconfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmDialog.dismiss();
-                UserSingleton.getUser().movePokemon(pkmn.getUserPokemonID(), false);
+                UserSingleton.getUser().movePokemon(pkmn.getUserPokemonID(), true);
                 finish();
             }
         });
