@@ -308,8 +308,6 @@ public class UserSingleton {
 
     // pokemons
     public void addPokemon(Pokemon details, boolean checker) {
-        userDetails.setCaught(details.getDexNum());
-
         UserPokemon userPokemon;
         String key = mPokemon.push().getKey();
 
