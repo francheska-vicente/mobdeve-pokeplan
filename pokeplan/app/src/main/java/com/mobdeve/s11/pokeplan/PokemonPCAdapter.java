@@ -15,9 +15,6 @@ import java.util.ArrayList;
 public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> {
     private ArrayList<UserPokemon> pc;
 
-    public static final String KEY_POKEMONID = "KEY_POKEMONID";
-    public static final String KEY_FROMWHERE = "KEY_FROMWHERE";
-
     public PokemonPCAdapter(ArrayList<UserPokemon> pc) {
         this.pc = pc;
     }
@@ -34,8 +31,8 @@ public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> 
         vh.getConstraintLayout().setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), PokemonDetailsActivity.class);
-                i.putExtra(KEY_POKEMONID, pc.get(vh.getBindingAdapterPosition()).getUserPokemonID());
-                i.putExtra(KEY_FROMWHERE, "PC");
+                i.putExtra(Keys.KEY_POKEMONID.name(), pc.get(vh.getBindingAdapterPosition()).getUserPokemonID());
+                i.putExtra(Keys.KEY_FROMWHERE.name(), "PC");
                 view.getContext().startActivity(i);
             }
         });
