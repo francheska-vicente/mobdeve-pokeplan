@@ -57,6 +57,6 @@ public class PokemonPCActivity extends AppCompatActivity {
             public void run() {
                 initComponents();
             }
-        }, 1000);
+        }, 200);
     }
 }
