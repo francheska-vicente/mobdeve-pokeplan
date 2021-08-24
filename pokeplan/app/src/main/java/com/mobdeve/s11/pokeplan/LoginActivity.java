@@ -1,13 +1,10 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.app.Application;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -20,13 +17,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -61,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.et_login_password);
         btnLogin = findViewById(R.id.btn_login_submit);
         pbLoading = findViewById(R.id.pb_login);
-        tvForgotPassword = findViewById(R.id.tv_login_password2);
+        tvForgotPassword = findViewById(R.id.tv_login_forgotpass);
         pbLoading.setVisibility(View.GONE);
         initBackBtn();
         initSubmitBtn();
@@ -77,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
     private void forgotPassword (View v) {
         forgotPasswordDialog = new Dialog(v.getContext());
 
-        forgotPasswordDialog.setContentView(R.layout.dialog_stringinput);
+        forgotPasswordDialog.setContentView(R.layout.dialog_oneinput);
 
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
