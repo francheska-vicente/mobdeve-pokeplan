@@ -52,6 +52,7 @@ public class HomeFragment extends Fragment {
 
     private void initComponents (View view) {
         this.pokemonPartyList = UserSingleton.getUser().getUserPokemonParty();
+        Log.d("Hello pare", this.pokemonPartyList.toString());
         this.rvPokemonParty = view.findViewById(R.id.rv_home_party);
         this.rvPokemonParty.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
@@ -80,6 +81,14 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        initComponents(getView());
+        final Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initComponents(getView());
+            }
+        }, 1000);
+
     }
 }
