@@ -157,6 +157,16 @@ public class UserSingleton {
         });
     }
 
+    public void updateUser(HashMap<String, Object> hash, String password) {
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(userDetails.getEmail(), password);
+        
+    }
+
+    public void logoutUser () {
+        FirebaseAuth.getInstance().signOut();
+    }
+
     public void deleteUser (String email, String password) {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -364,7 +374,6 @@ public class UserSingleton {
         }
 
     }
-
     // pokemons
     public void addPokemon(Pokemon details, boolean checker) {
         UserPokemon userPokemon;

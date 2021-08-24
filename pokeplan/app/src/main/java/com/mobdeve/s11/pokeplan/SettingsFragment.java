@@ -1,17 +1,18 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -19,6 +20,13 @@ import android.widget.TextView;
 
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+
+import com.google.firebase.firestore.auth.User;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class SettingsFragment extends Fragment {
     private SharedPreferences sp;
@@ -37,6 +45,8 @@ public class SettingsFragment extends Fragment {
 
     private Dialog dialogAbout;
     private Dialog dialogDelete;
+    private Dialog dialogEdit;
+
 
     private EditText etEmail;
     private EditText etPassword;
@@ -92,7 +102,7 @@ public class SettingsFragment extends Fragment {
         this.btnEditAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                editDialog (v);
             }
         });
 
@@ -104,7 +114,110 @@ public class SettingsFragment extends Fragment {
         });
     }
 
+    private void editDialog (View v) {
+        dialogEdit = new Dialog(v.getContext());
+        dialogEdit.setContentView(R.layout.dialog_threeinputs);
+
+        EditText etUsername = dialogEdit.findViewById(R.id.et_dialog_edit_username);
+        EditText etBirthday = dialogEdit.findViewById(R.id.et_dialog_edit_birthday);
+        EditText etPassword = dialogEdit.findViewById(R.id.et_dialog_edit_password);
+        EditText etFullName = dialogEdit.findViewById(R.id.et_dialog_edit_name);
+
+        etBirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendarStart = Calendar.getInstance();
+                DatePickerDialog.OnDateSetListener dateStart = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month,
+                                          int day) {
+                        calendarStart.set(Calendar.YEAR, year);
+                        calendarStart.set(Calendar.MONTH, month);
+                        calendarStart.set(Calendar.DAY_OF_MONTH, day);
+
+                        String myFormat = "dd.MM.yy";
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
+
+                        etBirthday.setText(sdf.format(calendarStart.getTime()));
+                    }
+                };
+
+                int month = Calendar.getInstance().get(Calendar.MONTH);
+                int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+                int year = Calendar.getInstance().get(Calendar.YEAR);
+
+                int finalSYear = year;
+                int finalSDay = day;
+                int finalSMonth = month;
+                etBirthday.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new DatePickerDialog(v.getContext(), dateStart, finalSYear, finalSMonth,
+                                finalSDay).show();
+                    }
+                });
+            }
+        });
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+
+        dialogEdit.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialogEdit.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        Button btnDialogCancel = (Button) dialogEdit.findViewById(R.id.btn_edit_account_cancel);
+        btnDialogCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogEdit.dismiss();
+            }
+        });
+
+        Button btnDialogConfirm = (Button) dialogEdit.findViewById(R.id.btn_edit_account_confirm);
+        btnDialogConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String password = etPassword.getText().toString().trim();
+                String username = etUsername.getText().toString().trim();
+                String birthday = etBirthday.getText().toString().trim();
+                String name = etFullName.getText().toString().trim();
+
+                if (password.isEmpty()) {
+                    etPassword.setError("Password is required to modify your information.");
+                    etPassword.requestFocus();
+                    return;
+                }
+
+                HashMap<String, Object> hash = new HashMap<>();
+
+                if (!username.isEmpty()) {
+                    hash.put("userName", username);
+                }
+
+                if (!birthday.isEmpty()) {
+                    String [] temp = birthday.split("\\.");
+
+                    int month = Integer.parseInt(temp[1]);
+                    int day = Integer.parseInt(temp[0]);
+                    int year = Integer.parseInt(temp[2]);
+
+                    hash.put("birthday", new CustomDate(year, month, day, 0, 0));
+                }
+
+                if (!name.isEmpty()) {
+                    hash.put("fullName", name);
+                }
+
+                UserSingleton.getUser().updateUser(hash, password);
+            }
+        });
+
+        dialogEdit.show();
+    }
+
     private void deleteAccDialog (View v) {
+        EditText etEmail = (EditText) dialogEdit.findViewById(R.id.et_dialog_delete_email);
+        EditText etPassword = (EditText) dialogEdit.findViewById(R.id.et_dialog_edit_password);
+
         dialogDelete = new Dialog(v.getContext());
         dialogDelete.setContentView(R.layout.dialog_twoinputs);
 

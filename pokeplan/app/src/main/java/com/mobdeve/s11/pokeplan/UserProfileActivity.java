@@ -23,7 +23,6 @@ public class UserProfileActivity extends AppCompatActivity {
     private SharedPreferences.Editor spEditor;
 
     private ImageButton btnback;
-    private ImageButton btnedit;
     private Button btnlogout;
 
     private ImageView ivStarterIcon;
@@ -34,7 +33,6 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView tvEggHatchCtr;
     private TextView tvTaskCompleteCtr;
 
-    private Dialog editdialog;
     private Dialog confirmDialog;
 
     @Override
@@ -54,8 +52,6 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        // this.btnedit = findViewById(R.id.ib_pkmndetails_edit);
-
         this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.spEditor = this.sp.edit();
         this.btnlogout = findViewById(R.id.btn_userprofile_logout);
@@ -65,6 +61,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 spEditor.remove(Keys.KEY_PASSWORD.name());
                 spEditor.apply();
                 UserSingleton.removeUser();
+                UserSingleton.getUser().logoutUser();
                 Intent intent = new Intent(UserProfileActivity.this, InitActivity.class);
                 startActivity(intent);
             }
@@ -96,11 +93,6 @@ public class UserProfileActivity extends AppCompatActivity {
         String task = user.getCompletedTaskCount() + " Tasks Completed";
         this.tvTaskCompleteCtr.setText(task);
 
-//        this.btnedit.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//
-//            }
-//        });
     }
 
 
