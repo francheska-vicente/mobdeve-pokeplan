@@ -19,18 +19,16 @@ import java.util.Date;
 
 public class PokemonPCViewHolder extends RecyclerView.ViewHolder {
     private ImageView ivpkmnicon;
-    private ImageView ivcirclebg;
     private ConstraintLayout layout;
 
     public PokemonPCViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
 
         this.ivpkmnicon = itemView.findViewById(R.id.iv_pokedex_icon);
-        this.ivcirclebg = itemView.findViewById(R.id.iv_pokedex_circlebg);
         this.layout = itemView.findViewById(R.id.cl_template_pokedex);
     }
 
-    public void setPkmnIcon(int dexnum, boolean caught) {
+    public void setPkmnIcon(int dexnum) {
         int pic = getImageId(itemView.getContext(), "pkmn_" + dexnum);
         this.ivpkmnicon.setImageResource(pic);
     }
