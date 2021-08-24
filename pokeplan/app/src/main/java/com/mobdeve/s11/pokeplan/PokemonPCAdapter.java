@@ -16,8 +16,9 @@ public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> 
     private ArrayList<UserPokemon> pc;
 
     public static final String KEY_POKEMONID = "KEY_POKEMONID";
+    public static final String KEY_FROMWHERE = "KEY_FROMWHERE";
 
-    public PokemonPCAdapter(ArrayList<UserPokemon> party) {
+    public PokemonPCAdapter(ArrayList<UserPokemon> pc) {
         this.pc = pc;
     }
 
@@ -34,6 +35,7 @@ public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> 
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), PokemonDetailsActivity.class);
                 i.putExtra(KEY_POKEMONID, pc.get(vh.getBindingAdapterPosition()).getUserPokemonID());
+                i.putExtra(KEY_FROMWHERE, "PC");
                 view.getContext().startActivity(i);
             }
         });
@@ -44,10 +46,13 @@ public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull @NotNull PokemonPCViewHolder holder, int position) {
         holder.setPkmnIcon(this.pc.get(position).getPokemonDetails().getDexNum());
+        holder.setDexNum();
     }
 
     @Override
     public int getItemCount() {
-        return this.pc.size();
+        if(this.pc != null)
+            return this.pc.size();
+        return 0;
     }
 }

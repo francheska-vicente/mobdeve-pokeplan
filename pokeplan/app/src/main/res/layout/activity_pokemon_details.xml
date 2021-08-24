@@ -245,7 +245,7 @@
         android:text="@string/pkmndetails_rarecandy_btn"
         android:textColor="@color/darkest_gray"
         app:backgroundTint="@color/pink_button"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/ll_pkmndetails_rarecandy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/div_evolveto" />
 
@@ -313,7 +313,7 @@
         app:layout_constraintStart_toEndOf="@+id/imageView4" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/ll_pkmndetails_supercandy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
@@ -342,7 +342,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/ll_pkmndetails_rarecandy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
