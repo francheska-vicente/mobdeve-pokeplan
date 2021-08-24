@@ -39,7 +39,7 @@
     <string name="focustimer_dialog_hatch_text">
         You hatched a</string>
 
-<!--  TODO: HUHUHUUHUHUHUHUHUHU  -->
+    <!--  TODO: HUHUHUUHUHUHUHUHUHU  -->
     <string name="focustimer_dialog_info_title">Focus Timer</string>
     <string name="focustimer_dialog_info_text">
         help</string>
@@ -149,4 +149,7 @@
     <string name="pokemon_pc">POKEMON PC</string>
     <string name="nopkmnpc">You have no Pokemon in the PC yet.</string>
     <string name="birthday">Birthday</string>
+
+    <!-- FAQS -->
+    <string name="faqs_title">FAQs</string>
 </resources>

@@ -2,6 +2,7 @@ package com.mobdeve.s11.pokeplan;
 
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,7 +65,8 @@ public class SettingsFragment extends Fragment {
         this.btnFreqQues.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(v.getContext(), FaqsActivity.class);
+                v.getContext().startActivity(i);
             }
         });
 

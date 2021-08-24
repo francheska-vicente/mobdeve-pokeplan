@@ -10,7 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PokePlan"
         android:usesCleartextTraffic="true">
-        <activity android:name=".InitActivity"
+        <activity android:name=".FaqsActivity"></activity>
+        <activity
+            android:name=".InitActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,28 +20,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".RegisterActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".RegisterStarterActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RegisterStarterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TaskDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddTaskActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PokemonDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PokemonPCActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PokedexDetailsActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".TaskDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AddTaskActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PokemonDetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".UserProfileActivity" 
-        	 android:screenOrientation="portrait"/>
-        <activity android:name=".PokemonPCActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".PokedexDetailsActivity"
-            android:screenOrientation="portrait"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

@@ -77,16 +77,6 @@ public class HomeFragment extends Fragment {
         super.onResume();
         final Handler handler = new Handler();
 
-<<<<<<< Updated upstream
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initComponents(getView());
-            }
-        }, 200);
-=======
-        handler.postDelayed(() -> initComponents(getView()), 1000);
->>>>>>> Stashed changes
-
+        handler.postDelayed(() -> initComponents(getView()), 200);
     }
 }
