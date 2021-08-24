@@ -71,7 +71,6 @@ public class UserSingleton {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userDetails = dataSnapshot.getValue(UserDetails.class);
-                userDetails.setUserName(dataSnapshot.child("userName").getValue(String.class));
                 Log.d("User DB", "User's information was successfully loaded to the application.");
             }
 
@@ -159,7 +158,6 @@ public class UserSingleton {
     }
 
     public void deleteUser (String email, String password) {
-
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);

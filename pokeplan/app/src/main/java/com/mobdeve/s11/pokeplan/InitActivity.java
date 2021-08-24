@@ -53,10 +53,10 @@ public class InitActivity extends AppCompatActivity {
         String email = this.sp.getString(Keys.KEY_EMAIL.name(), null);
         String password = this.sp.getString(Keys.KEY_PASSWORD.name(), null);
 
-        if (email != null && password != null) {
-            checkIfInDB (email, password);
-        }
-        else {
+//        if (email != null && password != null) {
+//            checkIfInDB (email, password);
+//        }
+//        else {
             setContentView(R.layout.activity_init);
             btninitregister = findViewById(R.id.btn_init_register);
             btninitregister.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +73,6 @@ public class InitActivity extends AppCompatActivity {
                     view.getContext().startActivity(i);
                 }
             });
-        }
+//        }
     }
 }
