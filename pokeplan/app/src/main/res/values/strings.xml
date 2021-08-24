@@ -13,6 +13,9 @@
     <string name="email">Email</string>
     <string name="register_s_title">Choose Your Starter</string>
 
+    <string name="forgot_title">Enter your e-mail.</string>
+    <string name="forgot_button">Reset Password</string>
+
     <!-- Focus Timer -->
     <string name="focustimer_title">FOCUS TIMER</string>
     <string name="focustimer_start_button">START TIMER</string>
