@@ -169,12 +169,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         ivdialogicon.setImageResource(R.drawable.warning);
 
         Button btndialogcancel = (Button) confirmDialog.findViewById(R.id.btn_dialog_cancel);
-        btndialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDialog.dismiss();
-            }
-        });
+        btndialogcancel.setOnClickListener(v -> confirmDialog.dismiss());
 
         Button btndialogconfirm = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setText(R.string.pkmndetails_movetopcdiag_button);
