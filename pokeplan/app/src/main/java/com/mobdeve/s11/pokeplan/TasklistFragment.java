@@ -1,4 +1,4 @@
-package com.mobdeve.s11.pokeplan;
+ package com.mobdeve.s11.pokeplan;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -11,10 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,6 +46,7 @@ public class TasklistFragment extends Fragment {
     private TaskAdapter taskAdapterCompleted;
     private TaskAdapter taskAdapterOngoing;
     private FloatingActionButton fabAdd;
+    private Spinner spinFilter;
 
     public TasklistFragment() {
     }
@@ -110,6 +115,27 @@ public class TasklistFragment extends Fragment {
                 }
             }
         });
+
+        initFilter (view);
+    }
+
+    private void initFilter (View view) {
+        this.spinFilter = view.findViewById(R.id.spinner_tasklist_filter);
+        ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
+                R.array.tasklist_filter, R.layout.spinner_item);
+        adapterFilter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinFilter.setAdapter(adapterFilter);
+
+        spinFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("hello pare", "inside filter function");
+                filterTask(spinFilter.getSelectedItem().toString());
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                return;
+            }
+        });
     }
 
     private void initFabAdd (View view) {
@@ -124,13 +150,19 @@ public class TasklistFragment extends Fragment {
     }
 
     private void initLists (ArrayList<Task> ongoingList, ArrayList<Task> completedList) {
-        this.taskAdapterOngoing = new TaskAdapter(this.ongoingList);
+        this.taskAdapterOngoing = new TaskAdapter(ongoingList);
         this.rvOngoing.setAdapter(this.taskAdapterOngoing);
-        this.taskAdapterCompleted = new TaskAdapter(this.completedList);
+        this.taskAdapterCompleted = new TaskAdapter(completedList);
         this.rvCompleted.setAdapter(this.taskAdapterCompleted);
+
+        this.taskAdapterCompleted.notifyDataSetChanged();
+        this.taskAdapterOngoing.notifyDataSetChanged();
+
+        Log.d("hello pare", ongoingList.toString() + " " + completedList.toString());
     }
 
     private void filterTask (String category) {
+        Log.d("hello pare", category);
         if (category.equalsIgnoreCase("ALL")) {
             initLists(this.ongoingList, this.completedList);
         } else {
@@ -151,6 +183,7 @@ public class TasklistFragment extends Fragment {
 
             initLists(tempOngoing, tempCompleted);
         }
+
     }
 
     @Override
