@@ -1,7 +1,5 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.widget.Switch;
-
 public enum Keys {
     KEY_EMAIL,
     KEY_PASSWORD,
