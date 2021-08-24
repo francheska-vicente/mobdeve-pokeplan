@@ -139,10 +139,6 @@ public class UserPokemon {
         this.inParty = inParty;
     }
 
-    public String toString () {
-        return this.userPokemonID;
-    }
-
     public String setNature () {
         String[] NATURES = {
                 "Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold", "Docile",
@@ -152,5 +148,9 @@ public class UserPokemon {
         };
 
         return NATURES[new Random().nextInt(NATURES.length)];
+    }
+
+    public String toString () {
+        return this.userPokemonID;
     }
 }
