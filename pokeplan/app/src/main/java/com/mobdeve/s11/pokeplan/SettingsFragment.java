@@ -58,7 +58,7 @@ public class SettingsFragment extends Fragment {
         this.btnAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                initAbout (v);
             }
         });
 
@@ -76,5 +76,9 @@ public class SettingsFragment extends Fragment {
                 
             }
         });
+    }
+
+    private void initAbout (View v) {
+
     }
 }
