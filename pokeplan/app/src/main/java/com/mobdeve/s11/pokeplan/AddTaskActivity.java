@@ -92,41 +92,41 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private int convertHour (int hour, String temp) {
-        if (hour == 12) {
-            if (temp.equalsIgnoreCase("AM"))
-                hour = 0;
-        } else if (temp.equalsIgnoreCase("PM")) {
-            hour = hour + 12;
-        }
+        if (hour == 12 && temp.equalsIgnoreCase("AM"))
+            hour = 0;
+        else if (temp.equalsIgnoreCase("PM"))
+            hour += 12;
 
         return hour;
     }
 
+    private int dateTimeInputToInt(String input, int start, int end) {
+        return Integer.parseInt(input.substring(start, end));
+    }
+
     public void addToDatabase (String name, int priority, String category, String startDate,
-                               String endDate, String startTime, String endTime, String notes, String notif, boolean val) {
-        int monthEnd = Integer.parseInt(endDate.substring(3, 5));
-        int dayEnd = Integer.parseInt(endDate.substring(0, 2));
-        int yearEnd = Integer.parseInt(endDate.substring(6, 8));
+                               String endDate, String startTime, String endTime, String notes,
+                               String notif, boolean val) {
+        int monthEnd = dateTimeInputToInt(endDate, 3, 5);
+        int dayEnd = dateTimeInputToInt(endDate, 0, 2);
+        int yearEnd = dateTimeInputToInt(endDate, 6, 8);
 
-        int hourEnd = Integer.parseInt(endTime.substring(0, 2));
-        int minuteEnd = Integer.parseInt(endTime.substring(3, 5));
-
-        hourEnd = this.convertHour(hourEnd, endTime.substring(6, 8));
+        int hourEnd = this.convertHour(dateTimeInputToInt(endTime, 0, 2), endTime.substring(6, 8));
+        int minuteEnd = dateTimeInputToInt(endTime, 3, 5);
 
         Task taskCreated;
         if (startDate.equals("")) {
             taskCreated = new Task(currentUserUid, name, priority, category,
                     new CustomDate(true),
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes, notif, val, checkerNotif);
-        } else {
-            int monthStart = Integer.parseInt(startDate.substring(3, 5));
-            int dayStart = Integer.parseInt(startDate.substring(0, 2));
-            int yearStart = Integer.parseInt(startDate.substring(6, 8));
+        }
+        else {
+            int monthStart = dateTimeInputToInt(startDate, 3, 5);
+            int dayStart = dateTimeInputToInt(startDate, 0, 2);
+            int yearStart = dateTimeInputToInt(startDate, 6, 8);
 
-            int hourStart = Integer.parseInt(startTime.substring(0, 2));
-            int minuteStart = Integer.parseInt(startTime.substring(3, 5));
-
-            hourStart = this.convertHour (hourStart, startTime.substring(6, 8));
+            int hourStart = this.convertHour(dateTimeInputToInt(startTime, 0, 2), startTime.substring(6, 8));
+            int minuteStart = dateTimeInputToInt(startTime, 3, 5);
 
             taskCreated = new Task(currentUserUid, name, priority, category,
                     new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
@@ -137,19 +137,13 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     public String setPriority (int num) {
-        String temp  = "!";
         switch (num) {
-            case 2: temp = "!!";
-                break;
-            case 3: temp = "!!!";
-                break;
-            case 4: temp = "!!!!";
-                break;
-            case 5: temp = "!!!!!";
-                break;
+            case 1: return "!";
+            case 2: return "!!";
+            case 3: return "!!!";
+            case 4: return "!!!!";
+            default: return "!!!!!";
         }
-
-        return temp;
     }
 
     public void setValues (Intent intent) {
