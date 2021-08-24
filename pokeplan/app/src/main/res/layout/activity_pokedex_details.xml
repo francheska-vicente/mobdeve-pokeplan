@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightest_gray">
 
     <TextView
         android:id="@+id/tv_pkdexdetails_species"
@@ -13,27 +14,27 @@
         android:layout_marginBottom="24dp"
         android:fontFamily="@font/raleway_bold"
         android:gravity="bottom"
-        android:text="Charmander"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4"
-        app:lineHeight="38dp" />
+        app:lineHeight="38dp"
+        tools:text="Flaaffy" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/raleway_light_italic"
-        android:text="Electric"
         android:textAllCaps="false"
         android:textColor="@color/darker_gray"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_species"
         app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_species"
-        app:lineHeight="38dp" />
+        app:lineHeight="38dp"
+        tools:text="Electric" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_dexnum"
@@ -42,14 +43,14 @@
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/raleway_light_italic"
         android:gravity="center"
-        android:text="#095"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView4"
-        app:lineHeight="38dp" />
+        app:lineHeight="38dp"
+        tools:text="#095" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_evolveto_level"
@@ -57,14 +58,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/raleway_light_italic"
-        android:text="Level 16"
         android:textAllCaps="false"
         android:textColor="@color/darker_gray"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/iv_evolveto_arrow"
         app:layout_constraintStart_toStartOf="@+id/iv_evolveto_arrow"
         app:layout_constraintTop_toBottomOf="@+id/iv_evolveto_arrow"
-        app:lineHeight="38dp" />
+        app:lineHeight="38dp"
+        tools:text="Level 16" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_info"
@@ -74,13 +75,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="40dp"
         android:fontFamily="@font/raleway_light_italic"
-        android:text="Flaaffy’s wool quality changes so that it can generate a high amount of static electricity with a small amount of wool. The bare and slick parts of its hide are shielded against electricity."
         android:textAllCaps="false"
         android:textColor="@color/darker_gray"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label2"
+        tools:text="Flaaffy’s wool quality changes so that it can generate a high amount of static electricity with a small amount of wool. The bare and slick parts of its hide are shielded against electricity." />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_evolveto_label"
@@ -89,7 +90,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="EVOLVES TO"
+        android:text="@string/pkdexdetails_evolvesto_label"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
@@ -104,7 +105,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="INFORMATION"
+        android:text="@string/pkdexdetails_information_label"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
@@ -132,7 +133,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/pkmn_77" />
+        tools:srcCompat="@drawable/pkmn_77" />
 
     <ImageView
         android:id="@+id/iv_pkdexdetails_evolveto_ogicon"
@@ -142,35 +143,35 @@
         app:layout_constraintEnd_toStartOf="@+id/tv_pkdexdetails_evolveto_level"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label"
-        app:srcCompat="@drawable/pkmn_77" />
+        tools:srcCompat="@drawable/pkmn_77" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_evolveto_evospecies"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="Ampharos"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_evolveto_evoicon"
         app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_evolveto_evoicon"
         app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_evolveto_evoicon"
-        app:lineHeight="38dp" />
+        app:lineHeight="38dp"
+        tools:text="Ampharos" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_evolveto_ogspecies"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="Flaaffy"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/iv_pkdexdetails_evolveto_ogicon"
         app:layout_constraintStart_toStartOf="@+id/iv_pkdexdetails_evolveto_ogicon"
         app:layout_constraintTop_toBottomOf="@+id/iv_pkdexdetails_evolveto_ogicon"
-        app:lineHeight="38dp" />
+        app:lineHeight="38dp"
+        tools:text="Flaaffy" />
 
     <ImageView
         android:id="@+id/iv_pkdexdetails_evolveto_evoicon"
@@ -180,7 +181,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_pkdexdetails_evolveto_level"
         app:layout_constraintTop_toTopOf="@+id/iv_pkdexdetails_evolveto_ogicon"
-        app:srcCompat="@drawable/pkmn_78" />
+        tools:srcCompat="@drawable/pkmn_78" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_tasklist_hor8p2"
@@ -231,11 +232,11 @@
         android:id="@+id/iv_evolveto_arrow"
         android:layout_width="23dp"
         android:layout_height="24dp"
-        app:tint="@color/darker_gray"
         app:layout_constraintBottom_toBottomOf="@+id/iv_pkdexdetails_evolveto_ogicon"
         app:layout_constraintEnd_toStartOf="@+id/iv_pkdexdetails_evolveto_evoicon"
         app:layout_constraintStart_toEndOf="@+id/iv_pkdexdetails_evolveto_ogicon"
         app:layout_constraintTop_toTopOf="@+id/iv_pkdexdetails_evolveto_ogicon"
-        app:srcCompat="@drawable/arrow_next" />
+        app:srcCompat="@drawable/arrow_next"
+        app:tint="@color/darker_gray" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
