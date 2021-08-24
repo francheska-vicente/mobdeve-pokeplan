@@ -187,6 +187,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             }
         });
         confirmDialog.show();
+
     }
 
     private void movePokemonToParty () {
@@ -283,6 +284,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         if (!(UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100))
             btnrare.setEnabled(false);
+
     }
 
     private void evolvePokemon() {
@@ -302,6 +304,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         if (pkmn.getPokemonDetails().getEvolveLvl() > pkmn.getLevel()
                 || pkmn.getPokemonDetails().getEvolveLvl() == -1)
             this.btnsuper.setEnabled(false);
+
     }
 
     private int getImageId(Context context, String imageName) {
