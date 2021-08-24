@@ -66,19 +66,9 @@ public class LoginActivity extends AppCompatActivity {
         initBackBtn();
         initSubmitBtn();
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userLogin ();
-            }
-        });
+        btnLogin.setOnClickListener(v -> userLogin ());
 
-        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                forgotPassword (v);
-            }
-        });
+        tvForgotPassword.setOnClickListener(v -> forgotPassword (v));
 
         this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.spEditor = this.sp.edit();
