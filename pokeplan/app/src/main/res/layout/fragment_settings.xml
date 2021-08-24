@@ -301,7 +301,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/green"
-        app:layout_constraintBottom_toTopOf="@+id/gl_faqs_hor8p"
+        app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -322,7 +322,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_faqs_hor8p"
+        android:id="@+id/guideline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
