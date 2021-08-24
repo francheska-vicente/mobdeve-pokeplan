@@ -515,7 +515,7 @@ public class UserSingleton {
                 if (task.isSuccessful()) {
                     Log.d("Pokemon DB", "Pokemon was moved.");
 
-                    if (checker) {
+                    if (!checker) {
                         for (int i = 0; i < userPokemonParty.size(); i++) {
                             if (userPokemonParty.get(i).getUserPokemonID().equalsIgnoreCase(key)) {
                                 userPokemonPC.add(userPokemonParty.remove(i));
