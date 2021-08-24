@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
             public void run() {
                 initComponents(getView());
             }
-        }, 1000);
+        }, 200);
 
     }
 }
