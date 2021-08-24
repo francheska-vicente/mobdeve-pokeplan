@@ -35,12 +35,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etPassword;
     private EditText etBirthday;
 
-    public static final String KEY_NAME = "KEY_NAME";
-    public static final String KEY_EMAIL = "KEY_EMAIL";
-    public static final String KEY_PASSWORD = "KEY_PASSWORD";
-    public static final String KEY_USERNAME = "KEY_USERNAME";
-    public static final String KEY_BIRTHDAY = "KEY_BIRTHDAY";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,22 +76,13 @@ public class RegisterActivity extends AppCompatActivity {
         int finalSYear = year;
         int finalSDay = day;
         int finalSMonth = month;
-        etBirthday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(RegisterActivity.this, dateStart, finalSYear, finalSMonth,
-                        finalSDay).show();
-            }
-        });
+        etBirthday.setOnClickListener(v -> new DatePickerDialog(
+                RegisterActivity.this, dateStart, finalSYear, finalSMonth, finalSDay).show());
     }
 
     private void initBackBtn() {
         btnregisterback = findViewById(R.id.ib_register_back);
-        btnregisterback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        btnregisterback.setOnClickListener(view -> onBackPressed());
     }
 
     private void registerUser (View view) {
@@ -148,11 +133,11 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         Intent i = new Intent(view.getContext(), RegisterStarterActivity.class);
-        i.putExtra(KEY_NAME, name);
-        i.putExtra(KEY_EMAIL, email);
-        i.putExtra(KEY_PASSWORD, password);
-        i.putExtra(KEY_USERNAME, username);
-        i.putExtra(KEY_BIRTHDAY, birthday);
+        i.putExtra(Keys.KEY_NAME.name(), name);
+        i.putExtra(Keys.KEY_EMAIL.name(), email);
+        i.putExtra(Keys.KEY_PASSWORD.name(), password);
+        i.putExtra(Keys.KEY_USERNAME.name(), username);
+        i.putExtra(Keys.KEY_BIRTHDAY.name(), birthday);
 
         view.getContext().startActivity(i);
     }

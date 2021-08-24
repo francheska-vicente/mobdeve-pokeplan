@@ -89,21 +89,21 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private void initComponents () {
         Intent intent = getIntent();
 
-        String taskName = intent.getStringExtra(TaskAdapter.KEY_TASKNAME);
-        String category = intent.getStringExtra(TaskAdapter.KEY_CATEGORY);
-        int priority = intent.getIntExtra(TaskAdapter.KEY_PRIORITY, 1);
-        String startDate = intent.getStringExtra(TaskAdapter.KEY_START_DATE);
-        String endDate = intent.getStringExtra(TaskAdapter.KEY_DEADLINE);
-        String notes = intent.getStringExtra(TaskAdapter.KEY_NOTES);
-        String taskID = intent.getStringExtra(TaskAdapter.KEY_ID);
-        String cEndDate = intent.getStringExtra(TaskAdapter.KEY_C_END_DATE);
-        String cStartDate = intent.getStringExtra(TaskAdapter.KEY_C_START_DATE);
-        String cEndTime = intent.getStringExtra(TaskAdapter.KEY_C_END_TIME);
-        String cStartTime = intent.getStringExtra(TaskAdapter.KEY_C_START_TIME);
-        String notifWhen = intent.getStringExtra(TaskAdapter.KEY_NOTIF_WHEN);
-        Boolean notifOn = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_ON, false);
-        Boolean notifStartTime = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_START_TIME, false);
-        Boolean isFinished = intent.getBooleanExtra(TaskAdapter.KEY_IS_COMPLETED, false);
+        String taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+        String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+        int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+        String startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
+        String endDate = intent.getStringExtra(Keys.KEY_DEADLINE.name());
+        String notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+        String taskID = intent.getStringExtra(Keys.KEY_ID.name());
+        String cEndDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
+        String cStartDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
+        String cEndTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
+        String cStartTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
+        String notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+        Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+        Boolean notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+        Boolean isFinished = intent.getBooleanExtra(Keys.KEY_IS_COMPLETED.name(), false);
 
         if (isFinished) {
             this.btnFinishTask.setVisibility(View.GONE);
@@ -174,18 +174,18 @@ public class TaskDetailsActivity extends AppCompatActivity {
                              Boolean notifOn, Boolean notifStartTime) {
         Intent intent = new Intent(TaskDetailsActivity.this, AddTaskActivity.class);
 
-        intent.putExtra(KEY_TASKNAME, taskName);
-        intent.putExtra(KEY_CATEGORY, category);
-        intent.putExtra(KEY_PRIORITY, priority);
-        intent.putExtra(KEY_NOTES, notes);
-        intent.putExtra(KEY_ID, taskID);
-        intent.putExtra(KEY_C_END_DATE, endDate);
-        intent.putExtra(KEY_C_START_DATE, startDate);
-        intent.putExtra(KEY_C_START_TIME, startTime);
-        intent.putExtra(KEY_C_END_TIME, endTime);
-        intent.putExtra(KEY_NOTIF_WHEN, notifWhen);
-        intent.putExtra(KEY_NOTIF_ON, notifOn);
-        intent.putExtra(KEY_NOTIF_START_TIME, notifStartTime);
+        intent.putExtra(Keys.KEY_TASKNAME.name(), taskName);
+        intent.putExtra(Keys.KEY_CATEGORY.name(), category);
+        intent.putExtra(Keys.KEY_PRIORITY.name(), priority);
+        intent.putExtra(Keys.KEY_NOTES.name(), notes);
+        intent.putExtra(Keys.KEY_ID.name(), taskID);
+        intent.putExtra(Keys.KEY_C_END_DATE.name(), endDate);
+        intent.putExtra(Keys.KEY_C_START_DATE.name(), startDate);
+        intent.putExtra(Keys.KEY_C_START_TIME.name(), startTime);
+        intent.putExtra(Keys.KEY_C_END_TIME.name(), endTime);
+        intent.putExtra(Keys.KEY_NOTIF_WHEN.name(), notifWhen);
+        intent.putExtra(Keys.KEY_NOTIF_ON.name(), notifOn);
+        intent.putExtra(Keys.KEY_NOTIF_START_TIME.name(), notifStartTime);
 
         addActivityResultLauncher.launch(intent);
     }
@@ -200,15 +200,15 @@ public class TaskDetailsActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
 
-                        String name = intent.getStringExtra(AddTaskActivity.KEY_TASKNAME);
-                        String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
-                        String endDate = intent.getStringExtra(AddTaskActivity.KEY_END_DATE);
-                        String startDate = intent.getStringExtra(AddTaskActivity.KEY_START_DATE);
-                        int priority = intent.getIntExtra(AddTaskActivity.KEY_PRIORITY, 1);
-                        String category = intent.getStringExtra(AddTaskActivity.KEY_CATEGORY);
-                        String notifWhen = intent.getStringExtra(AddTaskActivity.KEY_NOTIF_WHEN);
-                        Boolean notifOn = intent.getBooleanExtra(AddTaskActivity.KEY_NOTIF_ON, false);
-                        Boolean notifStartTime = intent.getBooleanExtra(AddTaskActivity.KEY_NOTIF_START_TIME, false);
+                        String name = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+                        String notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+                        String endDate = intent.getStringExtra(Keys.KEY_END_DATE.name());
+                        String startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
+                        int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+                        String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+                        String notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+                        Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+                        Boolean notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
 
                         setValues(name, category, startDate, endDate,
                                 notes, priority, notifWhen, notifOn, notifStartTime);

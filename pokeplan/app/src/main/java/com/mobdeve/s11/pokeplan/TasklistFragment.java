@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class TasklistFragment extends Fragment {
-
     private ArrayList<Task> ongoingList;
     private RecyclerView rvOngoing;
     private ImageButton ibOngoingToggle;
@@ -46,7 +45,10 @@ public class TasklistFragment extends Fragment {
     private TaskAdapter taskAdapterCompleted;
     private TaskAdapter taskAdapterOngoing;
     private FloatingActionButton fabAdd;
+
     private Spinner spinFilter;
+    private ImageButton ibFilter;
+    private boolean filterIsVisible;
 
     public TasklistFragment() {
     }
@@ -116,23 +118,35 @@ public class TasklistFragment extends Fragment {
             }
         });
 
-        initFilter (view);
+        this.spinFilter = view.findViewById(R.id.spinner_tasklist_filter);
+        this.ibFilter = view.findViewById(R.id.ib_filter);
+        initFilter(view);
     }
 
     private void initFilter (View view) {
-        this.spinFilter = view.findViewById(R.id.spinner_tasklist_filter);
         ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
                 R.array.tasklist_filter, R.layout.spinner_item);
         adapterFilter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinFilter.setAdapter(adapterFilter);
-
         spinFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 filterTask(spinFilter.getSelectedItem().toString());
             }
-
             public void onNothingSelected(AdapterView<?> adapterView) {
                 return;
+            }
+        });
+
+        this.filterIsVisible = false;
+        this.spinFilter.setVisibility(View.INVISIBLE);
+        this.ibFilter.setOnClickListener(v -> {
+            if(filterIsVisible) {
+                filterIsVisible = false;
+                spinFilter.setVisibility(View.INVISIBLE);
+            }
+            else {
+                filterIsVisible = true;
+                spinFilter.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -161,7 +175,8 @@ public class TasklistFragment extends Fragment {
     private void filterTask (String category) {
         if (category.equalsIgnoreCase("ALL")) {
             initLists(this.ongoingList, this.completedList);
-        } else {
+        }
+        else {
             ArrayList<Task> tempCompleted = new ArrayList<>();
             ArrayList<Task> tempOngoing = new ArrayList<>();
 
@@ -170,7 +185,6 @@ public class TasklistFragment extends Fragment {
                     tempCompleted.add(this.completedList.get(i));
                 }
             }
-
             for (int i = 0; i < this.ongoingList.size(); i++) {
                 if (this.ongoingList.get(i).getCategory().equalsIgnoreCase(category)) {
                     tempOngoing.add(this.ongoingList.get(i));
@@ -179,7 +193,6 @@ public class TasklistFragment extends Fragment {
 
             initLists(tempOngoing, tempCompleted);
         }
-
     }
 
     @Override

@@ -59,11 +59,11 @@ public class RegisterStarterActivity extends AppCompatActivity {
 
     private void initValues () {
         Intent intent = getIntent();
-        this.name =  intent.getStringExtra(RegisterActivity.KEY_NAME);
-        this.email = intent.getStringExtra(RegisterActivity.KEY_EMAIL);
-        this.password = intent.getStringExtra(RegisterActivity.KEY_PASSWORD);
-        this.username = intent.getStringExtra(RegisterActivity.KEY_USERNAME);
-        this.birthday = intent.getStringExtra(RegisterActivity.KEY_BIRTHDAY);
+        this.name =  intent.getStringExtra(Keys.KEY_NAME.name());
+        this.email = intent.getStringExtra(Keys.KEY_EMAIL.name());
+        this.password = intent.getStringExtra(Keys.KEY_PASSWORD.name());
+        this.username = intent.getStringExtra(Keys.KEY_USERNAME.name());
+        this.birthday = intent.getStringExtra(Keys.KEY_BIRTHDAY.name());
     }
 
     private void initBackBtn() {

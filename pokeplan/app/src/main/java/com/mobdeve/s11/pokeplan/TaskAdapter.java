@@ -18,24 +18,6 @@ import java.util.FormatFlagsConversionMismatchException;
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
     private ArrayList<Task> tasks;
 
-    public static final String KEY_TASKNAME = "KEY_TASKNAME";
-    public static final String KEY_DEADLINE = "KEY_DEADLINE";
-    public static final String KEY_CATEGORY = "KEY_CATEGORY";
-    public static final String KEY_PRIORITY = "KEY_PRIORITY";
-    public static final String KEY_START_DATE = "KEY_START_DATE";
-    public static final String KEY_NOTES = "KEY_NOTES";
-    public static final String KEY_ID = "KEY_ID";
-
-    public static final String KEY_C_START_DATE = "KEY_C_START_DATE";
-    public static final String KEY_C_END_DATE = "KEY_C_END_DATE";
-    public static final String KEY_C_START_TIME = "KEY_C_START_TIME";
-    public static final String KEY_C_END_TIME = "KEY_C_END_TIME";
-
-    public static final String KEY_NOTIF_WHEN = "KEY_NOTIF_WHEN";
-    public static final String KEY_NOTIF_ON = "KEY_NOTIF_ON";
-    public static final String KEY_NOTIF_START_TIME = "KEY_NOTIF_START_TIME";
-    public static final String KEY_IS_COMPLETED = "KEY_IS_COMPLETED";
-
     public TaskAdapter(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
@@ -52,17 +34,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
         vh.getConstraintLayout().setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), TaskDetailsActivity.class);
-                i.putExtra(KEY_TASKNAME, tasks.get(vh.getBindingAdapterPosition()).getTaskName());
-                i.putExtra(KEY_CATEGORY, tasks.get(vh.getBindingAdapterPosition()).getCategory());
-                i.putExtra(KEY_PRIORITY, tasks.get(vh.getBindingAdapterPosition()).getPriority());
-                i.putExtra(KEY_DEADLINE, tasks.get(vh.getBindingAdapterPosition()).getEndDate().toString());
-                i.putExtra(KEY_START_DATE, tasks.get(vh.getBindingAdapterPosition()).getStartDate().toString());
-                i.putExtra(KEY_NOTES, tasks.get(vh.getBindingAdapterPosition()).getDescription());
-                i.putExtra(KEY_ID, tasks.get(vh.getBindingAdapterPosition()).getTaskID());
-                i.putExtra(KEY_NOTIF_WHEN, tasks.get(vh.getBindingAdapterPosition()).getNotifWhen());
-                i.putExtra(KEY_NOTIF_ON, tasks.get(vh.getBindingAdapterPosition()).getIsNotif());
-                i.putExtra(KEY_NOTIF_START_TIME, tasks.get(vh.getBindingAdapterPosition()).getBeforeStartTime());
-                i.putExtra(KEY_IS_COMPLETED, tasks.get(vh.getBindingAdapterPosition()).getIsFinished());
+                i.putExtra(Keys.KEY_TASKNAME.name(), tasks.get(vh.getBindingAdapterPosition()).getTaskName());
+                i.putExtra(Keys.KEY_CATEGORY.name(), tasks.get(vh.getBindingAdapterPosition()).getCategory());
+                i.putExtra(Keys.KEY_PRIORITY.name(), tasks.get(vh.getBindingAdapterPosition()).getPriority());
+                i.putExtra(Keys.KEY_DEADLINE.name(), tasks.get(vh.getBindingAdapterPosition()).getEndDate().toString());
+                i.putExtra(Keys.KEY_START_DATE.name(), tasks.get(vh.getBindingAdapterPosition()).getStartDate().toString());
+                i.putExtra(Keys.KEY_NOTES.name(), tasks.get(vh.getBindingAdapterPosition()).getDescription());
+                i.putExtra(Keys.KEY_ID.name(), tasks.get(vh.getBindingAdapterPosition()).getTaskID());
+                i.putExtra(Keys.KEY_NOTIF_WHEN.name(), tasks.get(vh.getBindingAdapterPosition()).getNotifWhen());
+                i.putExtra(Keys.KEY_NOTIF_ON.name(), tasks.get(vh.getBindingAdapterPosition()).getIsNotif());
+                i.putExtra(Keys.KEY_NOTIF_START_TIME.name(), tasks.get(vh.getBindingAdapterPosition()).getBeforeStartTime());
+                i.putExtra(Keys.KEY_IS_COMPLETED.name(), tasks.get(vh.getBindingAdapterPosition()).getIsFinished());
 
                 Task task = tasks.get(vh.getBindingAdapterPosition());
                 CustomDate endDate = task.getEndDate();
@@ -77,10 +59,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
                 String sEndTime = formatter.format(endDate.getHour()) + ":" + formatter.format(endDate.getMinute());
                 String sStartTime = formatter.format(startDate.getHour()) + ":" + formatter.format(startDate.getMinute());
 
-                i.putExtra(KEY_C_START_DATE, sStartDate);
-                i.putExtra(KEY_C_END_DATE, sEndDate);
-                i.putExtra(KEY_C_START_TIME, sStartTime);
-                i.putExtra(KEY_C_END_TIME, sEndTime);
+                i.putExtra(Keys.KEY_C_START_DATE.name(), sStartDate);
+                i.putExtra(Keys.KEY_C_END_DATE.name(), sEndDate);
+                i.putExtra(Keys.KEY_C_START_TIME.name(), sStartTime);
+                i.putExtra(Keys.KEY_C_END_TIME.name(), sEndTime);
 
                 view.getContext().startActivity(i);
             }
