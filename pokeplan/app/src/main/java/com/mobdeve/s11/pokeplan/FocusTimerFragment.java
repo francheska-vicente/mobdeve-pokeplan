@@ -1,13 +1,11 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +14,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
 public class FocusTimerFragment extends Fragment {
-    private final int INITIAL = 0;
-    private final int START = 1;
-    private final int ONGOING = 2;
-    private final int FINISH = 3;
+    private SharedPreferences sp;
 
     private ImageView ivegg;
 
@@ -46,22 +43,21 @@ public class FocusTimerFragment extends Fragment {
 
     private Timer timer;
     private CountDownTimer countdown;
+
+    private CustomDialog infodialog;
+    private CustomDialog timererrordialog;
+    private CustomDialog confirmstoptimerdialog;
+    private CustomDialog  hatcheggdialog;
+    private CustomDialog stopTimerdialog;
+
     private boolean timerIsDone;
-
-    private Dialog infodialog;
-    private Dialog timererrordialog;
-    private Dialog confirmstoptimerdialog;
-    private Dialog hatcheggdialog;
-    private Dialog stopTimerdialog;
-
-    private boolean checker;
+    private boolean timerIsStopped;
 
     public FocusTimerFragment() {
     }
 
     public static FocusTimerFragment newInstance() {
-        FocusTimerFragment fragment = new FocusTimerFragment();
-        return fragment;
+        return new FocusTimerFragment();
     }
 
     @Override
@@ -76,312 +72,253 @@ public class FocusTimerFragment extends Fragment {
 
         initComponents(view);
         timer = new Timer();
-        this.checker = false;
+        this.timerIsStopped = false;
         return view;
     }
 
     private void initComponents(View view) {
+        this.sp = PreferenceManager
+                .getDefaultSharedPreferences(getActivity().getApplicationContext());
 
-        tvhours = view.findViewById(R.id.tv_focustimer_hours);
-        tvmins = view.findViewById(R.id.tv_focustimer_mins);
-        tvsecs = view.findViewById(R.id.tv_focustimer_secs);
-        tvcaption = view.findViewById(R.id.tv_focustimer_tagline);
+        this.tvhours = view.findViewById(R.id.tv_focustimer_hours);
+        this.tvmins = view.findViewById(R.id.tv_focustimer_mins);
+        this.tvsecs = view.findViewById(R.id.tv_focustimer_secs);
+        this.tvcaption = view.findViewById(R.id.tv_focustimer_tagline);
 
-        ibinfo = view.findViewById(R.id.ib_focustimer_info);
-        ibhoursup = view.findViewById(R.id.ib_timer_hours_up);
-        ibhoursdown = view.findViewById(R.id.ib_timer_hours_down);
-        ibminsup = view.findViewById(R.id.ib_timer_mins_up);
-        ibminsdown = view.findViewById(R.id.ib_timer_mins_down);
-        ibsecsup = view.findViewById(R.id.ib_timer_secs_up);
-        ibsecsdown = view.findViewById(R.id.ib_timer_secs_down);
+        this.ibinfo = view.findViewById(R.id.ib_focustimer_info);
+        this.ibhoursup = view.findViewById(R.id.ib_timer_hours_up);
+        this.ibhoursdown = view.findViewById(R.id.ib_timer_hours_down);
+        this.ibminsup = view.findViewById(R.id.ib_timer_mins_up);
+        this.ibminsdown = view.findViewById(R.id.ib_timer_mins_down);
+        this.ibsecsup = view.findViewById(R.id.ib_timer_secs_up);
+        this.ibsecsdown = view.findViewById(R.id.ib_timer_secs_down);
 
-        ivegg = view.findViewById(R.id.iv_egg);
+        this.ivegg = view.findViewById(R.id.iv_egg);
 
-        btnfocustimer = view.findViewById(R.id.btn_focustimer_main);
-        setViewComponents(INITIAL);
+        this.btnfocustimer = view.findViewById(R.id.btn_focustimer_main);
+        this.setInitialButtonListeners();
     }
 
-    private void startTimer() {
-        setViewComponents(ONGOING);
-
-        // start countdown timer
-        long time = timeToMilliseconds(timer) + 500;
-        timerIsDone = false;
-        countdown = new CountDownTimer(time, 1000) {
-            public void onTick(long fin) {
-                adjustTimer(fin);
+    private void setInitialButtonListeners() {
+        this.ibhoursup.setOnClickListener(view -> {
+            if (timer.getHours() < 99) {
+                timer.setHours(timer.getHours()+1);
+                tvhours.setText(String.format(Locale.getDefault(), "%02d", timer.getHours()));
             }
-            public void onFinish() {
-                finishTimer();
+        });
+        ibhoursdown.setOnClickListener(view -> {
+            if (timer.getHours() > 0) {
+                timer.setHours(timer.getHours()-1);
+                tvhours.setText(String.format(Locale.getDefault(), "%02d", timer.getHours()));
             }
-        };
-        countdown.start();
-        checker = true;
+        });
+        ibminsup.setOnClickListener(view -> {
+            if (timer.getMins() < 59) {
+                timer.setMins(timer.getMins()+1);
+                tvmins.setText(String.format(Locale.getDefault(), "%02d", timer.getMins()));
+            }
+        });
+        ibminsdown.setOnClickListener(view -> {
+            if (timer.getMins() > 0) {
+                timer.setMins(timer.getMins()-1);
+                tvmins.setText(String.format(Locale.getDefault(), "%02d", timer.getMins()));
+            }
+        });
+        ibsecsup.setOnClickListener(view -> {
+            if (timer.getSecs() < 59) {
+                timer.setSecs(timer.getSecs()+1);
+                tvsecs.setText(String.format(Locale.getDefault(), "%02d", timer.getSecs()));
+            }
+        });
+        ibsecsdown.setOnClickListener(view -> {
+            if (timer.getSecs() > 0) {
+                timer.setSecs(timer.getSecs()-1);
+                tvsecs.setText(String.format(Locale.getDefault(), "%02d", timer.getSecs()));
+            }
+        });
+
+        ibinfo.setOnClickListener(view -> createInfoDialog());
+        btnfocustimer.setOnClickListener(view -> {
+            if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
+                startTimer();
+            else createTimeErrorDialog();
+        });
     }
 
-    private void stopTimer() {
-        countdown.cancel();
-        resetTimer();
-        stopTimerDialog();
-        checker = false;
+    private void setStartComponents() {
+        tvcaption.setText(R.string.focustimer_start_tagline);
+        btnfocustimer.setText(R.string.focustimer_start_button);
+        tvhours.setText("00");
+        tvmins.setText("10");
+        tvsecs.setText("00");
+        ivegg.setImageResource(R.drawable.egg);
+        setBottomBarEnabled(true);
+        dimScreen(false);
     }
 
-    private void finishTimer() {
-        timerIsDone = true;
-        setViewComponents(FINISH);
-
-        Egg egg = new Egg(timer);
-        Pokemon hatch = egg.generatePokemon();
-        UserSingleton.getUser().addPokemon(hatch, true);
-        UserSingleton.getUser().getUserDetails().addHatchedPkmn();
-
-        createHatchEggDialog(getView(), hatch);
-        checker = false;
+    private void setStartButtonListeners() {
+        this.setTimerButtonsVisibility(true);
+        this.btnfocustimer.setOnClickListener(view -> {
+            if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
+                startTimer();
+            else createTimeErrorDialog();
+        });
     }
 
-    private void resetTimer() {
-        timer = new Timer();
-        setViewComponents(START);
+    private void setOngoingComponents() {
+        setTimerButtonsVisibility(false);
+        tvcaption.setText(getString(R.string.focustimer_ongoing_tagline));
+        btnfocustimer.setText(getString(R.string.focustimer_stop_button));
+
+        dimScreen(true);
+        setBottomBarEnabled(false);
     }
 
-    private void adjustTimer(long fin) {
+    private void setOngoingButtonListeners() {
+        btnfocustimer.setOnClickListener(view -> createConfirmStopTimerDialog());
+    }
+
+    private void setFinishComponents() {
+        tvcaption.setText(R.string.focustimer_finish_tagline);
+        btnfocustimer.setText(R.string.focustimer_finish_button);
+
+        dimScreen(false);
+        setBottomBarEnabled(true);
+    }
+
+    private void setFinishButtonListeners() {
+        btnfocustimer.setOnClickListener(view -> resetTimer());
+    }
+
+    private void adjustTimerComponent(long fin) {
         int hours = (int) TimeUnit.MILLISECONDS.toHours(fin);
         int mins = (int) (TimeUnit.MILLISECONDS.toMinutes(fin) -
                 TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(fin)));
         int secs = (int) (TimeUnit.MILLISECONDS.toSeconds(fin) -
                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(fin)));
 
-        tvhours.setText(addLeadingZero(hours));
-        tvmins.setText(addLeadingZero(mins));
-        tvsecs.setText(addLeadingZero(secs));
+        tvhours.setText(String.format(Locale.getDefault(), "%02d", hours));
+        tvmins.setText(String.format(Locale.getDefault(), "%02d", mins));
+        tvsecs.setText(String.format(Locale.getDefault(), "%02d", secs));
     }
 
-    private void createConfirmStopTimerDialog(View view) {
-        confirmstoptimerdialog = new Dialog(view.getContext());
-        confirmstoptimerdialog.setContentView(R.layout.dialog_confirm);
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+    private void startTimer() {
+        timerIsDone = false;
+        timerIsStopped = false;
 
-        confirmstoptimerdialog.getWindow().setLayout(width, height);
-        confirmstoptimerdialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        setOngoingComponents();
+        setOngoingButtonListeners();
 
-        TextView tvdialogtitle = (TextView) confirmstoptimerdialog.findViewById(R.id.tv_dialog_title);
-        tvdialogtitle.setText(R.string.focustimer_dialog_confirm_title);
-        TextView tvdialogtext = (TextView) confirmstoptimerdialog.findViewById(R.id.tv_dialog_text);
-        tvdialogtext.setText(R.string.focustimer_dialog_confirm_text);
-        ImageView ivdialogicon = (ImageView) confirmstoptimerdialog.findViewById(R.id.iv_dialog_icon);
-        ivdialogicon.setImageResource(R.drawable.sunny_side_up);
-
-        Button btndialogcancel = (Button) confirmstoptimerdialog.findViewById(R.id.btn_dialog_cancel);
-        tvdialogtitle.setText(R.string.focustimer_dialog_confirm_title);
-        btndialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmstoptimerdialog.dismiss();
+        // start countdown timer
+        long time = timeToMilliseconds(timer) + 500;
+        countdown = new CountDownTimer(time, 1000) {
+            public void onTick(long fin) {
+                adjustTimerComponent(fin);
             }
+            public void onFinish() {
+                finishTimer();
+            }
+        };
+        countdown.start();
+    }
+
+    private void stopTimer() {
+        timerIsStopped = false;
+        countdown.cancel();
+        resetTimer();
+        stopTimerDialog();
+    }
+
+    private void finishTimer() {
+        timerIsDone = true;
+        timerIsStopped = false;
+
+        setFinishComponents();
+        setFinishButtonListeners();
+
+        Egg egg = new Egg(timer);
+        Pokemon hatch = egg.generatePokemon();
+        UserSingleton.getUser().addPokemon(hatch, true);
+        UserSingleton.getUser().getUserDetails().addHatchedPkmn();
+
+        createHatchEggDialog(hatch);
+    }
+
+    private void resetTimer() {
+        timer = new Timer();
+        setStartComponents();
+        setStartButtonListeners();
+    }
+
+    private void createConfirmStopTimerDialog() {
+        confirmstoptimerdialog = new CustomDialog(getView().getContext());
+        confirmstoptimerdialog.setDialogType(CustomDialog.CONFIRM);
+
+        confirmstoptimerdialog.setConfirmComponents(
+                getString(R.string.focustimer_dialog_confirm_title),
+                getString(R.string.focustimer_dialog_confirm_text),
+                R.drawable.sunny_side_up,
+                getString(R.string.focustimer_dialog_confirm_title)
+        );
+
+        Button btndialogconfirm = confirmstoptimerdialog.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setOnClickListener(view -> {
+            if (!timerIsDone)
+                this.stopTimer();
+            confirmstoptimerdialog.dismiss();
         });
 
-        Button btndialogconfirm = (Button) confirmstoptimerdialog.findViewById(R.id.btn_dialog_confirm);
-        btndialogconfirm.setText(R.string.focustimer_dialog_confirm_title);
-        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!timerIsDone) {
-                    stopTimer();
-                }
-                confirmstoptimerdialog.dismiss();
-            }
-        });
         confirmstoptimerdialog.show();
     }
 
-    private void createHatchEggDialog(View view, Pokemon hatch) {
-        hatcheggdialog = new Dialog(view.getContext());
-        hatcheggdialog.setContentView(R.layout.dialog_ok);
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+    private void createHatchEggDialog(Pokemon hatch) {
+        hatcheggdialog = new CustomDialog(getView().getContext());
+        hatcheggdialog.setDialogType(CustomDialog.OK);
 
-        hatcheggdialog.getWindow().setLayout(width, height);
-        hatcheggdialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        String text = getString(R.string.focustimer_dialog_hatch_text)
+                + " " + hatch.getSpecies() + "!";
+        hatcheggdialog.setOKComponents(
+                getString(R.string.focustimer_dialog_hatch_title),
+                text,
+                getImageId(getContext(), "pkmn_" + hatch.getDexNum()));
 
-        TextView tvdialogtitle = (TextView) hatcheggdialog.findViewById(R.id.tv_dialog_ok_title);
-        tvdialogtitle.setText(R.string.focustimer_dialog_hatch_title);
-        TextView tvdialogtext = (TextView) hatcheggdialog.findViewById(R.id.tv_dialog_ok_text);
-        String text = getString(R.string.focustimer_dialog_hatch_text) + " " + hatch.getSpecies() + "!";
-        tvdialogtext.setText(text);
-        ImageView ivdialogicon = (ImageView) hatcheggdialog.findViewById(R.id.iv_dialog_ok_icon);
-        ivdialogicon.setImageResource(getImageId(getContext(), "pkmn_" + hatch.getDexNum()));
-
-        Button btndialogok = (Button) hatcheggdialog.findViewById(R.id.btn_dialog_ok);
-        btndialogok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ivegg.setImageResource(getImageId(getContext(), "pkmn_" + hatch.getDexNum()));
-                hatcheggdialog.dismiss();
-            }
-        });
         hatcheggdialog.show();
+
         MediaPlayer mediaPlayer = MediaPlayer.create(getView().getContext(), R.raw.levelup);
         mediaPlayer.start();
         hatch.playPokemonCry();
     }
 
-    private void createTimeErrorDialog(View view) {
-        timererrordialog = new Dialog(view.getContext());
-        timererrordialog.setContentView(R.layout.dialog_error);
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+    private void createTimeErrorDialog() {
+        timererrordialog = new CustomDialog(getView().getContext());
+        timererrordialog.setDialogType(CustomDialog.ERROR);
+        timererrordialog.setErrorComponents(
+                getString(R.string.focustimer_dialog_error_title),
+                getString(R.string.focustimer_dialog_error_text));
 
-        timererrordialog.getWindow().setLayout(width, height);
-        timererrordialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) timererrordialog.findViewById(R.id.tv_dialog_error_title);
-        tvdialogtitle.setText(R.string.focustimer_dialog_error_title);
-        TextView tvdialogtext = (TextView) timererrordialog.findViewById(R.id.tv_dialog_error_text);
-        tvdialogtext.setText(R.string.focustimer_dialog_error_text);
-
-        Button btndialogerror = (Button) timererrordialog.findViewById(R.id.btn_dialog_error);
-        btndialogerror.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timererrordialog.dismiss();
-            }
-        });
         timererrordialog.show();
     }
 
-    private void createInfoDialog(View view) {
-        infodialog = new Dialog(view.getContext());
-        infodialog.setContentView(R.layout.dialog_ok);
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+    private void createInfoDialog() {
+        infodialog = new CustomDialog(getView().getContext());
+        infodialog.setDialogType(CustomDialog.OK);
+        infodialog.setOKComponents(
+                getString(R.string.focustimer_dialog_info_title),
+                getString(R.string.focustimer_dialog_info_text),
+                R.drawable.egg);
 
-        infodialog.getWindow().setLayout(width, height);
-        infodialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) infodialog.findViewById(R.id.tv_dialog_ok_title);
-        tvdialogtitle.setText(R.string.focustimer_dialog_info_title);
-        TextView tvdialogtext = (TextView) infodialog.findViewById(R.id.tv_dialog_ok_text);
-        tvdialogtext.setText(R.string.focustimer_dialog_info_text);
-        ImageView ivdialogicon = (ImageView) infodialog.findViewById(R.id.iv_dialog_ok_icon);
-        ivdialogicon.setImageResource(R.drawable.egg);
-
-        Button btndialoginfo = (Button) infodialog.findViewById(R.id.btn_dialog_ok);
-        btndialoginfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                infodialog.dismiss();
-            }
-        });
         infodialog.show();
     }
 
-    private void setViewComponents(int state) {
-        switch (state) {
-            case INITIAL:
-                ibhoursup.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        if (timer.getHours() < 99) {
-                            timer.setHours(timer.getHours()+1);
-                            tvhours.setText(addLeadingZero(timer.getHours()));
-                        }
-                    }
-                });
-                ibhoursdown.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        if (timer.getHours() > 0) {
-                            timer.setHours(timer.getHours()-1);
-                            tvhours.setText(addLeadingZero(timer.getHours()));
-                        }
-                    }
-                });
-                ibminsup.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        if (timer.getMins() < 59) {
-                            timer.setMins(timer.getMins()+1);
-                            tvmins.setText(addLeadingZero(timer.getMins()));
-                        }
-                    }
-                });
-                ibminsdown.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        if (timer.getMins() > 0) {
-                            timer.setMins(timer.getMins()-1);
-                            tvmins.setText(addLeadingZero(timer.getMins()));
-                        }
-                    }
-                });
-                ibsecsup.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        if (timer.getSecs() < 59) {
-                            timer.setSecs(timer.getSecs()+1);
-                            tvsecs.setText(addLeadingZero(timer.getSecs()));
-                        }
-                    }
-                });
-                ibsecsdown.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        if (timer.getSecs() > 0) {
-                            timer.setSecs(timer.getSecs()-1);
-                            tvsecs.setText(addLeadingZero(timer.getSecs()));
-                        }
-                    }
-                });
-                ibinfo.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        createInfoDialog(view);
-                    }
-                });
-                btnfocustimer.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
-                            startTimer();
-                        else createTimeErrorDialog(view);
-                    }
-                });
-                break;
-            case START:
-                setTimerButtonsVisibility(true);
-                tvcaption.setText(R.string.focustimer_start_tagline);
-                btnfocustimer.setText(R.string.focustimer_start_button);
-                tvhours.setText("00");
-                tvmins.setText("10");
-                tvsecs.setText("00");
-                ivegg.setImageResource(R.drawable.egg);
-                btnfocustimer.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
-                            startTimer();
-                        else createTimeErrorDialog(view);
-                    }
-                });
-                setBottomBarEnabled(true);
-                dimScreen(false);
-                break;
-            case ONGOING:
-                setTimerButtonsVisibility(false);
-                tvcaption.setText(getString(R.string.focustimer_ongoing_tagline));
-                btnfocustimer.setText(getString(R.string.focustimer_stop_button));
-                btnfocustimer.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        createConfirmStopTimerDialog(view);
-                    }
-                });
-                dimScreen(true);
-                setBottomBarEnabled(false);
-                break;
-            case FINISH:
-                tvcaption.setText(R.string.focustimer_finish_tagline);
-                btnfocustimer.setText(R.string.focustimer_finish_button);
-                btnfocustimer.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        resetTimer();
-                    }
-                });
-                dimScreen(false);
-                setBottomBarEnabled(true);
-                break;
-        }
+    public void stopTimerDialog() {
+        stopTimerdialog = new CustomDialog(getView().getContext());
+        stopTimerdialog.setDialogType(CustomDialog.OK);
+        stopTimerdialog.setOKComponents(
+                getString(R.string.focustimer_dialog_egg_break_title),
+                getString(R.string.focustimer_dialog_egg_break_text),
+                R.drawable.sunny_side_up);
+
+        stopTimerdialog.show();
     }
 
     private void setTimerButtonsVisibility(boolean toggle) {
@@ -406,8 +343,7 @@ public class FocusTimerFragment extends Fragment {
     }
 
     private void setBottomBarEnabled(boolean toggle){
-        BottomNavigationView navView = (BottomNavigationView)
-                getActivity().findViewById(R.id.bottom_nav_view);
+        BottomNavigationView navView = getActivity().findViewById(R.id.bottom_nav_view);
         for (int i = 0; i < navView.getMenu().size(); i++) {
             navView.getMenu().getItem(i).setEnabled(toggle);
         }
@@ -420,7 +356,8 @@ public class FocusTimerFragment extends Fragment {
         else
             lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 
-        getActivity().getWindow().setAttributes(lp);
+        if (sp.getBoolean(Keys.KEY_DIMSCREEN.name(), true))
+            getActivity().getWindow().setAttributes(lp);
     }
 
     private long timeToMilliseconds (Timer timer) {
@@ -429,49 +366,13 @@ public class FocusTimerFragment extends Fragment {
                 TimeUnit.MILLISECONDS.convert(timer.getSecs(), TimeUnit.SECONDS);
     }
 
-    private String addLeadingZero(int num) {
-        if (num < 10)   return "0" + num;
-        return "" + num;
-    }
-
     private int getImageId(Context context, String imageName) {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
 
-    public void stopTimerDialog () {
-        stopTimerdialog = new Dialog(getView().getContext());
-
-        stopTimerdialog.setContentView(R.layout.dialog_ok);
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-        stopTimerdialog.getWindow().setLayout(width, height);
-        stopTimerdialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) stopTimerdialog.findViewById(R.id.tv_dialog_ok_title);
-        tvdialogtitle.setText(R.string.focustimer_dialog_egg_break_title);
-        TextView tvdialogtext = (TextView) stopTimerdialog.findViewById(R.id.tv_dialog_ok_text);
-        tvdialogtext.setText(R.string.focustimer_dialog_egg_break_text);
-        ImageView ivdialogicon = (ImageView) stopTimerdialog.findViewById(R.id.iv_dialog_ok_icon);
-        ivdialogicon.setImageResource(R.drawable.sunny_side_up);
-
-        Button btndialogcancel = (Button) stopTimerdialog.findViewById(R.id.btn_dialog_ok);
-        btndialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopTimerdialog.dismiss();
-            }
-        });
-
-        stopTimerdialog.show();
-    }
-
+    @Override
     public void onPause() {
         super.onPause();
-
-        if (checker) {
-            stopTimer();
-        }
-
+        if (timerIsStopped) stopTimer();
     }
 }
