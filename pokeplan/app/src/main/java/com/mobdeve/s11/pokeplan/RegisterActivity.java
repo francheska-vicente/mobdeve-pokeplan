@@ -1,10 +1,12 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -17,6 +19,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class RegisterActivity extends AppCompatActivity {
     private ImageButton btnregisterback;
@@ -46,7 +53,42 @@ public class RegisterActivity extends AppCompatActivity {
         this.etEmail = findViewById(R.id.et_register_email);
         this.etUsername = findViewById(R.id.et_register_username);
         this.etPassword = findViewById(R.id.et_register_password);
-        // this.etBirthday;
+        this.etBirthday = findViewById(R.id.et_register_birthday);
+
+        initCalendar();
+    }
+
+    private void initCalendar () {
+        Calendar calendarStart = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener dateStart = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month,
+                                  int day) {
+                calendarStart.set(Calendar.YEAR, year);
+                calendarStart.set(Calendar.MONTH, month);
+                calendarStart.set(Calendar.DAY_OF_MONTH, day);
+
+                String myFormat = "dd.MM.yy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
+
+                etBirthday.setText(sdf.format(calendarStart.getTime()));
+            }
+        };
+
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+
+        int finalSYear = year;
+        int finalSDay = day;
+        int finalSMonth = month;
+        etBirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(RegisterActivity.this, dateStart, finalSYear, finalSMonth,
+                        finalSDay).show();
+            }
+        });
     }
 
     private void initBackBtn() {
