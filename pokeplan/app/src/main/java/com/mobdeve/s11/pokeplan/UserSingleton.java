@@ -3,15 +3,18 @@ package com.mobdeve.s11.pokeplan;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+<<<<<<< Updated upstream
 import com.google.api.Property;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+=======
+import com.google.firebase.auth.FirebaseAuth;
+>>>>>>> Stashed changes
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,9 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class UserSingleton {
@@ -42,6 +43,12 @@ public class UserSingleton {
     private DatabaseReference mPokemon;
 
     private UserSingleton(){
+        this.ongoingTasks = new ArrayList<>();
+        this.completedTasks = new ArrayList<>();
+        this.userPokemonParty = new ArrayList<>();
+        this.userPokemonPC = new ArrayList<>();
+        this.userDetails = new UserDetails();
+
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -49,22 +56,14 @@ public class UserSingleton {
         this.mTask = mDatabase.getReference("Tasks").child(this.userID);
         this.mPokemon = mDatabase.getReference("UserPokemon").child(this.userID);
 
-        ongoingTasks = new ArrayList<>();
-        completedTasks = new ArrayList<>();
-        userPokemonParty = new ArrayList<>();
-        userPokemonPC = new ArrayList<>();
-
-        this.userDetails = new UserDetails();
-
-        initDbTask();
         initDbUser();
+        initDbTask();
         initDbPokemon();
     }
 
     public static UserSingleton getUser() {
-        if (user == null) {
+        if (user == null)
             user = new UserSingleton();
-        }
         return user;
     }
 
@@ -87,7 +86,6 @@ public class UserSingleton {
                 Log.d("DEBUG USER ERROR: ", Integer.toString(databaseError.getCode()));
             }
         });
-
     }
 
     private void initDbTask () {
@@ -245,7 +243,7 @@ public class UserSingleton {
         this.completedTasks = tasks;
     }
 
-    public void addOngoingTask(Task taskCreated) {
+    public void addOngoingTask(@NotNull Task taskCreated) {
         String key = mTask.push().getKey();
         taskCreated.setTaskID(key);
 
@@ -462,7 +460,7 @@ public class UserSingleton {
         }
     }
 
-    public void updatePokemon (UserPokemon pokemon) {
+    public void updatePokemon (@NotNull UserPokemon pokemon) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("details", pokemon.getPokemonDetails());
         hash.put("fedCandy", pokemon.getFedCandy());
