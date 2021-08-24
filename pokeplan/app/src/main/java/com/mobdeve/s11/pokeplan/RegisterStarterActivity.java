@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RegisterStarterActivity extends AppCompatActivity {
     private ImageButton btnregisterstartback;
@@ -41,6 +42,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
     private String email;
     private String password;
     private String username;
+    private String birthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
         this.email = intent.getStringExtra(RegisterActivity.KEY_EMAIL);
         this.password = intent.getStringExtra(RegisterActivity.KEY_PASSWORD);
         this.username = intent.getStringExtra(RegisterActivity.KEY_USERNAME);
+        this.birthday = intent.getStringExtra(RegisterActivity.KEY_BIRTHDAY);
     }
 
     private void initBackBtn() {
@@ -80,7 +83,16 @@ public class RegisterStarterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
 
                         if(task.isSuccessful()) {
-                            UserDetails user = new UserDetails (name, email, username, pokeNum);
+
+                            String [] stringBirthday = birthday.split("\\.");
+
+                            int month = Integer.parseInt(stringBirthday[1]);
+                            int day = Integer.parseInt(stringBirthday[0]);
+                            int year = Integer.parseInt(stringBirthday[2]);
+
+                            CustomDate customDate = new CustomDate(year, month, day, 0, 0);
+
+                            UserDetails user = new UserDetails (name, email, username, pokeNum, customDate);
 
                             DatabaseReference databaseRef = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users");
 
