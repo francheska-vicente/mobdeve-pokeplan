@@ -1,16 +1,15 @@
 package com.mobdeve.s11.pokeplan;
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -46,8 +45,6 @@ public class PokedexFragment extends Fragment {
     }
 
     private void initComponents (View view) {
-        this.pbload = view.findViewById(R.id.pb_pkdex_load);
-        pbload.setVisibility(View.GONE);
         pokedex = UserSingleton.getUser().getUserDetails().getUserPokedex();
         this.rvPokedex = view.findViewById(R.id.rv_pokedex);
         this.pdAdapter = new PokedexAdapter(pokedex);
@@ -60,27 +57,4 @@ public class PokedexFragment extends Fragment {
         tvcaught.setText(caught);
     }
 
-    private class loadPokedexTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected void onPreExecute() {
-            pbload.setVisibility(View.VISIBLE);
-            rvPokedex.setVisibility(View.INVISIBLE);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            rvPokedex.setAdapter(pdAdapter);
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... voids) {
-        }
-
-        @Override
-        protected void onPostExecute(Void voids) {
-            pbload.setVisibility(View.GONE);
-            rvPokedex.setVisibility(View.VISIBLE);
-        }
-    }
 }
