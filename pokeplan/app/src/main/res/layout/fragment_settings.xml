@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btn_pkmndetails_pc2"
+        android:id="@+id/btn_settings_faq"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label6" />
 
     <Button
-        android:id="@+id/btn_pkmndetails_pc4"
+        android:id="@+id/btn_settings_editacc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label3" />
 
     <Button
-        android:id="@+id/btn_pkmndetails_pc3"
+        android:id="@+id/btn_settings_about"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -54,7 +54,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_pkmndetails_pc2" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_settings_faq" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_evolveto_label7"
@@ -67,7 +67,7 @@
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_evolveto_label3"
-        app:layout_constraintTop_toBottomOf="@+id/btn_pkmndetails_pc4"
+        app:layout_constraintTop_toBottomOf="@+id/btn_settings_editacc"
         app:lineHeight="38dp" />
 
     <TextView
@@ -96,7 +96,7 @@
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_evolveto_label5"
-        app:layout_constraintTop_toBottomOf="@+id/switch5"
+        app:layout_constraintTop_toBottomOf="@+id/sw_pkmncries"
         app:lineHeight="38dp" />
 
     <TextView
@@ -110,11 +110,11 @@
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_evolveto_label7"
-        app:layout_constraintTop_toBottomOf="@+id/switch4"
+        app:layout_constraintTop_toBottomOf="@+id/sw_screenon"
         app:lineHeight="38dp" />
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/sw_notifs"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -130,7 +130,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label4" />
 
     <Switch
-        android:id="@+id/switch5"
+        android:id="@+id/sw_pkmncries"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -156,11 +156,11 @@
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_evolveto_label4"
-        app:layout_constraintTop_toBottomOf="@+id/switch1"
+        app:layout_constraintTop_toBottomOf="@+id/sw_notifs"
         app:lineHeight="38dp" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/sw_deepfocus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -176,7 +176,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label7" />
 
     <Switch
-        android:id="@+id/switch3"
+        android:id="@+id/sw_dimscreen"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -189,10 +189,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch2" />
+        app:layout_constraintTop_toBottomOf="@+id/sw_deepfocus" />
 
     <Switch
-        android:id="@+id/switch4"
+        android:id="@+id/sw_screenon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -205,7 +205,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch3" />
+        app:layout_constraintTop_toBottomOf="@+id/sw_dimscreen" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_add_task_label"
