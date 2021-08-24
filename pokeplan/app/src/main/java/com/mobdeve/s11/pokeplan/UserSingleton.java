@@ -194,7 +194,6 @@ public class UserSingleton {
 
     public void moveToCompletedTask (String key) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
-        this.getUserDetails().addCompletedTask();
 
         hash.put("isFinished", true);
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
@@ -211,6 +210,16 @@ public class UserSingleton {
                 break;
             }
         }
+
+        HashMap<String, Object> hashUser = new HashMap<>();
+        hash.put("completedTaskCount", userDetails.getCompletedTaskCount() + 1);
+        mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                Log.d("User DB", "User's number of completed ask has been updated.");
+                userDetails.addCompletedTask();
+            }
+        });
     }
 
     public void deleteTask (String key) {
@@ -298,7 +307,7 @@ public class UserSingleton {
     }
 
     // pokemons
-    public void addPokemon(Pokemon details) {
+    public void addPokemon(Pokemon details, boolean checker) {
         userDetails.setCaught(details.getDexNum());
 
         UserPokemon userPokemon;
@@ -315,7 +324,6 @@ public class UserSingleton {
             userPokemonPC.add(userPokemon);
         }
 
-
         DatabaseReference temp = mPokemon.child(key);
 
         temp.setValue(userPokemon)
@@ -330,6 +338,34 @@ public class UserSingleton {
             }
         });
 
+        HashMap<String, Object> hashNum = new HashMap<>();
+
+        if (!this.userDetails.getUserPokedex().get(details.getDexNum() - 1)) {
+            hashNum.put("numCaught", this.userDetails.getNumCaught() + 1);
+            hashNum.put("numNotCaught", this.userDetails.getNumNotCaught() - 1);
+        }
+
+        if (checker) {
+            hashNum.put("hatchedPkmnCount", userDetails.getHatchedPkmnCount() + 1);
+        }
+
+        mUser.updateChildren(hashNum).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                Log.d("User DB", "User's number of pokemons and hatched egg were updated. ");
+            }
+        });
+
+        this.userDetails.setCaught(details.getDexNum());
+
+        HashMap <String, Object> hashUser = new HashMap<>();
+        hashUser.put(Integer.toString(details.getDexNum() - 1), true);
+        mUser.child("userPokedex").updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                Log.d("User DB", "User's caught pokemon information was added.");
+            }
+        });
     }
 
     public void editNickname (String key, String nickname) {
