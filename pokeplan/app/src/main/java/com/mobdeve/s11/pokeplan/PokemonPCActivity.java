@@ -1,6 +1,7 @@
 package com.mobdeve.s11.pokeplan;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -48,6 +49,14 @@ public class PokemonPCActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        initComponents();
+
+        final Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initComponents();
+            }
+        }, 1000);
     }
 }
