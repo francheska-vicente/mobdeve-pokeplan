@@ -100,7 +100,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                         Pokemon pokemon = Pokedex.getPokedex().getPokemon(pokeNum);
                                         Log.d("pukenum", Integer.toString(pokeNum));
                                         UserSingleton.getUser().setUserDetails(user);
-                                        UserSingleton.getUser().addPokemon(pokemon);
+                                        UserSingleton.getUser().addPokemon(pokemon, false);
                                         UserSingleton.removeUser();
 
                                         Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
