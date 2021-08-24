@@ -13,8 +13,7 @@ public class UserDetails {
     private String fullName;
     private String email;
     private String userName;
-    private Date birthday;
-
+    private CustomDate birthday;
 
     private int starterdexnum;
     private ArrayList<Boolean> userPokedex;
@@ -30,7 +29,7 @@ public class UserDetails {
         Arrays.fill(userPokedexBool, Boolean.FALSE);
         userPokedex = new ArrayList<Boolean>(Arrays.asList(userPokedexBool));
     }
-    public UserDetails(String fullName, String email, String userName, int dexnum, Date birthday) {
+    public UserDetails(String fullName, String email, String userName, int dexnum, CustomDate birthday) {
         this.fullName = fullName;
         this.email = email;
         this.userName = userName;
@@ -65,10 +64,10 @@ public class UserDetails {
     public void setUserName (String username) {
         this.userName = username;
     }
-    public Date getBirthday () {
+    public CustomDate getBirthday () {
         return this.birthday;
     }
-    public void setBirthday (Date birthday) {
+    public void setBirthday (CustomDate birthday) {
         this.birthday = birthday;
     }
 
