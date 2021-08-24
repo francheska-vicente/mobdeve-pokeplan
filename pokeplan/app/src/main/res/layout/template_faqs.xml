@@ -3,6 +3,7 @@
     android:id="@+id/ll_faqs_tamplate"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
     android:orientation="vertical">
 
     <TextView
@@ -13,7 +14,9 @@
         android:layout_marginEnd="2dp"
         android:layout_weight="1"
         android:fontFamily="@font/raleway_bold"
-        android:text="1. What is the Focus Timer?" />
+        android:text="1. What is the Focus Timer?"
+        android:justificationMode="inter_word"
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/tv_faqs_template_answer"
@@ -21,8 +24,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_weight="1"
         android:fontFamily="@font/raleway_light_italic"
         android:justificationMode="inter_word"
-        android:text="The focus timer is a timer that would help you avoid the temptation of using your device when you are trying to be productive. In using the focus timer, you would be encouraged not to touch, move or use your device during its duration as there is a Pokémon awaiting you at the end of it." />
+        android:text="The focus timer is a timer that would help you avoid the temptation of using your device when you are trying to be productive. In using the focus timer, you would be encouraged not to touch, move or use your device during its duration as there is a Pokémon awaiting you at the end of it."
+        android:textSize="12sp" />
+
+    <View
+        android:id="@+id/div_faqs"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:background="@color/black" />
 </LinearLayout>
