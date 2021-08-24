@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -53,26 +51,22 @@ public class InitActivity extends AppCompatActivity {
         String email = this.sp.getString(Keys.KEY_EMAIL.name(), null);
         String password = this.sp.getString(Keys.KEY_PASSWORD.name(), null);
 
-//        if (email != null && password != null) {
-//            checkIfInDB (email, password);
-//        }
-//        else {
+        if (email != null && password != null) {
+            checkIfInDB (email, password);
+        }
+        else {
             setContentView(R.layout.activity_init);
             btninitregister = findViewById(R.id.btn_init_register);
-            btninitregister.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    Intent i = new Intent(view.getContext(), RegisterActivity.class);
-                    view.getContext().startActivity(i);
-                }
+            btninitregister.setOnClickListener(view -> {
+                Intent i = new Intent(view.getContext(), RegisterActivity.class);
+                view.getContext().startActivity(i);
             });
 
             btninitlogin = findViewById(R.id.btn_init_login);
-            btninitlogin.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    Intent i = new Intent(view.getContext(), LoginActivity.class);
-                    view.getContext().startActivity(i);
-                }
+            btninitlogin.setOnClickListener(view -> {
+                Intent i = new Intent(view.getContext(), LoginActivity.class);
+                view.getContext().startActivity(i);
             });
-//        }
+        }
     }
 }
