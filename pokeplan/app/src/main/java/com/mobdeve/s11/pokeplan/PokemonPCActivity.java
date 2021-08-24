@@ -2,7 +2,6 @@ package com.mobdeve.s11.pokeplan;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -28,7 +27,6 @@ public class PokemonPCActivity extends AppCompatActivity {
 
     private void initComponents() {
         this.pokemonPCList = UserSingleton.getUser().getUserPokemonPC();
-        Log.d("rororo", Integer.toString(pokemonPCList.size()));
         this.rvPokemonPC = findViewById(R.id.rv_pkmnpc);
         this.tvNoPkmnPC = findViewById(R.id.tv_pkmnpc_nopkmnpc);
 
