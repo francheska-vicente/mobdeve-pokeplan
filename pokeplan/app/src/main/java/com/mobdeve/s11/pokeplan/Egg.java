@@ -1,15 +1,13 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Egg {
-    private Timer timer;
+    private final Timer timer;
 
-    private ArrayList<String> raritypool;
+    private final ArrayList<String> raritypool;
     private final String C = "Common";
     private final String UC = "Uncommon";
     private final String R = "Rare";
@@ -23,11 +21,8 @@ public class Egg {
     private final int[] fifth = {0, 30, 45, 25};
     private final int[] sixth = {0, 10, 50, 40};
 
-    private Pool pkmnpool;
-
     public Egg(Timer timer) {
         this.timer = timer;
-        this.pkmnpool = new Pool();
         this.raritypool = new ArrayList<>(100);
     }
 
@@ -37,7 +32,7 @@ public class Egg {
         if (timer.getSecs() > 0)    minutes++;
 
         // fix rates based on time
-        fixRates(minutes);
+        setRates(minutes);
 
         // get rarity from pool
         String rarity = raritypool.get(new Random().nextInt(100));
@@ -45,15 +40,20 @@ public class Egg {
         // get random pokemon of the pulled rarity
         Pokemon pokemon;
         switch (rarity) {
-            case SR: pokemon = pkmnpool.generateSuperRarePokemon(); break;
-            case R: pokemon = pkmnpool.generateRarePokemon(); break;
-            case UC: pokemon = pkmnpool.generateUncommonPokemon(); break;
-            case C: default: pokemon = pkmnpool.generateCommonPokemon();
+            case SR: pokemon = generateSuperRarePokemon(); break;
+            case R: pokemon = generateRarePokemon(); break;
+            case UC: pokemon = generateUncommonPokemon(); break;
+            case C: default: pokemon = generateCommonPokemon();
         }
 
         return pokemon;
     }
 
+    /**
+     * Fills the Rarity Pool ArrayList with rarities based on the given rates.
+     * @param rates     percentages of the drop chance for Common, Uncommon, Rare, and
+     *                  Super Rare Pokemon respectively
+     */
     public void populateRarityPool(int[] rates) {
         for(int j=0; j<rates[0]; j++)
             raritypool.add(C);
@@ -65,7 +65,11 @@ public class Egg {
             raritypool.add(SR);
     }
 
-    public void fixRates(int minutes) {
+    /**
+     * Sets the rates for rarities based on the number of minutes set in the Focus Timer.
+     * @param minutes   number of minutes set in the Focus Timer
+     */
+    public void setRates(int minutes) {
         if (minutes >= 5 && minutes < 20) {
             populateRarityPool(first);
         }
@@ -84,5 +88,41 @@ public class Egg {
         else {
             populateRarityPool(sixth);
         }
+    }
+
+    /**
+     * Randomly generates a Common Pokemon.
+     * @return  the common Pokemon generated randomly
+     */
+    public Pokemon generateCommonPokemon() {
+        ArrayList<Pokemon> common = Pokedex.getPokedex().getCommonPokemonList();
+        return common.get(new Random().nextInt(common.size()  + 1));
+    }
+
+    /**
+     * Randomly generates a Uncommon Pokemon.
+     * @return  the uncommon Pokemon generated randomly
+     */
+    public Pokemon generateUncommonPokemon() {
+        ArrayList<Pokemon> uncommon = Pokedex.getPokedex().getUncommonPokemonList();
+        return uncommon.get(new Random().nextInt(uncommon.size()  + 1));
+    }
+
+    /**
+     * Randomly generates a Rare Pokemon.
+     * @return  the rare Pokemon generated randomly
+     */
+    public Pokemon generateRarePokemon() {
+        ArrayList<Pokemon> rare = Pokedex.getPokedex().getRarePokemonList();
+        return rare.get(new Random().nextInt(rare.size() + 1));
+    }
+
+    /**
+     * Randomly generates a Super Rare Pokemon.
+     * @return  the super rare Pokemon generated randomly
+     */
+    public Pokemon generateSuperRarePokemon() {
+        ArrayList<Pokemon> superrare = Pokedex.getPokedex().getSuperRarePokemonList();
+        return superrare.get(new Random().nextInt(superrare.size()  + 1));
     }
 }
