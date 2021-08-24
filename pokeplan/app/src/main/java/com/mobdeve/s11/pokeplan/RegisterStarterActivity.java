@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RegisterStarterActivity extends AppCompatActivity {
     private ImageButton btnregisterstartback;
@@ -78,9 +79,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-
                         if(task.isSuccessful()) {
-                            UserDetails user = new UserDetails (name, email, username, pokeNum);
+                            UserDetails user = new UserDetails (name, email, username, pokeNum, new Date());
 
                             DatabaseReference databaseRef = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users");
 
