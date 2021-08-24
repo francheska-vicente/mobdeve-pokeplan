@@ -101,6 +101,18 @@
         app:layout_constraintTop_toBottomOf="@+id/et_login_email" />
 
     <TextView
+        android:id="@+id/tv_login_password2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/raleway_medium_italic"
+        android:text="Forgot Password?"
+        android:textColor="@color/darker_pink"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/et_login_password"
+        app:layout_constraintTop_toBottomOf="@+id/et_login_password" />
+
+    <TextView
         android:id="@+id/tv_login_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
