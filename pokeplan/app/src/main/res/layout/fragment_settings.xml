@@ -5,207 +5,296 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_settings_faq"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/rounded_rectangle"
-        android:fontFamily="@font/raleway_bold"
-        android:text="FREQUENTLY ASKED QUESTIONS"
-        android:textColor="@color/darkest_gray"
-        app:backgroundTint="@color/pink_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label6" />
-
-    <Button
-        android:id="@+id/btn_settings_editacc"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/rounded_rectangle"
-        android:fontFamily="@font/raleway_bold"
-        android:text="EDIT ACCOUNT DETAILS"
-        android:textColor="@color/darkest_gray"
-        app:backgroundTint="@color/pink_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label3" />
-
-    <Button
-        android:id="@+id/btn_settings_about"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/rounded_rectangle"
-        android:fontFamily="@font/raleway_bold"
-        android:text="ABOUT"
-        android:textColor="@color/darkest_gray"
-        app:backgroundTint="@color/pink_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_settings_faq" />
-
-    <TextView
-        android:id="@+id/tv_pkdexdetails_evolveto_label7"
-        android:layout_width="wrap_content"
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="FOCUS TIMER"
-        android:textAllCaps="false"
-        android:textColor="@color/darkest_gray"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_evolveto_label3"
-        app:layout_constraintTop_toBottomOf="@+id/btn_settings_editacc"
-        app:lineHeight="38dp" />
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
 
-    <TextView
-        android:id="@+id/tv_pkdexdetails_evolveto_label3"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="ACCOUNT DETAILS"
-        android:textAllCaps="false"
-        android:textColor="@color/darkest_gray"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_add_task_label"
-        app:lineHeight="38dp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_pkdexdetails_evolveto_label6"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="OTHERS"
-        android:textAllCaps="false"
-        android:textColor="@color/darkest_gray"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_evolveto_label5"
-        app:layout_constraintTop_toBottomOf="@+id/sw_pkmncries"
-        app:lineHeight="38dp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/lighter_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tv_pkdexdetails_evolveto_label4"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="TASK LIST"
-        android:textAllCaps="false"
-        android:textColor="@color/darkest_gray"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_evolveto_label7"
-        app:layout_constraintTop_toBottomOf="@+id/sw_screenon"
-        app:lineHeight="38dp" />
+                <Button
+                    android:id="@+id/btn_settings_editacc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/rounded_rectangle"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="EDIT ACCOUNT"
+                    android:textColor="@color/darkest_gray"
+                    app:backgroundTint="@color/pink_button"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_settings_editacc2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label3" />
 
-    <Switch
-        android:id="@+id/sw_notifs"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/raleway_medium"
-        android:text="Enable Notifications"
-        android:textColor="@color/darkest_gray"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label4" />
+                <Button
+                    android:id="@+id/btn_settings_editacc2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:background="@drawable/rounded_rectangle"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="DELETE ACCOUNT"
+                    android:textColor="@color/darkest_gray"
+                    app:backgroundTint="@color/pink_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-    <Switch
-        android:id="@+id/sw_pkmncries"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/raleway_medium"
-        android:text="Enable Pokemon Cries"
-        android:textColor="@color/darkest_gray"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label5" />
+                <TextView
+                    android:id="@+id/tv_pkdexdetails_evolveto_label3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="ACCOUNT DETAILS"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lineHeight="38dp" />
 
-    <TextView
-        android:id="@+id/tv_pkdexdetails_evolveto_label5"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="SOUNDS"
-        android:textAllCaps="false"
-        android:textColor="@color/darkest_gray"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/tv_pkdexdetails_evolveto_label4"
-        app:layout_constraintTop_toBottomOf="@+id/sw_notifs"
-        app:lineHeight="38dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Switch
-        android:id="@+id/sw_deepfocus"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/raleway_medium"
-        android:text="Enable Deep Focus Mode"
-        android:textColor="@color/darkest_gray"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label7" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/lighter_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-    <Switch
-        android:id="@+id/sw_dimscreen"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/raleway_medium"
-        android:text="Dim Screen During Timer"
-        android:textColor="@color/darkest_gray"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sw_deepfocus" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="APP PREFERENCES"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/sw_screenon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/raleway_medium"
-        android:text="Keep Screen On During Timer"
-        android:textColor="@color/darkest_gray"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sw_dimscreen" />
+                <TextView
+                    android:id="@+id/tv_pkdexdetails_evolveto_label4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="TASK LIST"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sw_screenon"
+                    app:lineHeight="38dp" />
+
+                <Switch
+                    android:id="@+id/sw_pkmncries"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="@font/raleway_medium"
+                    android:text="Enable Pokemon Cries"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label5" />
+
+                <Switch
+                    android:id="@+id/sw_notifs"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:fontFamily="@font/raleway_medium"
+                    android:text="Enable Notifications"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label4" />
+
+                <Switch
+                    android:id="@+id/sw_screenon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:fontFamily="@font/raleway_medium"
+                    android:text="Keep Screen On During Timer"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sw_dimscreen" />
+
+                <Switch
+                    android:id="@+id/sw_dimscreen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:fontFamily="@font/raleway_medium"
+                    android:text="Dim Screen During Timer"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sw_deepfocus" />
+
+                <TextView
+                    android:id="@+id/tv_pkdexdetails_evolveto_label5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="SOUNDS"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sw_notifs"
+                    app:lineHeight="38dp" />
+
+                <TextView
+                    android:id="@+id/tv_pkdexdetails_evolveto_label7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="FOCUS TIMER"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2"
+                    app:lineHeight="38dp" />
+
+                <Switch
+                    android:id="@+id/sw_deepfocus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:fontFamily="@font/raleway_medium"
+                    android:text="Enable Deep Focus Mode"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label7" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_rectangle"
+                android:backgroundTint="@color/lighter_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+                <Button
+                    android:id="@+id/btn_settings_about"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:background="@drawable/rounded_rectangle"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="ABOUT"
+                    android:textColor="@color/darkest_gray"
+                    app:backgroundTint="@color/pink_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <Button
+                    android:id="@+id/btn_settings_faq"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/rounded_rectangle"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="FREQUENTLY ASKED QUESTIONS"
+                    android:textColor="@color/darkest_gray"
+                    app:backgroundTint="@color/pink_button"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_settings_about"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label6" />
+
+                <TextView
+                    android:id="@+id/tv_pkdexdetails_evolveto_label6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/raleway_bold"
+                    android:text="OTHERS"
+                    android:textAllCaps="false"
+                    android:textColor="@color/darkest_gray"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lineHeight="38dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_add_task_label"
