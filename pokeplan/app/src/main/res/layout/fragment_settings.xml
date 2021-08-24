@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/Switch">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -36,7 +37,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/rounded_rectangle"
@@ -47,7 +48,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/btn_settings_editacc2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label3" />
+                    app:layout_constraintTop_toTopOf="@+id/divider7" />
 
                 <Button
                     android:id="@+id/btn_settings_editacc2"
@@ -79,6 +80,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:lineHeight="38dp" />
+
+                <View
+                    android:id="@+id/divider7"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label3" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -125,16 +138,17 @@
 
                 <Switch
                     android:id="@+id/sw_pkmncries"
+                    style="@style/Switch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="48dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="32dp"
                     android:fontFamily="@font/raleway_medium"
                     android:text="Enable Pokemon Cries"
                     android:textColor="@color/darkest_gray"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -142,45 +156,48 @@
 
                 <Switch
                     android:id="@+id/sw_notifs"
+                    style="@style/Switch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="48dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:fontFamily="@font/raleway_medium"
                     android:text="Enable Notifications"
                     android:textColor="@color/darkest_gray"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label4" />
 
                 <Switch
                     android:id="@+id/sw_screenon"
+                    style="@style/Switch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="48dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:fontFamily="@font/raleway_medium"
                     android:text="Keep Screen On During Timer"
                     android:textColor="@color/darkest_gray"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/sw_dimscreen" />
 
                 <Switch
                     android:id="@+id/sw_dimscreen"
+                    style="@style/Switch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="48dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:fontFamily="@font/raleway_medium"
                     android:text="Dim Screen During Timer"
                     android:textColor="@color/darkest_gray"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/sw_deepfocus" />
@@ -212,23 +229,36 @@
                     android:textColor="@color/darkest_gray"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView2"
+                    app:layout_constraintTop_toBottomOf="@+id/divider8"
                     app:lineHeight="38dp" />
 
                 <Switch
                     android:id="@+id/sw_deepfocus"
+                    style="@style/Switch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="48dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:fontFamily="@font/raleway_medium"
                     android:text="Enable Deep Focus Mode"
                     android:textColor="@color/darkest_gray"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label7" />
+
+                <View
+                    android:id="@+id/divider8"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -237,11 +267,26 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
                 android:background="@drawable/rounded_rectangle"
                 android:backgroundTint="@color/lighter_gray"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+                app:layout_constraintVertical_bias="0.0">
+
+                <View
+                    android:id="@+id/divider10"
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label6" />
 
                 <Button
                     android:id="@+id/btn_settings_about"
@@ -257,6 +302,7 @@
                     app:backgroundTint="@color/pink_button"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
@@ -264,9 +310,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@drawable/rounded_rectangle"
                     android:fontFamily="@font/raleway_bold"
                     android:text="FREQUENTLY ASKED QUESTIONS"
@@ -274,8 +320,9 @@
                     app:backgroundTint="@color/pink_button"
                     app:layout_constraintBottom_toTopOf="@+id/btn_settings_about"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label6" />
+                    app:layout_constraintTop_toTopOf="@+id/divider10" />
 
                 <TextView
                     android:id="@+id/tv_pkdexdetails_evolveto_label6"
