@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_dialog_email_title"
+        android:id="@+id/tv_dialog_edit_username_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title" />
 
     <EditText
-        android:id="@+id/et_dialog_delete_password"
+        android:id="@+id/et_dialog_edit_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -83,7 +83,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_email_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_edit_username_title" />
 
     <Button
         android:id="@+id/btn_delete_account_confirm"
@@ -99,7 +99,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_delete_account_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_delete_password"
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_edit_password"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
@@ -117,6 +117,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_delete_account_confirm"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_delete_password" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_edit_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
