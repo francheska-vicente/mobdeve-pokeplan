@@ -128,7 +128,6 @@ public class TasklistFragment extends Fragment {
 
         spinFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("hello pare", "inside filter function");
                 filterTask(spinFilter.getSelectedItem().toString());
             }
 
@@ -157,12 +156,9 @@ public class TasklistFragment extends Fragment {
 
         this.taskAdapterCompleted.notifyDataSetChanged();
         this.taskAdapterOngoing.notifyDataSetChanged();
-
-        Log.d("hello pare", ongoingList.toString() + " " + completedList.toString());
     }
 
     private void filterTask (String category) {
-        Log.d("hello pare", category);
         if (category.equalsIgnoreCase("ALL")) {
             initLists(this.ongoingList, this.completedList);
         } else {
