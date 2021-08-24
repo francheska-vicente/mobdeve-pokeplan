@@ -32,8 +32,7 @@ public class HomeFragment extends Fragment {
     }
 
     public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
-        return fragment;
+        return new HomeFragment();
     }
 
     @Override
@@ -52,7 +51,6 @@ public class HomeFragment extends Fragment {
 
     private void initComponents (View view) {
         this.pokemonPartyList = UserSingleton.getUser().getUserPokemonParty();
-        Log.d("Hello pare", this.pokemonPartyList.toString());
         this.rvPokemonParty = view.findViewById(R.id.rv_home_party);
         this.rvPokemonParty.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
@@ -62,19 +60,15 @@ public class HomeFragment extends Fragment {
 
     private void initButtons(View view) {
         this.ibuserprofile = view.findViewById(R.id.ib_home_user);
-        this.ibuserprofile.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), UserProfileActivity.class);
-                view.getContext().startActivity(i);
-            }
+        this.ibuserprofile.setOnClickListener(v -> {
+            Intent i = new Intent(v.getContext(), UserProfileActivity.class);
+            v.getContext().startActivity(i);
         });
 
         this.ibpokemonpc = view.findViewById(R.id.ib_home_pc);
-        this.ibpokemonpc.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), PokemonPCActivity.class);
-                view.getContext().startActivity(i);
-            }
+        this.ibpokemonpc.setOnClickListener(v -> {
+            Intent i = new Intent(v.getContext(), PokemonPCActivity.class);
+            v.getContext().startActivity(i);
         });
     }
 
@@ -83,12 +77,16 @@ public class HomeFragment extends Fragment {
         super.onResume();
         final Handler handler = new Handler();
 
+<<<<<<< Updated upstream
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 initComponents(getView());
             }
         }, 200);
+=======
+        handler.postDelayed(() -> initComponents(getView()), 1000);
+>>>>>>> Stashed changes
 
     }
 }
