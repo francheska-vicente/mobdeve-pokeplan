@@ -49,7 +49,7 @@ public class PokedexFragment extends Fragment {
         this.pbload = view.findViewById(R.id.pb_pkdex_load);
         pbload.setVisibility(View.GONE);
         pokedex = UserSingleton.getUser().getUserDetails().getUserPokedex();
-        this.rvPokedex = view.findViewById(R.id.rv_pokedex);
+        this.rvPokedex = view.findViewById(R.id.rv_pkmnpc);
         this.pdAdapter = new PokedexAdapter(pokedex);
         rvPokedex.setLayoutManager(new GridLayoutManager(getActivity(), 5));
         rvPokedex.setAdapter(pdAdapter);
