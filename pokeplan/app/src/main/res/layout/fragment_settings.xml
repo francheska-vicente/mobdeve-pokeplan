@@ -312,7 +312,7 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="4dp"
+                    android:layout_marginBottom="8dp"
                     android:background="@drawable/rounded_rectangle"
                     android:fontFamily="@font/raleway_bold"
                     android:text="FREQUENTLY ASKED QUESTIONS"
