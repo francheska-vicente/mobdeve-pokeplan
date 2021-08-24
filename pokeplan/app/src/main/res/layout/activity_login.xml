@@ -176,7 +176,7 @@
         android:src="@drawable/arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/pink_button" />
+        app:tint="@color/darker_pink" />
 
     <ProgressBar
         android:id="@+id/pb_login"
