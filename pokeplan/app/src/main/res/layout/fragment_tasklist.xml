@@ -36,11 +36,25 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.08" />
 
+    <TextView
+        android:id="@+id/tv_tasklist_filter_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="FILTER"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_filter"
+        app:layout_constraintEnd_toStartOf="@+id/ib_filter"
+        app:layout_constraintTop_toTopOf="@+id/ib_filter"
+        app:lineHeight="38dp" />
+
     <ScrollView
         android:id="@+id/sv_tasklist"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -159,15 +173,16 @@
         android:id="@+id/fab_tasklist_add_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:clickable="true"
         android:tint="@color/darkest_gray"
         app:backgroundTint="@color/pink_button"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="32dp"
-        app:srcCompat="@android:drawable/ic_input_add"
-        tools:layout_editor_absoluteX="327dp" />
+        app:srcCompat="@android:drawable/ic_input_add" />
 
     <Spinner
         android:id="@+id/spinner_tasklist_filter"
