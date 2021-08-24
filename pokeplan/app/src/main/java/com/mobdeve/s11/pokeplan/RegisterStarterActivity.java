@@ -81,7 +81,6 @@ public class RegisterStarterActivity extends AppCompatActivity {
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-
                         if(task.isSuccessful()) {
 
                             String [] stringBirthday = birthday.split("\\.");
