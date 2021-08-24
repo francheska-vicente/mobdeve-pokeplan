@@ -60,7 +60,10 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         String pkmnid = intent.getStringExtra(PokemonPCAdapter.KEY_POKEMONID);
         sourceActivity = intent.getStringExtra(PokemonPCAdapter.KEY_FROMWHERE);
 
-        pkmn = UserSingleton.getUser().getPokemonInPC(pkmnid);
+        if (sourceActivity.equals("PARTY"))
+            pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);
+        else
+            pkmn = UserSingleton.getUser().getPokemonInPC(pkmnid);
 
         initComponents();
         initButtons();
