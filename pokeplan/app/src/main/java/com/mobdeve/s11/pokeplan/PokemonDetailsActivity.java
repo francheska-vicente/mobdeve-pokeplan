@@ -57,8 +57,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pokemon_details);
 
         Intent intent = getIntent();
-        String pkmnid = intent.getStringExtra(PokemonPCAdapter.KEY_POKEMONID);
-        sourceActivity = intent.getStringExtra(PokemonPCAdapter.KEY_FROMWHERE);
+        String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
+        sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
 
         if (sourceActivity.equals("PARTY"))
             pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);

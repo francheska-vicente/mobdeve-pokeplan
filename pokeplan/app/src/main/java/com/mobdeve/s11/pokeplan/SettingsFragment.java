@@ -38,9 +38,6 @@ public class SettingsFragment extends Fragment {
     private Dialog dialogAbout;
     private Dialog dialogDelete;
 
-    private SharedPreferences sp;
-    private SharedPreferences.Editor spEditor;
-
     private EditText etEmail;
     private EditText etPassword;
 
@@ -116,7 +113,7 @@ public class SettingsFragment extends Fragment {
         dialogDelete.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         dialogDelete.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        Button btnDialogCancel = (Button) dialogDelete.findViewById(R.id.btn_delete_account_cancel);
+        Button btnDialogCancel = dialogDelete.findViewById(R.id.btn_delete_account_cancel);
         btnDialogCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,40 +121,37 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        Button btnDialogConfirm = (Button) dialogDelete.findViewById(R.id.btn_delete_account_confirm);
-        btnDialogConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                etEmail = (EditText) dialogDelete.findViewById(R.id.et_dialog_delete_email);
-                etPassword = (EditText) dialogDelete.findViewById(R.id.et_dialog_delete_password);
-                String email = etEmail.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+        Button btnDialogConfirm = dialogDelete.findViewById(R.id.btn_delete_account_confirm);
+        btnDialogConfirm.setOnClickListener(v1 -> {
+            etEmail = dialogDelete.findViewById(R.id.et_dialog_delete_email);
+            etPassword = dialogDelete.findViewById(R.id.et_dialog_delete_password);
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
-                Log.d("hello pare", email);
-                Log.d("hello pare", password);
-                if(email.isEmpty()) {
-                    etEmail.setError("Email is required.");
-                    etEmail.requestFocus();
-                    return;
-                }
-
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    etEmail.setError("Please provide a valid e-mail address.");
-                    etEmail.requestFocus();
-                    return;
-                }
-
-                if (password.isEmpty()) {
-                    etPassword.setError("Password is required.");
-                    etPassword.requestFocus();
-                    return;
-                }
-
-                UserSingleton.getUser().deleteUser(email, password);
-
-                Intent i = new Intent(v.getContext(), InitActivity.class);
-                v.getContext().startActivity(i);
+            Log.d("hello pare", email);
+            Log.d("hello pare", password);
+            if(email.isEmpty()) {
+                etEmail.setError("Email is required.");
+                etEmail.requestFocus();
+                return;
             }
+
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                etEmail.setError("Please provide a valid e-mail address.");
+                etEmail.requestFocus();
+                return;
+            }
+
+            if (password.isEmpty()) {
+                etPassword.setError("Password is required.");
+                etPassword.requestFocus();
+                return;
+            }
+
+            UserSingleton.getUser().deleteUser(email, password);
+
+            Intent i = new Intent(v1.getContext(), InitActivity.class);
+            v1.getContext().startActivity(i);
         });
 
         dialogDelete.show();

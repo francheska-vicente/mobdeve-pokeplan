@@ -40,18 +40,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class AddTaskActivity extends AppCompatActivity {
-
-    public static final String KEY_TASKNAME = "KEY_TASKNAME";
-    public static final String KEY_CATEGORY = "KEY_CATEGORY";
-    public static final String KEY_PRIORITY = "KEY_PRIORITY";
-    public static final String KEY_START_DATE = "KEY_START_DATE";
-    public static final String KEY_END_DATE = "KEY_END_DATE";
-    public static final String KEY_NOTES = "KEY_NOTES";
-
-    public static final String KEY_NOTIF_WHEN = "KEY_NOTIF_WHEN";
-    public static final String KEY_NOTIF_ON = "KEY_NOTIF_ON";
-    public static final String KEY_NOTIF_START_TIME = "KEY_NOTIF_START_TIME";
-
     private String category;
     private String priority;
     private boolean checkerNotif;
@@ -200,15 +188,15 @@ public class AddTaskActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
 
-        intent.putExtra(AddTaskActivity.KEY_TASKNAME, name);
-        intent.putExtra(AddTaskActivity.KEY_NOTES, notes);
-        intent.putExtra(AddTaskActivity.KEY_END_DATE, cEndDate.toString());
-        intent.putExtra(AddTaskActivity.KEY_START_DATE, cStartDate.toString());
-        intent.putExtra(AddTaskActivity.KEY_CATEGORY, category);
-        intent.putExtra(AddTaskActivity.KEY_PRIORITY, priority);
-        intent.putExtra(AddTaskActivity.KEY_NOTIF_START_TIME, val);
-        intent.putExtra(AddTaskActivity.KEY_NOTIF_ON, checkerNotif);
-        intent.putExtra(AddTaskActivity.KEY_NOTIF_WHEN, notif);
+        intent.putExtra(Keys.KEY_TASKNAME.name(), name);
+        intent.putExtra(Keys.KEY_NOTES.name(), notes);
+        intent.putExtra(Keys.KEY_END_DATE.name(), cEndDate.toString());
+        intent.putExtra(Keys.KEY_START_DATE.name(), cStartDate.toString());
+        intent.putExtra(Keys.KEY_CATEGORY.name(), category);
+        intent.putExtra(Keys.KEY_PRIORITY.name(), priority);
+        intent.putExtra(Keys.KEY_NOTIF_START_TIME.name(), val);
+        intent.putExtra(Keys.KEY_NOTIF_ON.name(), checkerNotif);
+        intent.putExtra(Keys.KEY_NOTIF_WHEN.name(), notif);
 
         setResult(Activity.RESULT_OK, intent);
         finish();

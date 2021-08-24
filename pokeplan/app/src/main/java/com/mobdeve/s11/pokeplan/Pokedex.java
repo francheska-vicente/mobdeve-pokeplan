@@ -1,7 +1,5 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 public class Pokedex {

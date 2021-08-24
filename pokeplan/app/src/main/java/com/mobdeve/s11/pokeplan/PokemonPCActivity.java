@@ -52,11 +52,6 @@ public class PokemonPCActivity extends AppCompatActivity {
 
         final Handler handler = new Handler();
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initComponents();
-            }
-        }, 200);
+        handler.postDelayed(() -> initComponents(), 200);
     }
 }
