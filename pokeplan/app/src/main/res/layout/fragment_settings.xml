@@ -45,13 +45,13 @@
                     android:text="EDIT ACCOUNT"
                     android:textColor="@color/darkest_gray"
                     app:backgroundTint="@color/pink_button"
-                    app:layout_constraintBottom_toTopOf="@+id/btn_settings_editacc2"
+                    app:layout_constraintBottom_toTopOf="@+id/btn_settings_delete_acc"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/divider7" />
 
                 <Button
-                    android:id="@+id/btn_settings_editacc2"
+                    android:id="@+id/btn_settings_delete_acc"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
