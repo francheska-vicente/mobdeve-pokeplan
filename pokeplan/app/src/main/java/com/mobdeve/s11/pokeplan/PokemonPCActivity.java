@@ -44,4 +44,10 @@ public class PokemonPCActivity extends AppCompatActivity {
             this.tvNoPkmnPC.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initComponents();
+    }
 }
