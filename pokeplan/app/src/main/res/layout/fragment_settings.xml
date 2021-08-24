@@ -9,40 +9,126 @@
         android:id="@+id/tv_pkdexdetails_evolveto_label3"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/raleway_bold"
         android:text="FAQ"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/cl_add_task_label"
+        app:lineHeight="38dp"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_evolveto_label7"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="FOCUS TIMER"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
         app:lineHeight="38dp"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="80dp" />
+        tools:layout_editor_absoluteY="278dp" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_evolveto_label4"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="NOTIFICATIONS"
+        android:text="TASK LIST"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
         app:lineHeight="38dp"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="244dp" />
+        tools:layout_editor_absoluteY="388dp" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/raleway_medium"
+        android:text="Enable Notifications"
+        android:textColor="@color/darkest_gray"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label4" />
 
     <TextView
         android:id="@+id/tv_pkdexdetails_evolveto_label5"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="NOTIFICATIONS"
+        android:text="SOUNDS"
         android:textAllCaps="false"
         android:textColor="@color/darkest_gray"
         android:textSize="14sp"
         app:lineHeight="38dp"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="313dp" />
+        tools:layout_editor_absoluteY="485dp" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label5" />
+
+    <TextView
+        android:id="@+id/tv_pkdexdetails_evolveto_label6"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="ABOUT"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:lineHeight="38dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="558dp" />
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/raleway_medium"
+        android:text="Enable Deep Focus Mode"
+        android:textColor="@color/darkest_gray"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_pkdexdetails_evolveto_label7" />
+
+    <Switch
+        android:id="@+id/switch3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/raleway_medium"
+        android:text="Dim Screen During Timer"
+        android:textColor="@color/darkest_gray"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_add_task_label"
