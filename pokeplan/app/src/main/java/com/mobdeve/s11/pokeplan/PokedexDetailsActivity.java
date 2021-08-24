@@ -68,8 +68,6 @@ public class PokedexDetailsActivity extends AppCompatActivity {
     }
 
     private void setAllComponents(Pokemon pkmn) {
-
-
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ pkmn.getDexNum()));
         this.tvPkmnSpecies.setText(pkmn.getSpecies());
