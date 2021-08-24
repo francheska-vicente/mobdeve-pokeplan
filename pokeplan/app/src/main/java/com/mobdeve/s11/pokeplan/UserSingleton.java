@@ -159,6 +159,53 @@ public class UserSingleton {
         });
     }
 
+    public void deleteUser () {
+        Query query = mUser;
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+                Log.d("User DB", "User was deleted from the DB.");
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.e("User DB", "There is an error encountered! " + error.toException().toString());
+            }
+        });
+
+        query = mTask;
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+                Log.d("Task DB", "All of the tasks of this user were deleted from the DB.");
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
+            }
+        });
+
+        query = mPokemon;
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+                Log.d("Pokemon DB", "All of the pokemons of this user were deleted from the DB.");
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
+            }
+        });
+
+        this.removeUser();
+    }
+
     // tasks
     public ArrayList<Task> getOngoingTasks() {
         return this.ongoingTasks;
@@ -467,6 +514,22 @@ public class UserSingleton {
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
                 if (task.isSuccessful()) {
                     Log.d("Pokemon DB", "Pokemon was moved.");
+
+                    if (checker) {
+                        for (int i = 0; i < userPokemonParty.size(); i++) {
+                            if (userPokemonParty.get(i).getUserPokemonID().equalsIgnoreCase(key)) {
+                                userPokemonPC.add(userPokemonParty.remove(i));
+                                break;
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < userPokemonPC.size(); i++) {
+                            if (userPokemonPC.get(i).getUserPokemonID().equalsIgnoreCase(key)) {
+                                userPokemonParty.add(userPokemonPC.remove(i));
+                                break;
+                            }
+                        }
+                    }
                 } else {
                     Log.e("Pokemon DB", "Pokemon was not moved.");
                 }
