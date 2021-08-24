@@ -319,7 +319,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
 
                 if (!endDate.equals("")) {
-                    if (!startDate.equals("") && !startTime.equals("")) {
+                    if (!startDate.equals("") /* && !startTime.equals("")*/) {
                         if (!startTime.equals("")) {
                             String tempStartDate = startDate.substring(0, 6) + "20" + startDate.substring(6, 8);
                             String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
@@ -386,7 +386,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (endTime == null) {
+                if (endTime == null || endTime.isEmpty()) {
                     etEndTime.setError("End time is required");
                     etEndTime.requestFocus();
                     return;
