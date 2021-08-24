@@ -53,5 +53,26 @@ public class SettingsFragment extends Fragment {
         this.swNotifs = view.findViewById(R.id.sw_notifs);
         this.swPkmncries = view.findViewById(R.id.sw_pkmncries);
         this.swScreenOn = view.findViewById(R.id.sw_screenon);
+
+        this.btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        this.btnFreqQues.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        this.btnEditAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
     }
 }
