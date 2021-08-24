@@ -1,13 +1,10 @@
 package com.mobdeve.s11.pokeplan;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -18,8 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
     private String sourceActivity;
@@ -161,14 +156,14 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         confirmDialog.getWindow().setLayout(width, height);
         confirmDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_title);
+        TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_confirm_title);
         tvdialogtitle.setText(R.string.pkmndetails_movetopcdiag_title);
-        TextView tvdialogtext = (TextView) confirmDialog.findViewById(R.id.tv_dialog_text);
+        TextView tvdialogtext = (TextView) confirmDialog.findViewById(R.id.tv_dialog_confirm_text);
         tvdialogtext.setText(R.string.pkmndetails_movetopcdiag_text);
-        ImageView ivdialogicon = (ImageView) confirmDialog.findViewById(R.id.iv_dialog_icon);
+        ImageView ivdialogicon = (ImageView) confirmDialog.findViewById(R.id.iv_dialog_confirm_icon);
         ivdialogicon.setImageResource(R.drawable.warning);
 
-        Button btndialogcancel = (Button) confirmDialog.findViewById(R.id.btn_dialog_cancel);
+        Button btndialogcancel = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm_cancel);
         btndialogcancel.setOnClickListener(v -> confirmDialog.dismiss());
 
         Button btndialogconfirm = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm);
@@ -195,14 +190,14 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         confirmDialog.getWindow().setLayout(width, height);
         confirmDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_title);
+        TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_confirm_title);
         tvdialogtitle.setText(R.string.pkmndetails_movetopartydiag_title);
-        TextView tvdialogtext = (TextView) confirmDialog.findViewById(R.id.tv_dialog_text);
+        TextView tvdialogtext = (TextView) confirmDialog.findViewById(R.id.tv_dialog_confirm_text);
         tvdialogtext.setText(R.string.pkmndetails_movetopartydiag_text);
-        ImageView ivdialogicon = (ImageView) confirmDialog.findViewById(R.id.iv_dialog_icon);
+        ImageView ivdialogicon = (ImageView) confirmDialog.findViewById(R.id.iv_dialog_confirm_icon);
         ivdialogicon.setImageResource(R.drawable.warning);
 
-        Button btndialogcancel = (Button) confirmDialog.findViewById(R.id.btn_dialog_cancel);
+        Button btndialogcancel = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm_cancel);
         btndialogcancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -225,7 +220,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
     private void editNickname() {
         editdialog = new Dialog(this);
-        editdialog.setContentView(R.layout.dialog_stringinput);
+        editdialog.setContentView(R.layout.dialog_oneinput);
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
 
