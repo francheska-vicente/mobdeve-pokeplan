@@ -40,7 +40,6 @@ public class CustomDate {
         this.month = month;
         this.hour = hour;
         this.minute = minute;
-
     }
 
     public CustomDate(String date, String time) {
