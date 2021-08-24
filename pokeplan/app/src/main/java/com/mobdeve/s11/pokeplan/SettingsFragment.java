@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -82,7 +83,7 @@ public class SettingsFragment extends Fragment {
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
         int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
 
-        dialogAbout.getWindow().setLayout(width, height);
+        dialogAbout.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         dialogAbout.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         TextView tvdialogtitle = (TextView) dialogAbout.findViewById(R.id.tv_dialog_ok_title);
@@ -91,7 +92,8 @@ public class SettingsFragment extends Fragment {
         tvdialogtext.setText(R.string.about_text);
 
         ImageView ivIcon = (ImageView)  dialogAbout.findViewById(R.id.iv_dialog_ok_icon);
-        ivIcon.setVisibility(View.GONE);
+        ivIcon.setImageResource(R.drawable.logo_xl);
+        ivIcon.setAdjustViewBounds(true);
 
         Button btnDialogOk = (Button) dialogAbout.findViewById(R.id.btn_dialog_ok);
         btnDialogOk.setOnClickListener(new View.OnClickListener() {
