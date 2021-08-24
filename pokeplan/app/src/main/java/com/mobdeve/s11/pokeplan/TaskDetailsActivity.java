@@ -10,14 +10,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.android.gms.tasks.Task;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -230,14 +227,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
         confirmDelete.getWindow().setLayout(width, height);
         confirmDelete.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        TextView tvdialogtitle = (TextView) confirmDelete.findViewById(R.id.tv_dialog_title);
+        TextView tvdialogtitle = (TextView) confirmDelete.findViewById(R.id.tv_dialog_confirm_title);
         tvdialogtitle.setText(R.string.task_details_delete_task_title);
-        TextView tvdialogtext = (TextView) confirmDelete.findViewById(R.id.tv_dialog_text);
+        TextView tvdialogtext = (TextView) confirmDelete.findViewById(R.id.tv_dialog_confirm_text);
         tvdialogtext.setText(R.string.task_details_delete_task_text);
-        ImageView ivdialogicon = (ImageView) confirmDelete.findViewById(R.id.iv_dialog_icon);
+        ImageView ivdialogicon = (ImageView) confirmDelete.findViewById(R.id.iv_dialog_confirm_icon);
         ivdialogicon.setImageResource(R.drawable.warning);
 
-        Button btndialogcancel = (Button) confirmDelete.findViewById(R.id.btn_dialog_cancel);
+        Button btndialogcancel = (Button) confirmDelete.findViewById(R.id.btn_dialog_confirm_cancel);
         btndialogcancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,14 +265,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
         confirmFinish.getWindow().setLayout(width, height);
         confirmFinish.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        TextView tvdialogtitle = (TextView) confirmFinish.findViewById(R.id.tv_dialog_title);
+        TextView tvdialogtitle = (TextView) confirmFinish.findViewById(R.id.tv_dialog_confirm_title);
         tvdialogtitle.setText(R.string.task_details_confirm_finish_title);
-        TextView tvdialogtext = (TextView) confirmFinish.findViewById(R.id.tv_dialog_text);
+        TextView tvdialogtext = (TextView) confirmFinish.findViewById(R.id.tv_dialog_confirm_text);
         tvdialogtext.setText(R.string.task_details_confirm_finish_text);
-        ImageView ivdialogicon = (ImageView) confirmFinish.findViewById(R.id.iv_dialog_icon);
+        ImageView ivdialogicon = (ImageView) confirmFinish.findViewById(R.id.iv_dialog_confirm_icon);
         ivdialogicon.setImageResource(R.drawable.warning);
 
-        Button btndialogcancel = (Button) confirmFinish.findViewById(R.id.btn_dialog_cancel);
+        Button btndialogcancel = (Button) confirmFinish.findViewById(R.id.btn_dialog_confirm_cancel);
         btndialogcancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
