@@ -63,6 +63,8 @@ public class UserPokemon {
     @Exclude
     public void evolvePokemon() {
         Pokedex pokedex = Pokedex.getPokedex();
+        if (nickname.equals(details.getSpecies()))
+            nickname = this.details.getEvolvesTo();
         this.details = pokedex.getPokemon(this.details.getEvolvesTo());
     }
 
