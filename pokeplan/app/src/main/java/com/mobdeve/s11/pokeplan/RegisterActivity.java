@@ -22,16 +22,17 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageButton btnregisterback;
     private Button btnregistersubmit;
 
-
     private EditText etName;
     private EditText etEmail;
     private EditText etUsername;
     private EditText etPassword;
+    private EditText etBirthday;
 
     public static final String KEY_NAME = "KEY_NAME";
     public static final String KEY_EMAIL = "KEY_EMAIL";
     public static final String KEY_PASSWORD = "KEY_PASSWORD";
     public static final String KEY_USERNAME = "KEY_USERNAME";
+    public static final String KEY_BIRTHDAY = "KEY_BIRTHDAY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +42,11 @@ public class RegisterActivity extends AppCompatActivity {
         initBackBtn();
         initSubmitBtn();
 
-
         this.etName = findViewById(R.id.et_register_name);
         this.etEmail = findViewById(R.id.et_register_email);
         this.etUsername = findViewById(R.id.et_register_username);
         this.etPassword = findViewById(R.id.et_register_password);
-
+        // this.etBirthday;
     }
 
     private void initBackBtn() {
@@ -63,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = this.etEmail.getText().toString().trim();
         String username = this.etUsername.getText().toString().trim();
         String password = this.etPassword.getText().toString().trim();
+        String birthday = this.etBirthday.getText().toString().trim();
 
         if (name.isEmpty()) {
             etName.setError("Name is required.");
@@ -98,11 +99,19 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        if (birthday.isEmpty()) {
+            etBirthday.setError("Birthday is a required field!");
+            etBirthday.requestFocus();
+            return;
+        }
+
         Intent i = new Intent(view.getContext(), RegisterStarterActivity.class);
         i.putExtra(KEY_NAME, name);
         i.putExtra(KEY_EMAIL, email);
         i.putExtra(KEY_PASSWORD, password);
         i.putExtra(KEY_USERNAME, username);
+        i.putExtra(KEY_BIRTHDAY, birthday);
+
         view.getContext().startActivity(i);
     }
 
