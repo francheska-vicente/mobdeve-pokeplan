@@ -16,6 +16,7 @@ public class PokemonPartyAdapter extends RecyclerView.Adapter<PokemonPartyViewHo
     private ArrayList<UserPokemon> party;
 
     public static final String KEY_POKEMONID = "KEY_POKEMONID";
+    public static final String KEY_FROMWHERE = "KEY_FROMWHERE";
 
     public PokemonPartyAdapter(ArrayList<UserPokemon> party) {
         this.party = party;
@@ -34,6 +35,7 @@ public class PokemonPartyAdapter extends RecyclerView.Adapter<PokemonPartyViewHo
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), PokemonDetailsActivity.class);
                 i.putExtra(KEY_POKEMONID, party.get(vh.getBindingAdapterPosition()).getUserPokemonID());
+                i.putExtra(KEY_FROMWHERE, "PARTY");
                 view.getContext().startActivity(i);
             }
         });
