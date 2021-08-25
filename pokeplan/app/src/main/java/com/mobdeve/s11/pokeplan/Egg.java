@@ -54,7 +54,7 @@ public class Egg {
      * @param rates     percentages of the drop chance for Common, Uncommon, Rare, and
      *                  Super Rare Pokemon respectively
      */
-    public void populateRarityPool(int[] rates) {
+    private void populateRarityPool(int[] rates) {
         for(int j=0; j<rates[0]; j++)
             raritypool.add(C);
         for(int j=0; j<rates[1]; j++)
@@ -69,7 +69,7 @@ public class Egg {
      * Sets the rates for rarities based on the number of minutes set in the Focus Timer.
      * @param minutes   number of minutes set in the Focus Timer
      */
-    public void setRates(int minutes) {
+    private void setRates(int minutes) {
         if (minutes >= 5 && minutes < 20) {
             populateRarityPool(first);
         }
@@ -94,35 +94,35 @@ public class Egg {
      * Randomly generates a Common Pokemon.
      * @return  the common Pokemon generated randomly
      */
-    public Pokemon generateCommonPokemon() {
+    private Pokemon generateCommonPokemon() {
         ArrayList<Pokemon> common = Pokedex.getPokedex().getCommonPokemonList();
-        return common.get(new Random().nextInt(common.size()  + 1));
+        return common.get(new Random().nextInt(common.size()));
     }
 
     /**
      * Randomly generates a Uncommon Pokemon.
      * @return  the uncommon Pokemon generated randomly
      */
-    public Pokemon generateUncommonPokemon() {
+    private Pokemon generateUncommonPokemon() {
         ArrayList<Pokemon> uncommon = Pokedex.getPokedex().getUncommonPokemonList();
-        return uncommon.get(new Random().nextInt(uncommon.size()  + 1));
+        return uncommon.get(new Random().nextInt(uncommon.size()));
     }
 
     /**
      * Randomly generates a Rare Pokemon.
      * @return  the rare Pokemon generated randomly
      */
-    public Pokemon generateRarePokemon() {
+    private Pokemon generateRarePokemon() {
         ArrayList<Pokemon> rare = Pokedex.getPokedex().getRarePokemonList();
-        return rare.get(new Random().nextInt(rare.size() + 1));
+        return rare.get(new Random().nextInt(rare.size()));
     }
 
     /**
      * Randomly generates a Super Rare Pokemon.
      * @return  the super rare Pokemon generated randomly
      */
-    public Pokemon generateSuperRarePokemon() {
+    private Pokemon generateSuperRarePokemon() {
         ArrayList<Pokemon> superrare = Pokedex.getPokedex().getSuperRarePokemonList();
-        return superrare.get(new Random().nextInt(superrare.size()  + 1));
+        return superrare.get(new Random().nextInt(superrare.size()));
     }
 }
