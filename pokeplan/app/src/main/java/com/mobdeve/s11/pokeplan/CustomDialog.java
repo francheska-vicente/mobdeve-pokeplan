@@ -69,6 +69,9 @@ public class CustomDialog extends Dialog {
 
     public void setConfirmComponents(String title, String body, int icon,
                                      String confirm) {
+        this.setCancelable(false);
+        this.setCanceledOnTouchOutside(false);
+
         TextView tvdialogtitle = this.findViewById(R.id.tv_dialog_confirm_title);
         tvdialogtitle.setText(title);
 
