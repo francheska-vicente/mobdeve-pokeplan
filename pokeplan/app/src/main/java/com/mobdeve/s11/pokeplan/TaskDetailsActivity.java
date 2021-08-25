@@ -39,6 +39,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private Dialog confirmDelete;
     private Dialog candyDialog;
 
+    private boolean wasEdited;
+
     public static final String KEY_TASKNAME = "KEY_TASKNAME";
     public static final String KEY_CATEGORY = "KEY_CATEGORY";
     public static final String KEY_PRIORITY = "KEY_PRIORITY";
@@ -58,6 +60,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
+
+        wasEdited = false;
 
         btnback = findViewById(R.id.ib_taskdetails_back);
         btnback.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +105,16 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
         Boolean notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
         Boolean isFinished = intent.getBooleanExtra(Keys.KEY_IS_COMPLETED.name(), false);
+
+
+//        if (wasEdited) {
+//            taskName = this.tvTaskName.getText().toString();
+//            category = this.tvCategory.getText().toString();
+//            priority = this.tvPriorityIcon.getText().toString().length();
+//
+//        } else {
+//
+//        } // editing; to make changes reflect on edit when edited twice
 
         if (isFinished) {
             this.btnFinishTask.setVisibility(View.GONE);
@@ -209,6 +223,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
                         setValues(name, category, startDate, endDate,
                                 notes, priority, notifWhen, notifOn, notifStartTime);
+                        wasEdited = true;
                     } else {
                         initComponents();
                     }

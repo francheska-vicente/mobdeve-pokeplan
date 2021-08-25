@@ -1,5 +1,7 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -36,7 +38,11 @@ public class UserSingleton {
     private DatabaseReference mTask;
     private DatabaseReference mPokemon;
 
+    private SharedPreferences sp;
+    private SharedPreferences.Editor spEditor;
+
     private UserSingleton(){
+
         this.ongoingTasks = new ArrayList<>();
         this.completedTasks = new ArrayList<>();
         this.userPokemonParty = new ArrayList<>();
@@ -599,6 +605,7 @@ public class UserSingleton {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 snapshot.getRef().removeValue();
+                Log.d("HELLO PARE", snapshot.getValue(UserPokemon.class).toString());
                 Log.d("Pokemon DB", "Pokemon was deleted from the DB.");
 
                 if (userPokemonPC.contains(pokemon)) {

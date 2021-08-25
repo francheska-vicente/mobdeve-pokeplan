@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.auth.User;
+
 public class PokemonDetailsActivity extends AppCompatActivity {
     private String sourceActivity;
 
@@ -25,6 +28,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private Button btnrare;
     private Button btnsuper;
     private Button btnpc;
+    private Button btnRelease;
 
     private LinearLayout llrare;
     private LinearLayout llsuper;
@@ -42,15 +46,17 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private TextView tvSuperCandyCtr;
 
     private Dialog editdialog;
+    private Dialog releasePkmnDialog;
     private Dialog confirmDialog;
 
     private UserPokemon pkmn;
+    private boolean checkerDeleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_details);
-
+        checkerDeleted = false;
         Intent intent = getIntent();
         String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
         sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
@@ -61,7 +67,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             pkmn = UserSingleton.getUser().getPokemonInPC(pkmnid);
 
         initComponents();
-        initButtons();
+        initButtons(pkmn);
         setAllComponents(pkmn);
         pkmn.getPokemonDetails().playPokemonCry();
     }
@@ -75,6 +81,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.tvPkmnNature = findViewById(R.id.tv_pkmndetails_nature);
         this.tvPkmnMetDate = findViewById(R.id.tv_pkmndetails_metdate);
         this.pbPkmnLevel = findViewById(R.id.pb_pkmndetails_level);
+        this.btnRelease = findViewById(R.id.btn_pkmndetails_release);
 
         this.tvRareCandyCtr = findViewById(R.id.tv_pkmndetails_rarecandyctr);
         this.tvSuperCandyCtr = findViewById(R.id.tv_pkmndetails_supercandyctr);
@@ -82,7 +89,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.llsuper = findViewById(R.id.ll_pkmndetails_supercandy);
     }
 
-    private void initButtons() {
+    private void initButtons(UserPokemon pkmn) {
         this.btnback = findViewById(R.id.ib_pkmndetails_back);
         this.btnedit = findViewById(R.id.ib_pkmndetails_edit);
 
@@ -105,6 +112,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             this.btnpc.setText("MOVE TO PC");
             if (UserSingleton.getUser().getUserPokemonParty().size() <= 1)
                 btnpc.setVisibility(View.GONE);
+
+            this.btnRelease.setVisibility(View.GONE);
         }
         else {
             this.btnpc.setOnClickListener(view -> movePokemonToParty());
@@ -116,7 +125,49 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             btnsuper.setVisibility(View.GONE);
             llrare.setVisibility(View.GONE);
             llsuper.setVisibility(View.GONE);
+
+            this.btnRelease.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    releaseDialogInit (v, pkmn);
+                }
+            });
         }
+    }
+
+    private void releaseDialogInit (View view, UserPokemon pkmn) {
+        releasePkmnDialog = new Dialog(this);
+        releasePkmnDialog.setContentView(R.layout.dialog_confirm);
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        releasePkmnDialog.getWindow().setLayout(width, height);
+        releasePkmnDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) releasePkmnDialog.findViewById(R.id.tv_dialog_confirm_title);
+        tvdialogtitle.setText(R.string.pkmndetails_releasepkmndiag_title);
+        TextView tvdialogtext = (TextView) releasePkmnDialog.findViewById(R.id.tv_dialog_confirm_text);
+        tvdialogtext.setText(R.string.pkmndetails_releasepkmndiag_text);
+        ImageView ivdialogicon = (ImageView) releasePkmnDialog.findViewById(R.id.iv_dialog_confirm_icon);
+        ivdialogicon.setImageResource(getImageId(getApplicationContext(),
+                "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
+
+        Button btndialogcancel = (Button) releasePkmnDialog.findViewById(R.id.btn_dialog_confirm_cancel);
+        btndialogcancel.setOnClickListener(v -> releasePkmnDialog.dismiss());
+
+        Button btndialogconfirm = (Button) releasePkmnDialog.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setText(R.string.pkmndetails_releasepkmndiag_button);
+        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                releasePkmnDialog.dismiss();
+                UserSingleton.getUser().deletePokemon(pkmn);
+                finish();
+                checkerDeleted = true;
+            }
+        });
+        releasePkmnDialog.show();
     }
 
     private void setAllComponents(UserPokemon pkmn) {
@@ -186,9 +237,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         confirmDialog.setContentView(R.layout.dialog_confirm);
 
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
 
-        confirmDialog.getWindow().setLayout(width, height);
+        confirmDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         confirmDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_confirm_title);
@@ -305,6 +355,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        UserSingleton.getUser().updatePokemon (pkmn);
+        if (!checkerDeleted)
+            UserSingleton.getUser().updatePokemon (pkmn);
     }
 }
