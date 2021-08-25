@@ -207,7 +207,7 @@ public class SettingsFragment extends Fragment {
                     hash.put("fullName", name);
                 }
 
-                UserSingleton.getUser().updateUser(hash, password);
+                UserSingleton.getUser().updateUserOnDB(hash, password);
             }
         });
 
@@ -241,8 +241,6 @@ public class SettingsFragment extends Fragment {
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
-            Log.d("hello pare", email);
-            Log.d("hello pare", password);
             if(email.isEmpty()) {
                 etEmail.setError("Email is required.");
                 etEmail.requestFocus();
