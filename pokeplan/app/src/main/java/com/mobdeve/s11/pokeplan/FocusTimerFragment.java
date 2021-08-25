@@ -204,7 +204,7 @@ public class FocusTimerFragment extends Fragment {
 
     private void startTimer() {
         timerIsDone = false;
-        timerIsStopped = false;
+        timerIsStopped = true;
 
         setOngoingComponents();
         setOngoingButtonListeners();
@@ -373,6 +373,7 @@ public class FocusTimerFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (timerIsStopped) stopTimer();
+        if (timerIsStopped)
+            stopTimer();
     }
 }
