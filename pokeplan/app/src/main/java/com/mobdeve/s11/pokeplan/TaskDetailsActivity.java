@@ -112,9 +112,38 @@ public class TaskDetailsActivity extends AppCompatActivity {
 //            category = this.tvCategory.getText().toString();
 //            priority = this.tvPriorityIcon.getText().toString().length();
 //
-//        } else {
+//            String [] temp = this.tvNotif.getText().toString().split(" ");
 //
-//        } // editing; to make changes reflect on edit when edited twice
+//            if (temp [0].equalsIgnoreCase("No")) {
+//                notifOn = false;
+//                notifStartTime = false;
+//                notifWhen = "";
+//            } else {
+//                notifOn = true;
+//                notifWhen = temp [0] + " " + temp [1];
+//
+//                if (temp [3].equalsIgnoreCase("Start")) {
+//                    notifStartTime = true;
+//                } else {
+//                    notifStartTime = false;
+//                }
+//            }
+//
+//        } else {
+//            taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+//            category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+//            priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+//            startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
+//            endDate = intent.getStringExtra(Keys.KEY_DEADLINE.name());
+//            notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+//            cEndDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
+//            cStartDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
+//            cEndTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
+//            cStartTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
+//            notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+//            notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+//            notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+//        }
 
         if (isFinished) {
             this.btnFinishTask.setVisibility(View.GONE);
