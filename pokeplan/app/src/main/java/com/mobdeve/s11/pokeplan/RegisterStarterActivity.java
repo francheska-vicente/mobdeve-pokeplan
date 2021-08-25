@@ -97,13 +97,12 @@ public class RegisterStarterActivity extends AppCompatActivity {
 
                             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                            Log.d("hello pare", user.toString());
-
                             DatabaseReference temp = databaseRef.child(uid);
 
                             temp.setValue(user).addOnCompleteListener(new OnCompleteListener<Void> () {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
+
                                     if(task.isSuccessful()) {
                                         Toast.makeText(RegisterStarterActivity.this, "User has been registered!",
                                                 Toast.LENGTH_LONG).show();
