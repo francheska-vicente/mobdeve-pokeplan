@@ -97,6 +97,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
 
                             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+                            Log.d("hello pare", user.toString());
+
                             DatabaseReference temp = databaseRef.child(uid);
 
                             temp.setValue(user).addOnCompleteListener(new OnCompleteListener<Void> () {
