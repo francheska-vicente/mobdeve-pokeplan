@@ -155,6 +155,7 @@
         android:id="@+id/imageView7"
         android:layout_width="414dp"
         android:layout_height="247dp"
+        android:tint="@color/lighter_gray"
         app:layout_constraintBottom_toTopOf="@+id/guideline23"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
