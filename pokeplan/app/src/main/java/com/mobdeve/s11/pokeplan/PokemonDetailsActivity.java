@@ -1,7 +1,5 @@
 package com.mobdeve.s11.pokeplan;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
     private String sourceActivity;
@@ -84,27 +84,22 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
     private void initButtons() {
         this.btnback = findViewById(R.id.ib_pkmndetails_back);
-        this.btnback.setOnClickListener(view -> onBackPressed());
-
         this.btnedit = findViewById(R.id.ib_pkmndetails_edit);
-        this.btnedit.setOnClickListener(view -> editNickname());
 
         this.btnrare = findViewById(R.id.btn_pkmndetails_rarecandy);
-        this.btnrare.setOnClickListener(view -> feedPokemon());
         if (UserSingleton.getUser().getUserDetails().getRareCandy() <= 0 ||
                 pkmn.getLevel() >= 100)
             btnrare.setEnabled(false);
 
-
         this.btnsuper = findViewById(R.id.btn_pkmndetails_supercandy);
-        this.btnsuper.setOnClickListener(view -> evolvePokemon());
         if (UserSingleton.getUser().getUserDetails().getSuperCandy() <= 0
                 || pkmn.getLevel() < pkmn.getPokemonDetails().getEvolveLvl()
                 || pkmn.getPokemonDetails().getEvolvesTo().isEmpty())
             btnsuper.setEnabled(false);
 
-        this.btnpc = findViewById(R.id.btn_pkmndetails_pc);
+        setButtonListeners();
 
+        this.btnpc = findViewById(R.id.btn_pkmndetails_pc);
         if (sourceActivity.equals("PARTY")) {
             this.btnpc.setOnClickListener(view -> movePokemonToPC());
             this.btnpc.setText("MOVE TO PC");
@@ -122,7 +117,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             llrare.setVisibility(View.GONE);
             llsuper.setVisibility(View.GONE);
         }
-
     }
 
     private void setAllComponents(UserPokemon pkmn) {
@@ -144,6 +138,13 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
         this.tvSuperCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getSuperCandy()));
+    }
+
+    private void setButtonListeners() {
+        this.btnback.setOnClickListener(view -> onBackPressed());
+        this.btnedit.setOnClickListener(view -> editNickname());
+        this.btnrare.setOnClickListener(view -> feedPokemon());
+        this.btnsuper.setOnClickListener(view -> evolvePokemon());
     }
 
     private void movePokemonToPC () {
