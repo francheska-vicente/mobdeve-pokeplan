@@ -1,5 +1,7 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -123,6 +125,7 @@ public class Egg {
      */
     private Pokemon generateSuperRarePokemon() {
         ArrayList<Pokemon> superrare = Pokedex.getPokedex().getSuperRarePokemonList();
+        Log.d("ror", superrare.toString());
         return superrare.get(new Random().nextInt(superrare.size()));
     }
 }
