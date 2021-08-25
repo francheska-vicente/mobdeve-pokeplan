@@ -196,7 +196,7 @@ public class AddTaskActivity extends AppCompatActivity {
         finish();
     }
 
-    private void intent () {
+    private void intent (){
         this.initPriority ();
         this.initCategory ();
         this.initNotifications ();
