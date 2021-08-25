@@ -221,11 +221,11 @@ public class SettingsFragment extends Fragment {
     }
 
     private void deleteAccDialog (View v) {
-        EditText etEmail = (EditText) dialogEdit.findViewById(R.id.et_dialog_delete_email);
-        EditText etPassword = (EditText) dialogEdit.findViewById(R.id.et_dialog_edit_password);
-
         dialogDelete = new Dialog(v.getContext());
         dialogDelete.setContentView(R.layout.dialog_twoinputs);
+
+        EditText etEmail = (EditText) dialogDelete.findViewById(R.id.et_dialog_delete_email);
+        EditText etPassword = (EditText) dialogDelete.findViewById(R.id.et_dialog_delete_password);
 
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
 
@@ -264,6 +264,9 @@ public class SettingsFragment extends Fragment {
             }
 
             UserSingleton.getUser().deleteUser(email, password);
+            spEditor.remove(Keys.KEY_EMAIL.name());
+            spEditor.remove(Keys.KEY_PASSWORD.name());
+            spEditor.apply();
 
             Intent i = new Intent(v1.getContext(), InitActivity.class);
             v1.getContext().startActivity(i);
