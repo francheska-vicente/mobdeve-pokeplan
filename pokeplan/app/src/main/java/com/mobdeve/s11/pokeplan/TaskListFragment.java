@@ -24,11 +24,13 @@ public class TaskListFragment extends Fragment {
     private RecyclerView rvOngoing;
     private ImageButton ibOngoingToggle;
     private boolean ongoingIsVisible;
+    private TextView tvOngoingLabel;
 
     private ArrayList<Task> completedList;
     private RecyclerView rvCompleted;
     private ImageButton ibCompletedToggle;
     private boolean completedIsVisible;
+    private TextView tvCompletedLabel;
 
     private TaskAdapter taskAdapterCompleted;
     private TaskAdapter taskAdapterOngoing;
@@ -76,10 +78,12 @@ public class TaskListFragment extends Fragment {
         this.tvFilterLabel = view.findViewById(R.id.tv_tasklist_filter_label);
         this.setFilterComponents();
 
+        this.tvOngoingLabel = view.findViewById(R.id.tv_tasklist_label_ongoing);
+        this.tvCompletedLabel = view.findViewById(R.id.tv_tasklist_label_completed);
+
         this.ibOngoingToggle = view.findViewById(R.id.ib_tasklist_toggleongoing);
         this.ibCompletedToggle = view.findViewById(R.id.ib_tasklist_togglecompleted);
         this.setButtonListeners();
-
 
         this.fabAdd = view.findViewById(R.id.fab_tasklist_add_task);
         this.setFabListener();
@@ -87,7 +91,7 @@ public class TaskListFragment extends Fragment {
 
     private void setButtonListeners() {
         this.ongoingIsVisible = true;
-        this.ibOngoingToggle.setOnClickListener(v -> {
+        View.OnClickListener ongoingListener = v -> {
             if(ongoingIsVisible) {
                 ongoingIsVisible = false;
                 ibOngoingToggle.setImageResource(R.drawable.arrow_down);
@@ -98,10 +102,12 @@ public class TaskListFragment extends Fragment {
                 ibOngoingToggle.setImageResource(R.drawable.arrow_up);
                 rvOngoing.setVisibility(View.VISIBLE);
             }
-        });
+        };
+        this.ibOngoingToggle.setOnClickListener(ongoingListener);
+        this.tvOngoingLabel.setOnClickListener(ongoingListener);
 
         this.completedIsVisible = true;
-        this.ibCompletedToggle.setOnClickListener(v -> {
+        View.OnClickListener completedListener = v -> {
             if(completedIsVisible) {
                 completedIsVisible = false;
                 ibCompletedToggle.setImageResource(R.drawable.arrow_down);
@@ -112,22 +118,26 @@ public class TaskListFragment extends Fragment {
                 ibCompletedToggle.setImageResource(R.drawable.arrow_up);
                 rvCompleted.setVisibility(View.VISIBLE);
             }
-        });
+        };
+        this.ibCompletedToggle.setOnClickListener(completedListener);
+        this.tvCompletedLabel.setOnClickListener(completedListener);
 
         this.filterIsVisible = false;
         this.spinFilter.setVisibility(View.INVISIBLE);
-        this.ibFilter.setOnClickListener(v -> {
-            if(filterIsVisible) {
+        View.OnClickListener filterListener = v -> {
+            if (filterIsVisible) {
                 filterIsVisible = false;
                 spinFilter.setVisibility(View.INVISIBLE);
                 tvFilterLabel.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 filterIsVisible = true;
                 spinFilter.setVisibility(View.VISIBLE);
                 tvFilterLabel.setVisibility(View.INVISIBLE);
             }
-        });
+        };
+
+        this.ibFilter.setOnClickListener(filterListener);
+        this.tvFilterLabel.setOnClickListener(filterListener);
     }
 
     private void setFilterComponents() {

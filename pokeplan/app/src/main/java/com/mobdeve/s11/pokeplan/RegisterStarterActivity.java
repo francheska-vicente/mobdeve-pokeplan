@@ -22,7 +22,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class RegisterStarterActivity extends AppCompatActivity {
     private ImageButton btnregisterstartback;
@@ -139,9 +138,9 @@ public class RegisterStarterActivity extends AppCompatActivity {
     }
 
     private void initPkmnBtns() {
-        btnspkmn = new ArrayList<ImageButton>();
+        btnspkmn = new ArrayList<>();
         for(int id : BUTTON_IDS) {
-            ImageButton button = (ImageButton)findViewById(id);
+            ImageButton button = findViewById(id);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     int pokeNum = Integer.valueOf((String) view.getTag ());
