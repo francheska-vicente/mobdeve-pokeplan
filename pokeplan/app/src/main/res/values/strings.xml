@@ -41,8 +41,7 @@
 
     <!--  TODO: HUHUHUUHUHUHUHUHUHU  -->
     <string name="focustimer_dialog_info_title">Focus Timer</string>
-    <string name="focustimer_dialog_info_text">
-        help</string>
+    <string name="focustimer_dialog_info_text">Using this focus timer would help you stay productive by removing your impulse to check your phone. During the duration of this timer, you are not allowed to leave the screen. After the set time, you would receive a Pokémon.</string>
 
 
     <string name="focustimer_dialog_error_title">Invalid Time</string>
