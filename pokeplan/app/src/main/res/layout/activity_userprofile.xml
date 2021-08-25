@@ -117,18 +117,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/background_forest" />
 
-        <ImageButton
-            android:id="@+id/ib_userprofile_back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:backgroundTint="#00FFFFFF"
-            android:fitsSystemWindows="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/arrow_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/pink_button" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -139,6 +127,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p5"
         app:srcCompat="@drawable/circle" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_tasklist_hor8p6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <ImageButton
+        android:id="@+id/ib_userprofile_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#00FFFFFF"
+        android:fitsSystemWindows="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintBottom_toTopOf="@+id/gl_tasklist_hor8p6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/darker_pink" />
 
     <TextView
         android:id="@+id/tv_userprofile_name"
