@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -34,6 +35,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class AddTaskActivity extends AppCompatActivity {
+    private ImageButton ibBack;
+
     private String category;
     private String priority;
     private boolean checkerNotif;
@@ -71,6 +74,13 @@ public class AddTaskActivity extends AppCompatActivity {
         this.currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.initCalendar ();
         this.intent ();
+
+        ibBack = findViewById(R.id.ib_add_task_back);
+        this.setButtonListeners();
+    }
+
+    private void setButtonListeners() {
+        ibBack.setOnClickListener(view -> onBackPressed());
     }
 
     private int convertHour (int hour, String temp) {
