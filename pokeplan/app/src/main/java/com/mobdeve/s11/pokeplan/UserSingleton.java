@@ -157,7 +157,7 @@ public class UserSingleton {
         });
     }
 
-    public void updateUserOnDB(HashMap<String, Object> hash, String password) {
+    public void updateUserOnDB(HashMap<String, Object> hash, String password, CustomDate customDate) {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         AuthCredential credential = EmailAuthProvider
                 .getCredential(userDetails.getEmail(), password);
@@ -171,6 +171,18 @@ public class UserSingleton {
                         public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Log.d("User DB", "User's information was successfully edited.");
+
+                                if (hash.containsKey("userName")) {
+                                    userDetails.setUserName(hash.get("userName").toString());
+                                }
+
+                                if (hash.containsKey("fullName")) {
+                                    userDetails.setFullName(hash.get("fullName").toString());
+                                }
+
+                                if (customDate != null) {
+                                    userDetails.setBirthday(customDate);
+                                }
                             }
                         }
                     });
