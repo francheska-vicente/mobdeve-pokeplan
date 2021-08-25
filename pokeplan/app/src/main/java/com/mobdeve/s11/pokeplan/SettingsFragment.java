@@ -236,8 +236,6 @@ public class SettingsFragment extends Fragment {
 
         Button btnDialogConfirm = dialogDelete.findViewById(R.id.btn_delete_account_confirm);
         btnDialogConfirm.setOnClickListener(v1 -> {
-            etEmail = dialogDelete.findViewById(R.id.et_dialog_delete_email);
-            etPassword = dialogDelete.findViewById(R.id.et_dialog_delete_password);
             String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
