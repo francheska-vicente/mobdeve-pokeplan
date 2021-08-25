@@ -139,9 +139,9 @@ public class FocusTimerFragment extends Fragment {
 
         ibinfo.setOnClickListener(view -> createInfoDialog());
         btnfocustimer.setOnClickListener(view -> {
-            //if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
+            if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
                 startTimer();
-            ///else createTimeErrorDialog();
+            else createTimeErrorDialog();
         });
     }
 
