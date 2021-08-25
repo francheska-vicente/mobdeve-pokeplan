@@ -248,6 +248,8 @@ public class FocusTimerFragment extends Fragment {
         timer = new Timer();
         setStartComponents();
         setStartButtonListeners();
+        
+        timerIsStopped = false;
     }
 
     private void createConfirmStopTimerDialog() {
