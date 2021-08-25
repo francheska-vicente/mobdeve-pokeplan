@@ -1,8 +1,6 @@
 package com.mobdeve.s11.pokeplan;
 
 public class Task {
-    private final String[] categories =
-            {"School", "Work", "Hobby", "Leisure", "Chores", "Health", "Social", "Others"};
 
     private String taskName;
     private int priority;
@@ -16,7 +14,8 @@ public class Task {
     private boolean beforeStartTime;
     private boolean isNotif;
 
-    public Task (String taskID, String taskName, int priority, String category, CustomDate startDate, CustomDate endDate, String description,
+    public Task (String taskID, String taskName, int priority, String category,
+                 CustomDate startDate, CustomDate endDate, String description,
                  String notifWhen, boolean beforeStartTime, boolean isNotif) {
         this.taskID = taskID;
         this.taskName = taskName;
