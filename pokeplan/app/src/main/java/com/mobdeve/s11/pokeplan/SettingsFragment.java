@@ -193,6 +193,7 @@ public class SettingsFragment extends Fragment {
                     hash.put("userName", username);
                 }
 
+                CustomDate customBirthday = null;
                 if (!birthday.isEmpty()) {
                     String [] temp = birthday.split("\\.");
 
@@ -200,14 +201,19 @@ public class SettingsFragment extends Fragment {
                     int day = Integer.parseInt(temp[0]);
                     int year = Integer.parseInt(temp[2]);
 
-                    hash.put("birthday", new CustomDate(year, month, day, 0, 0));
+                    customBirthday = new CustomDate(year, month, day, 0, 0);
+
+                    hash.put("birthday", customBirthday);
                 }
 
                 if (!name.isEmpty()) {
                     hash.put("fullName", name);
                 }
 
-                UserSingleton.getUser().updateUserOnDB(hash, password);
+                UserSingleton.getUser().updateUserOnDB(hash, password, customBirthday);
+                dialogEdit.dismiss();
+                Intent intent = new Intent(v.getContext(), UserProfileActivity.class);
+                startActivity(intent);
             }
         });
 
