@@ -84,7 +84,7 @@ public class UserProfileActivity extends AppCompatActivity {
         spEditor.remove(Keys.KEY_PASSWORD.name());
         spEditor.apply();
         UserSingleton.removeUser();
-        UserSingleton.getUser().logoutUser();
+        //UserSingleton.getUser().logoutUser();
         Intent intent = new Intent(UserProfileActivity.this, InitActivity.class);
         startActivity(intent);
     }
