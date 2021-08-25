@@ -1,14 +1,16 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.os.Bundle;
+import android.widget.ImageButton;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-
 import java.util.ArrayList;
 
 public class FaqsActivity extends AppCompatActivity {
+    private ImageButton ibBack;
 
     private RecyclerView rvFaqsList;
     private RecyclerView.LayoutManager faqsListManager;
