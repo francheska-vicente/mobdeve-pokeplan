@@ -23,7 +23,11 @@ public class FaqsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faqs);
 
-        this.initRecyclerView ();
+
+        ibBack = findViewById(R.id.ib_add_task_back);
+        this.setButtonListeners();
+
+        this.initRecyclerView();
     }
 
     private void initRecyclerView () {
@@ -39,5 +43,9 @@ public class FaqsActivity extends AppCompatActivity {
 
         this.faqsAdapter = new FaqsAdapter(this.questionList, this.answerList);
         this.rvFaqsList.setAdapter(this.faqsAdapter);
+    }
+
+    private void setButtonListeners() {
+        ibBack.setOnClickListener(view -> onBackPressed());
     }
 }
