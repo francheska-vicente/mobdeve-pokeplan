@@ -139,9 +139,9 @@ public class FocusTimerFragment extends Fragment {
 
         ibinfo.setOnClickListener(view -> createInfoDialog());
         btnfocustimer.setOnClickListener(view -> {
-            if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
+            //if (timeToMilliseconds(timer) >= (1000 * 60 * 5))
                 startTimer();
-            else createTimeErrorDialog();
+            ///else createTimeErrorDialog();
         });
     }
 
@@ -233,6 +233,9 @@ public class FocusTimerFragment extends Fragment {
         timerIsDone = true;
         timerIsStopped = false;
 
+        if(confirmstoptimerdialog != null)
+            confirmstoptimerdialog.dismiss();
+
         setFinishComponents();
         setFinishButtonListeners();
 
@@ -242,6 +245,7 @@ public class FocusTimerFragment extends Fragment {
         UserSingleton.getUser().getUserDetails().addHatchedPkmn();
 
         createHatchEggDialog(hatch);
+        ivegg.setImageResource(getImageId(getContext(), "pkmn_" + hatch.getDexNum()));
     }
 
     private void resetTimer() {
@@ -354,7 +358,7 @@ public class FocusTimerFragment extends Fragment {
     private void dimScreen(boolean dimmed) {
         WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
         if (dimmed)
-            lp.screenBrightness = 0.01f;
+            lp.screenBrightness = 0.0f;
         else
             lp.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
 
