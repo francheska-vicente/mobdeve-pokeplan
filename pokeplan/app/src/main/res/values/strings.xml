@@ -1,7 +1,7 @@
 <resources>
     <!-- General -->
     <string name="app_name">PokéPlan</string>
-    <string name="tagline">tagline here. tagline</string>
+    <string name="tagline">Stay productive! Pika pika pi!</string>
 
     <!-- Login / Register -->
     <string name="register_tagline">Hello! Create a new account now.</string>
