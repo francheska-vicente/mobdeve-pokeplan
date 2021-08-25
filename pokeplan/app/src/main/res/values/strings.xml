@@ -136,6 +136,9 @@
     <string name="pkmndetails_movetopartydiag_title">Move to Party</string>
     <string name="pkmndetails_movetopartydiag_text">This would add the pokemon to your party.</string>
     <string name="pkmndetails_movetopartydiag_button">Move to Party</string>
+    <string name="pkmndetails_releasepkmndiag_button">Release Pokemon</string>
+    <string name="pkmndetails_releasepkmndiag_title">Release Pokemon to the wild?</string>
+    <string name="pkmndetails_releasepkmndiag_text">Releasing this pokemon means that you will not be able to see it in your PC or your party.</string>
 
     <!-- Task Details -->
     <string name="task_details_confirm_finish_title">Completion of Task</string>
