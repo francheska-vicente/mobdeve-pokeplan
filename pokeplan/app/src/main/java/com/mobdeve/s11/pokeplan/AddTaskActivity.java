@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -101,7 +102,7 @@ public class AddTaskActivity extends AppCompatActivity {
                                String notif, boolean val) {
         int monthEnd = dateTimeInputToInt(endDate, 3, 5);
         int dayEnd = dateTimeInputToInt(endDate, 0, 2);
-        int yearEnd = dateTimeInputToInt(endDate, 6, 8);
+        int yearEnd = dateTimeInputToInt(endDate, 6, 10);
 
         int hourEnd = this.convertHour(dateTimeInputToInt(endTime, 0, 2), endTime.substring(6, 8));
         int minuteEnd = dateTimeInputToInt(endTime, 3, 5);
@@ -115,7 +116,7 @@ public class AddTaskActivity extends AppCompatActivity {
         else {
             int monthStart = dateTimeInputToInt(startDate, 3, 5);
             int dayStart = dateTimeInputToInt(startDate, 0, 2);
-            int yearStart = dateTimeInputToInt(startDate, 6, 8);
+            int yearStart = dateTimeInputToInt(startDate, 6, 10);
 
             int hourStart = this.convertHour(dateTimeInputToInt(startTime, 0, 2), startTime.substring(6, 8));
             int minuteStart = dateTimeInputToInt(startTime, 3, 5);
@@ -307,14 +308,14 @@ public class AddTaskActivity extends AppCompatActivity {
                 if (!endDate.equals("")) {
                     if (!startDate.equals("") /* && !startTime.equals("")*/) {
                         if (!startTime.equals("")) {
-                            String tempStartDate = startDate.substring(0, 6) + "20" + startDate.substring(6, 8);
+                            String tempStartDate = startDate;
                             String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
 
-                            String tempEndDate = endDate.substring(0, 6) + "20" + endDate.substring(6, 8);
+                            String tempEndDate = endDate;
                             String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
 
                             long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
-
+                            Log.d("hello pare", Long.toString(diff));
                             if (diff < 0) {
                                 etEndDate.setError("End date should be later than the Start date.");
                                 etEndDate.requestFocus();
@@ -354,7 +355,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     String currentTime = new DecimalFormat("00").format(currentHour) + ":" +
                             new DecimalFormat("00").format(currentMinute)+ " " + temp;
 
-                    String tempEndDate = endDate.substring(0, 6) + "20" + endDate.substring(6, 8);
+                    String tempEndDate = endDate;
                     String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
                     long diff = getDiff(tempEndDate, currentDate, tempEndTime, currentTime);
 
@@ -503,7 +504,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 calendarStart.set(Calendar.MONTH, month);
                 calendarStart.set(Calendar.DAY_OF_MONTH, day);
 
-                String myFormat = "dd.MM.yy";
+                String myFormat = "dd.MM.yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
 
                 startDate.setText(sdf.format(calendarStart.getTime()));
@@ -522,10 +523,6 @@ public class AddTaskActivity extends AppCompatActivity {
             String [] temp = sStartDate.split("\\.");
             day = Integer.parseInt(temp[0]);
             month = Integer.parseInt(temp[1]) - 1;
-
-            if (temp[2].length() == 4) {
-                temp[2] = temp[2].substring(2,4);
-            }
 
             startDate.setText(format.format(day) + "." + format.format(month + 1) + "." + temp[2]);
         }
@@ -551,7 +548,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 calendarEnd.set(Calendar.MONTH, month);
                 calendarEnd.set(Calendar.DAY_OF_MONTH, day);
 
-                String myFormat = "dd.MM.yy";
+                String myFormat = "dd.MM.yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
 
                 endDate.setText(sdf.format(calendarEnd.getTime()));
@@ -568,10 +565,6 @@ public class AddTaskActivity extends AppCompatActivity {
             String [] temp = sEndDate.split("\\.");
             day = Integer.parseInt(temp[0]);
             month = Integer.parseInt(temp[1]) - 1;
-
-            if (temp[2].length() == 4) {
-                temp[2] = temp[2].substring(2,4);
-            }
 
             endDate.setText(format.format(day) + "." + format.format(month + 1) + "." + temp[2]);
         }
