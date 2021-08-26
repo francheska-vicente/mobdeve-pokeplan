@@ -1,13 +1,14 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.os.Bundle;
+import android.os.Handler;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import android.os.Bundle;
-import android.os.Handler;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,5 +25,4 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(navView, navController);
         }, 1000);
     }
-
 }
