@@ -376,7 +376,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 body,
                 icon);
 
-        Button btndialogok = this.findViewById(R.id.btn_dialog_ok);
+        Button btndialogok = candyDialog.findViewById(R.id.btn_dialog_ok);
         btndialogok.setOnClickListener(v -> candyDialog.dismiss());
         candyDialog.show();
     }
