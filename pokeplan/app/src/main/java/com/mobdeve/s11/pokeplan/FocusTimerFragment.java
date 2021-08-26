@@ -263,7 +263,7 @@ public class FocusTimerFragment extends Fragment {
         confirmstoptimerdialog.setConfirmComponents(
                 getString(R.string.focustimer_dialog_confirm_title),
                 getString(R.string.focustimer_dialog_confirm_text),
-                R.drawable.sunny_side_up,
+                R.drawable.egg,
                 getString(R.string.focustimer_dialog_confirm_title)
         );
 
@@ -322,7 +322,7 @@ public class FocusTimerFragment extends Fragment {
         stopTimerdialog.setOKComponents(
                 getString(R.string.focustimer_dialog_egg_break_title),
                 getString(R.string.focustimer_dialog_egg_break_text),
-                R.drawable.sunny_side_up);
+                R.drawable.deadegg);
 
         stopTimerdialog.show();
     }
