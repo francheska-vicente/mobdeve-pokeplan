@@ -95,7 +95,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart () {
+    public void onRestart () {
         super.onRestart();
 
         final Handler handler = new Handler();
