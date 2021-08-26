@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,8 +20,13 @@ public class HomeFragment extends Fragment {
     private RecyclerView rvPokemonParty;
     private PokemonPartyAdapter ppAdapter;
 
-    private ImageButton ibuserprofile;
-    private ImageButton ibpokemonpc;
+    private ImageButton ibUserProfile;
+    private ImageButton ibPokemonPC;
+
+    private TextView tvOngoingTaskCtr;
+    private TextView tvRareCandyCtr;
+    private TextView tvSuperCandyCtr;
+    private TextView tvPokedexCtr;
 
     public HomeFragment() {
     }
@@ -49,11 +55,17 @@ public class HomeFragment extends Fragment {
      */
     private void initComponents(View view) {
         this.rvPokemonParty = view.findViewById(R.id.rv_home_party);
-        setRecyclerView();
+        this.setRecyclerView();
 
-        this.ibuserprofile = view.findViewById(R.id.ib_home_user);
-        this.ibpokemonpc = view.findViewById(R.id.ib_home_pc);
-        setButtonListeners();
+        this.ibUserProfile = view.findViewById(R.id.ib_home_user);
+        this.ibPokemonPC = view.findViewById(R.id.ib_home_pc);
+        this.setButtonListeners();
+
+        this.tvOngoingTaskCtr = view.findViewById(R.id.tv_home_ongoingtaskcount);
+        this.tvRareCandyCtr = view.findViewById(R.id.tv_home_rarecandycount);
+        this.tvSuperCandyCtr = view.findViewById(R.id.tv_home_supercandycount);
+        this.tvPokedexCtr = view.findViewById(R.id.tv_home_pokedexcount);
+        this.setCounterValues();
     }
 
     /**
@@ -71,14 +83,35 @@ public class HomeFragment extends Fragment {
      * Sets the onClickListeners for all buttons
      */
     private void setButtonListeners() {
-        this.ibuserprofile.setOnClickListener(v -> {
+        this.ibUserProfile.setOnClickListener(v -> {
             Intent i = new Intent(v.getContext(), UserProfileActivity.class);
             v.getContext().startActivity(i);
         });
-        this.ibpokemonpc.setOnClickListener(v -> {
+        this.ibPokemonPC.setOnClickListener(v -> {
             Intent i = new Intent(v.getContext(), PokemonPCActivity.class);
             v.getContext().startActivity(i);
         });
+    }
+
+    /**
+     * Sets the counters in the Your Progress area
+     */
+    private void setCounterValues() {
+        int ongoingtask = UserSingleton.getUser().getOngoingTasks().size();
+        int rarecandy = UserSingleton.getUser().getUserDetails().getRareCandy();
+        int supercandy = UserSingleton.getUser().getUserDetails().getSuperCandy();
+        int pokedex = UserSingleton.getUser().getUserDetails().getNumCaught();
+
+        this.tvOngoingTaskCtr.setText(formatCounter(ongoingtask));
+        this.tvRareCandyCtr.setText(formatCounter(rarecandy));
+        this.tvSuperCandyCtr.setText(formatCounter(supercandy));
+        this.tvPokedexCtr.setText(Integer.toString(pokedex));
+    }
+
+    private String formatCounter(int value) {
+        if (value > 999)
+            return "999+";
+        return "" + value;
     }
 
     @Override
