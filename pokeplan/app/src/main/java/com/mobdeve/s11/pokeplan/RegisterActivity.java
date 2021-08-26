@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                 calendarStart.set(Calendar.MONTH, month);
                 calendarStart.set(Calendar.DAY_OF_MONTH, day);
 
-                String myFormat = "dd.MM.yy";
+                String myFormat = "dd.MM.yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
 
                 etBirthday.setText(sdf.format(calendarStart.getTime()));
