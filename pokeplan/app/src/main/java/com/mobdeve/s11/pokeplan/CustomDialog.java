@@ -53,8 +53,8 @@ public class CustomDialog extends Dialog {
         ImageView ivdialogicon = this.findViewById(R.id.iv_dialog_ok_icon);
         ivdialogicon.setImageResource(icon);
 
-        Button btndialogcancel = this.findViewById(R.id.btn_dialog_ok);
-        btndialogcancel.setOnClickListener(v -> this.dismiss());
+        Button btndialogok = this.findViewById(R.id.btn_dialog_ok);
+        btndialogok.setOnClickListener(v -> this.dismiss());
     }
 
     public void setErrorComponents(String title, String body) {
