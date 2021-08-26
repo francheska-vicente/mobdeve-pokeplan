@@ -1,7 +1,10 @@
 package com.mobdeve.s11.pokeplan;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -286,7 +289,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         confirmFinish.setConfirmComponents(
                 getString(R.string.task_details_confirm_finish_title),
                 getString(R.string.task_details_confirm_finish_text),
-                R.drawable.warning,
+                R.drawable.medal,
                 getString(R.string.task_details_confirm_finish_button)
         );
 
@@ -363,13 +366,13 @@ public class TaskDetailsActivity extends AppCompatActivity {
         int icon;
         if (candyType.equalsIgnoreCase("rareCandy")) {
             icon = R.drawable.rarecandy;
-            body = body + " rare candies";
+            body = body + " Rare Candies";
         }
         else {
             icon = R.drawable.supercandy;
-            body = body + " super candies";
+            body = body + " Super Candies";
         }
-        body = body + " because you completed this task.";
+        body = body + " for completing this task!";
 
         candyDialog.setOKComponents(
                 getString(R.string.task_details_candy_title),
@@ -379,6 +382,13 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Button btndialogok = candyDialog.findViewById(R.id.btn_dialog_ok);
         btndialogok.setOnClickListener(v -> candyDialog.dismiss());
         candyDialog.show();
+
+        AudioManager audioManager =
+                (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamVolume
+                (AudioManager.STREAM_MUSIC, 5,0);
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.finishtask);
+        mediaPlayer.start();
     }
 
     private void setCategoryIcon (String category) {
