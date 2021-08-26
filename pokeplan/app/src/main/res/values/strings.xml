@@ -38,8 +38,6 @@
     <string name="focustimer_dialog_hatch_title">Oh! What\'s this?</string>
     <string name="focustimer_dialog_hatch_text">
         You hatched a</string>
-
-    <!--  TODO: HUHUHUUHUHUHUHUHUHU  -->
     <string name="focustimer_dialog_info_title">Focus Timer</string>
     <string name="focustimer_dialog_info_text">Using this focus timer would help you stay productive by removing your impulse to check your phone. During the duration of this timer, you are not allowed to leave the screen. After the set time, you would receive a Pokémon.</string>
 
@@ -50,7 +48,7 @@
 
     <!-- Focus Timer egg break -->
     <string name="focustimer_dialog_egg_break_title">Oh no!</string>
-    <string name="focustimer_dialog_egg_break_text">Because you stopped your timer, the egg cracked.</string>
+    <string name="focustimer_dialog_egg_break_text">It seems like your egg won\'t hatch. Try to stay focused next time!</string>
 
     <!-- Task List -->
     <string name="tasklist_title">TASK LIST</string>
@@ -140,9 +138,9 @@
     <string name="pkmndetails_releasepkmndiag_text">Releasing this pokemon means that you will not be able to see it in your PC or your party.</string>
 
     <!-- Task Details -->
-    <string name="task_details_confirm_finish_title">Completion of Task</string>
-    <string name="task_details_confirm_finish_text">This would transfer the task from ongoing list to completed list.</string>
-    <string name="task_details_confirm_finish_button">Task Completed</string>
+    <string name="task_details_confirm_finish_title">Finish Task</string>
+    <string name="task_details_confirm_finish_text">Are you sure? You won\'t be able to undo this!</string>
+    <string name="task_details_confirm_finish_button">Finish</string>
     <string name="task_details_delete_task_title">Deleting the Task</string>
     <string name="task_details_delete_task_text">This would remove the task from your ongoing or completed task list.</string>
     <string name="task_details_delete_task_button">Delete task</string>
@@ -161,4 +159,5 @@
     <string name="init_register_btn">REGISTER</string>
     <string name="init_login_btn">LOGIN</string>
     <string name="login_label">Login</string>
+    <string name="home_progress_label">YOUR PROGRESS</string>
 </resources>
