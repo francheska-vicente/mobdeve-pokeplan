@@ -380,7 +380,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 icon);
 
         Button btndialogok = candyDialog.findViewById(R.id.btn_dialog_ok);
-        btndialogok.setOnClickListener(v -> candyDialog.dismiss());
+        btndialogok.setOnClickListener(v -> {
+            candyDialog.dismiss();
+            finish();
+        });
         candyDialog.show();
 
         AudioManager audioManager =
