@@ -1,13 +1,6 @@
 package com.mobdeve.s11.pokeplan;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +8,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -35,9 +34,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private Button btnFinishTask;
     private ImageButton ibDeleteTask;
     private ImageButton ibEditTask;
-    private Dialog confirmFinish;
-    private Dialog confirmDelete;
-    private Dialog candyDialog;
+    private CustomDialog confirmFinish;
+    private CustomDialog confirmDelete;
+    private CustomDialog candyDialog;
 
     private boolean wasEdited;
 
@@ -260,79 +259,42 @@ public class TaskDetailsActivity extends AppCompatActivity {
             }
     );
 
-    protected void deleteDialog(View v, String taskID) {
-        confirmDelete = new Dialog(v.getContext());
+    protected void deleteDialog(View view, String taskID) {
+        confirmDelete = new CustomDialog(view.getContext());
+        confirmDelete.setDialogType(CustomDialog.CONFIRM);
 
-        confirmDelete.setContentView(R.layout.dialog_confirm);
+        confirmDelete.setConfirmComponents(
+                getString(R.string.task_details_delete_task_title),
+                getString(R.string.task_details_delete_task_text),
+                R.drawable.warning,
+                getString(R.string.task_details_delete_task_button)
+        );
 
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-        confirmDelete.getWindow().setLayout(width, height);
-        confirmDelete.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) confirmDelete.findViewById(R.id.tv_dialog_confirm_title);
-        tvdialogtitle.setText(R.string.task_details_delete_task_title);
-        TextView tvdialogtext = (TextView) confirmDelete.findViewById(R.id.tv_dialog_confirm_text);
-        tvdialogtext.setText(R.string.task_details_delete_task_text);
-        ImageView ivdialogicon = (ImageView) confirmDelete.findViewById(R.id.iv_dialog_confirm_icon);
-        ivdialogicon.setImageResource(R.drawable.warning);
-
-        Button btndialogcancel = (Button) confirmDelete.findViewById(R.id.btn_dialog_confirm_cancel);
-        btndialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDelete.dismiss();
-            }
-        });
-
-        Button btndialogconfirm = (Button) confirmDelete.findViewById(R.id.btn_dialog_confirm);
-        btndialogconfirm.setText(R.string.task_details_delete_task_button);
-        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDelete.dismiss();
-                UserSingleton.getUser().deleteTask(taskID);
-                finish();
-            }
+        Button btndialogconfirm = confirmDelete.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setOnClickListener(v -> {
+            confirmDelete.dismiss();
+            UserSingleton.getUser().deleteTask(taskID);
+            finish();
         });
         confirmDelete.show();
     }
 
-    protected void createDialog (View v, String taskID) {
-        confirmFinish = new Dialog(v.getContext());
-        confirmFinish.setContentView(R.layout.dialog_confirm);
+    protected void createDialog (View view, String taskID) {
+        confirmFinish = new CustomDialog(view.getContext());
+        confirmFinish.setDialogType(CustomDialog.CONFIRM);
 
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+        confirmFinish.setConfirmComponents(
+                getString(R.string.task_details_confirm_finish_title),
+                getString(R.string.task_details_confirm_finish_text),
+                R.drawable.warning,
+                getString(R.string.task_details_confirm_finish_button)
+        );
 
-        confirmFinish.getWindow().setLayout(width, height);
-        confirmFinish.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) confirmFinish.findViewById(R.id.tv_dialog_confirm_title);
-        tvdialogtitle.setText(R.string.task_details_confirm_finish_title);
-        TextView tvdialogtext = (TextView) confirmFinish.findViewById(R.id.tv_dialog_confirm_text);
-        tvdialogtext.setText(R.string.task_details_confirm_finish_text);
-        ImageView ivdialogicon = (ImageView) confirmFinish.findViewById(R.id.iv_dialog_confirm_icon);
-        ivdialogicon.setImageResource(R.drawable.warning);
-
-        Button btndialogcancel = (Button) confirmFinish.findViewById(R.id.btn_dialog_confirm_cancel);
-        btndialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmFinish.dismiss();
-            }
-        });
-
-        Button btndialogconfirm = (Button) confirmFinish.findViewById(R.id.btn_dialog_confirm);
-        btndialogconfirm.setText(R.string.task_details_confirm_finish_button);
-        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmFinish.dismiss();
-                UserSingleton.getUser().moveToCompletedTask(taskID);
-                giveCandies();
-            }
+        Button btndialogconfirm = confirmFinish.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setOnClickListener(v -> {
+            confirmFinish.dismiss();
+            UserSingleton.getUser().moveToCompletedTask(taskID);
+            giveCandies();
         });
         confirmFinish.show();
     }
@@ -394,44 +356,28 @@ public class TaskDetailsActivity extends AppCompatActivity {
     }
 
     private void createCandyDialog (String candyType, int numberOfCandies) {
-        candyDialog = new Dialog(TaskDetailsActivity.this);
+        candyDialog = new CustomDialog(TaskDetailsActivity.this);
+        candyDialog.setDialogType(CustomDialog.OK);
 
-        candyDialog.setContentView(R.layout.dialog_ok);
-
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-        candyDialog.getWindow().setLayout(width, height);
-        candyDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) candyDialog.findViewById(R.id.tv_dialog_ok_title);
-        tvdialogtitle.setText(R.string.task_details_candy_title);
-        TextView tvdialogtext = (TextView) candyDialog.findViewById(R.id.tv_dialog_ok_text);
-
-        String text = "You got " + numberOfCandies;
-
-
-        ImageView ivdialogicon = (ImageView) candyDialog.findViewById(R.id.iv_dialog_ok_icon);
-
+        String body = "You got " + numberOfCandies;
+        int icon;
         if (candyType.equalsIgnoreCase("rareCandy")) {
-            ivdialogicon.setImageResource(R.drawable.rarecandy);
-            text = text + " rare candies";
-        } else {
-            ivdialogicon.setImageResource(R.drawable.supercandy);
-            text = text + " super candies";
+            icon = R.drawable.rarecandy;
+            body = body + " rare candies";
         }
+        else {
+            icon = R.drawable.supercandy;
+            body = body + " super candies";
+        }
+        body = body + " because you completed this task.";
 
-        text = text + " because you completed this task.";
-        tvdialogtext.setText(text);
+        candyDialog.setOKComponents(
+                getString(R.string.task_details_candy_title),
+                body,
+                icon);
 
-        Button btndialogok = (Button) candyDialog.findViewById(R.id.btn_dialog_ok);
-        btndialogok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                candyDialog.dismiss();
-                finish();
-            }
-        });
+        Button btndialogok = this.findViewById(R.id.btn_dialog_ok);
+        btndialogok.setOnClickListener(v -> candyDialog.dismiss());
         candyDialog.show();
     }
 
