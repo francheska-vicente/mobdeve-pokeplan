@@ -345,7 +345,9 @@
             android:id="@+id/tv_pkmndetails_supercandyctr"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/raleway_medium"
+            android:gravity="center"
             android:text="10"
             android:textAllCaps="false"
             android:textColor="@color/darkest_gray"
@@ -354,8 +356,8 @@
 
         <ImageView
             android:id="@+id/iv_pkmndetails_rarecandyicon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
             app:srcCompat="@drawable/supercandy" />
     </LinearLayout>
 
@@ -374,7 +376,9 @@
             android:id="@+id/tv_pkmndetails_rarecandyctr"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/raleway_medium"
+            android:gravity="center"
             android:text="1000"
             android:textAllCaps="false"
             android:textColor="@color/darkest_gray"
@@ -383,8 +387,8 @@
 
         <ImageView
             android:id="@+id/iv_pkmndetails_supercandyicon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
             app:srcCompat="@drawable/rarecandy" />
     </LinearLayout>
 
