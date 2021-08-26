@@ -85,14 +85,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35" />
+        app:layout_constraintGuide_percent="0.3" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_tasklist_hor8p5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.29" />
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_userprofile_label"
@@ -160,6 +160,8 @@
         android:textAllCaps="false"
         android:textColor="@color/darker_gray"
         android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tv_userprofile_name_label"
         app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_name_label"
         app:lineHeight="38dp" />
@@ -183,7 +185,7 @@
         android:id="@+id/tv_userprofile_email_label"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/raleway_bold"
         android:text="EMAIL"
         android:textAllCaps="false"
@@ -191,6 +193,20 @@
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/tv_userprofile_name_label"
         app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_name"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_userprofile_bday_label"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="BIRTHDAY"
+        android:textAllCaps="false"
+        android:textColor="@color/darkest_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_userprofile_name_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_email"
         app:lineHeight="38dp" />
 
     <TextView
@@ -202,8 +218,25 @@
         android:textAllCaps="false"
         android:textColor="@color/darker_gray"
         android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tv_userprofile_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_email_label"
+        app:lineHeight="38dp" />
+
+    <TextView
+        android:id="@+id/tv_userprofile_bday"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/raleway_light_italic"
+        android:text="January 8, 2001"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_userprofile_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_bday_label"
         app:lineHeight="38dp" />
 
     <ImageView
@@ -212,8 +245,10 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor8p5"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/pkmn_96" />
 
     <View
@@ -226,7 +261,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_email" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_userprofile_bday" />
 
     <ImageView
         android:id="@+id/iv_userprofile_egg"
