@@ -8,6 +8,45 @@
     android:paddingBottom="4dp"
     tools:context=".AddTaskActivity">
 
+    <TextView
+        android:id="@+id/tv_add_task_asterisk6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="*"
+        android:textAllCaps="true"
+        android:textColor="@color/darker_pink"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_add_task_label_notif"
+        app:layout_constraintTop_toTopOf="@+id/tv_add_task_label_notif" />
+
+    <TextView
+        android:id="@+id/tv_add_task_asterisk4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="*"
+        android:textAllCaps="true"
+        android:textColor="@color/darker_pink"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_add_task_label_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_add_task_label_name" />
+
+    <TextView
+        android:id="@+id/tv_add_task_asterisk3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="*"
+        android:textAllCaps="true"
+        android:textColor="@color/darker_pink"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_add_task_label_end_date"
+        app:layout_constraintTop_toTopOf="@+id/tv_add_task_label_end_date" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_add_task_label"
         android:layout_width="0dp"
@@ -77,6 +116,45 @@
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
         app:layout_constraintTop_toTopOf="@+id/gl_add_task_hor10p" />
+
+    <TextView
+        android:id="@+id/tv_add_task_asterisk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="*"
+        android:textAllCaps="true"
+        android:textColor="@color/darker_pink"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_add_task_label_end_time"
+        app:layout_constraintTop_toTopOf="@+id/tv_add_task_label_end_time" />
+
+    <TextView
+        android:id="@+id/tv_add_task_asterisk5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="*"
+        android:textAllCaps="true"
+        android:textColor="@color/darker_pink"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_add_task_label_priority"
+        app:layout_constraintTop_toTopOf="@+id/tv_add_task_label_priority" />
+
+    <TextView
+        android:id="@+id/tv_add_task_asterisk2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="*"
+        android:textAllCaps="true"
+        android:textColor="@color/darker_pink"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_add_task_label_type"
+        app:layout_constraintTop_toTopOf="@+id/tv_add_task_label_type" />
 
     <EditText
         android:id="@+id/et_add_task_name"
