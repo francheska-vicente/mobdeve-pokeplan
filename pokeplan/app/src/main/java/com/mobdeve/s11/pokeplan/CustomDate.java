@@ -153,5 +153,9 @@ public class CustomDate {
         date = date + new DecimalFormat("00").format(tempHour) + ":" + new DecimalFormat("00").format(minute) + " " + temp;
         return  date;
     }
+
+    public String printSpecificDate () {
+        return monthString[month] + " " + day + ", " + year;
+    }
 }
 
