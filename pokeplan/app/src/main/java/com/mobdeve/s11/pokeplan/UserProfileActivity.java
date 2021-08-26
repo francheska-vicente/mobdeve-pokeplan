@@ -69,7 +69,7 @@ public class UserProfileActivity extends AppCompatActivity {
         this.tvUsername.setText(username);
         this.tvEmail.setText(user.getEmail());
         this.tvName.setText(user.getFullName());
-        this.tvBirthday.setText(user.getBirthday());
+        this.tvBirthday.setText(user.getBirthday().printSpecificDate());
 
         // set user stats
         String egg = user.getHatchedPkmnCount() + " Pokemon Hatched";
