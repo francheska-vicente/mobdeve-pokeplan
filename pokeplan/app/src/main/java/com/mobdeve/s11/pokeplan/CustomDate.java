@@ -27,10 +27,7 @@ public class CustomDate {
     }
 
     public CustomDate(int year, int month, int day_in_month, int hour, int minute) {
-        if (year <= 1000)
-            this.year = 2000 + year;
-        else
-            this.year = year;
+        this.year = year;
 
         this.day = day_in_month;
         this.month = month;
@@ -55,10 +52,6 @@ public class CustomDate {
             this.hour = 0;
         }
 
-        if (year <= 1000)
-            this.year = 2000 + year;
-        else
-            this.year = year;
     }
 
     public int getDay () {
