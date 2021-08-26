@@ -24,6 +24,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView tvUsername;
     private TextView tvEmail;
     private TextView tvName;
+    private TextView tvBirthday;
 
     private TextView tvEggHatchCtr;
     private TextView tvTaskCompleteCtr;
@@ -49,6 +50,8 @@ public class UserProfileActivity extends AppCompatActivity {
         this.tvUsername = findViewById(R.id.tv_userprofile_username);
         this.tvEmail = findViewById(R.id.tv_userprofile_email);
         this.tvName = findViewById(R.id.tv_userprofile_name);
+        this.tvBirthday = findViewById(R.id.tv_userprofile_bday);
+
         this.tvEggHatchCtr = findViewById(R.id.tv_userprofile_egghatchctr);
         this.tvTaskCompleteCtr = findViewById(R.id.tv_userprofile_taskcompletedctr);
         setAllComponents();
@@ -66,6 +69,7 @@ public class UserProfileActivity extends AppCompatActivity {
         this.tvUsername.setText(username);
         this.tvEmail.setText(user.getEmail());
         this.tvName.setText(user.getFullName());
+        this.tvBirthday.setText(user.getBirthday());
 
         // set user stats
         String egg = user.getHatchedPkmnCount() + " Pokemon Hatched";
@@ -83,8 +87,9 @@ public class UserProfileActivity extends AppCompatActivity {
         spEditor.remove(Keys.KEY_EMAIL.name());
         spEditor.remove(Keys.KEY_PASSWORD.name());
         spEditor.apply();
+
         UserSingleton.removeUser();
-        //UserSingleton.getUser().logoutUser();
+        // UserSingleton.getUser().logoutUser();
         Intent intent = new Intent(UserProfileActivity.this, InitActivity.class);
         startActivity(intent);
     }
