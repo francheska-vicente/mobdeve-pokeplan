@@ -24,7 +24,7 @@ public class FaqsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_faqs);
 
 
-        ibBack = findViewById(R.id.ib_add_task_back);
+        ibBack = findViewById(R.id.ib_faqs_back);
         this.setButtonListeners();
 
         this.initRecyclerView();
