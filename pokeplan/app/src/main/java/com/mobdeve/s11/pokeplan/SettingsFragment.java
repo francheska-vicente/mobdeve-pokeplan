@@ -21,8 +21,6 @@ import android.widget.TextView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.firestore.auth.User;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -46,7 +44,6 @@ public class SettingsFragment extends Fragment {
     private Dialog dialogAbout;
     private Dialog dialogDelete;
     private Dialog dialogEdit;
-
 
     private EditText etEmail;
     private EditText etPassword;
