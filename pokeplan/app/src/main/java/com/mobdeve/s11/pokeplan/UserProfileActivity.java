@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -34,8 +35,8 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userprofile);
 
-        initComponents();
-        setAllComponents();
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> initComponents(), 1000);
     }
 
     private void initComponents() {
@@ -59,7 +60,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void setAllComponents() {
         UserDetails user = UserSingleton.getUser().getUserDetails();
-
+        Log.d("hello pare", user.getEmail() + " " + user.getFullName());
         // set user profile pic
         this.ivStarterIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ user.getStarterDexNum()));
@@ -99,11 +100,5 @@ public class UserProfileActivity extends AppCompatActivity {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
 
-    @Override
-    public void onRestart () {
-        super.onRestart();
 
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> setAllComponents(), 1000);
-    }
 }
