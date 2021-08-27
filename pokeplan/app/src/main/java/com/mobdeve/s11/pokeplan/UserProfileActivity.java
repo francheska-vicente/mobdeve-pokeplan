@@ -104,6 +104,6 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onRestart();
 
         final Handler handler = new Handler();
-        handler.postDelayed(() -> setAllComponents(), 500);
+        handler.postDelayed(() -> setAllComponents(), 1000);
     }
 }
