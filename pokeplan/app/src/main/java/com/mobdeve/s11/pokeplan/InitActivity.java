@@ -32,6 +32,7 @@ public class InitActivity extends AppCompatActivity {
 
         if (email != null && password != null) {
             checkIfInDB (email, password);
+
         }
         else {
             setContentView(R.layout.activity_init);
