@@ -68,6 +68,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     FirebaseDatabase mDatabase;
     private DatabaseReference mUser;
     private DatabaseReference mPokemon;
+    private ArrayList<UserPokemon> partyList;
     private String userID;
     private UserDetails user;
 
@@ -97,7 +98,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.getPokemonDetails(pkmnid, new FirebaseCallbackPokemon() {
             @Override
             public void onCallbackPokemon(ArrayList<UserPokemon> list) {
-                pkmn = list.get(0);
+                partyList = list;
             }
         });
 
@@ -147,7 +148,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         if (sourceActivity.equals("PARTY")) {
             this.btnpc.setOnClickListener(view -> movePokemonToPC());
             this.btnpc.setText("MOVE TO PC");
-            if (UserSingleton.getUser().getUserPokemonParty().size() <= 1)
+            if (partyList.size() <= 1)
                 btnpc.setVisibility(View.GONE);
 
             this.btnRelease.setVisibility(View.GONE);
@@ -155,7 +156,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         else {
             this.btnpc.setOnClickListener(view -> movePokemonToParty());
             this.btnpc.setText("MOVE TO PARTY");
-            if (UserSingleton.getUser().getUserPokemonParty().size() >= 6)
+            if (partyList.size() >= 6)
                 btnpc.setVisibility(View.GONE);
 
             btnrare.setVisibility(View.GONE);
@@ -224,8 +225,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             pkmntype = pkmntype + "/" + pkmn.getPokemonDetails().getType2();
         this.tvPkmnType.setText(pkmntype);
 
-        this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
-        this.tvSuperCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getSuperCandy()));
+        this.tvRareCandyCtr.setText(Integer.toString(user.getRareCandy()));
+        this.tvSuperCandyCtr.setText(Integer.toString(user.getSuperCandy()));
     }
 
     private void setButtonListeners() {
@@ -386,21 +387,21 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     }
 
     private void getPokemonDetails (String pkmnid, FirebaseCallbackPokemon firebaseCallbackPokemon) {
-        mPokemon.child(pkmnid).addValueEventListener(new ValueEventListener() {
+        mPokemon.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                UserPokemon userPokemon = new UserPokemon();
-                userPokemon.setDetails(snapshot.getValue(Pokemon.class));
-                userPokemon.setDMetDate(snapshot.getValue(Date.class));
-                userPokemon.setFedCandy(snapshot.getValue(Integer.class));
-                userPokemon.setInParty(snapshot.getValue(Boolean.class));
-                userPokemon.setLevel(snapshot.getValue(Integer.class));
-                userPokemon.setNature(snapshot.getValue(String.class));
-                userPokemon.setNickname(snapshot.getValue(String.class));
-                userPokemon.setUserPokemonID(snapshot.getValue(String.class));
+                ArrayList<UserPokemon> userPokemons = new ArrayList<>();
 
-                ArrayList<UserPokemon> temp = new ArrayList<>(1);
-                firebaseCallbackPokemon.onCallbackPokemon(temp);
+                for (DataSnapshot sp : snapshot.getChildren()) {
+                    UserPokemon temp = sp.getValue(UserPokemon.class);
+                    if(!temp.getUserPokemonID().equalsIgnoreCase(pkmnid) && temp.isInParty()) {
+                        userPokemons.add(temp);
+                    } else if (temp.getUserPokemonID().equalsIgnoreCase(pkmnid)) {
+                        pkmn = temp;
+                    }
+                }
+
+                firebaseCallbackPokemon.onCallbackPokemon(userPokemons);
             }
 
             @Override
@@ -423,6 +424,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private int getImageId(Context context, String imageName) {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
