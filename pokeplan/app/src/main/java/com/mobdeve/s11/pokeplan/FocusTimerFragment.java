@@ -2,6 +2,10 @@ package com.mobdeve.s11.pokeplan;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -22,9 +26,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-
-public class FocusTimerFragment extends Fragment {
+public class FocusTimerFragment extends Fragment implements SensorEventListener {
     private SharedPreferences sp;
+
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private float[] gravity;
+    private float accel;
+    private float accelCurrent;
+    private float accelLast;
 
     private ImageView ivegg;
 
@@ -70,9 +80,13 @@ public class FocusTimerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_focustimer, container, false);
 
-        initComponents(view);
-        timer = new Timer();
+        this.initComponents(view);
+
+        this.timer = new Timer();
         this.timerIsStopped = false;
+
+        this.initMotionSensor();
+
         return view;
     }
 
@@ -97,6 +111,15 @@ public class FocusTimerFragment extends Fragment {
 
         this.btnfocustimer = view.findViewById(R.id.btn_focustimer_main);
         this.setInitialButtonListeners();
+    }
+
+    private void initMotionSensor() {
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        accel = 0.00f;
+        accelCurrent = SensorManager.GRAVITY_EARTH;
+        accelLast = SensorManager.GRAVITY_EARTH;
     }
 
     private void setInitialButtonListeners() {
@@ -209,6 +232,9 @@ public class FocusTimerFragment extends Fragment {
         setOngoingComponents();
         setOngoingButtonListeners();
 
+        sensorManager.registerListener(this, sensor,
+                SensorManager.SENSOR_DELAY_UI);
+
         // start countdown timer
         long time = timeToMilliseconds(timer) + 500;
         countdown = new CountDownTimer(time, 1000) {
@@ -224,14 +250,18 @@ public class FocusTimerFragment extends Fragment {
 
     private void stopTimer() {
         timerIsStopped = false;
+        sensorManager.unregisterListener(this);
+
         countdown.cancel();
         resetTimer();
+
         stopTimerDialog();
     }
 
     private void finishTimer() {
         timerIsDone = true;
         timerIsStopped = false;
+        sensorManager.unregisterListener(this);
 
         if(confirmstoptimerdialog != null)
             confirmstoptimerdialog.dismiss();
@@ -381,5 +411,28 @@ public class FocusTimerFragment extends Fragment {
         super.onPause();
         if (timerIsStopped)
             stopTimer();
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            gravity = event.values.clone();
+
+            float x = gravity[0];
+            float y = gravity[1];
+            float z = gravity[2];
+            accelLast = accelCurrent;
+            accelCurrent = (float) Math.sqrt(x*x + y*y + z*z);
+            float delta = accelCurrent - accelLast;
+            accel = accel * 0.9f + delta;
+
+            if(accel > 5 && timerIsStopped)
+                stopTimer();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
