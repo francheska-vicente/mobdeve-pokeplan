@@ -15,9 +15,22 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
     private String sourceActivity;
@@ -52,6 +65,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private UserPokemon pkmn;
     private boolean checkerDeleted;
 
+    FirebaseDatabase mDatabase;
+    private DatabaseReference mUser;
+    private DatabaseReference mPokemon;
+    private String userID;
+    private UserDetails user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,15 +80,33 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
         sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
 
-        if (sourceActivity.equals("PARTY"))
-            pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);
-        else
-            pkmn = UserSingleton.getUser().getPokemonInPC(pkmnid);
+        initDBInfo (pkmnid);
 
         initComponents();
         initButtons(pkmn);
         setAllComponents(pkmn);
         pkmn.getPokemonDetails().playPokemonCry();
+    }
+
+    private void initDBInfo (String pkmnid) {
+        mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        this.mUser = mDatabase.getReference("Users").child(this.userID);
+        this.mPokemon = mDatabase.getReference("UserPokemon").child(this.userID);
+
+        this.getPokemonDetails(pkmnid, new FirebaseCallbackPokemon() {
+            @Override
+            public void onCallbackPokemon(ArrayList<UserPokemon> list) {
+                pkmn = list.get(0);
+            }
+        });
+
+        this.getUserDetails(new FirebaseCallbackUser() {
+            @Override
+            public void onCallbackUser(UserDetails userDetails) {
+                user = userDetails;
+            }
+        });
     }
 
     private void initComponents() {
@@ -94,12 +131,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.btnedit = findViewById(R.id.ib_pkmndetails_edit);
 
         this.btnrare = findViewById(R.id.btn_pkmndetails_rarecandy);
-        if (UserSingleton.getUser().getUserDetails().getRareCandy() <= 0 ||
+        if (user.getRareCandy() <= 0 ||
                 pkmn.getLevel() >= 100)
             btnrare.setEnabled(false);
 
         this.btnsuper = findViewById(R.id.btn_pkmndetails_supercandy);
-        if (UserSingleton.getUser().getUserDetails().getSuperCandy() <= 0
+        if (user.getSuperCandy() <= 0
                 || pkmn.getLevel() < pkmn.getPokemonDetails().getEvolveLvl()
                 || pkmn.getPokemonDetails().getEvolvesTo().isEmpty())
             btnsuper.setEnabled(false);
@@ -346,6 +383,45 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 || pkmn.getPokemonDetails().getEvolveLvl() == -1)
             this.btnsuper.setEnabled(false);
 
+    }
+
+    private void getPokemonDetails (String pkmnid, FirebaseCallbackPokemon firebaseCallbackPokemon) {
+        mPokemon.child(pkmnid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                UserPokemon userPokemon = new UserPokemon();
+                userPokemon.setDetails(snapshot.getValue(Pokemon.class));
+                userPokemon.setDMetDate(snapshot.getValue(Date.class));
+                userPokemon.setFedCandy(snapshot.getValue(Integer.class));
+                userPokemon.setInParty(snapshot.getValue(Boolean.class));
+                userPokemon.setLevel(snapshot.getValue(Integer.class));
+                userPokemon.setNature(snapshot.getValue(String.class));
+                userPokemon.setNickname(snapshot.getValue(String.class));
+                userPokemon.setUserPokemonID(snapshot.getValue(String.class));
+
+                ArrayList<UserPokemon> temp = new ArrayList<>(1);
+                firebaseCallbackPokemon.onCallbackPokemon(temp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void getUserDetails (FirebaseCallbackUser firebaseCallbackUser) {
+        mUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                UserDetails user = snapshot.getValue(UserDetails.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
     }
 
     private int getImageId(Context context, String imageName) {
