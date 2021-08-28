@@ -106,8 +106,10 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                         Pokemon pokemon = Pokedex.getPokedex().getPokemon(pokeNum);
 
                                         UserPokemon userPokemon = new UserPokemon(pokemon, true);
+                                        String key = pokemonRef.push().getKey();
+                                        userPokemon.setUserPokemonID(key);
 
-                                        pokemonRef.setValue(userPokemon).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        pokemonRef.child(key).setValue(userPokemon).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                 if(task.isSuccessful()) {
