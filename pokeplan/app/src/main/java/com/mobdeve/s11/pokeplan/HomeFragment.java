@@ -91,7 +91,6 @@ public class HomeFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
         this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        Log.d("hello pare user id", this.userID);
         this.mTask = mDatabase.getReference("Tasks").child(this.userID);
         this.mUser = mDatabase.getReference("Users").child(this.userID);
         this.mPokemon = mDatabase.getReference("UserPokemon").child(this.userID);
