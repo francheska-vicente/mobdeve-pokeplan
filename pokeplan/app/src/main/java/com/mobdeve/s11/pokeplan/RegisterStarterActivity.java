@@ -90,33 +90,43 @@ public class RegisterStarterActivity extends AppCompatActivity {
                             CustomDate customDate = new CustomDate(year, month, day, 0, 0);
 
                             UserDetails user = new UserDetails (name, email, username, pokeNum, customDate);
-
-                            DatabaseReference databaseRef = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users");
+                            user.setCaught(pokeNum);
+                            FirebaseDatabase database = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
                             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                            DatabaseReference temp = databaseRef.child(uid);
+                            DatabaseReference userRef = database.getReference("Users").child(uid);
 
-                            temp.setValue(user).addOnCompleteListener(new OnCompleteListener<Void> () {
+                            userRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void> () {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
 
                                     if(task.isSuccessful()) {
-                                        Toast.makeText(RegisterStarterActivity.this, "User has been registered!",
-                                                Toast.LENGTH_LONG).show();
-                                        pbLoading.setVisibility(View.GONE);
-                                        finish();
-
+                                        DatabaseReference pokemonRef = database.getReference("UserPokemon").child(uid);
                                         Pokemon pokemon = Pokedex.getPokedex().getPokemon(pokeNum);
-                                        UserSingleton.getUser().setUserDetails(user);
-                                        UserSingleton.getUser().addPokemon(pokemon, false);
-                                        UserSingleton.removeUser();
 
-                                        Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
-                                        startActivity(intent);
+                                        UserPokemon userPokemon = new UserPokemon(pokemon, true);
 
+                                        pokemonRef.setValue(userPokemon).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                if(task.isSuccessful()) {
+                                                    Toast.makeText(RegisterStarterActivity.this, "User's information has been registered!",
+                                                            Toast.LENGTH_LONG).show();
+                                                    pbLoading.setVisibility(View.GONE);
+                                                    finish();
+
+                                                    Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
+                                                    startActivity(intent);
+                                                } else {
+                                                    Toast.makeText(RegisterStarterActivity.this, "User's pokemon information has not been registered!",
+                                                            Toast.LENGTH_LONG).show();
+                                                    pbLoading.setVisibility(View.GONE);
+                                                }
+                                            }
+                                        });
                                     } else {
-                                        Toast.makeText(RegisterStarterActivity.this, "User has not been registered!",
+                                        Toast.makeText(RegisterStarterActivity.this, "User's information has not been registered!",
                                                 Toast.LENGTH_LONG).show();
                                         pbLoading.setVisibility(View.GONE);
                                     }
