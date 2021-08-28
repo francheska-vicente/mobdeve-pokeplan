@@ -141,6 +141,10 @@ public class UserPokemon {
         this.inParty = inParty;
     }
 
+    public void setNature(String nature) {
+        this.nature = nature;
+    }
+
     public String setNature () {
         String[] NATURES = {
                 "Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold", "Docile",
