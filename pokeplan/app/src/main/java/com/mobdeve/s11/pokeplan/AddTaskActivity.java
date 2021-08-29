@@ -236,11 +236,7 @@ public class AddTaskActivity extends AppCompatActivity {
         this.cbNotif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkerNotif) {
-                    checkerNotif = false;
-                } else {
-                    checkerNotif = true;
-                }
+                checkerNotif = !checkerNotif;
             }
         });
 
