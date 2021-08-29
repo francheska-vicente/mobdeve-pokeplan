@@ -167,6 +167,19 @@ public class DatabaseHelper {
         });
     }
 
+    public void updateUser (FirebaseCallbackUser firebaseCallbackUser, HashMap<String, Object> hashUser) {
+        mUser.updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+                if (task.isSuccessful()) {
+                    firebaseCallbackUser.onCallbackUser(null, true, "User's informationw as modified.");
+                } else {
+                    firebaseCallbackUser.onCallbackUser(null, false, "There is an error encountered!");
+                }
+            }
+        });
+    }
+
     public void getPokemon (FirebaseCallbackPokemon firebaseCallbackPokemon) {
         ArrayList<UserPokemon> userPokemons = new ArrayList<>();
 
