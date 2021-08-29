@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
@@ -48,6 +49,9 @@ public class SettingsFragment extends Fragment {
     private EditText etEmail;
     private EditText etPassword;
 
+    private DatabaseHelper databaseHelper;
+    private UserDetails user;
+
     public SettingsFragment() {
     }
 
@@ -64,10 +68,17 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        initComponents(view);
+        databaseHelper = new DatabaseHelper();
+
+        databaseHelper.getUserDetails(new FirebaseCallbackUser() {
+            @Override
+            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                user = userDetails;
+                initComponents(view);
+            }
+        });
+
         return view;
     }
 
@@ -207,10 +218,14 @@ public class SettingsFragment extends Fragment {
                     hash.put("fullName", name);
                 }
 
-                UserSingleton.getUser().updateUserOnDB(hash, password, customBirthday);
-                dialogEdit.dismiss();
-                Intent intent = new Intent(v.getContext(), UserProfileActivity.class);
-                startActivity(intent);
+                databaseHelper.modifyUserOnDB(new FirebaseCallbackUser() {
+                    @Override
+                    public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                        dialogEdit.dismiss();
+                        Intent intent = new Intent(v.getContext(), UserProfileActivity.class);
+                        startActivity(intent);
+                    }
+                }, hash, user.getEmail(), password);
             }
         });
 
@@ -260,13 +275,23 @@ public class SettingsFragment extends Fragment {
                 return;
             }
 
-            UserSingleton.getUser().deleteUser(email, password);
-            spEditor.remove(Keys.KEY_EMAIL.name());
-            spEditor.remove(Keys.KEY_PASSWORD.name());
-            spEditor.apply();
 
-            Intent i = new Intent(v1.getContext(), InitActivity.class);
-            v1.getContext().startActivity(i);
+            databaseHelper.deleteUser(new FirebaseCallbackUser() {
+                @Override
+                public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                    if (isSuccessful) {
+                        spEditor.remove(Keys.KEY_EMAIL.name());
+                        spEditor.remove(Keys.KEY_PASSWORD.name());
+                        spEditor.apply();
+
+                        Intent i = new Intent(v1.getContext(), InitActivity.class);
+                        v1.getContext().startActivity(i);
+                    } else {
+                        Toast.makeText(v1.getContext(), message, Toast.LENGTH_LONG);
+                        dialogDelete.dismiss();
+                    }
+                }
+            }, email, password);
         });
 
         dialogDelete.show();
