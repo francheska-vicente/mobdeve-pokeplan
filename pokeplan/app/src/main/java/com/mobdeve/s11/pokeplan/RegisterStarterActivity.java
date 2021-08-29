@@ -33,7 +33,6 @@ public class RegisterStarterActivity extends AppCompatActivity {
             R.id.ib_pkmn11, R.id.ib_pkmn12, R.id.ib_pkmn13, R.id.ib_pkmn14, R.id.ib_pkmn15,
     };
 
-    private FirebaseAuth mAuth;
     private Dialog successDialog;
 
     private String name;
@@ -42,12 +41,15 @@ public class RegisterStarterActivity extends AppCompatActivity {
     private String username;
     private String birthday;
 
+    private DatabaseHelper databaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_starter);
 
-        mAuth = FirebaseAuth.getInstance();
+        databaseHelper = new DatabaseHelper();
+
         pbLoading = findViewById(R.id.pb_register_starter);
         pbLoading.setVisibility(View.GONE);
         initValues ();
@@ -75,76 +77,51 @@ public class RegisterStarterActivity extends AppCompatActivity {
     }
 
     private void registerUser (int pokeNum) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(
-                new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
+        String [] stringBirthday = birthday.split("\\.");
 
-                            String [] stringBirthday = birthday.split("\\.");
+        int month = Integer.parseInt(stringBirthday[1]);
+        int day = Integer.parseInt(stringBirthday[0]);
+        int year = Integer.parseInt(stringBirthday[2]);
 
-                            int month = Integer.parseInt(stringBirthday[1]);
-                            int day = Integer.parseInt(stringBirthday[0]);
-                            int year = Integer.parseInt(stringBirthday[2]);
+        CustomDate customDate = new CustomDate(year, month, day, 0, 0);
 
-                            CustomDate customDate = new CustomDate(year, month, day, 0, 0);
+        UserDetails user = new UserDetails (name, email, username, pokeNum, customDate);
+        user.setCaught(pokeNum);
 
-                            UserDetails user = new UserDetails (name, email, username, pokeNum, customDate);
-                            user.setCaught(pokeNum);
-                            FirebaseDatabase database = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        databaseHelper.addUser(new FirebaseCallbackUser() {
+            @Override
+            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                if (isSuccessful) {
+                    Pokemon pokemon = Pokedex.getPokedex().getPokemon(pokeNum);
 
-                            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    databaseHelper.addPokemon(new FirebaseCallbackPokemon() {
+                        @Override
+                        public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                            if (isSuccessful) {
+                                Toast.makeText(RegisterStarterActivity.this, "User's information has been registered!",
+                                        Toast.LENGTH_LONG).show();
+                                pbLoading.setVisibility(View.GONE);
+                                finish();
 
-                            DatabaseReference userRef = database.getReference("Users").child(uid);
-
-                            userRef.setValue(user).addOnCompleteListener(new OnCompleteListener<Void> () {
-                                @Override
-                                public void onComplete(@NonNull @NotNull Task<Void> task) {
-
-                                    if(task.isSuccessful()) {
-                                        DatabaseReference pokemonRef = database.getReference("UserPokemon").child(uid);
-                                        Pokemon pokemon = Pokedex.getPokedex().getPokemon(pokeNum);
-
-                                        UserPokemon userPokemon = new UserPokemon(pokemon, true);
-                                        String key = pokemonRef.push().getKey();
-                                        userPokemon.setUserPokemonID(key);
-
-                                        pokemonRef.child(key).setValue(userPokemon).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                                if(task.isSuccessful()) {
-                                                    Toast.makeText(RegisterStarterActivity.this, "User's information has been registered!",
-                                                            Toast.LENGTH_LONG).show();
-                                                    pbLoading.setVisibility(View.GONE);
-                                                    finish();
-
-                                                    Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
-                                                    startActivity(intent);
-                                                } else {
-                                                    Toast.makeText(RegisterStarterActivity.this, "User's pokemon information has not been registered!",
-                                                            Toast.LENGTH_LONG).show();
-                                                    pbLoading.setVisibility(View.GONE);
-                                                }
-                                            }
-                                        });
-                                    } else {
-                                        Toast.makeText(RegisterStarterActivity.this, "User's information has not been registered!",
-                                                Toast.LENGTH_LONG).show();
-                                        pbLoading.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
-                        } else {
-                            Toast.makeText(RegisterStarterActivity.this, task.getException().toString(),
-                                    Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(RegisterStarterActivity.this, "User's pokemon information has not been registered!",
+                                        Toast.LENGTH_LONG).show();
+                                pbLoading.setVisibility(View.GONE);
+                            }
                         }
-
-                        Intent intent = new Intent(RegisterStarterActivity.this, InitActivity.class);
-                        startActivity(intent);
-                    }
+                    }, false, pokemon, user);
+                } else {
+                    Toast.makeText(RegisterStarterActivity.this, "User's information has not been registered!",
+                            Toast.LENGTH_LONG).show();
+                    pbLoading.setVisibility(View.GONE);
                 }
-        );
+            }
+        }, user, this.password);
 
+        Intent intent = new Intent(RegisterStarterActivity.this, InitActivity.class);
+        startActivity(intent);
     }
 
     private void initPkmnBtns() {
