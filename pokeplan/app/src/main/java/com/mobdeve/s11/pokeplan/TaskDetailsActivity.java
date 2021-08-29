@@ -45,23 +45,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
     private UserDetails user;
+    private Task task;
 
     private boolean wasEdited;
-
-    public static final String KEY_TASKNAME = "KEY_TASKNAME";
-    public static final String KEY_CATEGORY = "KEY_CATEGORY";
-    public static final String KEY_PRIORITY = "KEY_PRIORITY";
-    public static final String KEY_C_START_DATE = "KEY_C_START_DATE";
-    public static final String KEY_C_END_DATE = "KEY_C_END_DATE";
-    public static final String KEY_C_START_TIME = "KEY_C_START_TIME";
-    public static final String KEY_C_END_TIME = "KEY_C_END_TIME";
-
-    public static final String KEY_NOTIF_WHEN = "KEY_NOTIF_WHEN";
-    public static final String KEY_NOTIF_ON = "KEY_NOTIF_ON";
-    public static final String KEY_NOTIF_START_TIME = "KEY_NOTIF_START_TIME";
-
-    public static final String KEY_NOTES = "KEY_NOTES";
-    public static final String KEY_ID = "KEY_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,43 +106,35 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Boolean isFinished = intent.getBooleanExtra(Keys.KEY_IS_COMPLETED.name(), false);
 
 
-//        if (wasEdited) {
-//            taskName = this.tvTaskName.getText().toString();
-//            category = this.tvCategory.getText().toString();
-//            priority = this.tvPriorityIcon.getText().toString().length();
-//
-//            String [] temp = this.tvNotif.getText().toString().split(" ");
-//
-//            if (temp [0].equalsIgnoreCase("No")) {
-//                notifOn = false;
-//                notifStartTime = false;
-//                notifWhen = "";
-//            } else {
-//                notifOn = true;
-//                notifWhen = temp [0] + " " + temp [1];
-//
-//                if (temp [3].equalsIgnoreCase("Start")) {
-//                    notifStartTime = true;
-//                } else {
-//                    notifStartTime = false;
-//                }
-//            }
-//
-//        } else {
-//            taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
-//            category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
-//            priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
-//            startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
-//            endDate = intent.getStringExtra(Keys.KEY_DEADLINE.name());
-//            notes = intent.getStringExtra(Keys.KEY_NOTES.name());
-//            cEndDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
-//            cStartDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
-//            cEndTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
-//            cStartTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
-//            notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
-//            notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
-//            notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
-//        }
+        if (wasEdited) {
+            databaseHelper.getTasks(new FirebaseCallbackTask() {
+                @Override
+                public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getTaskID().equalsIgnoreCase(taskID)) {
+                            task = list.get(i);
+                            break;
+                        }
+                    }
+                }
+            });
+
+            
+        } else {
+            taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+            category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+            priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+            startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
+            endDate = intent.getStringExtra(Keys.KEY_DEADLINE.name());
+            notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+            cEndDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
+            cStartDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
+            cEndTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
+            cStartTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
+            notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+            notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+            notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+        }
 
         if (isFinished) {
             this.btnFinishTask.setVisibility(View.GONE);
