@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -52,6 +54,8 @@ public class FocusTimerFragment extends Fragment {
 
     private boolean timerIsDone;
     private boolean timerIsStopped;
+    private DatabaseHelper databaseHelper;
+    private UserDetails user;
 
     public FocusTimerFragment() {
     }
@@ -69,6 +73,14 @@ public class FocusTimerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_focustimer, container, false);
+        databaseHelper = new DatabaseHelper();
+
+        databaseHelper.getUserDetails(new FirebaseCallbackUser() {
+            @Override
+            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                user = userDetails;
+            }
+        });
 
         initComponents(view);
         timer = new Timer();
@@ -241,8 +253,17 @@ public class FocusTimerFragment extends Fragment {
 
         Egg egg = new Egg(timer);
         Pokemon hatch = egg.generatePokemon();
-        UserSingleton.getUser().addPokemon(hatch, true);
-        UserSingleton.getUser().getUserDetails().addHatchedPkmn();
+
+        databaseHelper.addPokemon(new FirebaseCallbackPokemon() {
+            @Override
+            public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                if (isSuccessful) {
+
+                } else {
+
+                }
+            }
+        }, true, hatch, user);
 
         createHatchEggDialog(hatch);
         ivegg.setImageResource(getImageId(getContext(), "pkmn_" + hatch.getDexNum()));
