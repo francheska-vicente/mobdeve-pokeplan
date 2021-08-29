@@ -18,6 +18,7 @@ public class PokemonPCActivity extends AppCompatActivity {
     private ArrayList<UserPokemon> pokemonPCList;
     private RecyclerView rvPokemonPC;
     private PokemonPCAdapter pcAdapter;
+    private DatabaseHelper databaseHelper;
 
     private TextView tvNoPkmnPC;
 
@@ -25,14 +26,34 @@ public class PokemonPCActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemonpc);
+        databaseHelper = new DatabaseHelper();
+        pokemonPCList = new ArrayList<>();
         this.initComponents();
     }
 
     private void initComponents() {
-        this.pokemonPCList = UserSingleton.getUser().getUserPokemonPC();
         this.rvPokemonPC = findViewById(R.id.rv_pkmnpc);
         this.tvNoPkmnPC = findViewById(R.id.tv_pkmnpc_nopkmnpc);
+        this.pcAdapter = new PokemonPCAdapter();
 
+        databaseHelper.getPokemon(new FirebaseCallbackPokemon() {
+            @Override
+            public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                for (int i = 0; i < list.size(); i++) {
+                    if (!list.get(i).isInParty()) {
+                        pokemonPCList.add(list.get(i));
+                    }
+                }
+
+                pcAdapter.setPc(pokemonPCList);
+                pcAdapter.notifyItemRangeInserted(0, list.size());
+
+                initLayout();
+            }
+        });
+    }
+
+    private void initLayout () {
         if (this.pokemonPCList.size() > 0) {
             this.rvPokemonPC.setLayoutManager(new GridLayoutManager(this, 5));
             this.pcAdapter = new PokemonPCAdapter(this.pokemonPCList);
