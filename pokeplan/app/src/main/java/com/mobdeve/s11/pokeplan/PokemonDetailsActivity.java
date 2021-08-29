@@ -15,22 +15,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
     private String sourceActivity;
@@ -63,14 +54,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private Dialog confirmDialog;
 
     private UserPokemon pkmn;
+    private UserDetails user;
     private boolean checkerDeleted;
 
-    FirebaseDatabase mDatabase;
-    private DatabaseReference mUser;
-    private DatabaseReference mPokemon;
     private ArrayList<UserPokemon> partyList;
     private String userID;
-    private UserDetails user;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,32 +69,36 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
         sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
+        databaseHelper = new DatabaseHelper();
 
-        initDBInfo (pkmnid);
-
-        initComponents();
-        initButtons(pkmn);
-        setAllComponents(pkmn);
-        pkmn.getPokemonDetails().playPokemonCry();
+        partyList = new ArrayList<>();
+        this.initInfo (pkmnid);
     }
 
-    private void initDBInfo (String pkmnid) {
-        mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        this.mUser = mDatabase.getReference("Users").child(this.userID);
-        this.mPokemon = mDatabase.getReference("UserPokemon").child(this.userID);
-
-        this.getPokemonDetails(pkmnid, new FirebaseCallbackPokemon() {
+    private void initInfo (String pkmnid) {
+        databaseHelper.getUserDetails(new FirebaseCallbackUser() {
             @Override
-            public void onCallbackPokemon(ArrayList<UserPokemon> list) {
-                partyList = list;
-            }
-        });
+            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                if(isSuccessful) {
+                    user = userDetails;
+                    databaseHelper.getPokemon(new FirebaseCallbackPokemon() {
+                        @Override
+                        public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                            for(int i = 0; i < list.size(); i++) {
+                                if (list.get(i).getUserPokemonID().equalsIgnoreCase(pkmnid)) {
+                                    pkmn = list.get(i);
+                                } else if (list.get(i).isInParty()) {
+                                    partyList.add(list.get(i));
+                                }
+                            }
 
-        this.getUserDetails(new FirebaseCallbackUser() {
-            @Override
-            public void onCallbackUser(UserDetails userDetails) {
-                user = userDetails;
+                            initComponents();
+                            initButtons(pkmn);
+                            setAllComponents(pkmn);
+                            pkmn.getPokemonDetails().playPokemonCry();
+                        }
+                    });
+                }
             }
         });
     }
@@ -200,9 +193,15 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 releasePkmnDialog.dismiss();
-                UserSingleton.getUser().deletePokemon(pkmn);
-                finish();
-                checkerDeleted = true;
+                databaseHelper.deletePokemon(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                        if(isSuccessful) {
+                            finish();
+                            checkerDeleted = true;
+                        }
+                    }
+                }, pkmn);
             }
         });
         releasePkmnDialog.show();
@@ -262,8 +261,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirmDialog.dismiss();
-                UserSingleton.getUser().movePokemon(pkmn.getUserPokemonID(), false);
-                finish();
+                databaseHelper.movePokemon(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                        finish();
+                    }
+                }, pkmn.getUserPokemonID(), false);
             }
         });
         confirmDialog.show();
@@ -300,8 +303,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirmDialog.dismiss();
-                UserSingleton.getUser().movePokemon(pkmn.getUserPokemonID(), true);
-                finish();
+                databaseHelper.movePokemon(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                        finish();
+                    }
+                }, pkmn.getUserPokemonID(), true);
             }
         });
         confirmDialog.show();
@@ -330,7 +337,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 pkmn.setNickname(etdialoginput.getText().toString());
                 tvPkmnNickname.setText(pkmn.getNickname());
                 editdialog.dismiss();
-                UserSingleton.getUser().editNickname(pkmn.getUserPokemonID(), pkmn.getNickname());
+                databaseHelper.editNickname(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+
+                    }
+                }, pkmn.getUserPokemonID(), pkmn.getNickname());
             }
         });
 
@@ -357,11 +369,11 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 this.btnsuper.setEnabled(true);
         }
 
-        UserSingleton.getUser().getUserDetails().subtractRareCandy(1);
-        this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
+        user.subtractRareCandy(1);
+        this.tvRareCandyCtr.setText(Integer.toString(user.getRareCandy()));
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
 
-        if (!(UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100))
+        if (!(user.getRareCandy() > 0 && pkmn.getLevel() < 100))
             btnrare.setEnabled(false);
 
     }
@@ -372,8 +384,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             pkmn.evolvePokemon();
             pkmn.getPokemonDetails().playPokemonCry();
 
-            UserSingleton.getUser().getUserDetails().subtractSuperCandy(1);
-            this.tvSuperCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getSuperCandy()));
+            user.subtractSuperCandy(1);
+            this.tvSuperCandyCtr.setText(Integer.toString(user.getSuperCandy()));
 
             this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                     "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
@@ -386,44 +398,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
     }
 
-    private void getPokemonDetails (String pkmnid, FirebaseCallbackPokemon firebaseCallbackPokemon) {
-        mPokemon.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                ArrayList<UserPokemon> userPokemons = new ArrayList<>();
-
-                for (DataSnapshot sp : snapshot.getChildren()) {
-                    UserPokemon temp = sp.getValue(UserPokemon.class);
-                    if(!temp.getUserPokemonID().equalsIgnoreCase(pkmnid) && temp.isInParty()) {
-                        userPokemons.add(temp);
-                    } else if (temp.getUserPokemonID().equalsIgnoreCase(pkmnid)) {
-                        pkmn = temp;
-                    }
-                }
-
-                firebaseCallbackPokemon.onCallbackPokemon(userPokemons);
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void getUserDetails (FirebaseCallbackUser firebaseCallbackUser) {
-        mUser.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                UserDetails user = snapshot.getValue(UserDetails.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
-            }
-        });
-    }
 
 
     private int getImageId(Context context, String imageName) {
@@ -434,6 +408,11 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         super.onStop();
 
         if (!checkerDeleted)
-            UserSingleton.getUser().updatePokemon (pkmn);
+            databaseHelper.updatePokemon(new FirebaseCallbackPokemon() {
+                @Override
+                public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+
+                }
+            }, pkmn, user);
     }
 }
