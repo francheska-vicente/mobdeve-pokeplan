@@ -44,7 +44,7 @@ public class DatabaseHelper {
         this.mTask = mDatabase.getReference("Tasks").child(this.userID);
     }
 
-    public void addUser (FirebaseCallbackUser firebaseCallbackUser, UserDetails user, UserDetails starterPokemon, String password) {
+    public void addUser (FirebaseCallbackUser firebaseCallbackUser, UserDetails user, String password) {
         mAuth.createUserWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
@@ -190,7 +190,7 @@ public class DatabaseHelper {
         });
     }
 
-    public void addPokemon (FirebaseCallbackPokemon firebaseCallbackPokemon, boolean checker, Pokemon details) {
+    public void addPokemon (FirebaseCallbackPokemon firebaseCallbackPokemon, boolean checker, Pokemon details, UserDetails userDetails) {
         ArrayList<UserPokemon> pokemonParty = new ArrayList<>();
         ArrayList<UserPokemon> pokemonPC = new ArrayList<>();
 
@@ -212,67 +212,60 @@ public class DatabaseHelper {
             }
         });
 
-        getUserDetails(new FirebaseCallbackUser() {
-            @Override
-            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
-                if(isSuccessful) {
-                    UserPokemon userPokemon;
-                    String key = mPokemon.push().getKey();
+        UserPokemon userPokemon;
+        String key = mPokemon.push().getKey();
 
-                    if (pokemonParty.size() < 6) {
-                        userPokemon = new UserPokemon(details, true);
-                        userPokemon.setUserPokemonID(key);
-                        pokemonParty.add(userPokemon);
-                    }
-                    else {
-                        userPokemon = new UserPokemon(details, false);
-                        userPokemon.setUserPokemonID(key);
-                        pokemonPC.add(userPokemon);
-                    }
+        if (pokemonParty.size() < 6) {
+            userPokemon = new UserPokemon(details, true);
+            userPokemon.setUserPokemonID(key);
+            pokemonParty.add(userPokemon);
+        }
+        else {
+            userPokemon = new UserPokemon(details, false);
+            userPokemon.setUserPokemonID(key);
+            pokemonPC.add(userPokemon);
+        }
 
-                    mPokemon.child(key).setValue(userPokemon)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+        mPokemon.child(key).setValue(userPokemon)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                        ArrayList<UserPokemon> tempPokemon = new ArrayList<>(1);
+                        tempPokemon.add(userPokemon);
+                        if (task.isSuccessful()) {
+                            HashMap <String, Object> hashUser = new HashMap<>();
+                            hashUser.put(Integer.toString(details.getDexNum() - 1), true);
+                            mUser.child("userPokedex").updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                                    ArrayList<UserPokemon> tempPokemon = new ArrayList<>(1);
-                                    tempPokemon.add(userPokemon);
-                                    if (task.isSuccessful()) {
-                                        HashMap <String, Object> hashUser = new HashMap<>();
-                                        hashUser.put(Integer.toString(details.getDexNum() - 1), true);
-                                        mUser.child("userPokedex").updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                                                Log.d("User DB", "User's caught pokemon information was added.");
-                                            }
-                                        });
-
-                                        HashMap<String, Object> hashNum = new HashMap<>();
-
-                                        if (!userDetails.getUserPokedex().get(details.getDexNum() - 1)) {
-                                            hashNum.put("numCaught", userDetails.getNumCaught() + 1);
-                                            hashNum.put("numNotCaught", userDetails.getNumNotCaught() - 1);
-                                        }
-
-                                        if (checker) {
-                                            hashNum.put("hatchedPkmnCount", userDetails.getHatchedPkmnCount() + 1);
-                                        }
-
-                                        mUser.updateChildren(hashNum).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                                                Log.d("User DB", "User's number of pokemons and hatched egg were updated. ");
-                                            }
-                                        });
-
-                                        firebaseCallbackPokemon.onCallbackPokemon(tempPokemon, true, "Pokemon was successfully added to the database.");
-                                    } else {
-                                        firebaseCallbackPokemon.onCallbackPokemon(null, false, "Pokemon was not added to the database.");
-                                    }
+                                    Log.d("User DB", "User's caught pokemon information was added.");
                                 }
                             });
-                }
-            }
-        });
+
+                            HashMap<String, Object> hashNum = new HashMap<>();
+
+                            if (!userDetails.getUserPokedex().get(details.getDexNum() - 1)) {
+                                hashNum.put("numCaught", userDetails.getNumCaught() + 1);
+                                hashNum.put("numNotCaught", userDetails.getNumNotCaught() - 1);
+                            }
+
+                            if (checker) {
+                                hashNum.put("hatchedPkmnCount", userDetails.getHatchedPkmnCount() + 1);
+                            }
+
+                            mUser.updateChildren(hashNum).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                                    Log.d("User DB", "User's number of pokemons and hatched egg were updated. ");
+                                }
+                            });
+
+                            firebaseCallbackPokemon.onCallbackPokemon(tempPokemon, true, "Pokemon was successfully added to the database.");
+                        } else {
+                            firebaseCallbackPokemon.onCallbackPokemon(null, false, "Pokemon was not added to the database.");
+                        }
+                    }
+                });
     }
 
     public void editNickname (FirebaseCallbackPokemon firebaseCallbackPokemon, String key, String nickname) {
