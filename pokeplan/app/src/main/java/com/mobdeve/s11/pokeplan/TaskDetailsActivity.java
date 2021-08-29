@@ -207,7 +207,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         this.setCategoryIcon(category);
         this.setPriorityIcon(priority);
-        
+
         String notif = "";
         if (notifOn) {
             if (notifStartTime) {
