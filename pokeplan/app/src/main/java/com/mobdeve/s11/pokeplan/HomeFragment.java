@@ -84,20 +84,21 @@ public class HomeFragment extends Fragment {
         this.tvSuperCandyCtr = view.findViewById(R.id.tv_home_supercandycount);
         this.tvPokedexCtr = view.findViewById(R.id.tv_home_pokedexcount);
 
-        pokemonPartyList = new ArrayList<>(6);
+
         user = new UserDetails();
         ongoingTaskNum = 0;
 
         helper.getPokemon(new FirebaseCallbackPokemon() {
             @Override
             public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                pokemonPartyList = new ArrayList<>(6);
                 if (isSuccessful) {
                     for (int i = 0; i < list.size (); i++) {
                         if (list.get(i).isInParty()) {
                             pokemonPartyList.add(list.get(i));
                         }
                     }
-
+                    
                     ppAdapter.setPokemonParty(pokemonPartyList);
                     ppAdapter.notifyItemRangeInserted(0, list.size());
                 }
