@@ -29,14 +29,28 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private TextView tvEggHatchCtr;
     private TextView tvTaskCompleteCtr;
+    private DatabaseHelper databaseHelper;
+    private UserDetails user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userprofile);
 
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> initComponents(), 1000);
+        databaseHelper = new DatabaseHelper();
+        initInfo ();
+    }
+
+    private void initInfo () {
+        databaseHelper.getUserDetails(new FirebaseCallbackUser() {
+            @Override
+            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                if (isSuccessful) {
+                    user = userDetails;
+                    initComponents();
+                }
+            }
+        });
     }
 
     private void initComponents() {
@@ -59,8 +73,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void setAllComponents() {
-        UserDetails user = UserSingleton.getUser().getUserDetails();
-        Log.d("hello pare", user.getEmail() + " " + user.getFullName());
+
         // set user profile pic
         this.ivStarterIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ user.getStarterDexNum()));
@@ -89,8 +102,6 @@ public class UserProfileActivity extends AppCompatActivity {
         spEditor.remove(Keys.KEY_PASSWORD.name());
         spEditor.apply();
 
-        UserSingleton.removeUser();
-        // UserSingleton.getUser().logoutUser();
         Intent intent = new Intent(UserProfileActivity.this, InitActivity.class);
         startActivity(intent);
     }
