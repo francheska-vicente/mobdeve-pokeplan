@@ -1,13 +1,12 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Egg {
     private final Timer timer;
+    private final boolean deepFocusEnabled;
 
     private final ArrayList<String> raritypool;
     private final String C = "Common";
@@ -22,9 +21,11 @@ public class Egg {
     private final int[] fourth = {5, 35, 40, 20};
     private final int[] fifth = {0, 30, 45, 25};
     private final int[] sixth = {0, 10, 50, 40};
+    private final int[] seventh = {0, 0, 30, 70};
 
-    public Egg(Timer timer) {
+    public Egg(Timer timer, boolean deepFocusEnabled) {
         this.timer = timer;
+        this.deepFocusEnabled = deepFocusEnabled;
         this.raritypool = new ArrayList<>(100);
     }
 
@@ -34,7 +35,8 @@ public class Egg {
         if (timer.getSecs() > 0)    minutes++;
 
         // fix rates based on time
-        setRates(minutes);
+        if (deepFocusEnabled) setBoostedRates(minutes);
+        else setNormalRates(minutes);
 
         // get rarity from pool
         String rarity = raritypool.get(new Random().nextInt(100));
@@ -71,7 +73,7 @@ public class Egg {
      * Sets the rates for rarities based on the number of minutes set in the Focus Timer.
      * @param minutes   number of minutes set in the Focus Timer
      */
-    private void setRates(int minutes) {
+    private void setNormalRates(int minutes) {
         if (minutes >= 5 && minutes < 20) {
             populateRarityPool(first);
         }
@@ -89,6 +91,31 @@ public class Egg {
         }
         else {
             populateRarityPool(sixth);
+        }
+    }
+
+    /**
+     * Sets better rates for rarities if Deep Focus Mode was enabled.
+     * @param minutes   number of minutes set in the Focus Timer
+     */
+    private void setBoostedRates(int minutes) {
+        if (minutes >= 5 && minutes < 20) {
+            populateRarityPool(second);
+        }
+        else if (minutes >= 20 && minutes < 40) {
+            populateRarityPool(third);
+        }
+        else if (minutes >= 40 && minutes < 60) {
+            populateRarityPool(fourth);
+        }
+        else if (minutes >= 60 && minutes < 120) {
+            populateRarityPool(fifth);
+        }
+        else if (minutes >= 120 && minutes < 240) {
+            populateRarityPool(sixth);
+        }
+        else {
+            populateRarityPool(seventh);
         }
     }
 
@@ -125,7 +152,6 @@ public class Egg {
      */
     private Pokemon generateSuperRarePokemon() {
         ArrayList<Pokemon> superrare = Pokedex.getPokedex().getSuperRarePokemonList();
-        Log.d("ror", superrare.toString());
         return superrare.get(new Random().nextInt(superrare.size()));
     }
 }
