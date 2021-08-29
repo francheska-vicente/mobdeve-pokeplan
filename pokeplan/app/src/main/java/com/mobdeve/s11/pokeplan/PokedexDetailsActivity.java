@@ -28,18 +28,18 @@ public class PokedexDetailsActivity extends AppCompatActivity {
     private TextView tvPkmnEvoSpecies;
     private TextView tvEvoLevel;
 
+    private DatabaseHelper databaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokedex_details);
-
         Intent intent = getIntent();
         int dexnum = intent.getIntExtra(Keys.KEY_POKEMONDEXNUM.name(), 1);
         Pokemon pkmn = Pokedex.getPokedex().getPokemon(dexnum);
 
         initComponents();
         setAllComponents(pkmn);
-        pkmn.playPokemonCry();
     }
 
     /**
