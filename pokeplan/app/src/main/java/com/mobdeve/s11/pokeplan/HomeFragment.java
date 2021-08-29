@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
                             pokemonPartyList.add(list.get(i));
                         }
                     }
-                    
+
                     ppAdapter.setPokemonParty(pokemonPartyList);
                     ppAdapter.notifyItemRangeInserted(0, list.size());
                 }
