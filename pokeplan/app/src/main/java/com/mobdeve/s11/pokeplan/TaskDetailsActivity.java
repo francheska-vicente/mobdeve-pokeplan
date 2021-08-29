@@ -18,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -41,6 +42,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private CustomDialog confirmDelete;
     private CustomDialog candyDialog;
 
+    private DatabaseHelper databaseHelper;
+    private UserDetails user;
+
     private boolean wasEdited;
 
     public static final String KEY_TASKNAME = "KEY_TASKNAME";
@@ -62,7 +66,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
-
+        databaseHelper = new DatabaseHelper();
         wasEdited = false;
 
         btnback = findViewById(R.id.ib_taskdetails_back);
@@ -86,7 +90,13 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.ibEditTask = findViewById(R.id.ib_taskdetails_edit);
         this.tvNotif = findViewById(R.id.tv_taskdetails_notif);
 
-        initComponents();
+        databaseHelper.getUserDetails(new FirebaseCallbackUser() {
+            @Override
+            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                user = userDetails;
+                initComponents();
+            }
+        });
     }
 
     private void initComponents () {
@@ -276,8 +286,12 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Button btndialogconfirm = confirmDelete.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setOnClickListener(v -> {
             confirmDelete.dismiss();
-            UserSingleton.getUser().deleteTask(taskID);
-            finish();
+            databaseHelper.deleteTask(new FirebaseCallbackTask() {
+                @Override
+                public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                    finish();
+                }
+            }, taskID);
         });
         confirmDelete.show();
     }
@@ -296,8 +310,13 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Button btndialogconfirm = confirmFinish.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setOnClickListener(v -> {
             confirmFinish.dismiss();
-            UserSingleton.getUser().moveToCompletedTask(taskID);
-            giveCandies();
+            databaseHelper.moveToCompletedTask(new FirebaseCallbackTask() {
+                @Override
+                public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                    giveCandies();
+                }
+            }, taskID, user);
+
         });
         confirmFinish.show();
     }
@@ -344,16 +363,24 @@ public class TaskDetailsActivity extends AppCompatActivity {
         if (numberGenerated > divider) {
             candyType = "superCandy";
             numberOfCandies = numberSOfCandies;
-            UserSingleton.getUser().getUserDetails().addSuperCandy(numberSOfCandies);
-            totalNumberOfcandies = UserSingleton.getUser().getUserDetails().getSuperCandy();
+            user.addSuperCandy(numberSOfCandies);
+            totalNumberOfcandies = user.getSuperCandy();
         } else {
-            UserSingleton.getUser().getUserDetails().addRareCandy(numberROfCandies);
-            totalNumberOfcandies = UserSingleton.getUser().getUserDetails().getRareCandy();
+            user.addRareCandy(numberROfCandies);
+            totalNumberOfcandies = user.getRareCandy();
         }
 
         HashMap<String, Object> hash = new HashMap<>();
         hash.put(candyType, totalNumberOfcandies);
-        UserSingleton.getUser().updateUser(hash);
+
+        databaseHelper.updateUser(new FirebaseCallbackUser() {
+            @Override
+            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                if (isSuccessful) {
+
+                }
+            }
+        }, hash);
 
         createCandyDialog(candyType, numberOfCandies);
     }
