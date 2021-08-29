@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -206,7 +207,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         this.setCategoryIcon(category);
         this.setPriorityIcon(priority);
-
+        
         String notif = "";
         if (notifOn) {
             if (notifStartTime) {
