@@ -96,13 +96,12 @@ public class DatabaseHelper {
                         @Override
                         public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                             snapshot.getRef().removeValue();
-                            firebaseCallbackUser.onCallbackUser(null, true, "User was deleted from the database");
-                            Log.d("User DB", "User was deleted from the DB.");
+                            firebaseCallbackUser.onCallbackUser(null, true, "Your account was successfully deleted.");
                         }
 
                         @Override
                         public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                            Log.e("User DB", "There is an error encountered! " + error.toException().toString());
+                            firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
                         }
                     });
 
@@ -136,7 +135,7 @@ public class DatabaseHelper {
                     });
 
                 } else {
-                    Log.d("USER DB", "A problem was encountered! " + task.getException().toString());
+                    firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
                 }
             }
         });
