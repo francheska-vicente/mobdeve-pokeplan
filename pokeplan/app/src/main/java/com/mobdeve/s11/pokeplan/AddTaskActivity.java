@@ -63,10 +63,14 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private String currentUserUid;
 
+    private DatabaseHelper databaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
+
+        databaseHelper = new DatabaseHelper();
         checkerNotif = true;
         this.initComponents();
     }
@@ -126,7 +130,12 @@ public class AddTaskActivity extends AppCompatActivity {
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes, notif, val, checkerNotif);
         }
 
-        UserSingleton.getUser().addOngoingTask(taskCreated);
+        databaseHelper.addOngoingTask(new FirebaseCallbackTask() {
+            @Override
+            public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                finish();
+            }
+        }, taskCreated);
     }
 
     public String setPriority (int num) {
@@ -189,7 +198,11 @@ public class AddTaskActivity extends AppCompatActivity {
         CustomDate cEndDate = new CustomDate (endDate, endTime);
         CustomDate cStartDate = new CustomDate(startDate, startTime);
 
-        UserSingleton.getUser().editTask(name, priority, category, cStartDate, cEndDate, notes, taskID, notif, val, checkerNotif);
+        databaseHelper.editTask(new FirebaseCallbackTask() {
+            @Override
+            public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+            }
+        }, name, priority, category, cStartDate, cEndDate, notes, taskID, notif, val, checkerNotif);
 
         Intent intent = new Intent();
 
@@ -397,7 +410,7 @@ public class AddTaskActivity extends AppCompatActivity {
                                 taskID, notif, val);
                     } else {
                         addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
-                        finish();
+
                     }
                 } else {
                     errorDialog = new Dialog(v.getContext());
@@ -584,11 +597,11 @@ public class AddTaskActivity extends AppCompatActivity {
         TimePickerDialog.OnTimeSetListener timeStart = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String date = hourOfDay + "." + minute;
-                SimpleDateFormat sdf = new SimpleDateFormat("HH.mm");
+                String date = hourOfDay + ":" + minute;
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                 try {
                     Date tempDate = sdf.parse(date);
-                    sdf = new SimpleDateFormat("hh.mm aa");
+                    sdf = new SimpleDateFormat("hh:mm aa");
                     startTime.setText(sdf.format(tempDate));
 
                 } catch (ParseException e) {
@@ -616,7 +629,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 tempM = "PM";
             }
 
-            startTime.setText(format.format(hour) + ":" + format.format(minute) + " " + tempM);
+            startTime.setText(format.format(tempHour) + ":" + format.format(minute) + " " + tempM);
         }
 
         int finalSHour = hour;
@@ -632,11 +645,11 @@ public class AddTaskActivity extends AppCompatActivity {
         TimePickerDialog.OnTimeSetListener timeEnd = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String date = hourOfDay + "." + minute;
-                SimpleDateFormat sdf = new SimpleDateFormat("HH.mm");
+                String date = hourOfDay + ":" + minute;
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                 try {
                     Date tempDate = sdf.parse(date);
-                    sdf = new SimpleDateFormat("hh.mm aa");
+                    sdf = new SimpleDateFormat("hh:mm aa");
                     endTime.setText(sdf.format(tempDate));
 
                 } catch (ParseException e) {
@@ -648,11 +661,11 @@ public class AddTaskActivity extends AppCompatActivity {
         minute = 0;
 
         String eTime = intent.getStringExtra(TaskDetailsActivity.KEY_C_END_TIME);
-        if (sTime != null && !sTime.isEmpty()) {
+        if (eTime != null && !eTime.isEmpty()) {
             String [] temp = eTime.split(":");
             hour = Integer.parseInt(temp[0]);
             minute = Integer.parseInt(temp[1]);
-
+            Log.d("hello pare inside", eTime + " " + hour);
             int tempHour = hour;
             String tempM = "AM";
             if (hour > 12) {
@@ -664,7 +677,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 tempM = "PM";
             }
 
-            endTime.setText(format.format(hour) + ":" + format.format(minute) + " " + tempM);
+            endTime.setText(format.format(tempHour) + ":" + format.format(minute) + " " + tempM);
         }
 
         int finalEHour = hour;
