@@ -174,7 +174,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
         Boolean notifOn = intent.getBooleanExtra(TaskDetailsActivity.KEY_NOTIF_ON, false);
         this.checkerNotif = notifOn;
-        this.cbNotif.setClickable(notifOn);
+        this.cbNotif.setChecked(notifOn);
 
         if (notifOn) {
 
