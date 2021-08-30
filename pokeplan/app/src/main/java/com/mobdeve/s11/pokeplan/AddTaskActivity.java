@@ -250,14 +250,15 @@ public class AddTaskActivity extends AppCompatActivity {
                 long diff = -1;
 
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm a");
-
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
                 try {
                     Date dateStart = simpleDateFormat.parse(startDate + " " + startTime);
                     Date dateEnd = simpleDateFormat.parse(endDate + " " + endTime);
-
+                    Log.d("hello date", dateStart.toString());
                     diff = dateEnd.getTime() - dateStart.getTime();
                 } catch (Exception e) {
                 }
+                Log.d("hello pare diff", Long.toString(diff));
 
                 return diff;
             }
@@ -333,7 +334,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     }
 
                     Calendar c = Calendar.getInstance();
-                    c.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 
                     int currentYear = c.get(Calendar.YEAR);
                     int currentDay = c.get(Calendar.DAY_OF_MONTH);
