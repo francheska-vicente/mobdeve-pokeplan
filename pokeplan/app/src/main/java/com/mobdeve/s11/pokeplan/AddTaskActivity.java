@@ -1,11 +1,17 @@
 package com.mobdeve.s11.pokeplan;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -69,7 +75,7 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
-
+        createNotificationChannel();
         databaseHelper = new DatabaseHelper();
         checkerNotif = true;
         this.initComponents();
@@ -404,9 +410,28 @@ public class AddTaskActivity extends AppCompatActivity {
                     if (taskID != null) {
                         editDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes,
                                 taskID, notif, val);
+
+                        if(checkerNotif) {
+                            if (val) {
+                                deleteTimer();
+                                setTimer(new CustomDate(startDate, startTime), notif, true);
+                            } else {
+                                deleteTimer();
+                                setTimer(new CustomDate(endDate, endTime), notif, false);
+                            }
+                        } else {
+                            deleteTimer();
+                        }
+
                     } else {
                         addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
-
+                        if(checkerNotif) {
+                            if (val) {
+                                setTimer(new CustomDate(startDate, startTime), notif, true);
+                            } else {
+                                setTimer(new CustomDate(endDate, endTime), notif, false);
+                            }
+                        }
                     }
                 } else {
                     errorDialog = new Dialog(v.getContext());
@@ -661,7 +686,6 @@ public class AddTaskActivity extends AppCompatActivity {
             String [] temp = eTime.split(":");
             hour = Integer.parseInt(temp[0]);
             minute = Integer.parseInt(temp[1]);
-            Log.d("hello pare inside", eTime + " " + hour);
             int tempHour = hour;
             String tempM = "AM";
             if (hour > 12) {
@@ -714,7 +738,72 @@ public class AddTaskActivity extends AppCompatActivity {
                 spinNotifWhen.setEnabled(false);
              }
         }});
+    }
 
+    private void setTimer (CustomDate date, String notif, boolean checker) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MONTH, date.getMonth() - 1);
+        c.set(Calendar.DAY_OF_MONTH, date.getDay());
+        c.set(Calendar.YEAR, date.getYear());
+        c.set(Calendar.HOUR_OF_DAY, date.getHour());
+        c.set(Calendar.MINUTE, date.getMinute());
+        c.set(Calendar.SECOND, 0);
 
+        switch(notif) {
+            case "10 Minutes": c.add(Calendar.MINUTE, -10);
+                break;
+            case "30 Minutes": c.add(Calendar.MINUTE, -30);
+                break;
+            case "1 Hour": c.add(Calendar.HOUR_OF_DAY, -1);
+                break;
+            case "2 Hours": c.add(Calendar.HOUR_OF_DAY, -2);
+                break;
+            case "4 Hours": c.add(Calendar.HOUR_OF_DAY, -4);
+                break;
+            case "8 Hours": c.add(Calendar.HOUR_OF_DAY, -8);
+                break;
+            case "12 Hours": c.add(Calendar.HOUR_OF_DAY, -12);
+                break;
+            case "1 Day": c.add(Calendar.DAY_OF_MONTH, -1);
+                break;
+        }
+
+        String message = "Don't forget! This ";
+        if(checker) {
+            message = message + " starts in " + notif;
+        } else {
+            message = message + " ends in " + notif;
+        }
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+        intent.putExtra("TASKNAME", etTaskName.getText().toString().trim());
+        intent.putExtra("NOTIF_MESSAGE", message);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "PokePlanReminderChannel";
+            String description = "Channel for PokePlan Reminder";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("pokeplanNotify", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void deleteTimer () {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
     }
 }
