@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,22 +35,25 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userprofile);
 
-        databaseHelper = new DatabaseHelper();
-        initInfo ();
+        initInfo();
     }
 
+    /**
+     * Retrieves user information from the database
+     */
     private void initInfo () {
-        databaseHelper.getUserDetails(new FirebaseCallbackUser() {
-            @Override
-            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
-                if (isSuccessful) {
-                    user = userDetails;
-                    initComponents();
-                }
+        databaseHelper = new DatabaseHelper();
+        databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> {
+            if (isSuccessful) {
+                user = userDetails;
+                initComponents();
             }
         });
     }
 
+    /**
+     * Initializes the layout's components
+     */
     private void initComponents() {
         this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.spEditor = this.sp.edit();
@@ -72,8 +73,18 @@ public class UserProfileActivity extends AppCompatActivity {
         setAllComponents();
     }
 
-    private void setAllComponents() {
+    /**
+     * Sets the onClickListeners for all buttons
+     */
+    private void setButtonListeners() {
+        this.btnback.setOnClickListener(view -> onBackPressed());
+        this.btnlogout.setOnClickListener(view -> logOutUser());
+    }
 
+    /**
+     * Sets user data in the designated view components
+     */
+    private void setAllComponents() {
         // set user profile pic
         this.ivStarterIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ user.getStarterDexNum()));
@@ -92,24 +103,26 @@ public class UserProfileActivity extends AppCompatActivity {
         this.tvTaskCompleteCtr.setText(task);
     }
 
-    private void setButtonListeners() {
-        this.btnback.setOnClickListener(view -> onBackPressed());
-        this.btnlogout.setOnClickListener(view -> logOutUser());
-    }
-
+    /**
+     * Logs out the user from the application.
+     */
     private void logOutUser() {
+        // removes user credentials from shared preferences
         spEditor.remove(Keys.KEY_EMAIL.name());
         spEditor.remove(Keys.KEY_PASSWORD.name());
         spEditor.apply();
 
+        // brings user to initial activity
         Intent intent = new Intent(UserProfileActivity.this, InitActivity.class);
         startActivity(intent);
     }
 
-
+    /**
+     * Helper function to get the image ID given the image name.
+     * @param imageName the name of the image
+     * @return the image id of the image
+     */
     private int getImageId(Context context, String imageName) {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
-
-
 }
