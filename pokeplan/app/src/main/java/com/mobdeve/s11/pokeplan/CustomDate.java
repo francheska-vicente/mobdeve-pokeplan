@@ -1,5 +1,7 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -36,6 +38,8 @@ public class CustomDate {
     }
 
     public CustomDate(String date, String time) {
+        Log.d("hello pare", date);
+        Log.d("hello time", time);
         String [] tempDate = date.split("\\.");
         String [] tempTime = time.split(":");
         this.month = Integer.parseInt(tempDate[1]);
@@ -110,6 +114,7 @@ public class CustomDate {
         long diff = 0;
         try {
             Date dateStart = simpleDateFormat.parse(currentDay + "." + currentMonth + "." + currentYear);
+            Log.d("hello pare date start", "printData: " + Calendar.DAY_OF_MONTH);
             String temp = new DecimalFormat("00").format(day_in_month) + "." + new DecimalFormat("00").format(month) + "." + year;
             Date dateEnd = simpleDateFormat.parse(temp);
 
