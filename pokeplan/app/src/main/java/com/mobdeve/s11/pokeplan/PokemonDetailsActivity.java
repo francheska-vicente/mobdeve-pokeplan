@@ -58,6 +58,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private ArrayList<UserPokemon> partyList;
     private String userID;
     private DatabaseHelper databaseHelper;
+    private ProgressBar pbLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
         sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
         databaseHelper = new DatabaseHelper();
-
+        this.pbLoading = findViewById(R.id.pb_pokemon_details_loading);
+        this.pbLoading.setVisibility(View.VISIBLE);
         partyList = new ArrayList<>();
         this.initInfo (pkmnid);
     }
@@ -94,6 +96,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
                             initComponents(pkmn);
                             setAllComponents(pkmn);
+                            pbLoading.setVisibility(View.GONE);
                             pkmn.getPokemonDetails().playPokemonCry();
                         }
                     });
