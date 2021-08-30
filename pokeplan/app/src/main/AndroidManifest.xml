@@ -51,6 +51,8 @@
             android:name=".PokedexDetailsActivity"
             android:screenOrientation="portrait" />
 
+        <receiver android:name=".ReminderBroadcast"></receiver>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
