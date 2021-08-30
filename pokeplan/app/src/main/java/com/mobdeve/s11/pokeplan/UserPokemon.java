@@ -21,11 +21,9 @@ public class UserPokemon {
 
     private String userPokemonID;
 
-    public UserPokemon () {
+    public UserPokemon() {}
 
-    }
-
-    public UserPokemon (Pokemon pokemon, String nickname, String nature, Date metDate,
+    public UserPokemon(Pokemon pokemon, String nickname, String nature, Date metDate,
                         Boolean inParty, int level, int fedCandy, String pokemonID) {
         this.details = pokemon;
         this.nickname = nickname;
@@ -40,7 +38,7 @@ public class UserPokemon {
     public UserPokemon(Pokemon details, boolean inParty) {
         this.details = details;
         this.nickname = details.getSpecies();
-        this.nature = this.setNature();
+        this.nature = this.generateNature();
         this.dMetDate = new java.util.Date();
         this.level = 1;
         this.fedCandy = 0;
@@ -145,7 +143,7 @@ public class UserPokemon {
         this.nature = nature;
     }
 
-    public String setNature () {
+    public String generateNature () {
         String[] NATURES = {
                 "Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold", "Docile",
                 "Relaxed", "Impish", "Lax", "Timid", "Hasty", "Serious", "Jolly",
