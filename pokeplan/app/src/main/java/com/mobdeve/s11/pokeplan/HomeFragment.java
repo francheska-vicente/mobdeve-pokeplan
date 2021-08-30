@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,8 @@ public class HomeFragment extends Fragment {
     private TextView tvSuperCandyCtr;
     private TextView tvPokedexCtr;
 
+    private ProgressBar pbLoading;
+
     private String userID;
     private UserDetails user;
     private int ongoingTaskNum;
@@ -63,6 +66,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         helper = new DatabaseHelper();
+        this.pbLoading = view.findViewById(R.id.pb_home_loading);
+        this.pbLoading.setVisibility(View.VISIBLE);
         initComponents(view);
         return view;
     }
@@ -120,6 +125,7 @@ public class HomeFragment extends Fragment {
                                 }
                             }
                             setCounterValues();
+                            pbLoading.setVisibility(View.GONE);
                         }
                     });
                 }
