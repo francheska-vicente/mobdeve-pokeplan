@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private Button btnpc;
     private Button btnRelease;
 
+    private ConstraintLayout clComponents;
     private LinearLayout llrare;
     private LinearLayout llsuper;
 
@@ -69,9 +71,14 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
         sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
         databaseHelper = new DatabaseHelper();
+
         this.pbLoading = findViewById(R.id.pb_pokemon_details_loading);
         this.pbLoading.bringToFront();
         this.pbLoading.setVisibility(View.VISIBLE);
+        this.clComponents = findViewById(R.id.cl_pkmndetails_components);
+        this.clComponents.setVisibility(View.INVISIBLE);
+
+
         partyList = new ArrayList<>();
         this.initInfo (pkmnid);
     }
@@ -98,7 +105,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                             initComponents(pkmn);
                             setAllComponents(pkmn);
                             pbLoading.setVisibility(View.GONE);
-                            pkmn.getPokemonDetails().playPokemonCry();
+                            clComponents.setVisibility(View.VISIBLE);
+                            pkmn.getDetails().playPokemonCry();
                         }
                     });
                 }
@@ -132,8 +140,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         this.btnsuper = findViewById(R.id.btn_pkmndetails_supercandy);
         if (user.getSuperCandy() <= 0
-                || pkmn.getLevel() < pkmn.getPokemonDetails().getEvolveLvl()
-                || pkmn.getPokemonDetails().getEvolvesTo().isEmpty())
+                || pkmn.getLevel() < pkmn.getDetails().getEvolveLvl()
+                || pkmn.getDetails().getEvolvesTo().isEmpty())
             btnsuper.setEnabled(false);
 
         this.btnpc = findViewById(R.id.btn_pkmndetails_pc);
@@ -183,9 +191,9 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
     private void setAllComponents(UserPokemon pkmn) {
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
-                "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
+                "pkmn_"+ pkmn.getDetails().getDexNum()));
         this.tvPkmnNickname.setText(pkmn.getNickname());
-        this.tvPkmnSpecies.setText(pkmn.getPokemonDetails().getSpecies());
+        this.tvPkmnSpecies.setText(pkmn.getDetails().getSpecies());
         this.tvPkmnNature.setText(pkmn.getNature());
         this.tvPkmnMetDate.setText(pkmn.getMetDate());
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
@@ -193,9 +201,9 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         String level = "Level " + pkmn.getLevel();
         this.tvPkmnLevel.setText(level);
 
-        String pkmntype = pkmn.getPokemonDetails().getType1();
-        if (!pkmn.getPokemonDetails().getType2().isEmpty())
-            pkmntype = pkmntype + "/" + pkmn.getPokemonDetails().getType2();
+        String pkmntype = pkmn.getDetails().getType1();
+        if (!pkmn.getDetails().getType2().isEmpty())
+            pkmntype = pkmntype + "/" + pkmn.getDetails().getType2();
         this.tvPkmnType.setText(pkmntype);
 
         this.tvRareCandyCtr.setText(Integer.toString(user.getRareCandy()));
@@ -209,8 +217,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             String level = "Level " + pkmn.getLevel();
             this.tvPkmnLevel.setText(level);
 
-            if (pkmn.getPokemonDetails().getEvolveLvl() <= pkmn.getLevel()
-                    && pkmn.getPokemonDetails().getEvolveLvl() != -1)
+            if (pkmn.getDetails().getEvolveLvl() <= pkmn.getLevel()
+                    && pkmn.getDetails().getEvolveLvl() != -1)
                 this.btnsuper.setEnabled(true);
         }
 
@@ -218,7 +226,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.tvRareCandyCtr.setText(Integer.toString(user.getRareCandy()));
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
 
-        if (!(user.getRareCandy() > 0 && pkmn.getLevel() < 100))
+        if (user.getRareCandy() <= 0 || pkmn.getLevel() >= 100)
             btnrare.setEnabled(false);
 
         databaseHelper.updatePokemon(new FirebaseCallbackPokemon() {
@@ -230,22 +238,24 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     }
 
     private void evolvePokemon() {
-        if (pkmn.getPokemonDetails().getEvolveLvl() <= pkmn.getLevel()
-                && pkmn.getPokemonDetails().getEvolveLvl() != -1) {
+        if (pkmn.getDetails().getEvolveLvl() <= pkmn.getLevel()
+                && pkmn.getDetails().getEvolveLvl() != -1) {
             pkmn.evolvePokemon();
+
             this.tvPkmnNickname.setText(pkmn.getNickname());
-            pkmn.getPokemonDetails().playPokemonCry();
+            pkmn.getDetails().playPokemonCry();
 
             user.subtractSuperCandy(1);
             this.tvSuperCandyCtr.setText(Integer.toString(user.getSuperCandy()));
 
             this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
-                    "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
-            this.tvPkmnSpecies.setText(pkmn.getPokemonDetails().getSpecies());
+                    "pkmn_"+ pkmn.getDetails().getDexNum()));
+            this.tvPkmnSpecies.setText(pkmn.getDetails().getSpecies());
         }
 
-        if (pkmn.getPokemonDetails().getEvolveLvl() > pkmn.getLevel()
-                || pkmn.getPokemonDetails().getEvolveLvl() == -1)
+        if (user.getSuperCandy() <= 0
+                || pkmn.getDetails().getEvolveLvl() > pkmn.getLevel()
+                || pkmn.getDetails().getEvolveLvl() == -1)
             this.btnsuper.setEnabled(false);
 
         databaseHelper.updatePokemon(new FirebaseCallbackPokemon() {
@@ -309,7 +319,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.editdialog.setOneInputComponents(
                 getString(R.string.pokemondetails_rename_caption),
                 getImageId(getApplicationContext(),
-                        "pkmn_"+ pkmn.getPokemonDetails().getDexNum())
+                        "pkmn_"+ pkmn.getDetails().getDexNum())
         );
 
         EditText name = editdialog.findViewById(R.id.et_dialog_stringinput);
@@ -335,7 +345,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 getString(R.string.pkmndetails_releasepkmndiag_title),
                 getString(R.string.pkmndetails_releasepkmndiag_text),
                 getImageId(getApplicationContext(),
-                        "pkmn_"+ pkmn.getPokemonDetails().getDexNum()),
+                        "pkmn_"+ pkmn.getDetails().getDexNum()),
                 getString(R.string.pkmndetails_releasepkmndiag_button)
         );
 
