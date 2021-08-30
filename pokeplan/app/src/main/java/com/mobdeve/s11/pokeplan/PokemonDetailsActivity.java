@@ -233,6 +233,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         if (pkmn.getPokemonDetails().getEvolveLvl() <= pkmn.getLevel()
                 && pkmn.getPokemonDetails().getEvolveLvl() != -1) {
             pkmn.evolvePokemon();
+            this.tvPkmnNickname.setText(pkmn.getNickname());
             pkmn.getPokemonDetails().playPokemonCry();
 
             user.subtractSuperCandy(1);
