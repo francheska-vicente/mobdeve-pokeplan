@@ -10,7 +10,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,20 +54,19 @@ public class FocusTimerFragment extends Fragment implements SensorEventListener 
     private TextView tvsecs;
     private TextView tvcaption;
 
+    private CustomDialog confirmstoptimerdialog;
+
+    private boolean timerIsFinished;
+    private boolean timerIsOngoing;
+
     private Timer timer;
     private CountDownTimer countdown;
 
-    private CustomDialog confirmstoptimerdialog;
-
-    private boolean timerIsDone;
-    private boolean timerIsStopped;
     private DatabaseHelper databaseHelper;
     private UserDetails user;
 
-    public FocusTimerFragment() {
-    }
-
     public FocusTimerFragment() {}
+
     public static FocusTimerFragment newInstance() {
         return new FocusTimerFragment();
     }
@@ -82,14 +80,9 @@ public class FocusTimerFragment extends Fragment implements SensorEventListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_focustimer, container, false);
-        databaseHelper = new DatabaseHelper();
 
-        databaseHelper.getUserDetails(new FirebaseCallbackUser() {
-            @Override
-            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
-                user = userDetails;
-            }
-        });
+        databaseHelper = new DatabaseHelper();
+        databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> user = userDetails);
 
         this.initComponents(view);
         this.setInitialButtonListeners();
