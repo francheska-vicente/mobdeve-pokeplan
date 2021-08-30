@@ -348,7 +348,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     }
 
                     Calendar c = Calendar.getInstance();
-                    c.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 
                     int currentYear = c.get(Calendar.YEAR);
                     int currentDay = c.get(Calendar.DAY_OF_MONTH);
