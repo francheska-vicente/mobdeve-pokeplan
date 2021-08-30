@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_tasklist"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightest_gray">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_add_task_label"
@@ -36,6 +37,21 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.08" />
 
+    <TextView
+        android:id="@+id/tv_tasklist_filter_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="FILTER"
+        android:textAllCaps="false"
+        android:textColor="@color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ib_filter"
+        app:layout_constraintEnd_toStartOf="@+id/ib_filter"
+        app:layout_constraintTop_toTopOf="@+id/ib_filter"
+        app:lineHeight="38dp" />
+
     <ScrollView
         android:id="@+id/sv_tasklist"
         android:layout_width="0dp"
@@ -43,7 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_add_task_label">
+        app:layout_constraintTop_toBottomOf="@+id/spinner_tasklist_filter">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll_tasklist_task"
@@ -56,7 +72,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="12dp"
                 android:fontFamily="@font/raleway_bold"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
@@ -159,29 +174,37 @@
         android:id="@+id/fab_tasklist_add_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
         android:clickable="true"
         android:tint="@color/darkest_gray"
         app:backgroundTint="@color/pink_button"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/gl_tasklist_ver97p"
+        app:layout_constraintEnd_toEndOf="parent"
         app:maxImageSize="32dp"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_tasklist_ver3p"
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/spinner_tasklist_filter"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.03" />
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/ib_filter"
+        app:layout_constraintTop_toTopOf="@+id/gl_tasklist_hor20p4" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_tasklist_ver97p"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.97" />
+    <ImageButton
+        android:id="@+id/ib_filter"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="24dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_tasklist_filter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinner_tasklist_filter"
+        app:srcCompat="@drawable/task_filter"
+        app:tint="@color/pink_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

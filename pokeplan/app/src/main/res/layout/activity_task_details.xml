@@ -5,6 +5,7 @@
     android:id="@+id/cl_taskdetails_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/lightest_gray"
     tools:context=".TaskDetailsActivity">
 
     <ImageView
@@ -46,7 +47,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_bell" />
 
-6    <androidx.constraintlayout.widget.ConstraintLayout
+    6
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_taskdetails_label"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -56,30 +59,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/ib_taskdetails_back"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#00FFFFFF"
-        android:scaleType="fitCenter"
-        android:src="@drawable/arrow_back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/pink_button" />
+        <TextView
+            android:id="@+id/tv_taskdetails_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/raleway_semibold"
+            android:text="@string/taskdetails_label"
+            android:textColor="@color/darker_gray"
+            android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_taskdetails_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/raleway_semibold"
-        android:text="@string/taskdetails_label"
-        android:textColor="@color/darker_gray"
-        android:textSize="28sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/ib_taskdetails_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="fitCenter"
+            android:src="@drawable/arrow_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/darker_pink" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -96,11 +101,11 @@
         android:adjustViewBounds="true"
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerCrop"
-        app:tint="@color/pink_button"
         app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_name"
         app:layout_constraintEnd_toStartOf="@+id/ib_taskdetails_delete"
         app:layout_constraintTop_toTopOf="@+id/tv_taskdetails_name"
-        app:srcCompat="@drawable/edit" />
+        app:srcCompat="@drawable/edit"
+        app:tint="@color/pink_button" />
 
     <ImageButton
         android:id="@+id/ib_taskdetails_delete"
@@ -110,11 +115,11 @@
         android:adjustViewBounds="true"
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerCrop"
-        app:tint="@color/pink_button"
         app:layout_constraintBottom_toBottomOf="@+id/tv_taskdetails_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_taskdetails_name"
-        app:srcCompat="@drawable/delete" />
+        app:srcCompat="@drawable/delete"
+        app:tint="@color/pink_button" />
 
     <TextView
         android:id="@+id/tv_taskdetails_name"

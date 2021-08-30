@@ -1,33 +1,31 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Egg {
-    private Timer timer;
+    private final Timer timer;
+    private final boolean deepFocusEnabled;
 
-    private ArrayList<String> raritypool;
+    private final ArrayList<String> raritypool;
     private final String C = "Common";
     private final String UC = "Uncommon";
     private final String R = "Rare";
     private final String SR = "Super Rare";
 
     // rates of C, UC, R, SR respectively
-    private final int[] first = {80, 15, 4, 1};
-    private final int[] second = {50, 35, 10, 5};
-    private final int[] third = {30, 45, 15, 10};
-    private final int[] fourth = {10, 40, 30, 20};
-    private final int[] fifth = {5, 30, 40, 25};
-    private final int[] sixth = {0, 20, 30, 50};
+    private final int[] first = {50, 30, 15, 5};
+    private final int[] second = {30, 40, 20, 10};
+    private final int[] third = {10, 50, 25, 15};
+    private final int[] fourth = {5, 35, 40, 20};
+    private final int[] fifth = {0, 30, 45, 25};
+    private final int[] sixth = {0, 10, 50, 40};
+    private final int[] seventh = {0, 0, 30, 70};
 
-    private Pool pkmnpool;
-
-    public Egg(Timer timer) {
+    public Egg(Timer timer, boolean deepFocusEnabled) {
         this.timer = timer;
-        this.pkmnpool = new Pool();
+        this.deepFocusEnabled = deepFocusEnabled;
         this.raritypool = new ArrayList<>(100);
     }
 
@@ -37,7 +35,8 @@ public class Egg {
         if (timer.getSecs() > 0)    minutes++;
 
         // fix rates based on time
-        fixRates(minutes);
+        if (deepFocusEnabled) setBoostedRates(minutes);
+        else setNormalRates(minutes);
 
         // get rarity from pool
         String rarity = raritypool.get(new Random().nextInt(100));
@@ -45,16 +44,21 @@ public class Egg {
         // get random pokemon of the pulled rarity
         Pokemon pokemon;
         switch (rarity) {
-            case SR: pokemon = pkmnpool.generateSuperRarePokemon(); break;
-            case R: pokemon = pkmnpool.generateRarePokemon(); break;
-            case UC: pokemon = pkmnpool.generateUncommonPokemon(); break;
-            case C: default: pokemon = pkmnpool.generateCommonPokemon();
+            case SR: pokemon = generateSuperRarePokemon(); break;
+            case R: pokemon = generateRarePokemon(); break;
+            case UC: pokemon = generateUncommonPokemon(); break;
+            case C: default: pokemon = generateCommonPokemon();
         }
 
         return pokemon;
     }
 
-    public void populateRarityPool(int[] rates) {
+    /**
+     * Fills the Rarity Pool ArrayList with rarities based on the given rates.
+     * @param rates     percentages of the drop chance for Common, Uncommon, Rare, and
+     *                  Super Rare Pokemon respectively
+     */
+    private void populateRarityPool(int[] rates) {
         for(int j=0; j<rates[0]; j++)
             raritypool.add(C);
         for(int j=0; j<rates[1]; j++)
@@ -65,7 +69,11 @@ public class Egg {
             raritypool.add(SR);
     }
 
-    public void fixRates(int minutes) {
+    /**
+     * Sets the rates for rarities based on the number of minutes set in the Focus Timer.
+     * @param minutes   number of minutes set in the Focus Timer
+     */
+    private void setNormalRates(int minutes) {
         if (minutes >= 5 && minutes < 20) {
             populateRarityPool(first);
         }
@@ -84,5 +92,66 @@ public class Egg {
         else {
             populateRarityPool(sixth);
         }
+    }
+
+    /**
+     * Sets better rates for rarities if Deep Focus Mode was enabled.
+     * @param minutes   number of minutes set in the Focus Timer
+     */
+    private void setBoostedRates(int minutes) {
+        if (minutes >= 5 && minutes < 20) {
+            populateRarityPool(second);
+        }
+        else if (minutes >= 20 && minutes < 40) {
+            populateRarityPool(third);
+        }
+        else if (minutes >= 40 && minutes < 60) {
+            populateRarityPool(fourth);
+        }
+        else if (minutes >= 60 && minutes < 120) {
+            populateRarityPool(fifth);
+        }
+        else if (minutes >= 120 && minutes < 240) {
+            populateRarityPool(sixth);
+        }
+        else {
+            populateRarityPool(seventh);
+        }
+    }
+
+    /**
+     * Randomly generates a Common Pokemon.
+     * @return  the common Pokemon generated randomly
+     */
+    private Pokemon generateCommonPokemon() {
+        ArrayList<Pokemon> common = Pokedex.getPokedex().getCommonPokemonList();
+        return common.get(new Random().nextInt(common.size()));
+    }
+
+    /**
+     * Randomly generates a Uncommon Pokemon.
+     * @return  the uncommon Pokemon generated randomly
+     */
+    private Pokemon generateUncommonPokemon() {
+        ArrayList<Pokemon> uncommon = Pokedex.getPokedex().getUncommonPokemonList();
+        return uncommon.get(new Random().nextInt(uncommon.size()));
+    }
+
+    /**
+     * Randomly generates a Rare Pokemon.
+     * @return  the rare Pokemon generated randomly
+     */
+    private Pokemon generateRarePokemon() {
+        ArrayList<Pokemon> rare = Pokedex.getPokedex().getRarePokemonList();
+        return rare.get(new Random().nextInt(rare.size()));
+    }
+
+    /**
+     * Randomly generates a Super Rare Pokemon.
+     * @return  the super rare Pokemon generated randomly
+     */
+    private Pokemon generateSuperRarePokemon() {
+        ArrayList<Pokemon> superrare = Pokedex.getPokedex().getSuperRarePokemonList();
+        return superrare.get(new Random().nextInt(superrare.size()));
     }
 }

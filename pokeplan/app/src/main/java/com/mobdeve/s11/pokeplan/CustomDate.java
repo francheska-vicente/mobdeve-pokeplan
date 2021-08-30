@@ -1,9 +1,5 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.util.Log;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -31,16 +27,12 @@ public class CustomDate {
     }
 
     public CustomDate(int year, int month, int day_in_month, int hour, int minute) {
-        if (year <= 1000)
-            this.year = 2000 + year;
-        else
-            this.year = year;
+        this.year = year;
 
         this.day = day_in_month;
         this.month = month;
         this.hour = hour;
         this.minute = minute;
-
     }
 
     public CustomDate(String date, String time) {
@@ -60,10 +52,6 @@ public class CustomDate {
             this.hour = 0;
         }
 
-        if (year <= 1000)
-            this.year = 2000 + year;
-        else
-            this.year = year;
     }
 
     public int getDay () {
@@ -137,7 +125,8 @@ public class CustomDate {
             } else {
                 date = monthString[month] + " " + day_in_month + ", " + year + " @";
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
 
         }
 
@@ -146,14 +135,20 @@ public class CustomDate {
         if (hour > 12) {
             tempHour = hour - 12;
             temp = "PM";
-        } else if (hour == 12) {
+        }
+        else if (hour == 12) {
             temp = "PM";
-        } else if (hour == 0) {
+        }
+        else if (hour == 0) {
             tempHour = 12;
         }
 
         date = date + new DecimalFormat("00").format(tempHour) + ":" + new DecimalFormat("00").format(minute) + " " + temp;
         return  date;
+    }
+
+    public String printSpecificDate () {
+        return monthString[month] + " " + day + ", " + year;
     }
 }
 

@@ -3,7 +3,6 @@ package com.mobdeve.s11.pokeplan;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -41,6 +40,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
     private String email;
     private String password;
     private String username;
+    private String birthday;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +57,15 @@ public class RegisterStarterActivity extends AppCompatActivity {
 
     private void initValues () {
         Intent intent = getIntent();
-        this.name =  intent.getStringExtra(RegisterActivity.KEY_NAME);
-        this.email = intent.getStringExtra(RegisterActivity.KEY_EMAIL);
-        this.password = intent.getStringExtra(RegisterActivity.KEY_PASSWORD);
-        this.username = intent.getStringExtra(RegisterActivity.KEY_USERNAME);
+        this.name =  intent.getStringExtra(Keys.KEY_NAME.name());
+        this.email = intent.getStringExtra(Keys.KEY_EMAIL.name());
+        this.password = intent.getStringExtra(Keys.KEY_PASSWORD.name());
+        this.username = intent.getStringExtra(Keys.KEY_USERNAME.name());
+        this.birthday = intent.getStringExtra(Keys.KEY_BIRTHDAY.name());
     }
 
     private void initBackBtn() {
-        btnregisterstartback = findViewById(R.id.ib_register2_back);
+        btnregisterstartback = findViewById(R.id.ib_register_s_back);
         btnregisterstartback.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), RegisterActivity.class);
@@ -78,9 +79,17 @@ public class RegisterStarterActivity extends AppCompatActivity {
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-
                         if(task.isSuccessful()) {
-                            UserDetails user = new UserDetails (name, email, username, pokeNum);
+
+                            String [] stringBirthday = birthday.split("\\.");
+
+                            int month = Integer.parseInt(stringBirthday[1]);
+                            int day = Integer.parseInt(stringBirthday[0]);
+                            int year = Integer.parseInt(stringBirthday[2]);
+
+                            CustomDate customDate = new CustomDate(year, month, day, 0, 0);
+
+                            UserDetails user = new UserDetails (name, email, username, pokeNum, customDate);
 
                             DatabaseReference databaseRef = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Users");
 
@@ -91,6 +100,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
                             temp.setValue(user).addOnCompleteListener(new OnCompleteListener<Void> () {
                                 @Override
                                 public void onComplete(@NonNull @NotNull Task<Void> task) {
+
                                     if(task.isSuccessful()) {
                                         Toast.makeText(RegisterStarterActivity.this, "User has been registered!",
                                                 Toast.LENGTH_LONG).show();
@@ -98,9 +108,8 @@ public class RegisterStarterActivity extends AppCompatActivity {
                                         finish();
 
                                         Pokemon pokemon = Pokedex.getPokedex().getPokemon(pokeNum);
-                                        Log.d("pukenum", Integer.toString(pokeNum));
                                         UserSingleton.getUser().setUserDetails(user);
-                                        UserSingleton.getUser().addPokemon(pokemon);
+                                        UserSingleton.getUser().addPokemon(pokemon, false);
                                         UserSingleton.removeUser();
 
                                         Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
@@ -127,9 +136,9 @@ public class RegisterStarterActivity extends AppCompatActivity {
     }
 
     private void initPkmnBtns() {
-        btnspkmn = new ArrayList<ImageButton>();
+        btnspkmn = new ArrayList<>();
         for(int id : BUTTON_IDS) {
-            ImageButton button = (ImageButton)findViewById(id);
+            ImageButton button = findViewById(id);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     int pokeNum = Integer.valueOf((String) view.getTag ());

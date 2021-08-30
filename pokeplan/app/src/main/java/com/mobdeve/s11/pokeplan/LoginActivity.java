@@ -1,17 +1,18 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.app.Application;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,32 +35,107 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
+    private TextView tvForgotPassword;
 
     private FirebaseAuth mAuth;
     private ProgressBar pbLoading;
+    private Dialog forgotPasswordDialog;
+    private Dialog emailSentDialog;
+    private boolean checkerEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        checkerEmail = false;
+        mAuth = FirebaseAuth.getInstance();
 
         etEmail = findViewById(R.id.et_login_email);
         etPassword = findViewById(R.id.et_login_password);
         btnLogin = findViewById(R.id.btn_login_submit);
         pbLoading = findViewById(R.id.pb_login);
+        tvForgotPassword = findViewById(R.id.tv_login_forgotpass);
         pbLoading.setVisibility(View.GONE);
         initBackBtn();
         initSubmitBtn();
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userLogin ();
-            }
-        });
+        btnLogin.setOnClickListener(v -> userLogin ());
+
+        tvForgotPassword.setOnClickListener(v -> forgotPassword (v));
 
         this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.spEditor = this.sp.edit();
+    }
+
+    private void forgotPassword (View v) {
+        forgotPasswordDialog = new Dialog(v.getContext());
+
+        forgotPasswordDialog.setContentView(R.layout.dialog_oneinput);
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        forgotPasswordDialog.getWindow().setLayout(width, height);
+        forgotPasswordDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) forgotPasswordDialog.findViewById(R.id.iv_dialog_stringinput_title);
+        tvdialogtitle.setText(R.string.forgot_title);
+        EditText etEmail = (EditText)  forgotPasswordDialog.findViewById(R.id.et_dialog_stringinput);
+        ImageView ivdialogicon = (ImageView) forgotPasswordDialog.findViewById(R.id.iv_dialog_stringinput_icon);
+        ivdialogicon.setImageResource(R.drawable.warning);
+
+        Button btndialogcancel = (Button) forgotPasswordDialog.findViewById(R.id.btn_dialog_stringinput_confirm);
+        btndialogcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                forgotPasswordDialog.dismiss();
+            }
+        });
+
+        Button btndialogconfirm = (Button) forgotPasswordDialog.findViewById(R.id.btn_dialog_stringinput_ok);
+        btndialogconfirm.setText(R.string.forgot_button);
+        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetPassword (etEmail);
+
+                pbLoading.setVisibility(View.GONE);
+            }
+        });
+        forgotPasswordDialog.show();
+    }
+
+    private void resetPassword (EditText etEmail) {
+        String email = etEmail.getText().toString().trim();
+        checkerEmail = false;
+        if (email.isEmpty()) {
+            etEmail.setError("Email is required.");
+            etEmail.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("Please input a valid email address.");
+            etEmail.requestFocus();
+            return;
+        }
+
+        pbLoading.setVisibility(View.VISIBLE);
+        mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    forgotPasswordDialog.dismiss();
+                    Intent intent = new Intent(LoginActivity.this, InitActivity.class);
+                    startActivity(intent);
+                } else {
+                    etEmail.setError("Please input a valid email address.");
+                    etEmail.requestFocus();
+                    return;
+                }
+            }
+        });
+
     }
 
     private void userLogin() {
@@ -95,8 +171,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void logInUser (String email, String password) {
-        mAuth = FirebaseAuth.getInstance();
-
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {

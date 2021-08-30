@@ -1,7 +1,6 @@
 package com.mobdeve.s11.pokeplan;
 
 import android.content.Intent;
-import android.os.Debug;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
     private ArrayList<Boolean> pokedex;
     private ArrayList<Pokemon> pokemonList;
 
-    public static final String KEY_POKEMONDEXNUM = "KEY_POKEMONDEXNUM";
-
     public PokedexAdapter(ArrayList<Boolean> pokedex) {
         this.pokedex = pokedex;
         pokemonList = Pokedex.getPokedex().getAllPokemon();
@@ -33,13 +30,11 @@ public class PokedexAdapter extends RecyclerView.Adapter<PokedexViewHolder> {
 
         PokedexViewHolder vh = new PokedexViewHolder(view);
 
-        vh.getConstraintLayout().setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), PokedexDetailsActivity.class);
-                i.putExtra(KEY_POKEMONDEXNUM,
-                        pokemonList.get(vh.getBindingAdapterPosition()).getDexNum());
-                view.getContext().startActivity(i);
-            }
+        vh.getConstraintLayout().setOnClickListener(v -> {
+            Intent i = new Intent(v.getContext(), PokedexDetailsActivity.class);
+            i.putExtra(Keys.KEY_POKEMONDEXNUM.name(),
+                    pokemonList.get(vh.getBindingAdapterPosition()).getDexNum());
+            v.getContext().startActivity(i);
         });
         return vh;
     }

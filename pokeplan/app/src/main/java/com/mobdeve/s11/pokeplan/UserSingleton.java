@@ -1,14 +1,16 @@
 package com.mobdeve.s11.pokeplan;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.api.Property;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,9 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class UserSingleton {
@@ -38,7 +38,17 @@ public class UserSingleton {
     private DatabaseReference mTask;
     private DatabaseReference mPokemon;
 
+    private SharedPreferences sp;
+    private SharedPreferences.Editor spEditor;
+
     private UserSingleton(){
+
+        this.ongoingTasks = new ArrayList<>();
+        this.completedTasks = new ArrayList<>();
+        this.userPokemonParty = new ArrayList<>();
+        this.userPokemonPC = new ArrayList<>();
+        this.userDetails = new UserDetails();
+
         FirebaseDatabase mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
         this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -46,24 +56,17 @@ public class UserSingleton {
         this.mTask = mDatabase.getReference("Tasks").child(this.userID);
         this.mPokemon = mDatabase.getReference("UserPokemon").child(this.userID);
 
-        ongoingTasks = new ArrayList<>();
-        completedTasks = new ArrayList<>();
-        userPokemonParty = new ArrayList<>();
-        userPokemonPC = new ArrayList<>();
-
-        this.userDetails = new UserDetails();
-
-        initDbTask();
         initDbUser();
+        initDbTask();
         initDbPokemon();
     }
 
     public static UserSingleton getUser() {
-        if (user == null) {
+        if (user == null)
             user = new UserSingleton();
-        }
         return user;
     }
+
     public static void removeUser() {
         user = null;
     }
@@ -74,7 +77,7 @@ public class UserSingleton {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userDetails = dataSnapshot.getValue(UserDetails.class);
-                userDetails.setUserName(dataSnapshot.child("userName").getValue(String.class));
+                Log.d("User DB", "User's information was successfully loaded to the application.");
             }
 
             @Override
@@ -82,8 +85,8 @@ public class UserSingleton {
                 Log.d("DEBUG USER ERROR: ", Integer.toString(databaseError.getCode()));
             }
         });
-
     }
+
     private void initDbTask () {
         ongoingTasks = new ArrayList<>();
         completedTasks = new ArrayList<>();
@@ -99,14 +102,17 @@ public class UserSingleton {
                         completedTasks.add(temp);
                     }
                 }
+
+                Log.d("Task DB", "User's task information was successfully loaded to the application.");
             }
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Log.d("DEBUG TASKS ERROR: ", Integer.toString(error.getCode()));
+                Log.e("DEBUG TASKS ERROR: ", Integer.toString(error.getCode()));
             }
         });
     }
+
     private void initDbPokemon () {
         userPokemonParty = new ArrayList<>();
         userPokemonPC = new ArrayList<>();
@@ -124,11 +130,13 @@ public class UserSingleton {
                         userPokemonPC.add(temp);
                     }
                 }
+
+                Log.d("Pokemon DB", "User's pokemon information was successfully loaded to the application.");
             }
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                Log.d("DEBUG POKEMON ERROR: ", Integer.toString(error.getCode()));
+                Log.e("DEBUG POKEMON ERROR: ", Integer.toString(error.getCode()));
             }
         });
     }
@@ -137,6 +145,7 @@ public class UserSingleton {
     public UserDetails getUserDetails() {
         return userDetails;
     }
+
     public void setUserDetails(UserDetails details) {
         this.userDetails = details;
     }
@@ -145,25 +154,138 @@ public class UserSingleton {
         mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-
+                if (task.isSuccessful()) {
+                    Log.d("User DB", "User Information was successfully modified.");
+                } else {
+                    Log.e("User DB", "There is an error encountered! " + task.getException().toString());
+                }
             }
         });
+    }
+
+    public void updateUserOnDB(HashMap<String, Object> hash, String password, CustomDate customDate) {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        AuthCredential credential = EmailAuthProvider
+                .getCredential(userDetails.getEmail(), password);
+
+        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                if (task.isSuccessful()) {
+                    mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d("User DB", "User's information was successfully edited.");
+
+                                if (hash.containsKey("userName")) {
+                                    userDetails.setUserName(hash.get("userName").toString());
+                                }
+
+                                if (hash.containsKey("fullName")) {
+                                    userDetails.setFullName(hash.get("fullName").toString());
+                                }
+
+                                if (customDate != null) {
+                                    userDetails.setBirthday(customDate);
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    Log.e("User DB", "There is an error encountered! " + task.getException().toString());
+                }
+            }
+        });
+    }
+
+    public void logoutUser () {
+        FirebaseAuth.getInstance().signOut();
+    }
+
+    public void deleteUser (String email, String password) {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (email.equalsIgnoreCase(userDetails.getEmail())) {
+            AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+
+            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        user.delete();
+                        Query query = mUser;
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                                snapshot.getRef().removeValue();
+                                Log.d("User DB", "User was deleted from the DB.");
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                                Log.e("User DB", "There is an error encountered! " + error.toException().toString());
+                            }
+                        });
+
+                        query = mTask;
+
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                                snapshot.getRef().removeValue();
+                                Log.d("Task DB", "All of the tasks of this user were deleted from the DB.");
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                                Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
+                            }
+                        });
+
+                        query = mPokemon;
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                                snapshot.getRef().removeValue();
+                                Log.d("Pokemon DB", "All of the pokemons of this user were deleted from the DB.");
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                                Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
+                            }
+                        });
+
+                        removeUser();
+                    } else {
+                        Log.d("USER DB", "A problem was encountered! " + task.getException().toString());
+                    }
+                }
+            });
+        } else {
+            Log.d("DELETING OF USER", "The entered email address does not match the current user's email address.");
+        }
     }
 
     // tasks
     public ArrayList<Task> getOngoingTasks() {
         return this.ongoingTasks;
     }
+
     public ArrayList<Task> getCompletedTasks () {
         return this.completedTasks;
     }
+
     public void setOngoingTasks(ArrayList<Task> tasks) {
         this.ongoingTasks = tasks;
     }
+
     public void setCompletedTasks(ArrayList<Task> tasks) {
         this.completedTasks = tasks;
     }
-    public void addOngoingTask(Task taskCreated) {
+
+    public void addOngoingTask(@NotNull Task taskCreated) {
         String key = mTask.push().getKey();
         taskCreated.setTaskID(key);
 
@@ -172,20 +294,21 @@ public class UserSingleton {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
                 task.isSuccessful();
+                Log.d("Task DB", "Task was added to the list of ongoing tasks.");
             }
         });
 
         ongoingTasks.add(taskCreated);
     }
+
     public void moveToCompletedTask (String key) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
-        this.getUserDetails().addCompletedTask();
 
         hash.put("isFinished", true);
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-
+                Log.d("Task DB", "Task was successfully moved from ongoing list to completed list.");
             }
         });
 
@@ -196,18 +319,30 @@ public class UserSingleton {
                 break;
             }
         }
+
+        HashMap<String, Object> hashUser = new HashMap<>();
+        hash.put("completedTaskCount", userDetails.getCompletedTaskCount() + 1);
+        mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                Log.d("User DB", "User's number of completed ask has been updated.");
+                userDetails.addCompletedTask();
+            }
+        });
     }
+
     public void deleteTask (String key) {
         Query query = mTask.child(key);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 snapshot.getRef().removeValue();
+                Log.d("Task DB", "Task was deleted from the DB.");
             }
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
+                Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
             }
         });
 
@@ -226,6 +361,7 @@ public class UserSingleton {
             }
         }
     }
+
     public void editTask (String name, int priority, String category, CustomDate startDate,
                           CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
@@ -242,7 +378,7 @@ public class UserSingleton {
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-
+                Log.d("Task DB", "Task information was modified.");
             }
         });
 
@@ -278,12 +414,8 @@ public class UserSingleton {
         }
 
     }
-
-
     // pokemons
-    public boolean addPokemon(Pokemon details) {
-        userDetails.setCaught(details.getDexNum());
-
+    public void addPokemon(Pokemon details, boolean checker) {
         UserPokemon userPokemon;
         String key = mPokemon.push().getKey();
 
@@ -298,8 +430,6 @@ public class UserSingleton {
             userPokemonPC.add(userPokemon);
         }
 
-        final boolean[] checker = new boolean[1];
-
         DatabaseReference temp = mPokemon.child(key);
 
         temp.setValue(userPokemon)
@@ -307,15 +437,43 @@ public class UserSingleton {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
                 if (task.isSuccessful()) {
-                    checker[0] = true;
+                    Log.d("Pokemon DB", "Pokemon was successfully added to the database.");
                 } else {
-                    checker[0] = false;
+                    Log.e("Pokemon DB", "Pokemon was not added to the database.");
                 }
             }
         });
 
-        return checker[0];
+        HashMap<String, Object> hashNum = new HashMap<>();
+
+        if (!this.userDetails.getUserPokedex().get(details.getDexNum() - 1)) {
+            hashNum.put("numCaught", this.userDetails.getNumCaught() + 1);
+            hashNum.put("numNotCaught", this.userDetails.getNumNotCaught() - 1);
+        }
+
+        if (checker) {
+            hashNum.put("hatchedPkmnCount", userDetails.getHatchedPkmnCount() + 1);
+        }
+
+        mUser.updateChildren(hashNum).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                Log.d("User DB", "User's number of pokemons and hatched egg were updated. ");
+            }
+        });
+
+        this.userDetails.setCaught(details.getDexNum());
+
+        HashMap <String, Object> hashUser = new HashMap<>();
+        hashUser.put(Integer.toString(details.getDexNum() - 1), true);
+        mUser.child("userPokedex").updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                Log.d("User DB", "User's caught pokemon information was added.");
+            }
+        });
     }
+
     public void editNickname (String key, String nickname) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("nickname", nickname);
@@ -323,7 +481,7 @@ public class UserSingleton {
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-
+                Log.d("Pokemon DB", "Pokemon's nickname was modified.");
             }
         });
 
@@ -342,7 +500,8 @@ public class UserSingleton {
             }
         }
     }
-    public void updatePokemon (UserPokemon pokemon) {
+
+    public void updatePokemon (@NotNull UserPokemon pokemon) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
         hash.put("details", pokemon.getPokemonDetails());
         hash.put("fedCandy", pokemon.getFedCandy());
@@ -351,7 +510,7 @@ public class UserSingleton {
         mPokemon.child(pokemon.getUserPokemonID()).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-
+                Log.d("Pokemon DB", "Pokemon's information was modified.");
             }
         });
 
@@ -382,9 +541,9 @@ public class UserSingleton {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
                 if (task.isSuccessful()) {
-
+                    Log.d("User DB", "User's number of candies was modified.");
                 } else {
-
+                    Log.e("User DB", "User's number of candies was not modified.");
                 }
             }
         });
@@ -394,9 +553,11 @@ public class UserSingleton {
     public ArrayList<UserPokemon> getUserPokemonParty() {
         return userPokemonParty;
     }
+
     public void setUserPokemonParty(ArrayList<UserPokemon> party) {
         this.userPokemonParty = party;
     }
+
     public UserPokemon getPokemonInParty(String id) {
         for(int j = 0; j < userPokemonParty.size(); j++)
             if(userPokemonParty.get(j).getUserPokemonID().equals(id))
@@ -404,6 +565,7 @@ public class UserSingleton {
 
         return null;
     }
+
     public void movePokemon(String key, boolean checker) {
         HashMap <String, Object> hash = new HashMap<String, Object>();
         hash.put("inParty", checker);
@@ -411,7 +573,49 @@ public class UserSingleton {
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+                if (task.isSuccessful()) {
+                    Log.d("Pokemon DB", "Pokemon was moved.");
 
+                    if (!checker) {
+                        for (int i = 0; i < userPokemonParty.size(); i++) {
+                            if (userPokemonParty.get(i).getUserPokemonID().equalsIgnoreCase(key)) {
+                                userPokemonPC.add(userPokemonParty.remove(i));
+                                break;
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < userPokemonPC.size(); i++) {
+                            if (userPokemonPC.get(i).getUserPokemonID().equalsIgnoreCase(key)) {
+                                userPokemonParty.add(userPokemonPC.remove(i));
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    Log.e("Pokemon DB", "Pokemon was not moved.");
+                }
+            }
+        });
+    }
+
+    public void deletePokemon (UserPokemon pokemon) {
+        Query query = mPokemon.child(pokemon.getUserPokemonID());
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                snapshot.getRef().removeValue();
+                Log.d("HELLO PARE", snapshot.getValue(UserPokemon.class).toString());
+                Log.d("Pokemon DB", "Pokemon was deleted from the DB.");
+
+                if (userPokemonPC.contains(pokemon)) {
+                    userPokemonPC.remove(pokemon);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
             }
         });
     }
@@ -420,9 +624,11 @@ public class UserSingleton {
     public ArrayList<UserPokemon> getUserPokemonPC() {
         return userPokemonPC;
     }
+
     public void setUserPokemonPC(ArrayList<UserPokemon> pc) {
         this.userPokemonPC = pc;
     }
+
     public UserPokemon getPokemonInPC(String id) {
         for(int j = 0; j < userPokemonPC.size(); j++)
             if(userPokemonPC.get(j).getUserPokemonID().equals(id))
@@ -430,6 +636,7 @@ public class UserSingleton {
 
         return null;
     }
+
     public void movePokemonToParty(UserPokemon pkmn) {
         for(int j = 0; j < userPokemonPC.size(); j++)
             if(userPokemonPC.get(j).equals(pkmn))

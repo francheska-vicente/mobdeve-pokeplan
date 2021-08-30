@@ -146,4 +146,9 @@ public class Pokemon {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String toString() {
+        return species;
+    }
 }

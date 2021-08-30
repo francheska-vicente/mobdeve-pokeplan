@@ -21,6 +21,6 @@
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/tasklistFragment"
-        android:name="com.mobdeve.s11.pokeplan.TasklistFragment"
+        android:name="com.mobdeve.s11.pokeplan.TaskListFragment"
         android:label="TasklistFragment" />
 </navigation>

@@ -1,23 +1,22 @@
 package com.mobdeve.s11.pokeplan;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.Task;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -38,9 +37,11 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private Button btnFinishTask;
     private ImageButton ibDeleteTask;
     private ImageButton ibEditTask;
-    private Dialog confirmFinish;
-    private Dialog confirmDelete;
-    private Dialog candyDialog;
+    private CustomDialog confirmFinish;
+    private CustomDialog confirmDelete;
+    private CustomDialog candyDialog;
+
+    private boolean wasEdited;
 
     public static final String KEY_TASKNAME = "KEY_TASKNAME";
     public static final String KEY_CATEGORY = "KEY_CATEGORY";
@@ -61,6 +62,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
+
+        wasEdited = false;
 
         btnback = findViewById(R.id.ib_taskdetails_back);
         btnback.setOnClickListener(new View.OnClickListener() {
@@ -89,21 +92,60 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private void initComponents () {
         Intent intent = getIntent();
 
-        String taskName = intent.getStringExtra(TaskAdapter.KEY_TASKNAME);
-        String category = intent.getStringExtra(TaskAdapter.KEY_CATEGORY);
-        int priority = intent.getIntExtra(TaskAdapter.KEY_PRIORITY, 1);
-        String startDate = intent.getStringExtra(TaskAdapter.KEY_START_DATE);
-        String endDate = intent.getStringExtra(TaskAdapter.KEY_DEADLINE);
-        String notes = intent.getStringExtra(TaskAdapter.KEY_NOTES);
-        String taskID = intent.getStringExtra(TaskAdapter.KEY_ID);
-        String cEndDate = intent.getStringExtra(TaskAdapter.KEY_C_END_DATE);
-        String cStartDate = intent.getStringExtra(TaskAdapter.KEY_C_START_DATE);
-        String cEndTime = intent.getStringExtra(TaskAdapter.KEY_C_END_TIME);
-        String cStartTime = intent.getStringExtra(TaskAdapter.KEY_C_START_TIME);
-        String notifWhen = intent.getStringExtra(TaskAdapter.KEY_NOTIF_WHEN);
-        Boolean notifOn = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_ON, false);
-        Boolean notifStartTime = intent.getBooleanExtra(TaskAdapter.KEY_NOTIF_START_TIME, false);
-        Boolean isFinished = intent.getBooleanExtra(TaskAdapter.KEY_IS_COMPLETED, false);
+        String taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+        String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+        int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+        String startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
+        String endDate = intent.getStringExtra(Keys.KEY_DEADLINE.name());
+        String notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+        String taskID = intent.getStringExtra(Keys.KEY_ID.name());
+        String cEndDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
+        String cStartDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
+        String cEndTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
+        String cStartTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
+        String notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+        Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+        Boolean notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+        Boolean isFinished = intent.getBooleanExtra(Keys.KEY_IS_COMPLETED.name(), false);
+
+
+//        if (wasEdited) {
+//            taskName = this.tvTaskName.getText().toString();
+//            category = this.tvCategory.getText().toString();
+//            priority = this.tvPriorityIcon.getText().toString().length();
+//
+//            String [] temp = this.tvNotif.getText().toString().split(" ");
+//
+//            if (temp [0].equalsIgnoreCase("No")) {
+//                notifOn = false;
+//                notifStartTime = false;
+//                notifWhen = "";
+//            } else {
+//                notifOn = true;
+//                notifWhen = temp [0] + " " + temp [1];
+//
+//                if (temp [3].equalsIgnoreCase("Start")) {
+//                    notifStartTime = true;
+//                } else {
+//                    notifStartTime = false;
+//                }
+//            }
+//
+//        } else {
+//            taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+//            category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+//            priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+//            startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
+//            endDate = intent.getStringExtra(Keys.KEY_DEADLINE.name());
+//            notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+//            cEndDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
+//            cStartDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
+//            cEndTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
+//            cStartTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
+//            notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+//            notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+//            notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+//        }
 
         if (isFinished) {
             this.btnFinishTask.setVisibility(View.GONE);
@@ -174,18 +216,18 @@ public class TaskDetailsActivity extends AppCompatActivity {
                              Boolean notifOn, Boolean notifStartTime) {
         Intent intent = new Intent(TaskDetailsActivity.this, AddTaskActivity.class);
 
-        intent.putExtra(KEY_TASKNAME, taskName);
-        intent.putExtra(KEY_CATEGORY, category);
-        intent.putExtra(KEY_PRIORITY, priority);
-        intent.putExtra(KEY_NOTES, notes);
-        intent.putExtra(KEY_ID, taskID);
-        intent.putExtra(KEY_C_END_DATE, endDate);
-        intent.putExtra(KEY_C_START_DATE, startDate);
-        intent.putExtra(KEY_C_START_TIME, startTime);
-        intent.putExtra(KEY_C_END_TIME, endTime);
-        intent.putExtra(KEY_NOTIF_WHEN, notifWhen);
-        intent.putExtra(KEY_NOTIF_ON, notifOn);
-        intent.putExtra(KEY_NOTIF_START_TIME, notifStartTime);
+        intent.putExtra(Keys.KEY_TASKNAME.name(), taskName);
+        intent.putExtra(Keys.KEY_CATEGORY.name(), category);
+        intent.putExtra(Keys.KEY_PRIORITY.name(), priority);
+        intent.putExtra(Keys.KEY_NOTES.name(), notes);
+        intent.putExtra(Keys.KEY_ID.name(), taskID);
+        intent.putExtra(Keys.KEY_C_END_DATE.name(), endDate);
+        intent.putExtra(Keys.KEY_C_START_DATE.name(), startDate);
+        intent.putExtra(Keys.KEY_C_START_TIME.name(), startTime);
+        intent.putExtra(Keys.KEY_C_END_TIME.name(), endTime);
+        intent.putExtra(Keys.KEY_NOTIF_WHEN.name(), notifWhen);
+        intent.putExtra(Keys.KEY_NOTIF_ON.name(), notifOn);
+        intent.putExtra(Keys.KEY_NOTIF_START_TIME.name(), notifStartTime);
 
         addActivityResultLauncher.launch(intent);
     }
@@ -200,18 +242,19 @@ public class TaskDetailsActivity extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent intent = result.getData();
 
-                        String name = intent.getStringExtra(AddTaskActivity.KEY_TASKNAME);
-                        String notes = intent.getStringExtra(AddTaskActivity.KEY_NOTES);
-                        String endDate = intent.getStringExtra(AddTaskActivity.KEY_END_DATE);
-                        String startDate = intent.getStringExtra(AddTaskActivity.KEY_START_DATE);
-                        int priority = intent.getIntExtra(AddTaskActivity.KEY_PRIORITY, 1);
-                        String category = intent.getStringExtra(AddTaskActivity.KEY_CATEGORY);
-                        String notifWhen = intent.getStringExtra(AddTaskActivity.KEY_NOTIF_WHEN);
-                        Boolean notifOn = intent.getBooleanExtra(AddTaskActivity.KEY_NOTIF_ON, false);
-                        Boolean notifStartTime = intent.getBooleanExtra(AddTaskActivity.KEY_NOTIF_START_TIME, false);
+                        String name = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+                        String notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+                        String endDate = intent.getStringExtra(Keys.KEY_END_DATE.name());
+                        String startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
+                        int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+                        String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+                        String notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+                        Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+                        Boolean notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
 
                         setValues(name, category, startDate, endDate,
                                 notes, priority, notifWhen, notifOn, notifStartTime);
+                        wasEdited = true;
                     } else {
                         initComponents();
                     }
@@ -219,79 +262,42 @@ public class TaskDetailsActivity extends AppCompatActivity {
             }
     );
 
-    protected void deleteDialog(View v, String taskID) {
-        confirmDelete = new Dialog(v.getContext());
+    protected void deleteDialog(View view, String taskID) {
+        confirmDelete = new CustomDialog(view.getContext());
+        confirmDelete.setDialogType(CustomDialog.CONFIRM);
 
-        confirmDelete.setContentView(R.layout.dialog_confirm);
+        confirmDelete.setConfirmComponents(
+                getString(R.string.task_details_delete_task_title),
+                getString(R.string.task_details_delete_task_text),
+                R.drawable.warning,
+                getString(R.string.task_details_delete_task_button)
+        );
 
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-        confirmDelete.getWindow().setLayout(width, height);
-        confirmDelete.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) confirmDelete.findViewById(R.id.tv_dialog_title);
-        tvdialogtitle.setText(R.string.task_details_delete_task_title);
-        TextView tvdialogtext = (TextView) confirmDelete.findViewById(R.id.tv_dialog_text);
-        tvdialogtext.setText(R.string.task_details_delete_task_text);
-        ImageView ivdialogicon = (ImageView) confirmDelete.findViewById(R.id.iv_dialog_icon);
-        ivdialogicon.setImageResource(R.drawable.warning);
-
-        Button btndialogcancel = (Button) confirmDelete.findViewById(R.id.btn_dialog_cancel);
-        btndialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDelete.dismiss();
-            }
-        });
-
-        Button btndialogconfirm = (Button) confirmDelete.findViewById(R.id.btn_dialog_confirm);
-        btndialogconfirm.setText(R.string.task_details_delete_task_button);
-        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDelete.dismiss();
-                UserSingleton.getUser().deleteTask(taskID);
-                finish();
-            }
+        Button btndialogconfirm = confirmDelete.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setOnClickListener(v -> {
+            confirmDelete.dismiss();
+            UserSingleton.getUser().deleteTask(taskID);
+            finish();
         });
         confirmDelete.show();
     }
 
-    protected void createDialog (View v, String taskID) {
-        confirmFinish = new Dialog(v.getContext());
-        confirmFinish.setContentView(R.layout.dialog_confirm);
+    protected void createDialog (View view, String taskID) {
+        confirmFinish = new CustomDialog(view.getContext());
+        confirmFinish.setDialogType(CustomDialog.CONFIRM);
 
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+        confirmFinish.setConfirmComponents(
+                getString(R.string.task_details_confirm_finish_title),
+                getString(R.string.task_details_confirm_finish_text),
+                R.drawable.medal,
+                getString(R.string.task_details_confirm_finish_button)
+        );
 
-        confirmFinish.getWindow().setLayout(width, height);
-        confirmFinish.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) confirmFinish.findViewById(R.id.tv_dialog_title);
-        tvdialogtitle.setText(R.string.task_details_confirm_finish_title);
-        TextView tvdialogtext = (TextView) confirmFinish.findViewById(R.id.tv_dialog_text);
-        tvdialogtext.setText(R.string.task_details_confirm_finish_text);
-        ImageView ivdialogicon = (ImageView) confirmFinish.findViewById(R.id.iv_dialog_icon);
-        ivdialogicon.setImageResource(R.drawable.warning);
-
-        Button btndialogcancel = (Button) confirmFinish.findViewById(R.id.btn_dialog_cancel);
-        btndialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmFinish.dismiss();
-            }
-        });
-
-        Button btndialogconfirm = (Button) confirmFinish.findViewById(R.id.btn_dialog_confirm);
-        btndialogconfirm.setText(R.string.task_details_confirm_finish_button);
-        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmFinish.dismiss();
-                UserSingleton.getUser().moveToCompletedTask(taskID);
-                giveCandies();
-            }
+        Button btndialogconfirm = confirmFinish.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setOnClickListener(v -> {
+            confirmFinish.dismiss();
+            UserSingleton.getUser().moveToCompletedTask(taskID);
+            giveCandies();
         });
         confirmFinish.show();
     }
@@ -353,45 +359,39 @@ public class TaskDetailsActivity extends AppCompatActivity {
     }
 
     private void createCandyDialog (String candyType, int numberOfCandies) {
-        candyDialog = new Dialog(TaskDetailsActivity.this);
+        candyDialog = new CustomDialog(TaskDetailsActivity.this);
+        candyDialog.setDialogType(CustomDialog.OK);
 
-        candyDialog.setContentView(R.layout.dialog_ok);
-
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-        candyDialog.getWindow().setLayout(width, height);
-        candyDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) candyDialog.findViewById(R.id.tv_dialog_ok_title);
-        tvdialogtitle.setText(R.string.task_details_candy_title);
-        TextView tvdialogtext = (TextView) candyDialog.findViewById(R.id.tv_dialog_ok_text);
-
-        String text = "You got " + numberOfCandies;
-
-
-        ImageView ivdialogicon = (ImageView) candyDialog.findViewById(R.id.iv_dialog_ok_icon);
-
+        String body = "You got " + numberOfCandies;
+        int icon;
         if (candyType.equalsIgnoreCase("rareCandy")) {
-            ivdialogicon.setImageResource(R.drawable.rarecandy);
-            text = text + " rare candies";
-        } else {
-            ivdialogicon.setImageResource(R.drawable.supercandy);
-            text = text + " super candies";
+            icon = R.drawable.rarecandy;
+            body = body + " Rare Candies";
         }
+        else {
+            icon = R.drawable.supercandy;
+            body = body + " Super Candies";
+        }
+        body = body + " for completing this task!";
 
-        text = text + " because you completed this task.";
-        tvdialogtext.setText(text);
+        candyDialog.setOKComponents(
+                getString(R.string.task_details_candy_title),
+                body,
+                icon);
 
-        Button btndialogok = (Button) candyDialog.findViewById(R.id.btn_dialog_ok);
-        btndialogok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                candyDialog.dismiss();
-                finish();
-            }
+        Button btndialogok = candyDialog.findViewById(R.id.btn_dialog_ok);
+        btndialogok.setOnClickListener(v -> {
+            candyDialog.dismiss();
+            finish();
         });
         candyDialog.show();
+
+        AudioManager audioManager =
+                (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setStreamVolume
+                (AudioManager.STREAM_MUSIC, 5,0);
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.finishtask);
+        mediaPlayer.start();
     }
 
     private void setCategoryIcon (String category) {

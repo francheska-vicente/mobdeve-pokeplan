@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightest_gray">
 
     <ImageButton
         android:id="@+id/ib_timer_hours_down"
@@ -154,6 +155,7 @@
         android:id="@+id/imageView7"
         android:layout_width="414dp"
         android:layout_height="247dp"
+        app:tint="@color/lighter_gray"
         app:layout_constraintBottom_toTopOf="@+id/guideline23"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

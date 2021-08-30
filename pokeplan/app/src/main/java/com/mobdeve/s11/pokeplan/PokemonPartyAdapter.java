@@ -15,8 +15,6 @@ import java.util.ArrayList;
 public class PokemonPartyAdapter extends RecyclerView.Adapter<PokemonPartyViewHolder> {
     private ArrayList<UserPokemon> party;
 
-    public static final String KEY_POKEMONID = "KEY_POKEMONID";
-
     public PokemonPartyAdapter(ArrayList<UserPokemon> party) {
         this.party = party;
     }
@@ -33,7 +31,8 @@ public class PokemonPartyAdapter extends RecyclerView.Adapter<PokemonPartyViewHo
         vh.getConstraintLayout().setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent i = new Intent(view.getContext(), PokemonDetailsActivity.class);
-                i.putExtra(KEY_POKEMONID, party.get(vh.getBindingAdapterPosition()).getUserPokemonID());
+                i.putExtra(Keys.KEY_POKEMONID.name(), party.get(vh.getBindingAdapterPosition()).getUserPokemonID());
+                i.putExtra(Keys.KEY_FROMWHERE.name(), "PARTY");
                 view.getContext().startActivity(i);
             }
         });

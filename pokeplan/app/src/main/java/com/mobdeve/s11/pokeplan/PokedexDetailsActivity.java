@@ -1,18 +1,18 @@
 package com.mobdeve.s11.pokeplan;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Locale;
 
 public class PokedexDetailsActivity extends AppCompatActivity {
     private ImageButton btnback;
@@ -30,6 +30,7 @@ public class PokedexDetailsActivity extends AppCompatActivity {
     private TextView tvPkmnEvoSpecies;
     private TextView tvEvoLevel;
 
+    private boolean soundEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +38,21 @@ public class PokedexDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pokedex_details);
 
         Intent intent = getIntent();
-        int dexnum = intent.getIntExtra(PokedexAdapter.KEY_POKEMONDEXNUM, 1);
+        int dexnum = intent.getIntExtra(Keys.KEY_POKEMONDEXNUM.name(), 1);
         Pokemon pkmn = Pokedex.getPokedex().getPokemon(dexnum);
 
         initComponents();
         setAllComponents(pkmn);
-        pkmn.playPokemonCry();
+        initUserPreferences();
+        playPkmnCry(pkmn);
     }
 
+    /**
+     * Initializes the layout's components
+     */
     private void initComponents() {
         this.btnback = findViewById(R.id.ib_pkdexdetails_back);
-        this.btnback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        this.btnback.setOnClickListener(view -> onBackPressed());
 
         this.ivPkmnIcon = findViewById(R.id.iv_pkdexdetails_icon);
         this.tvPkmnSpecies = findViewById(R.id.tv_pkdexdetails_species);
@@ -67,24 +68,32 @@ public class PokedexDetailsActivity extends AppCompatActivity {
         this.tvEvoLevel = findViewById(R.id.tv_pkdexdetails_evolveto_level);
     }
 
+    /**
+     * Sets values for all TextViews and ImageViews
+     */
     private void setAllComponents(Pokemon pkmn) {
-
-
+        // sets pokemon icon
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                 "pkmn_"+ pkmn.getDexNum()));
+
+        // sets pokemon species
         this.tvPkmnSpecies.setText(pkmn.getSpecies());
 
-        String pkmndexnum = "#" + String.format("%03d", pkmn.getDexNum());
+        // sets pokemon pokedex number
+        String pkmndexnum = "#" + String.format(Locale.getDefault(),"%03d", pkmn.getDexNum());
         this.tvDexNum.setText(pkmndexnum);
 
+        // sets pokemon type or types
         String pkmntype = pkmn.getType1();
         if (!pkmn.getType2().isEmpty())
             pkmntype = pkmntype + "/" + pkmn.getType2();
         this.tvPkmnType.setText(pkmntype);
 
-        String pkmninfo = new PokedexInfo().getPokemonInfo(pkmn.getDexNum());
+        // sets pokemon pokedex entries
+        String pkmninfo = Pokedex.getPokedex().getPokemonInfo(pkmn.getDexNum());
         this.tvPkmnInfo.setText(pkmninfo);
 
+        // sets evolution info if pokemon can evolve
         if (pkmn.getEvolvesTo().equals("")) {
             TextView tvlabel = findViewById(R.id.tv_pkdexdetails_evolveto_label);
             ImageView ivarrow = findViewById(R.id.iv_evolveto_arrow);
@@ -110,9 +119,32 @@ public class PokedexDetailsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initializes the user preferences for enabling certain functions of the focus timer.
+     */
+    private void initUserPreferences() {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
 
+        this.soundEnabled = sp.getBoolean(Keys.KEY_PKMNCRIES.name(), true);
+    }
 
+    /**
+     * Plays a Pokemon cry.
+     * @param pkmn the species of the pokemon.
+     */
+    private void playPkmnCry(Pokemon pkmn) {
+        if (soundEnabled)
+            pkmn.playPokemonCry();
+    }
+
+    /**
+     * Helper function to get the image ID given the image name.
+     * @param imageName the name of the image
+     * @return the image id of the image
+     */
     private int getImageId(Context context, String imageName) {
-        return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
+        return context.getResources().getIdentifier(
+                "drawable/" + imageName, null, context.getPackageName());
     }
 }

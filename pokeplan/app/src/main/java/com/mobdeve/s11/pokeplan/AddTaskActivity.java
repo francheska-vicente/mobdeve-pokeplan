@@ -1,9 +1,5 @@
 package com.mobdeve.s11.pokeplan;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.drawable.DrawableCompat;
-
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -11,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,16 +15,16 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 
-import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -35,22 +32,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.Locale;
 import java.util.TimeZone;
 
 public class AddTaskActivity extends AppCompatActivity {
-
-    public static final String KEY_TASKNAME = "KEY_TASKNAME";
-    public static final String KEY_CATEGORY = "KEY_CATEGORY";
-    public static final String KEY_PRIORITY = "KEY_PRIORITY";
-    public static final String KEY_START_DATE = "KEY_START_DATE";
-    public static final String KEY_END_DATE = "KEY_END_DATE";
-    public static final String KEY_NOTES = "KEY_NOTES";
-
-    public static final String KEY_NOTIF_WHEN = "KEY_NOTIF_WHEN";
-    public static final String KEY_NOTIF_ON = "KEY_NOTIF_ON";
-    public static final String KEY_NOTIF_START_TIME = "KEY_NOTIF_START_TIME";
+    private ImageButton ibBack;
 
     private String category;
     private String priority;
@@ -89,44 +75,51 @@ public class AddTaskActivity extends AppCompatActivity {
         this.currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.initCalendar ();
         this.intent ();
+
+        ibBack = findViewById(R.id.ib_add_task_back);
+        this.setButtonListeners();
+    }
+
+    private void setButtonListeners() {
+        ibBack.setOnClickListener(view -> onBackPressed());
     }
 
     private int convertHour (int hour, String temp) {
-        if (hour == 12) {
-            if (temp.equalsIgnoreCase("AM"))
-                hour = 0;
-        } else if (temp.equalsIgnoreCase("PM")) {
-            hour = hour + 12;
-        }
+        if (hour == 12 && temp.equalsIgnoreCase("AM"))
+            hour = 0;
+        else if (temp.equalsIgnoreCase("PM"))
+            hour += 12;
 
         return hour;
     }
 
+    private int dateTimeInputToInt(String input, int start, int end) {
+        return Integer.parseInt(input.substring(start, end));
+    }
+
     public void addToDatabase (String name, int priority, String category, String startDate,
-                               String endDate, String startTime, String endTime, String notes, String notif, boolean val) {
-        int monthEnd = Integer.parseInt(endDate.substring(3, 5));
-        int dayEnd = Integer.parseInt(endDate.substring(0, 2));
-        int yearEnd = Integer.parseInt(endDate.substring(6, 8));
+                               String endDate, String startTime, String endTime, String notes,
+                               String notif, boolean val) {
+        int monthEnd = dateTimeInputToInt(endDate, 3, 5);
+        int dayEnd = dateTimeInputToInt(endDate, 0, 2);
+        int yearEnd = dateTimeInputToInt(endDate, 6, 10);
 
-        int hourEnd = Integer.parseInt(endTime.substring(0, 2));
-        int minuteEnd = Integer.parseInt(endTime.substring(3, 5));
-
-        hourEnd = this.convertHour(hourEnd, endTime.substring(6, 8));
+        int hourEnd = this.convertHour(dateTimeInputToInt(endTime, 0, 2), endTime.substring(6, 8));
+        int minuteEnd = dateTimeInputToInt(endTime, 3, 5);
 
         Task taskCreated;
         if (startDate.equals("")) {
             taskCreated = new Task(currentUserUid, name, priority, category,
                     new CustomDate(true),
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes, notif, val, checkerNotif);
-        } else {
-            int monthStart = Integer.parseInt(startDate.substring(3, 5));
-            int dayStart = Integer.parseInt(startDate.substring(0, 2));
-            int yearStart = Integer.parseInt(startDate.substring(6, 8));
+        }
+        else {
+            int monthStart = dateTimeInputToInt(startDate, 3, 5);
+            int dayStart = dateTimeInputToInt(startDate, 0, 2);
+            int yearStart = dateTimeInputToInt(startDate, 6, 10);
 
-            int hourStart = Integer.parseInt(startTime.substring(0, 2));
-            int minuteStart = Integer.parseInt(startTime.substring(3, 5));
-
-            hourStart = this.convertHour (hourStart, startTime.substring(6, 8));
+            int hourStart = this.convertHour(dateTimeInputToInt(startTime, 0, 2), startTime.substring(6, 8));
+            int minuteStart = dateTimeInputToInt(startTime, 3, 5);
 
             taskCreated = new Task(currentUserUid, name, priority, category,
                     new CustomDate(yearStart, monthStart, dayStart, hourStart, minuteStart),
@@ -137,19 +130,13 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     public String setPriority (int num) {
-        String temp  = "!";
         switch (num) {
-            case 2: temp = "!!";
-                break;
-            case 3: temp = "!!!";
-                break;
-            case 4: temp = "!!!!";
-                break;
-            case 5: temp = "!!!!!";
-                break;
+            case 1: return "!";
+            case 2: return "!!";
+            case 3: return "!!!";
+            case 4: return "!!!!";
+            default: return "!!!!!";
         }
-
-        return temp;
     }
 
     public void setValues (Intent intent) {
@@ -206,21 +193,21 @@ public class AddTaskActivity extends AppCompatActivity {
 
         Intent intent = new Intent();
 
-        intent.putExtra(AddTaskActivity.KEY_TASKNAME, name);
-        intent.putExtra(AddTaskActivity.KEY_NOTES, notes);
-        intent.putExtra(AddTaskActivity.KEY_END_DATE, cEndDate.toString());
-        intent.putExtra(AddTaskActivity.KEY_START_DATE, cStartDate.toString());
-        intent.putExtra(AddTaskActivity.KEY_CATEGORY, category);
-        intent.putExtra(AddTaskActivity.KEY_PRIORITY, priority);
-        intent.putExtra(AddTaskActivity.KEY_NOTIF_START_TIME, val);
-        intent.putExtra(AddTaskActivity.KEY_NOTIF_ON, checkerNotif);
-        intent.putExtra(AddTaskActivity.KEY_NOTIF_WHEN, notif);
+        intent.putExtra(Keys.KEY_TASKNAME.name(), name);
+        intent.putExtra(Keys.KEY_NOTES.name(), notes);
+        intent.putExtra(Keys.KEY_END_DATE.name(), cEndDate.toString());
+        intent.putExtra(Keys.KEY_START_DATE.name(), cStartDate.toString());
+        intent.putExtra(Keys.KEY_CATEGORY.name(), category);
+        intent.putExtra(Keys.KEY_PRIORITY.name(), priority);
+        intent.putExtra(Keys.KEY_NOTIF_START_TIME.name(), val);
+        intent.putExtra(Keys.KEY_NOTIF_ON.name(), checkerNotif);
+        intent.putExtra(Keys.KEY_NOTIF_WHEN.name(), notif);
 
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
 
-    private void intent () {
+    private void intent (){
         this.initPriority ();
         this.initCategory ();
         this.initNotifications ();
@@ -249,11 +236,7 @@ public class AddTaskActivity extends AppCompatActivity {
         this.cbNotif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkerNotif) {
-                    checkerNotif = false;
-                } else {
-                    checkerNotif = true;
-                }
+                checkerNotif = !checkerNotif;
             }
         });
 
@@ -319,16 +302,16 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
 
                 if (!endDate.equals("")) {
-                    if (!startDate.equals("") && !startTime.equals("")) {
+                    if (!startDate.equals("") /* && !startTime.equals("")*/) {
                         if (!startTime.equals("")) {
-                            String tempStartDate = startDate.substring(0, 6) + "20" + startDate.substring(6, 8);
+                            String tempStartDate = startDate;
                             String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
 
-                            String tempEndDate = endDate.substring(0, 6) + "20" + endDate.substring(6, 8);
+                            String tempEndDate = endDate;
                             String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
 
                             long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
-
+                            Log.d("hello pare", Long.toString(diff));
                             if (diff < 0) {
                                 etEndDate.setError("End date should be later than the Start date.");
                                 etEndDate.requestFocus();
@@ -368,7 +351,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     String currentTime = new DecimalFormat("00").format(currentHour) + ":" +
                             new DecimalFormat("00").format(currentMinute)+ " " + temp;
 
-                    String tempEndDate = endDate.substring(0, 6) + "20" + endDate.substring(6, 8);
+                    String tempEndDate = endDate;
                     String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
                     long diff = getDiff(tempEndDate, currentDate, tempEndTime, currentTime);
 
@@ -386,7 +369,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (endTime == null) {
+                if (endTime == null || endTime.isEmpty()) {
                     etEndTime.setError("End time is required");
                     etEndTime.requestFocus();
                     return;
@@ -517,7 +500,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 calendarStart.set(Calendar.MONTH, month);
                 calendarStart.set(Calendar.DAY_OF_MONTH, day);
 
-                String myFormat = "dd.MM.yy";
+                String myFormat = "dd.MM.yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
 
                 startDate.setText(sdf.format(calendarStart.getTime()));
@@ -536,10 +519,6 @@ public class AddTaskActivity extends AppCompatActivity {
             String [] temp = sStartDate.split("\\.");
             day = Integer.parseInt(temp[0]);
             month = Integer.parseInt(temp[1]) - 1;
-
-            if (temp[2].length() == 4) {
-                temp[2] = temp[2].substring(2,4);
-            }
 
             startDate.setText(format.format(day) + "." + format.format(month + 1) + "." + temp[2]);
         }
@@ -565,7 +544,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 calendarEnd.set(Calendar.MONTH, month);
                 calendarEnd.set(Calendar.DAY_OF_MONTH, day);
 
-                String myFormat = "dd.MM.yy";
+                String myFormat = "dd.MM.yyyy";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
 
                 endDate.setText(sdf.format(calendarEnd.getTime()));
@@ -582,10 +561,6 @@ public class AddTaskActivity extends AppCompatActivity {
             String [] temp = sEndDate.split("\\.");
             day = Integer.parseInt(temp[0]);
             month = Integer.parseInt(temp[1]) - 1;
-
-            if (temp[2].length() == 4) {
-                temp[2] = temp[2].substring(2,4);
-            }
 
             endDate.setText(format.format(day) + "." + format.format(month + 1) + "." + temp[2]);
         }

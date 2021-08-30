@@ -1,7 +1,7 @@
 <resources>
     <!-- General -->
     <string name="app_name">PokéPlan</string>
-    <string name="tagline">tagline here. tagline</string>
+    <string name="tagline">Stay productive! Pika pika pi!</string>
 
     <!-- Login / Register -->
     <string name="register_tagline">Hello! Create a new account now.</string>
@@ -12,6 +12,9 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="register_s_title">Choose Your Starter</string>
+
+    <string name="forgot_title">Enter your e-mail.</string>
+    <string name="forgot_button">Reset Password</string>
 
     <!-- Focus Timer -->
     <string name="focustimer_title">FOCUS TIMER</string>
@@ -35,11 +38,8 @@
     <string name="focustimer_dialog_hatch_title">Oh! What\'s this?</string>
     <string name="focustimer_dialog_hatch_text">
         You hatched a</string>
-
-<!--  TODO: HUHUHUUHUHUHUHUHUHU  -->
     <string name="focustimer_dialog_info_title">Focus Timer</string>
-    <string name="focustimer_dialog_info_text">
-        help</string>
+    <string name="focustimer_dialog_info_text">Using this focus timer would help you stay productive by removing your impulse to check your phone. During the duration of this timer, you are not allowed to leave the screen. After the set time, you would receive a Pokémon.</string>
 
 
     <string name="focustimer_dialog_error_title">Invalid Time</string>
@@ -48,15 +48,26 @@
 
     <!-- Focus Timer egg break -->
     <string name="focustimer_dialog_egg_break_title">Oh no!</string>
-    <string name="focustimer_dialog_egg_break_text">Because you stopped your timer, the egg cracked.</string>
+    <string name="focustimer_dialog_egg_break_text">It seems like your egg won\'t hatch. Try to stay focused next time!</string>
 
     <!-- Task List -->
     <string name="tasklist_title">TASK LIST</string>
     <string name="tasklist_ongoing_label">Ongoing Tasks</string>
     <string name="tasklist_completed_label">Completed Tasks</string>
     <string name="taskdetails_label">VIEW TASK</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="tasklist_filter">
+        <item>ALL</item>
+        <item>School</item>
+        <item>Work</item>
+        <item>Hobby</item>
+        <item>Leisure</item>
+        <item>Chores</item>
+        <item>Health</item>
+        <item>Social</item>
+        <item>Others</item>
+    </string-array>
+
 
     <!-- Add Task -->
     <string name="add_task_title">ADD TASK</string>
@@ -119,12 +130,34 @@
     <string name="pkmndetails_movetopcdiag_text">This would remove the pokemon from your party.</string>
     <string name="pkmndetails_movetopcdiag_button">Move to PC</string>
 
+    <string name="pkmndetails_movetopartydiag_title">Move to Party</string>
+    <string name="pkmndetails_movetopartydiag_text">This would add the pokemon to your party.</string>
+    <string name="pkmndetails_movetopartydiag_button">Move to Party</string>
+    <string name="pkmndetails_releasepkmndiag_button">Release</string>
+    <string name="pkmndetails_releasepkmndiag_title">Release Pokemon?</string>
+    <string name="pkmndetails_releasepkmndiag_text">You won\'t be able to see this Pokemon again. Are you sure?</string>
+
     <!-- Task Details -->
-    <string name="task_details_confirm_finish_title">Completion of Task</string>
-    <string name="task_details_confirm_finish_text">This would transfer the task from ongoing list to completed list.</string>
-    <string name="task_details_confirm_finish_button">Task Completed</string>
+    <string name="task_details_confirm_finish_title">Finish Task</string>
+    <string name="task_details_confirm_finish_text">Are you sure? You won\'t be able to undo this!</string>
+    <string name="task_details_confirm_finish_button">Finish</string>
     <string name="task_details_delete_task_title">Deleting the Task</string>
     <string name="task_details_delete_task_text">This would remove the task from your ongoing or completed task list.</string>
     <string name="task_details_delete_task_button">Delete task</string>
     <string name="task_details_candy_title">Congratulations!</string>
+    <string name="pokemon_pc">POKEMON PC</string>
+    <string name="nopkmnpc">You have no Pokemon in the PC yet.</string>
+    <string name="birthday">Birthday</string>
+
+    <!-- Settings Buttons -->
+    <string name="faqs_title">FAQs</string>
+    <string name="about_title">ABOUT</string>
+    <string name="about_text">PokéPlan is a productivity application created solely for academic purposes. The Pokémon and their sounds are owned by Nintendo and The Pokémon Company. This application also made use of icons from Flaticon.</string>
+    <string name="pkdexdetails_information_label">INFORMATION</string>
+    <string name="pkdexdetails_evolvesto_label">EVOLVES TO</string>
+    <string name="init_welcometo_label">Welcome to</string>
+    <string name="init_register_btn">REGISTER</string>
+    <string name="init_login_btn">LOGIN</string>
+    <string name="login_label">Login</string>
+    <string name="home_progress_label">YOUR PROGRESS</string>
 </resources>
