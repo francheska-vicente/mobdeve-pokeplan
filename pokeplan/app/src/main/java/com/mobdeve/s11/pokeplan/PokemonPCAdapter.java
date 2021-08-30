@@ -15,6 +15,9 @@ import java.util.ArrayList;
 public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> {
     private ArrayList<UserPokemon> pc;
 
+    public PokemonPCAdapter () {
+        pc = new ArrayList<>();
+    }
     public PokemonPCAdapter(ArrayList<UserPokemon> pc) {
         this.pc = pc;
     }
@@ -44,6 +47,10 @@ public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> 
     public void onBindViewHolder(@NonNull @NotNull PokemonPCViewHolder holder, int position) {
         holder.setPkmnIcon(this.pc.get(position).getPokemonDetails().getDexNum());
         holder.setDexNum();
+    }
+
+    public void setPc (ArrayList<UserPokemon> userPokemons) {
+        this.pc = userPokemons;
     }
 
     @Override

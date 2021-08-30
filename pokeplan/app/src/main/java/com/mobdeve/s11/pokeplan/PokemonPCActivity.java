@@ -2,6 +2,7 @@ package com.mobdeve.s11.pokeplan;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ public class PokemonPCActivity extends AppCompatActivity {
     private ArrayList<UserPokemon> pokemonPCList;
     private RecyclerView rvPokemonPC;
     private PokemonPCAdapter pcAdapter;
+    private DatabaseHelper databaseHelper;
 
     private TextView tvNoPkmnPC;
 
@@ -25,14 +27,35 @@ public class PokemonPCActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemonpc);
+        databaseHelper = new DatabaseHelper();
+
         this.initComponents();
     }
 
     private void initComponents() {
-        this.pokemonPCList = UserSingleton.getUser().getUserPokemonPC();
         this.rvPokemonPC = findViewById(R.id.rv_pkmnpc);
         this.tvNoPkmnPC = findViewById(R.id.tv_pkmnpc_nopkmnpc);
+        this.pcAdapter = new PokemonPCAdapter();
 
+        databaseHelper.getPokemon(new FirebaseCallbackPokemon() {
+            @Override
+            public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                pokemonPCList = new ArrayList<>();
+                for (int i = 0; i < list.size(); i++) {
+                    if (!list.get(i).isInParty()) {
+                        pokemonPCList.add(list.get(i));
+                    }
+                }
+                Log.d("hello pare pc", Integer.toString(pokemonPCList.size()));
+                pcAdapter.setPc(pokemonPCList);
+                pcAdapter.notifyItemRangeInserted(0, list.size());
+
+                initLayout();
+            }
+        });
+    }
+
+    private void initLayout () {
         if (this.pokemonPCList.size() > 0) {
             this.rvPokemonPC.setLayoutManager(new GridLayoutManager(this, 5));
             this.pcAdapter = new PokemonPCAdapter(this.pokemonPCList);
@@ -57,8 +80,6 @@ public class PokemonPCActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> initComponents(), 200);
+        initComponents();
     }
 }

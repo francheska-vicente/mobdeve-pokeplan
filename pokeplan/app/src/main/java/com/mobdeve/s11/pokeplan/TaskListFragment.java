@@ -41,6 +41,8 @@ public class TaskListFragment extends Fragment {
     private TextView tvFilterLabel;
     private boolean filterIsVisible;
 
+    private DatabaseHelper databaseHelper;
+
     public TaskListFragment() {
     }
 
@@ -57,17 +59,36 @@ public class TaskListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasklist, container, false);
+        databaseHelper = new DatabaseHelper();
 
-        initComponents(view);
+        initInfo (view);
+
         return view;
     }
 
+    private void initInfo(View view) {
+        databaseHelper.getTasks(new FirebaseCallbackTask() {
+            @Override
+            public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                ongoingList = new ArrayList<>();
+                completedList = new ArrayList<>();
+                for(int i = 0; i < list.size(); i++) {
+                    if(list.get(i).getIsFinished()) {
+                        completedList.add(list.get(i));
+                    } else {
+                        ongoingList.add(list.get(i));
+                    }
+                }
+
+                initComponents(view);
+            }
+        });
+    }
+
     private void initComponents (View view) {
-        this.ongoingList = UserSingleton.getUser().getOngoingTasks();
         this.rvOngoing = view.findViewById(R.id.rv_tasklist_ongoing);
         this.rvOngoing.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
 
-        this.completedList = UserSingleton.getUser().getCompletedTasks();
         this.rvCompleted = view.findViewById(R.id.rv_tasklist_completed);
         this.rvCompleted.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
@@ -197,6 +218,6 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        this.initComponents(getView());
+        this.initInfo(getView());
     }
 }

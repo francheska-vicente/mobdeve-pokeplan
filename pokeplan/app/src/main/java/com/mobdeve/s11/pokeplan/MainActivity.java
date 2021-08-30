@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UserSingleton.getUser();
         new Handler().postDelayed(() -> {
             setContentView(R.layout.activity_main);
             BottomNavigationView navView = findViewById(R.id.bottom_nav_view);

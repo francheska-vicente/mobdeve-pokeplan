@@ -17,6 +17,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+
 public class PokemonDetailsActivity extends AppCompatActivity {
     private String sourceActivity;
 
@@ -50,7 +56,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private CustomDialog confirmDialog;
 
     private UserPokemon pkmn;
+    private UserDetails user;
     private boolean checkerDeleted;
+
+    private ArrayList<UserPokemon> partyList;
+    private String userID;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +71,40 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
         sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
+        databaseHelper = new DatabaseHelper();
 
-        if (sourceActivity.equals("PARTY"))
-            pkmn = UserSingleton.getUser().getPokemonInParty(pkmnid);
-        else
-            pkmn = UserSingleton.getUser().getPokemonInPC(pkmnid);
+        partyList = new ArrayList<>();
+        this.initInfo (pkmnid);
+    }
 
-        this.initComponents(pkmn);
-        this.setAllComponents(pkmn);
-        this.initUserPreferences();
-        this.playPkmnCry(pkmn.getPokemonDetails());
+
+    private void initInfo (String pkmnid) {
+        databaseHelper.getUserDetails(new FirebaseCallbackUser() {
+            @Override
+            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                if(isSuccessful) {
+                    user = userDetails;
+                    databaseHelper.getPokemon(new FirebaseCallbackPokemon() {
+                        @Override
+                        public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                            for(int i = 0; i < list.size(); i++) {
+                                if (list.get(i).getUserPokemonID().equalsIgnoreCase(pkmnid)) {
+                                    pkmn = list.get(i);
+                                }
+                                if (list.get(i).isInParty()) {
+                                    partyList.add(list.get(i));
+                                }
+                            }
+
+                            initComponents();
+                            initButtons(pkmn);
+                            setAllComponents(pkmn);
+                            pkmn.getPokemonDetails().playPokemonCry();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void initComponents(UserPokemon pkmn) {
@@ -92,12 +127,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.btnedit = findViewById(R.id.ib_pkmndetails_edit);
 
         this.btnrare = findViewById(R.id.btn_pkmndetails_rarecandy);
-        if (UserSingleton.getUser().getUserDetails().getRareCandy() <= 0 ||
+        if (user.getRareCandy() <= 0 ||
                 pkmn.getLevel() >= 100)
             btnrare.setEnabled(false);
 
         this.btnsuper = findViewById(R.id.btn_pkmndetails_supercandy);
-        if (UserSingleton.getUser().getUserDetails().getSuperCandy() <= 0
+        if (user.getSuperCandy() <= 0
                 || pkmn.getLevel() < pkmn.getPokemonDetails().getEvolveLvl()
                 || pkmn.getPokemonDetails().getEvolvesTo().isEmpty())
             btnsuper.setEnabled(false);
@@ -115,7 +150,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         if (sourceActivity.equals("PARTY")) {
             this.btnpc.setOnClickListener(view -> createMovePokemonToPCDialog());
             this.btnpc.setText("MOVE TO PC");
-            if (UserSingleton.getUser().getUserPokemonParty().size() <= 1)
+            if (partyList.size() <= 1)
                 btnpc.setVisibility(View.GONE);
 
             this.btnRelease.setVisibility(View.GONE);
@@ -123,7 +158,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         else {
             this.btnpc.setOnClickListener(view -> createMovePokemonToPartyDialog());
             this.btnpc.setText("MOVE TO PARTY");
-            if (UserSingleton.getUser().getUserPokemonParty().size() >= 6)
+            if (partyList.size() >= 6)
                 btnpc.setVisibility(View.GONE);
 
             btnrare.setVisibility(View.GONE);
@@ -164,8 +199,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             pkmntype = pkmntype + "/" + pkmn.getPokemonDetails().getType2();
         this.tvPkmnType.setText(pkmntype);
 
-        this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
-        this.tvSuperCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getSuperCandy()));
+        this.tvRareCandyCtr.setText(Integer.toString(user.getRareCandy()));
+        this.tvSuperCandyCtr.setText(Integer.toString(user.getSuperCandy()));
     }
 
     private void feedPokemon() {
@@ -180,11 +215,11 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 this.btnsuper.setEnabled(true);
         }
 
-        UserSingleton.getUser().getUserDetails().subtractRareCandy(1);
-        this.tvRareCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getRareCandy()));
+        user.subtractRareCandy(1);
+        this.tvRareCandyCtr.setText(Integer.toString(user.getRareCandy()));
         this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
 
-        if (!(UserSingleton.getUser().getUserDetails().getRareCandy() > 0 && pkmn.getLevel() < 100))
+        if (!(user.getRareCandy() > 0 && pkmn.getLevel() < 100))
             btnrare.setEnabled(false);
     }
 
@@ -194,8 +229,8 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             pkmn.evolvePokemon();
             pkmn.getPokemonDetails().playPokemonCry();
 
-            UserSingleton.getUser().getUserDetails().subtractSuperCandy(1);
-            this.tvSuperCandyCtr.setText(Integer.toString(UserSingleton.getUser().getUserDetails().getSuperCandy()));
+            user.subtractSuperCandy(1);
+            this.tvSuperCandyCtr.setText(Integer.toString(user.getSuperCandy()));
 
             this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
                     "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
@@ -221,8 +256,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         Button btndialogconfirm = confirmDialog.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setOnClickListener(v -> {
             confirmDialog.dismiss();
-            UserSingleton.getUser().movePokemon(pkmn.getUserPokemonID(), false);
-            finish();
+                databaseHelper.movePokemon(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                        finish();
+                    }
+                }, pkmn.getUserPokemonID(), false);
         });
         confirmDialog.show();
     }
@@ -240,8 +279,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         Button btndialogconfirm = confirmDialog.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setOnClickListener(v -> {
             confirmDialog.dismiss();
-            UserSingleton.getUser().movePokemon(pkmn.getUserPokemonID(), true);
-            finish();
+                databaseHelper.movePokemon(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                        finish();
+                    }
+                }, pkmn.getUserPokemonID(), true);
         });
         confirmDialog.show();
     }
@@ -258,11 +301,15 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         Button btndialogok = editdialog.findViewById(R.id.btn_dialog_stringinput_ok);
         btndialogok.setOnClickListener(v -> {
-            pkmn.setNickname(((EditText)
-                    editdialog.findViewById(R.id.et_dialog_stringinput)).getText().toString());
-            tvPkmnNickname.setText(pkmn.getNickname());
-            editdialog.dismiss();
-            UserSingleton.getUser().editNickname(pkmn.getUserPokemonID(), pkmn.getNickname());
+            pkmn.setNickname(etdialoginput.getText().toString());
+                tvPkmnNickname.setText(pkmn.getNickname());
+                editdialog.dismiss();
+                databaseHelper.editNickname(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+
+                    }
+                }, pkmn.getUserPokemonID(), pkmn.getNickname());
         });
 
         editdialog.show();
@@ -283,9 +330,15 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         Button btndialogconfirm = releasePkmnDialog.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setOnClickListener(v -> {
             releasePkmnDialog.dismiss();
-            UserSingleton.getUser().deletePokemon(pkmn);
-            finish();
-            checkerDeleted = true;
+                databaseHelper.deletePokemon(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                        if(isSuccessful) {
+                            finish();
+                            checkerDeleted = true;
+                        }
+                    }
+                }, pkmn);
         });
         releasePkmnDialog.show();
     }
@@ -308,6 +361,11 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         super.onStop();
 
         if (!checkerDeleted)
-            UserSingleton.getUser().updatePokemon (pkmn);
+            databaseHelper.updatePokemon(new FirebaseCallbackPokemon() {
+                @Override
+                public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+
+                }
+            }, pkmn, user);
     }
 }

@@ -3,15 +3,27 @@ package com.mobdeve.s11.pokeplan;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -28,6 +40,11 @@ public class HomeFragment extends Fragment {
     private TextView tvSuperCandyCtr;
     private TextView tvPokedexCtr;
 
+    private String userID;
+    private UserDetails user;
+    private int ongoingTaskNum;
+    private DatabaseHelper helper;
+
     public HomeFragment() {
     }
 
@@ -38,14 +55,15 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        helper = new DatabaseHelper();
         initComponents(view);
-
         return view;
     }
 
@@ -54,8 +72,8 @@ public class HomeFragment extends Fragment {
      * @param view the view of the fragment
      */
     private void initComponents(View view) {
-        this.rvPokemonParty = view.findViewById(R.id.rv_home_party);
-        this.setRecyclerView();
+        rvPokemonParty = view.findViewById(R.id.rv_home_party);
+        setRecyclerView();
 
         this.ibUserProfile = view.findViewById(R.id.ib_home_user);
         this.ibPokemonPC = view.findViewById(R.id.ib_home_pc);
@@ -65,17 +83,57 @@ public class HomeFragment extends Fragment {
         this.tvRareCandyCtr = view.findViewById(R.id.tv_home_rarecandycount);
         this.tvSuperCandyCtr = view.findViewById(R.id.tv_home_supercandycount);
         this.tvPokedexCtr = view.findViewById(R.id.tv_home_pokedexcount);
-        this.setCounterValues();
+
+
+        user = new UserDetails();
+        ongoingTaskNum = 0;
+
+        helper.getPokemon(new FirebaseCallbackPokemon() {
+            @Override
+            public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                pokemonPartyList = new ArrayList<>(6);
+                if (isSuccessful) {
+                    for (int i = 0; i < list.size (); i++) {
+                        if (list.get(i).isInParty()) {
+                            pokemonPartyList.add(list.get(i));
+                        }
+                    }
+
+                    ppAdapter.setPokemonParty(pokemonPartyList);
+                    ppAdapter.notifyItemRangeInserted(0, list.size());
+                }
+            }
+        });
+
+        helper.getUserDetails(new FirebaseCallbackUser() {
+            @Override
+            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
+                if(isSuccessful) {
+                    user = userDetails;
+
+                    helper.getTasks(new FirebaseCallbackTask() {
+                        @Override
+                        public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                            for(int i = 0; i < list.size(); i++) {
+                                if (!list.get(i).getIsFinished()) {
+                                    ongoingTaskNum++;
+                                }
+                            }
+                            setCounterValues();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     /**
      * Sets the adapter of the RecyclerView
      */
     private void setRecyclerView() {
-        this.pokemonPartyList = UserSingleton.getUser().getUserPokemonParty();
         this.rvPokemonParty.setLayoutManager(new LinearLayoutManager(
                 getActivity(),LinearLayoutManager.VERTICAL,false));
-        this.ppAdapter = new PokemonPartyAdapter(this.pokemonPartyList);
+        this.ppAdapter = new PokemonPartyAdapter();
         this.rvPokemonParty.setAdapter(this.ppAdapter);
     }
 
@@ -97,10 +155,10 @@ public class HomeFragment extends Fragment {
      * Sets the counters in the Your Progress area
      */
     private void setCounterValues() {
-        int ongoingtask = UserSingleton.getUser().getOngoingTasks().size();
-        int rarecandy = UserSingleton.getUser().getUserDetails().getRareCandy();
-        int supercandy = UserSingleton.getUser().getUserDetails().getSuperCandy();
-        int pokedex = UserSingleton.getUser().getUserDetails().getNumCaught();
+        int ongoingtask = this.ongoingTaskNum;
+        int rarecandy = this.user.getRareCandy();
+        int supercandy = this.user.getSuperCandy();
+        int pokedex = this.user.getNumCaught();
 
         this.tvOngoingTaskCtr.setText(formatCounter(ongoingtask));
         this.tvRareCandyCtr.setText(formatCounter(rarecandy));
@@ -117,7 +175,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> initComponents(getView()), 200);
+        initComponents(getView());
     }
 }

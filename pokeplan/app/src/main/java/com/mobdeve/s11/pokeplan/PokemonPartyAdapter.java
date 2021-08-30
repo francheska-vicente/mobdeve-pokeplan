@@ -19,6 +19,10 @@ public class PokemonPartyAdapter extends RecyclerView.Adapter<PokemonPartyViewHo
         this.party = party;
     }
 
+    public PokemonPartyAdapter() {
+        this.party = new ArrayList<>();
+    }
+
     @NonNull
     @NotNull
     @Override
@@ -45,6 +49,10 @@ public class PokemonPartyAdapter extends RecyclerView.Adapter<PokemonPartyViewHo
         holder.setPkmnIcon(this.party.get(position).getPokemonDetails().getDexNum());
         holder.setPkmnNickname(this.party.get(position).getNickname());
         holder.setPkmnLevel(this.party.get(position).getLevel());
+    }
+
+    public void setPokemonParty (ArrayList<UserPokemon> userPokemons) {
+        this.party = userPokemons;
     }
 
     @Override
