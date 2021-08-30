@@ -45,7 +45,7 @@ public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull PokemonPCViewHolder holder, int position) {
-        holder.setPkmnIcon(this.pc.get(position).getPokemonDetails().getDexNum());
+        holder.setPkmnIcon(this.pc.get(position).getDetails().getDexNum());
         holder.setDexNum();
     }
 
