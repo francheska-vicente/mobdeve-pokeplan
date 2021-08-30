@@ -272,7 +272,8 @@ public class DatabaseHelper {
         }
 
         if (checker) {
-            hashNum.put("hatchedPkmnCount", userDetails.getHatchedPkmnCount() + 1);
+            userDetails.addHatchedPkmn(1);
+            hashNum.put("hatchedPkmnCount", userDetails.getHatchedPkmnCount());
         }
 
         mUser.updateChildren(hashNum).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -301,7 +302,7 @@ public class DatabaseHelper {
 
     public void updatePokemon (FirebaseCallbackPokemon firebaseCallbackPokemon, UserPokemon pokemon, UserDetails userDetails) {
         HashMap <String, Object> hash = new HashMap <String, Object>();
-        hash.put("details", pokemon.getPokemonDetails());
+        hash.put("details", pokemon.getDetails());
         hash.put("fedCandy", pokemon.getFedCandy());
         hash.put("level", pokemon.getLevel());
         hash.put("nickname", pokemon.getNickname());
@@ -333,7 +334,7 @@ public class DatabaseHelper {
             }
         });
 
-        if (!userDetails.getUserPokedex().get(pokemon.getPokemonDetails().getDexNum() - 1)) {
+        if (!userDetails.getUserPokedex().get(pokemon.getDetails().getDexNum() - 1)) {
             updateUserPokemon(pokemon.getDetails(), userDetails, false);
         }
     }
@@ -418,7 +419,8 @@ public class DatabaseHelper {
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
                 Log.d("Task DB", "Task was successfully moved from ongoing list to completed list.");
                 HashMap<String, Object> hashUser = new HashMap<>();
-                hash.put("completedTaskCount", user.getCompletedTaskCount() + 1);
+                user.addCompletedTask(1);
+                hash.put("completedTaskCount", user.getCompletedTaskCount());
                 mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
