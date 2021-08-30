@@ -414,6 +414,19 @@ public class AddTaskActivity extends AppCompatActivity {
                     if (taskID != null) {
                         editDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes,
                                 taskID, notif, val);
+
+                        if(checkerNotif) {
+                            if (val) {
+                                deleteTimer();
+                                setTimer(new CustomDate(startDate, startTime), notif, true);
+                            } else {
+                                deleteTimer();
+                                setTimer(new CustomDate(endDate, endTime), notif, false);
+                            }
+                        } else {
+                            deleteTimer();
+                        }
+
                     } else {
                         addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                         if(checkerNotif) {
@@ -790,6 +803,11 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     private void deleteTimer () {
-        
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
     }
 }
