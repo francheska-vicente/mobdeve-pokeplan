@@ -2,8 +2,6 @@ package com.mobdeve.s11.pokeplan;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +9,10 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -32,6 +20,8 @@ public class HomeFragment extends Fragment {
     private ArrayList<UserPokemon> pokemonPartyList;
     private RecyclerView rvPokemonParty;
     private PokemonPartyAdapter ppAdapter;
+
+    private ConstraintLayout clComponents;
 
     private ImageButton ibUserProfile;
     private ImageButton ibPokemonPC;
@@ -48,8 +38,7 @@ public class HomeFragment extends Fragment {
     private int ongoingTaskNum;
     private DatabaseHelper helper;
 
-    public HomeFragment() {
-    }
+    public HomeFragment() {}
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -58,7 +47,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -66,8 +54,12 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         helper = new DatabaseHelper();
+
         this.pbLoading = view.findViewById(R.id.pb_home_loading);
         this.pbLoading.setVisibility(View.VISIBLE);
+        this.clComponents = view.findViewById(R.id.cl_home_components);
+        this.clComponents.setVisibility(View.INVISIBLE);
+
         initComponents(view);
         return view;
     }
@@ -93,42 +85,37 @@ public class HomeFragment extends Fragment {
         user = new UserDetails();
         ongoingTaskNum = 0;
 
-        helper.getPokemon(new FirebaseCallbackPokemon() {
-            @Override
-            public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
-                pokemonPartyList = new ArrayList<>(6);
-                if (isSuccessful) {
-                    for (int i = 0; i < list.size (); i++) {
-                        if (list.get(i).isInParty()) {
-                            pokemonPartyList.add(list.get(i));
-                        }
+        helper.getPokemon((list, isSuccessful, message) -> {
+            pokemonPartyList = new ArrayList<>(6);
+            if (isSuccessful) {
+                for (int i = 0; i < list.size (); i++) {
+                    if (list.get(i).isInParty()) {
+                        pokemonPartyList.add(list.get(i));
                     }
-
-                    ppAdapter.setPokemonParty(pokemonPartyList);
-                    ppAdapter.notifyItemRangeInserted(0, list.size());
                 }
+
+                ppAdapter.setPokemonParty(pokemonPartyList);
+                ppAdapter.notifyItemRangeInserted(0, list.size());
             }
         });
 
-        helper.getUserDetails(new FirebaseCallbackUser() {
-            @Override
-            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
-                if(isSuccessful) {
-                    user = userDetails;
+        helper.getUserDetails((userDetails, isSuccessful, message) -> {
+            if(isSuccessful) {
+                user = userDetails;
 
-                    helper.getTasks(new FirebaseCallbackTask() {
-                        @Override
-                        public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
-                            for(int i = 0; i < list.size(); i++) {
-                                if (!list.get(i).getIsFinished()) {
-                                    ongoingTaskNum++;
-                                }
+                helper.getTasks(new FirebaseCallbackTask() {
+                    @Override
+                    public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                        for(int i = 0; i < list.size(); i++) {
+                            if (!list.get(i).getIsFinished()) {
+                                ongoingTaskNum++;
                             }
-                            setCounterValues();
-                            pbLoading.setVisibility(View.GONE);
                         }
-                    });
-                }
+                        setCounterValues();
+                        pbLoading.setVisibility(View.GONE);
+                        clComponents.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         });
     }
