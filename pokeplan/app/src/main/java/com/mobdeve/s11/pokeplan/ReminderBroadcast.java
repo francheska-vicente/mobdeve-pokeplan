@@ -14,11 +14,11 @@ public class ReminderBroadcast extends BroadcastReceiver {
         NotificationCompat.Builder notifBuilder = new NotificationCompat.Builder(context, "pokeplanNotify")
                 .setSmallIcon(R.drawable.egg)
                 .setContentTitle(intent.getStringExtra("TASKNAME"))
-                .setContentText("")
+                .setContentText(intent.getStringExtra("NOTIF_MESSAGE"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(context);
 
-        notificationCompat.notify(0, notifBuilder.build());
+        notificationCompat.notify((int) System.currentTimeMillis(), notifBuilder.build());
     }
 }
