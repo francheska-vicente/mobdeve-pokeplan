@@ -17,10 +17,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
@@ -96,8 +92,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                                 }
                             }
 
-                            initComponents();
-                            initButtons(pkmn);
+                            initComponents(pkmn);
                             setAllComponents(pkmn);
                             pkmn.getPokemonDetails().playPokemonCry();
                         }
@@ -299,17 +294,16 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                         "pkmn_"+ pkmn.getPokemonDetails().getDexNum())
         );
 
+        EditText name = editdialog.findViewById(R.id.et_dialog_stringinput);
+
         Button btndialogok = editdialog.findViewById(R.id.btn_dialog_stringinput_ok);
         btndialogok.setOnClickListener(v -> {
-            pkmn.setNickname(etdialoginput.getText().toString());
+            pkmn.setNickname(name.getText().toString());
                 tvPkmnNickname.setText(pkmn.getNickname());
                 editdialog.dismiss();
-                databaseHelper.editNickname(new FirebaseCallbackPokemon() {
-                    @Override
-                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
-
-                    }
-                }, pkmn.getUserPokemonID(), pkmn.getNickname());
+                databaseHelper.editNickname((list, isSuccessful, message) -> {},
+                        pkmn.getUserPokemonID(),
+                        pkmn.getNickname());
         });
 
         editdialog.show();
