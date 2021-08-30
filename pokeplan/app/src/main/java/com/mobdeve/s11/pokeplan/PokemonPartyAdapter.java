@@ -46,7 +46,7 @@ public class PokemonPartyAdapter extends RecyclerView.Adapter<PokemonPartyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull PokemonPartyViewHolder holder, int position) {
-        holder.setPkmnIcon(this.party.get(position).getPokemonDetails().getDexNum());
+        holder.setPkmnIcon(this.party.get(position).getDetails().getDexNum());
         holder.setPkmnNickname(this.party.get(position).getNickname());
         holder.setPkmnLevel(this.party.get(position).getLevel());
     }
