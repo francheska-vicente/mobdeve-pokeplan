@@ -301,7 +301,7 @@ public class DatabaseHelper {
         hash.put("details", pokemon.getPokemonDetails());
         hash.put("fedCandy", pokemon.getFedCandy());
         hash.put("level", pokemon.getLevel());
-
+        hash.put("nickname", pokemon.getNickname());
         ArrayList<UserPokemon> pokemons = new ArrayList<>(1);
         pokemons.add(pokemon);
 
@@ -329,6 +329,10 @@ public class DatabaseHelper {
                 }
             }
         });
+
+        if (!userDetails.getUserPokedex().get(pokemon.getPokemonDetails().getDexNum() - 1)) {
+
+        }
     }
 
     public void movePokemon(FirebaseCallbackPokemon firebaseCallbackPokemon, String key, boolean checker) {
