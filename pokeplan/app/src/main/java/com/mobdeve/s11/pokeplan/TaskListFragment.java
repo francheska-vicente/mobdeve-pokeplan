@@ -66,32 +66,41 @@ public class TaskListFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Retrieves the user's task list from the database
+     * @param view the View of the fragment
+     */
     private void initInfo(View view) {
-        databaseHelper.getTasks(new FirebaseCallbackTask() {
-            @Override
-            public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
-                ongoingList = new ArrayList<>();
-                completedList = new ArrayList<>();
-                for(int i = 0; i < list.size(); i++) {
-                    if(list.get(i).getIsFinished()) {
-                        completedList.add(list.get(i));
-                    } else {
-                        ongoingList.add(list.get(i));
-                    }
-                }
-
-                initComponents(view);
-            }
+        databaseHelper.getTasks((list, isSuccesful, message) -> {
+            classifyTasks(list);
+            initComponents(view);
         });
     }
 
+    /**
+     * Classifies the user's tasks into Ongoing and Completed tasks
+     * @param list the list of all the user's tasks
+     */
+    private void classifyTasks(ArrayList<Task> list) {
+        ongoingList = new ArrayList<>();
+        completedList = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++) {
+            if(list.get(i).getIsFinished())
+                completedList.add(list.get(i));
+            else
+                ongoingList.add(list.get(i));
+        }
+    }
+
+    /**
+     * Initializes the layout's components.
+     * @param view the view of the fragment
+     */
     private void initComponents (View view) {
         this.rvOngoing = view.findViewById(R.id.rv_tasklist_ongoing);
         this.rvOngoing.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-
         this.rvCompleted = view.findViewById(R.id.rv_tasklist_completed);
         this.rvCompleted.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-
         this.setTaskLists(this.ongoingList, this.completedList);
 
         this.spinFilter = view.findViewById(R.id.spinner_tasklist_filter);
@@ -101,48 +110,52 @@ public class TaskListFragment extends Fragment {
 
         this.tvOngoingLabel = view.findViewById(R.id.tv_tasklist_label_ongoing);
         this.tvCompletedLabel = view.findViewById(R.id.tv_tasklist_label_completed);
-
         this.ibOngoingToggle = view.findViewById(R.id.ib_tasklist_toggleongoing);
         this.ibCompletedToggle = view.findViewById(R.id.ib_tasklist_togglecompleted);
-        this.setButtonListeners();
+        this.setToggleListeners();
 
         this.fabAdd = view.findViewById(R.id.fab_tasklist_add_task);
         this.setFabListener();
     }
 
-    private void setButtonListeners() {
+    /**
+     * Sets the listeners for the show/hide task list feature
+     */
+    private void setToggleListeners() {
+        // sets the ongoing list toggle
         this.ongoingIsVisible = true;
         View.OnClickListener ongoingListener = v -> {
             if(ongoingIsVisible) {
-                ongoingIsVisible = false;
                 ibOngoingToggle.setImageResource(R.drawable.arrow_down);
                 rvOngoing.setVisibility(View.GONE);
             }
             else {
-                ongoingIsVisible = true;
                 ibOngoingToggle.setImageResource(R.drawable.arrow_up);
                 rvOngoing.setVisibility(View.VISIBLE);
             }
+            ongoingIsVisible = !ongoingIsVisible;
         };
         this.ibOngoingToggle.setOnClickListener(ongoingListener);
         this.tvOngoingLabel.setOnClickListener(ongoingListener);
 
+
         this.completedIsVisible = true;
         View.OnClickListener completedListener = v -> {
             if(completedIsVisible) {
-                completedIsVisible = false;
                 ibCompletedToggle.setImageResource(R.drawable.arrow_down);
                 rvCompleted.setVisibility(View.GONE);
             }
             else {
-                completedIsVisible = true;
                 ibCompletedToggle.setImageResource(R.drawable.arrow_up);
                 rvCompleted.setVisibility(View.VISIBLE);
             }
+            completedIsVisible = !completedIsVisible;
         };
         this.ibCompletedToggle.setOnClickListener(completedListener);
         this.tvCompletedLabel.setOnClickListener(completedListener);
+    }
 
+    private void setFilterComponents() {
         this.filterIsVisible = false;
         this.spinFilter.setVisibility(View.INVISIBLE);
         View.OnClickListener filterListener = v -> {
@@ -159,9 +172,7 @@ public class TaskListFragment extends Fragment {
 
         this.ibFilter.setOnClickListener(filterListener);
         this.tvFilterLabel.setOnClickListener(filterListener);
-    }
 
-    private void setFilterComponents() {
         ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
                 R.array.tasklist_filter, R.layout.spinner_item);
         adapterFilter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -197,21 +208,19 @@ public class TaskListFragment extends Fragment {
             setTaskLists(this.ongoingList, this.completedList);
         }
         else {
-            ArrayList<Task> tempCompleted = new ArrayList<>();
-            ArrayList<Task> tempOngoing = new ArrayList<>();
+            ArrayList<Task> filteredCompleted = new ArrayList<>();
+            ArrayList<Task> filteredOngoing = new ArrayList<>();
 
-            for (int i = 0; i < this.completedList.size(); i++) {
-                if (this.completedList.get(i).getCategory().equalsIgnoreCase(category)) {
-                    tempCompleted.add(this.completedList.get(i));
-                }
-            }
-            for (int i = 0; i < this.ongoingList.size(); i++) {
-                if (this.ongoingList.get(i).getCategory().equalsIgnoreCase(category)) {
-                    tempOngoing.add(this.ongoingList.get(i));
-                }
-            }
+            for (int i = 0; i < this.completedList.size(); i++)
+                if (this.completedList.get(i).getCategory().equalsIgnoreCase(category))
+                    filteredCompleted.add(this.completedList.get(i));
 
-            setTaskLists(tempOngoing, tempCompleted);
+
+            for (int i = 0; i < this.ongoingList.size(); i++)
+                if (this.ongoingList.get(i).getCategory().equalsIgnoreCase(category))
+                    filteredOngoing.add(this.ongoingList.get(i));
+
+            setTaskLists(filteredOngoing, filteredCompleted);
         }
     }
 
