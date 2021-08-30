@@ -3,7 +3,6 @@ package com.mobdeve.s11.pokeplan;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -19,7 +18,6 @@ public class ReminderBroadcast extends BroadcastReceiver {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(context);
-
         notificationCompat.notify((int) System.currentTimeMillis(), notifBuilder.build());
     }
 }
