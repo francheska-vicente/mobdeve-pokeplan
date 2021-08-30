@@ -427,7 +427,11 @@ public class AddTaskActivity extends AppCompatActivity {
                         addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                         if(checkerNotif) {
                             if (val) {
-                                setTimer(new CustomDate(startDate, startTime), notif, true);
+                                if (startDate.isEmpty()) {
+                                    setTimer(new CustomDate(true), notif, true);
+                                } else {
+                                    setTimer(new CustomDate(startDate, startTime), notif, true);
+                                }
                             } else {
                                 setTimer(new CustomDate(endDate, endTime), notif, false);
                             }
