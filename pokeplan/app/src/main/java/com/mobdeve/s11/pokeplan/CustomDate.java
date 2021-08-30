@@ -90,7 +90,7 @@ public class CustomDate {
 
     public static String printData (String dateToConvert, String time) {
         Calendar c = Calendar.getInstance();
-        c.setTimeZone(TimeZone.getTimeZone("GMT"));
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
