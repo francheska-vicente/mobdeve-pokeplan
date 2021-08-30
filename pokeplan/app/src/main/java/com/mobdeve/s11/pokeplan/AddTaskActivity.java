@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -72,7 +75,7 @@ public class AddTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
-
+        createNotificationChannel();
         databaseHelper = new DatabaseHelper();
         checkerNotif = true;
         this.initComponents();
@@ -415,9 +418,9 @@ public class AddTaskActivity extends AppCompatActivity {
                         addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                         if(checkerNotif) {
                             if (val) {
-                                setTimer(new CustomDate(startDate, startTime), notif);
+                                setTimer(new CustomDate(startDate, startTime), notif, true);
                             } else {
-                                setTimer(new CustomDate(endDate, endTime), notif);
+                                setTimer(new CustomDate(endDate, endTime), notif, false);
                             }
                         }
                     }
@@ -728,7 +731,7 @@ public class AddTaskActivity extends AppCompatActivity {
         }});
     }
 
-    private void setTimer (CustomDate date, String notif) {
+    private void setTimer (CustomDate date, String notif, boolean checker) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, date.getMonth() - 1);
         c.set(Calendar.DAY_OF_MONTH, date.getDay());
@@ -756,17 +759,34 @@ public class AddTaskActivity extends AppCompatActivity {
                 break;
         }
 
-        Intent intent1 = getIntent();
-        String taskID = intent1.getStringExtra(TaskDetailsActivity.KEY_ID);
+        String message = "Don't forget! This ";
+        if(checker) {
+            message = message + " starts in " + notif;
+        } else {
+            message = message + " ends in " + notif;
+        }
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, ReminderBroadcast.class);
         intent.putExtra("TASKNAME", etTaskName.getText().toString().trim());
-        intent.putExtra("TASKID", taskID);
+        intent.putExtra("NOTIF_MESSAGE", message);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+    }
+
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "PokePlanReminderChannel";
+            String description = "Channel for PokePlan Reminder";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("pokeplanNotify", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void deleteTimer () {
