@@ -2,7 +2,6 @@ package com.mobdeve.s11.pokeplan;
 
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,15 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Date;
-
 public class TaskViewHolder extends RecyclerView.ViewHolder {
-    private ImageView ivtaskicon;
-    private TextView tvtaskname;
-    private TextView tvtaskdeadline;
-    private TextView tvtaskpriority;
-    private ConstraintLayout layout;
+    private final ImageView ivtaskicon;
+    private final TextView tvtaskname;
+    private final TextView tvtaskdeadline;
+    private final TextView tvtaskpriority;
+    private final ConstraintLayout layout;
 
+    /**
+     * @param itemView the layout of a specific item
+     */
     public TaskViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
 
@@ -30,6 +30,10 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         this.layout = itemView.findViewById(R.id.cl_template_task);
     }
 
+    /**
+     * Sets the task's icon based on its category
+     * @param category the category of the task
+     */
     public void setTaskIcon(String category) {
         int pic;
         switch (category) {
@@ -45,14 +49,26 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         this.ivtaskicon.setImageResource(pic);
     }
 
+    /**
+     * Sets the task's name in the view's TextView
+     * @param name the name of the task
+     */
     public void setTaskName(String name) {
         this.tvtaskname.setText(name);
     }
 
+    /**
+     * Sets the task's due date in the view's TextView
+     * @param dl the due date of the task
+     */
     public void setTaskDeadline(CustomDate dl) {
         this.tvtaskdeadline.setText("Due " + dl.toString());
     }
 
+    /**
+     * Sets the task's priority icon
+     * @param priority the due date of the task
+     */
     public void setTaskPriority(int priority) {
         String priorityIcon = "!";
         switch (priority) {
@@ -72,6 +88,9 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         this.tvtaskpriority.setText(priorityIcon);
     }
 
+    /**
+     * @return the ConstraintLayout of the template
+     */
     public ConstraintLayout getConstraintLayout() {
         return this.layout;
     }
