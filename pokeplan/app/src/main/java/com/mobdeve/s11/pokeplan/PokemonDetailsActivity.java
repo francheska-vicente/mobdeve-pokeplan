@@ -216,6 +216,13 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         if (!(user.getRareCandy() > 0 && pkmn.getLevel() < 100))
             btnrare.setEnabled(false);
+
+        databaseHelper.updatePokemon(new FirebaseCallbackPokemon() {
+            @Override
+            public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+
+            }
+        }, pkmn, user);
     }
 
     private void evolvePokemon() {
@@ -236,6 +243,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 || pkmn.getPokemonDetails().getEvolveLvl() == -1)
             this.btnsuper.setEnabled(false);
 
+        databaseHelper.updatePokemon(new FirebaseCallbackPokemon() {
+            @Override
+            public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+
+            }
+        }, pkmn, user);
     }
 
     private void createMovePokemonToPCDialog () {
