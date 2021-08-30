@@ -70,6 +70,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
         databaseHelper = new DatabaseHelper();
         this.pbLoading = findViewById(R.id.pb_pokemon_details_loading);
+        this.pbLoading.bringToFront();
         this.pbLoading.setVisibility(View.VISIBLE);
         partyList = new ArrayList<>();
         this.initInfo (pkmnid);
