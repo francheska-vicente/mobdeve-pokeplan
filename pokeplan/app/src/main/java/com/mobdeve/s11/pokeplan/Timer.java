@@ -1,5 +1,7 @@
 package com.mobdeve.s11.pokeplan;
 
+import java.util.concurrent.TimeUnit;
+
 public class Timer {
     private int hours;
     private int mins;
@@ -39,5 +41,11 @@ public class Timer {
 
     public int getSecs() {
         return secs;
+    }
+
+    public long convertToMilliseconds() {
+        return TimeUnit.MILLISECONDS.convert(hours, TimeUnit.HOURS) +
+                TimeUnit.MILLISECONDS.convert(mins, TimeUnit.MINUTES) +
+                TimeUnit.MILLISECONDS.convert(secs, TimeUnit.SECONDS);
     }
 }

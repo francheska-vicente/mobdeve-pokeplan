@@ -87,4 +87,18 @@ public class CustomDialog extends Dialog {
         Button btndialogconfirm = this.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setText(confirm);
     }
+
+    public void setOneInputComponents(String title, int icon) {
+        this.setCancelable(false);
+        this.setCanceledOnTouchOutside(false);
+
+        TextView tvdialogtitle = this.findViewById(R.id.iv_dialog_stringinput_title);
+        tvdialogtitle.setText(title);
+
+        ImageView ivdialogicon = this.findViewById(R.id.iv_dialog_stringinput_icon);
+        ivdialogicon.setImageResource(icon);
+
+        Button btndialogcancel = this.findViewById(R.id.btn_dialog_stringinput_confirm);
+        btndialogcancel.setOnClickListener(v -> this.dismiss());
+    }
 }

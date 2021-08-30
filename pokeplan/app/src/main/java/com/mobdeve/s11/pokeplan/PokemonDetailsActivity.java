@@ -1,13 +1,12 @@
 package com.mobdeve.s11.pokeplan;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,6 +25,8 @@ import java.util.ArrayList;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
     private String sourceActivity;
+
+    private boolean soundEnabled;
 
     private ImageButton btnback;
     private ImageButton btnedit;
@@ -50,9 +51,9 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private TextView tvRareCandyCtr;
     private TextView tvSuperCandyCtr;
 
-    private Dialog editdialog;
-    private Dialog releasePkmnDialog;
-    private Dialog confirmDialog;
+    private CustomDialog editdialog;
+    private CustomDialog releasePkmnDialog;
+    private CustomDialog confirmDialog;
 
     private UserPokemon pkmn;
     private UserDetails user;
@@ -75,6 +76,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         partyList = new ArrayList<>();
         this.initInfo (pkmnid);
     }
+
 
     private void initInfo (String pkmnid) {
         databaseHelper.getUserDetails(new FirebaseCallbackUser() {
@@ -105,7 +107,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         });
     }
 
-    private void initComponents() {
+    private void initComponents(UserPokemon pkmn) {
         this.ivPkmnIcon = findViewById(R.id.iv_pkmndetails_icon);
         this.tvPkmnNickname = findViewById(R.id.tv_pkmndetails_nickname);
         this.tvPkmnSpecies = findViewById(R.id.tv_pkmndetails_species);
@@ -120,9 +122,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.tvSuperCandyCtr = findViewById(R.id.tv_pkmndetails_supercandyctr);
         this.llrare = findViewById(R.id.ll_pkmndetails_rarecandy);
         this.llsuper = findViewById(R.id.ll_pkmndetails_supercandy);
-    }
 
-    private void initButtons(UserPokemon pkmn) {
         this.btnback = findViewById(R.id.ib_pkmndetails_back);
         this.btnedit = findViewById(R.id.ib_pkmndetails_edit);
 
@@ -137,11 +137,18 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 || pkmn.getPokemonDetails().getEvolvesTo().isEmpty())
             btnsuper.setEnabled(false);
 
-        setButtonListeners();
-
         this.btnpc = findViewById(R.id.btn_pkmndetails_pc);
+        this.setButtonListeners(pkmn);
+    }
+
+    private void setButtonListeners(UserPokemon pkmn) {
+        this.btnback.setOnClickListener(view -> onBackPressed());
+        this.btnedit.setOnClickListener(view -> createEditNicknameDialog());
+        this.btnrare.setOnClickListener(view -> feedPokemon());
+        this.btnsuper.setOnClickListener(view -> evolvePokemon());
+
         if (sourceActivity.equals("PARTY")) {
-            this.btnpc.setOnClickListener(view -> movePokemonToPC());
+            this.btnpc.setOnClickListener(view -> createMovePokemonToPCDialog());
             this.btnpc.setText("MOVE TO PC");
             if (partyList.size() <= 1)
                 btnpc.setVisibility(View.GONE);
@@ -149,7 +156,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             this.btnRelease.setVisibility(View.GONE);
         }
         else {
-            this.btnpc.setOnClickListener(view -> movePokemonToParty());
+            this.btnpc.setOnClickListener(view -> createMovePokemonToPartyDialog());
             this.btnpc.setText("MOVE TO PARTY");
             if (partyList.size() >= 6)
                 btnpc.setVisibility(View.GONE);
@@ -159,55 +166,21 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             llrare.setVisibility(View.GONE);
             llsuper.setVisibility(View.GONE);
 
-            this.btnRelease.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    releaseDialogInit (v, pkmn);
-                }
-            });
+            this.btnRelease.setOnClickListener(v -> createReleasePokemonDialog (v, pkmn));
         }
     }
 
-    private void releaseDialogInit (View view, UserPokemon pkmn) {
-        releasePkmnDialog = new Dialog(this);
-        releasePkmnDialog.setContentView(R.layout.dialog_confirm);
+    /**
+     * Initializes the user preferences for enabling certain functions of the focus timer.
+     */
+    private void initUserPreferences() {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
 
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-        releasePkmnDialog.getWindow().setLayout(width, height);
-        releasePkmnDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) releasePkmnDialog.findViewById(R.id.tv_dialog_confirm_title);
-        tvdialogtitle.setText(R.string.pkmndetails_releasepkmndiag_title);
-        TextView tvdialogtext = (TextView) releasePkmnDialog.findViewById(R.id.tv_dialog_confirm_text);
-        tvdialogtext.setText(R.string.pkmndetails_releasepkmndiag_text);
-        ImageView ivdialogicon = (ImageView) releasePkmnDialog.findViewById(R.id.iv_dialog_confirm_icon);
-        ivdialogicon.setImageResource(getImageId(getApplicationContext(),
-                "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
-
-        Button btndialogcancel = (Button) releasePkmnDialog.findViewById(R.id.btn_dialog_confirm_cancel);
-        btndialogcancel.setOnClickListener(v -> releasePkmnDialog.dismiss());
-
-        Button btndialogconfirm = (Button) releasePkmnDialog.findViewById(R.id.btn_dialog_confirm);
-        btndialogconfirm.setText(R.string.pkmndetails_releasepkmndiag_button);
-        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                releasePkmnDialog.dismiss();
-                databaseHelper.deletePokemon(new FirebaseCallbackPokemon() {
-                    @Override
-                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
-                        if(isSuccessful) {
-                            finish();
-                            checkerDeleted = true;
-                        }
-                    }
-                }, pkmn);
-            }
-        });
-        releasePkmnDialog.show();
+        this.soundEnabled = sp.getBoolean(Keys.KEY_PKMNCRIES.name(), true);
     }
+
+
 
     private void setAllComponents(UserPokemon pkmn) {
         this.ivPkmnIcon.setImageResource(getImageId(getApplicationContext(),
@@ -230,135 +203,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.tvSuperCandyCtr.setText(Integer.toString(user.getSuperCandy()));
     }
 
-    private void setButtonListeners() {
-        this.btnback.setOnClickListener(view -> onBackPressed());
-        this.btnedit.setOnClickListener(view -> editNickname());
-        this.btnrare.setOnClickListener(view -> feedPokemon());
-        this.btnsuper.setOnClickListener(view -> evolvePokemon());
-    }
-
-    private void movePokemonToPC () {
-        confirmDialog = new Dialog(this);
-        confirmDialog.setContentView(R.layout.dialog_confirm);
-
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-        confirmDialog.getWindow().setLayout(width, height);
-        confirmDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_confirm_title);
-        tvdialogtitle.setText(R.string.pkmndetails_movetopcdiag_title);
-        TextView tvdialogtext = (TextView) confirmDialog.findViewById(R.id.tv_dialog_confirm_text);
-        tvdialogtext.setText(R.string.pkmndetails_movetopcdiag_text);
-        ImageView ivdialogicon = (ImageView) confirmDialog.findViewById(R.id.iv_dialog_confirm_icon);
-        ivdialogicon.setImageResource(R.drawable.warning);
-
-        Button btndialogcancel = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm_cancel);
-        btndialogcancel.setOnClickListener(v -> confirmDialog.dismiss());
-
-        Button btndialogconfirm = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm);
-        btndialogconfirm.setText(R.string.pkmndetails_movetopcdiag_button);
-        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDialog.dismiss();
-                databaseHelper.movePokemon(new FirebaseCallbackPokemon() {
-                    @Override
-                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
-                        finish();
-                    }
-                }, pkmn.getUserPokemonID(), false);
-            }
-        });
-        confirmDialog.show();
-
-    }
-
-    private void movePokemonToParty () {
-        confirmDialog = new Dialog(this);
-        confirmDialog.setContentView(R.layout.dialog_confirm);
-
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-
-        confirmDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        confirmDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = (TextView) confirmDialog.findViewById(R.id.tv_dialog_confirm_title);
-        tvdialogtitle.setText(R.string.pkmndetails_movetopartydiag_title);
-        TextView tvdialogtext = (TextView) confirmDialog.findViewById(R.id.tv_dialog_confirm_text);
-        tvdialogtext.setText(R.string.pkmndetails_movetopartydiag_text);
-        ImageView ivdialogicon = (ImageView) confirmDialog.findViewById(R.id.iv_dialog_confirm_icon);
-        ivdialogicon.setImageResource(R.drawable.warning);
-
-        Button btndialogcancel = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm_cancel);
-        btndialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDialog.dismiss();
-            }
-        });
-
-        Button btndialogconfirm = (Button) confirmDialog.findViewById(R.id.btn_dialog_confirm);
-        btndialogconfirm.setText(R.string.pkmndetails_movetopartydiag_button);
-        btndialogconfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDialog.dismiss();
-                databaseHelper.movePokemon(new FirebaseCallbackPokemon() {
-                    @Override
-                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
-                        finish();
-                    }
-                }, pkmn.getUserPokemonID(), true);
-            }
-        });
-        confirmDialog.show();
-    }
-
-    private void editNickname() {
-        editdialog = new Dialog(this);
-        editdialog.setContentView(R.layout.dialog_oneinput);
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-        editdialog.getWindow().setLayout(width, height);
-        editdialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = editdialog.findViewById(R.id.iv_dialog_stringinput_title);
-        tvdialogtitle.setText(R.string.pokemondetails_rename_caption);
-        EditText etdialoginput = editdialog.findViewById(R.id.et_dialog_stringinput);
-        ImageView ivdialogicon = editdialog.findViewById(R.id.iv_dialog_stringinput_icon);
-        ivdialogicon.setImageResource(getImageId(getApplicationContext(),
-                "pkmn_"+ pkmn.getPokemonDetails().getDexNum()));
-
-        Button btndialogok = editdialog.findViewById(R.id.btn_dialog_stringinput_ok);
-        btndialogok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pkmn.setNickname(etdialoginput.getText().toString());
-                tvPkmnNickname.setText(pkmn.getNickname());
-                editdialog.dismiss();
-                databaseHelper.editNickname(new FirebaseCallbackPokemon() {
-                    @Override
-                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
-
-                    }
-                }, pkmn.getUserPokemonID(), pkmn.getNickname());
-            }
-        });
-
-        Button btndialogcancel = editdialog.findViewById(R.id.btn_dialog_stringinput_confirm);
-        btndialogcancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editdialog.dismiss();
-            }
-        });
-
-        editdialog.show();
-    }
-
     private void feedPokemon() {
         if (pkmn.feedCandy()) {
             MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.levelup);
@@ -377,7 +221,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         if (!(user.getRareCandy() > 0 && pkmn.getLevel() < 100))
             btnrare.setEnabled(false);
-
     }
 
     private void evolvePokemon() {
@@ -400,12 +243,120 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
     }
 
+    private void createMovePokemonToPCDialog () {
+        confirmDialog = new CustomDialog(this);
+        confirmDialog.setDialogType(CustomDialog.CONFIRM);
+        confirmDialog.setConfirmComponents(
+                getString(R.string.pkmndetails_movetopcdiag_title),
+                getString(R.string.pkmndetails_movetopcdiag_text),
+                R.drawable.warning,
+                getString(R.string.pkmndetails_movetopcdiag_button)
+        );
 
+        Button btndialogconfirm = confirmDialog.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setOnClickListener(v -> {
+            confirmDialog.dismiss();
+                databaseHelper.movePokemon(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                        finish();
+                    }
+                }, pkmn.getUserPokemonID(), false);
+        });
+        confirmDialog.show();
+    }
+
+    private void createMovePokemonToPartyDialog() {
+        confirmDialog = new CustomDialog(this);
+        confirmDialog.setDialogType(CustomDialog.CONFIRM);
+        confirmDialog.setConfirmComponents(
+                getString(R.string.pkmndetails_movetopartydiag_title),
+                getString(R.string.pkmndetails_movetopartydiag_text),
+                R.drawable.warning,
+                getString(R.string.pkmndetails_movetopartydiag_button)
+        );
+
+        Button btndialogconfirm = confirmDialog.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setOnClickListener(v -> {
+            confirmDialog.dismiss();
+                databaseHelper.movePokemon(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                        finish();
+                    }
+                }, pkmn.getUserPokemonID(), true);
+        });
+        confirmDialog.show();
+    }
+
+    private void createEditNicknameDialog() {
+        editdialog = new CustomDialog(this);
+        editdialog.setDialogType(CustomDialog.ONE_INPUT);
+
+        this.editdialog.setOneInputComponents(
+                getString(R.string.pokemondetails_rename_caption),
+                getImageId(getApplicationContext(),
+                        "pkmn_"+ pkmn.getPokemonDetails().getDexNum())
+        );
+
+        Button btndialogok = editdialog.findViewById(R.id.btn_dialog_stringinput_ok);
+        btndialogok.setOnClickListener(v -> {
+            pkmn.setNickname(etdialoginput.getText().toString());
+                tvPkmnNickname.setText(pkmn.getNickname());
+                editdialog.dismiss();
+                databaseHelper.editNickname(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+
+                    }
+                }, pkmn.getUserPokemonID(), pkmn.getNickname());
+        });
+
+        editdialog.show();
+    }
+
+    private void createReleasePokemonDialog (View view, UserPokemon pkmn) {
+        releasePkmnDialog = new CustomDialog(this);
+        releasePkmnDialog.setDialogType(CustomDialog.CONFIRM);
+
+        releasePkmnDialog.setConfirmComponents(
+                getString(R.string.pkmndetails_releasepkmndiag_title),
+                getString(R.string.pkmndetails_releasepkmndiag_text),
+                getImageId(getApplicationContext(),
+                        "pkmn_"+ pkmn.getPokemonDetails().getDexNum()),
+                getString(R.string.pkmndetails_releasepkmndiag_button)
+        );
+
+        Button btndialogconfirm = releasePkmnDialog.findViewById(R.id.btn_dialog_confirm);
+        btndialogconfirm.setOnClickListener(v -> {
+            releasePkmnDialog.dismiss();
+                databaseHelper.deletePokemon(new FirebaseCallbackPokemon() {
+                    @Override
+                    public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
+                        if(isSuccessful) {
+                            finish();
+                            checkerDeleted = true;
+                        }
+                    }
+                }, pkmn);
+        });
+        releasePkmnDialog.show();
+    }
 
     private int getImageId(Context context, String imageName) {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
 
+    /**
+     * Plays a Pokemon cry.
+     * @param pkmn the species of the pokemon.
+     */
+    private void playPkmnCry(Pokemon pkmn) {
+        if (soundEnabled)
+            pkmn.playPokemonCry();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
 

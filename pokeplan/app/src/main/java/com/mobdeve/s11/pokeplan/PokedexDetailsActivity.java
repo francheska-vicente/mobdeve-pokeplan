@@ -2,7 +2,9 @@ package com.mobdeve.s11.pokeplan;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ public class PokedexDetailsActivity extends AppCompatActivity {
     private TextView tvEvoLevel;
 
     private DatabaseHelper databaseHelper;
+    private boolean soundEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,8 @@ public class PokedexDetailsActivity extends AppCompatActivity {
 
         initComponents();
         setAllComponents(pkmn);
+        initUserPreferences();
+        playPkmnCry(pkmn);
     }
 
     /**
@@ -115,9 +120,31 @@ public class PokedexDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * Helper function to get Image ID from Image name
+     * Initializes the user preferences for enabling certain functions of the focus timer.
+     */
+    private void initUserPreferences() {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext());
+
+        this.soundEnabled = sp.getBoolean(Keys.KEY_PKMNCRIES.name(), true);
+    }
+
+    /**
+     * Plays a Pokemon cry.
+     * @param pkmn the species of the pokemon.
+     */
+    private void playPkmnCry(Pokemon pkmn) {
+        if (soundEnabled)
+            pkmn.playPokemonCry();
+    }
+
+    /**
+     * Helper function to get the image ID given the image name.
+     * @param imageName the name of the image
+     * @return the image id of the image
      */
     private int getImageId(Context context, String imageName) {
-        return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
+        return context.getResources().getIdentifier(
+                "drawable/" + imageName, null, context.getPackageName());
     }
 }
