@@ -348,7 +348,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     }
 
                     Calendar c = Calendar.getInstance();
-                    c.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 
                     int currentYear = c.get(Calendar.YEAR);
                     int currentDay = c.get(Calendar.DAY_OF_MONTH);
@@ -427,7 +427,11 @@ public class AddTaskActivity extends AppCompatActivity {
                         addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                         if(checkerNotif) {
                             if (val) {
-                                setTimer(new CustomDate(startDate, startTime), notif, true);
+                                if (startDate.isEmpty()) {
+                                    setTimer(new CustomDate(true), notif, true);
+                                } else {
+                                    setTimer(new CustomDate(startDate, startTime), notif, true);
+                                }
                             } else {
                                 setTimer(new CustomDate(endDate, endTime), notif, false);
                             }
