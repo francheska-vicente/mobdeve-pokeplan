@@ -6,26 +6,21 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 public class TaskDetailsActivity extends AppCompatActivity {
-    private ImageButton btnback;
     private TextView tvTaskName;
     private TextView tvCategory;
     private ImageView ivCategory;
@@ -44,40 +39,27 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private CustomDialog confirmDelete;
     private CustomDialog candyDialog;
 
+    private String taskID;
+
     private DatabaseHelper databaseHelper;
     private UserDetails user;
     private Task task;
 
-    private boolean wasEdited;
-
-    public static final String KEY_TASKNAME = "KEY_TASKNAME";
-    public static final String KEY_CATEGORY = "KEY_CATEGORY";
-    public static final String KEY_PRIORITY = "KEY_PRIORITY";
-    public static final String KEY_C_START_DATE = "KEY_C_START_DATE";
-    public static final String KEY_C_END_DATE = "KEY_C_END_DATE";
-    public static final String KEY_C_START_TIME = "KEY_C_START_TIME";
-    public static final String KEY_C_END_TIME = "KEY_C_END_TIME";
-
-    public static final String KEY_NOTIF_WHEN = "KEY_NOTIF_WHEN";
-    public static final String KEY_NOTIF_ON = "KEY_NOTIF_ON";
-    public static final String KEY_NOTIF_START_TIME = "KEY_NOTIF_START_TIME";
-
-    public static final String KEY_NOTES = "KEY_NOTES";
-    public static final String KEY_ID = "KEY_ID";
+    private boolean wasEdited = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
-        databaseHelper = new DatabaseHelper();
-        wasEdited = false;
 
-        btnback = findViewById(R.id.ib_taskdetails_back);
-        btnback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        Intent intent = getIntent();
+        taskID = intent.getStringExtra(Keys.KEY_ID.name());
+
+        initInfo();
+
+
+        ImageButton btnback = findViewById(R.id.ib_taskdetails_back);
+        btnback.setOnClickListener(view -> onBackPressed());
 
         this.tvTaskName = findViewById(R.id.tv_taskdetails_name);
         this.tvCategory = findViewById(R.id.tv_taskdetails_category);
@@ -93,79 +75,60 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.ibEditTask = findViewById(R.id.ib_taskdetails_edit);
         this.tvNotif = findViewById(R.id.tv_taskdetails_notif);
 
-        databaseHelper.getUserDetails(new FirebaseCallbackUser() {
-            @Override
-            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
-                user = userDetails;
-                initComponents();
-            }
+
+    }
+
+    private void initInfo() {
+        databaseHelper = new DatabaseHelper();
+        databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> {
+            user = userDetails;
+            initComponents();
         });
     }
 
-    private void initComponents () {
-        Intent intent = getIntent();
-        String taskID = intent.getStringExtra(Keys.KEY_ID.name());
-        Boolean isFinished = intent.getBooleanExtra(Keys.KEY_IS_COMPLETED.name(), false);
-
-        if (wasEdited) {
-            setInfoEdited(taskID);
-        } else {
+    private void initComponents() {
+        if (wasEdited)
+            updateViewComponents(taskID);
+        else
             setInfo();
-        }
-
-        this.btnFinishTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createDialog(v, taskID);
-            }
-        });
-
-        this.ibDeleteTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteDialog(v, taskID);
-            }
-        });
+        setButtonListeners();
     }
 
-    private void setInfoEdited (String taskID) {
-        databaseHelper.getTasks(new FirebaseCallbackTask() {
-            @Override
-            public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getTaskID().equalsIgnoreCase(taskID)) {
-                        task = list.get(i);
-                        break;
-                    }
+    private void setButtonListeners() {
+        this.btnFinishTask.setOnClickListener(v -> createConfirmFinishDialog(v, taskID));
+        this.ibDeleteTask.setOnClickListener(v -> createDeleteTaskDialog(v, taskID));
+    }
+
+    private void updateViewComponents (String taskID) {
+        databaseHelper.getTasks((list, isSuccesful, message) -> {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getTaskID().equalsIgnoreCase(taskID)) {
+                    task = list.get(i);
+                    break;
                 }
-
-                String taskName = task.getTaskName();
-                String category = task.getCategory();
-                int priority = task.getPriority();
-                Boolean notifOn = task.getIsNotif();
-                Boolean notifStartTime = task.getBeforeStartTime();
-                String notifWhen = task.getNotifWhen();
-                String notes = task.getDescription();
-                CustomDate startDate = task.getStartDate();
-                CustomDate endDate = task.getEndDate();
-
-                DecimalFormat formatter = new DecimalFormat("00");
-
-                String sEndDate = formatter.format(endDate.getDay()) + "." + formatter.format(endDate.getMonth()) + "." +
-                        endDate.getYear();
-                String sStartDate = formatter.format(startDate.getDay()) + "." + formatter.format(startDate.getMonth()) + "." +
-                        startDate.getYear();
-                String sEndTime = formatter.format(endDate.getHour()) + ":" + formatter.format(endDate.getMinute());
-                String sStartTime = formatter.format(startDate.getHour()) + ":" + formatter.format(startDate.getMinute());
-
-                ibEditTask.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        editIntent(taskName, category, priority, notes, taskID, sEndDate, sStartDate, sEndTime, sStartTime,
-                                notifWhen, notifOn, notifStartTime);
-                    }
-                });
             }
+
+            String taskName = task.getTaskName();
+            String category = task.getCategory();
+            int priority = task.getPriority();
+            Boolean notifOn = task.getIsNotif();
+            Boolean notifStartTime = task.getBeforeStartTime();
+            String notifWhen = task.getNotifWhen();
+            String notes = task.getDescription();
+            CustomDate startDate = task.getStartDate();
+            CustomDate endDate = task.getEndDate();
+
+            DecimalFormat formatter = new DecimalFormat("00");
+
+            String sEndDate = formatter.format(endDate.getDay()) + "." + formatter.format(endDate.getMonth()) + "." +
+                    endDate.getYear();
+            String sStartDate = formatter.format(startDate.getDay()) + "." + formatter.format(startDate.getMonth()) + "." +
+                    startDate.getYear();
+            String sEndTime = formatter.format(endDate.getHour()) + ":" + formatter.format(endDate.getMinute());
+            String sStartTime = formatter.format(startDate.getHour()) + ":" + formatter.format(startDate.getMinute());
+
+            ibEditTask.setOnClickListener(v -> editIntent(taskName, category, priority, notes, taskID, sEndDate, sStartDate, sEndTime, sStartTime,
+                    notifWhen, notifOn, notifStartTime));
         });
     }
 
@@ -190,13 +153,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
         setValues (taskName, category, startDate, endDate,
                 notes, priority, notifWhen, notifOn, notifStartTime);
 
-        this.ibEditTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editIntent(taskName, category, priority, notes, taskID, cEndDate, cStartDate, cEndTime, cStartTime,
-                        notifWhen, notifOn, notifStartTime);
-            }
-        });
+        this.ibEditTask.setOnClickListener(v -> editIntent(taskName, category, priority, notes, taskID, cEndDate, cStartDate, cEndTime, cStartTime,
+                notifWhen, notifOn, notifStartTime));
     }
 
 
@@ -220,15 +178,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.setCategoryIcon(category);
         this.setPriorityIcon(priority);
 
-        String notif = "";
+        String notif = "No set notification for this task.";
         if (notifOn) {
             if (notifStartTime) {
                 notif = notifWhen + " before Start";
-            } else {
+            }
+            else {
                 notif = notifWhen + " before End";
             }
-        } else {
-            notif = "No set notification for this task.";
         }
 
         this.tvNotif.setText(notif);
@@ -258,34 +215,31 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
     private ActivityResultLauncher addActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
+            result -> {
 
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent intent = result.getData();
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent intent = result.getData();
 
-                        String name = intent.getStringExtra(Keys.KEY_TASKNAME.name());
-                        String notes = intent.getStringExtra(Keys.KEY_NOTES.name());
-                        String endDate = intent.getStringExtra(Keys.KEY_END_DATE.name());
-                        String startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
-                        int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
-                        String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
-                        String notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
-                        Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
-                        Boolean notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+                    String name = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+                    String notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+                    String endDate = intent.getStringExtra(Keys.KEY_END_DATE.name());
+                    String startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
+                    int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+                    String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+                    String notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+                    Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+                    Boolean notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
 
-                        setValues(name, category, startDate, endDate,
-                                notes, priority, notifWhen, notifOn, notifStartTime);
-                        wasEdited = true;
-                    } else {
-                        initComponents();
-                    }
+                    setValues(name, category, startDate, endDate,
+                            notes, priority, notifWhen, notifOn, notifStartTime);
+                    wasEdited = true;
+                } else {
+                    initComponents();
                 }
             }
     );
 
-    protected void deleteDialog(View view, String taskID) {
+    private void createDeleteTaskDialog(View view, String taskID) {
         confirmDelete = new CustomDialog(view.getContext());
         confirmDelete.setDialogType(CustomDialog.CONFIRM);
 
@@ -299,17 +253,12 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Button btndialogconfirm = confirmDelete.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setOnClickListener(v -> {
             confirmDelete.dismiss();
-            databaseHelper.deleteTask(new FirebaseCallbackTask() {
-                @Override
-                public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
-                    finish();
-                }
-            }, taskID);
+            databaseHelper.deleteTask((list, isSuccesful, message) -> finish(), taskID);
         });
         confirmDelete.show();
     }
 
-    protected void createDialog (View view, String taskID) {
+    private void createConfirmFinishDialog(View view, String taskID) {
         confirmFinish = new CustomDialog(view.getContext());
         confirmFinish.setDialogType(CustomDialog.CONFIRM);
 
@@ -323,18 +272,12 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Button btndialogconfirm = confirmFinish.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setOnClickListener(v -> {
             confirmFinish.dismiss();
-            databaseHelper.moveToCompletedTask(new FirebaseCallbackTask() {
-                @Override
-                public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
-                    giveCandies();
-                }
-            }, taskID, user);
-
+            databaseHelper.moveToCompletedTask((list, isSuccesful, message) -> giveCandies(), taskID, user);
         });
         confirmFinish.show();
     }
 
-    protected void giveCandies () {
+    private void giveCandies () {
         int divider = 90, maxR = 5, minR = 3, maxS = 2, minS = 1;
         int priority = this.tvPriorityIcon.getText().toString().trim().length();
 
@@ -365,14 +308,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 break;
         }
 
-        Random random = new Random();
-        int numberGenerated = random.nextInt(100) + 1;
+        int numberGenerated = new Random().nextInt(100) + 1;
         String candyType = "rareCandy";
 
         int numberROfCandies = (int) (Math.random () * (maxR - minR + 1) + minR);
         int numberSOfCandies = (int) (Math.random () * (maxS - minS + 1) + minS);
 
-        int totalNumberOfcandies = 0, numberOfCandies = numberROfCandies;
+        int totalNumberOfcandies,
+                numberOfCandies = numberROfCandies;
         if (numberGenerated > divider) {
             candyType = "superCandy";
             numberOfCandies = numberSOfCandies;
@@ -386,15 +329,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         HashMap<String, Object> hash = new HashMap<>();
         hash.put(candyType, totalNumberOfcandies);
 
-        databaseHelper.updateUser(new FirebaseCallbackUser() {
-            @Override
-            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
-                if (isSuccessful) {
-
-                }
-            }
-        }, hash);
-
+        databaseHelper.updateUser((userDetails, isSuccessful, message) -> {}, hash);
         createCandyDialog(candyType, numberOfCandies);
     }
 
@@ -479,7 +414,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
     @Override
     public void onRestart() {
         super.onRestart();
-
         initComponents();
     }
 }
