@@ -413,8 +413,12 @@ public class AddTaskActivity extends AppCompatActivity {
 
                         if(checkerNotif) {
                             if (val) {
-                                deleteTimer();
-                                setTimer(new CustomDate(startDate, startTime), notif, true);
+                                if (startDate.isEmpty()) {
+                                    deleteTimer();
+                                    setTimer(new CustomDate(true), notif, true);
+                                } else {
+                                    setTimer(new CustomDate(startDate, startTime), notif, true);
+                                }
                             } else {
                                 deleteTimer();
                                 setTimer(new CustomDate(endDate, endTime), notif, false);
