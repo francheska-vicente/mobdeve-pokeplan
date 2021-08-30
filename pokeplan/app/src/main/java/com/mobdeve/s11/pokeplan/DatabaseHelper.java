@@ -245,39 +245,42 @@ public class DatabaseHelper {
                         ArrayList<UserPokemon> tempPokemon = new ArrayList<>(1);
                         tempPokemon.add(userPokemon);
                         if (task.isSuccessful()) {
-                            HashMap <String, Object> hashUser = new HashMap<>();
-                            hashUser.put(Integer.toString(details.getDexNum() - 1), true);
-                            mUser.child("userPokedex").updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                                    Log.d("User DB", "User's caught pokemon information was added.");
-                                }
-                            });
-
-                            HashMap<String, Object> hashNum = new HashMap<>();
-
-                            if (!userDetails.getUserPokedex().get(details.getDexNum() - 1)) {
-                                hashNum.put("numCaught", userDetails.getNumCaught() + 1);
-                                hashNum.put("numNotCaught", userDetails.getNumNotCaught() - 1);
-                            }
-
-                            if (checker) {
-                                hashNum.put("hatchedPkmnCount", userDetails.getHatchedPkmnCount() + 1);
-                            }
-
-                            mUser.updateChildren(hashNum).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                                    Log.d("User DB", "User's number of pokemons and hatched egg were updated. ");
-                                }
-                            });
-
+                            updateUserPokemon(details, userDetails, checker);
                             firebaseCallbackPokemon.onCallbackPokemon(tempPokemon, true, "Pokemon was successfully added to the database.");
                         } else {
                             firebaseCallbackPokemon.onCallbackPokemon(null, false, "Pokemon was not added to the database.");
                         }
                     }
                 });
+    }
+
+    private void updateUserPokemon (Pokemon details, UserDetails userDetails, boolean checker) {
+        HashMap <String, Object> hashUser = new HashMap<>();
+        hashUser.put(Integer.toString(details.getDexNum() - 1), true);
+        mUser.child("userPokedex").updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                Log.d("User DB", "User's caught pokemon information was added.");
+            }
+        });
+
+        HashMap<String, Object> hashNum = new HashMap<>();
+
+        if (!userDetails.getUserPokedex().get(details.getDexNum() - 1)) {
+            hashNum.put("numCaught", userDetails.getNumCaught() + 1);
+            hashNum.put("numNotCaught", userDetails.getNumNotCaught() - 1);
+        }
+
+        if (checker) {
+            hashNum.put("hatchedPkmnCount", userDetails.getHatchedPkmnCount() + 1);
+        }
+
+        mUser.updateChildren(hashNum).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
+                Log.d("User DB", "User's number of pokemons and hatched egg were updated. ");
+            }
+        });
     }
 
     public void editNickname (FirebaseCallbackPokemon firebaseCallbackPokemon, String key, String nickname) {
@@ -331,7 +334,7 @@ public class DatabaseHelper {
         });
 
         if (!userDetails.getUserPokedex().get(pokemon.getPokemonDetails().getDexNum() - 1)) {
-
+            updateUserPokemon(pokemon.getDetails(), userDetails, false);
         }
     }
 
