@@ -378,10 +378,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 String when = spinNotifWhen.getSelectedItem().toString();
 
                 boolean val = false;
+                // sets the val to true if the chosen notification is before the start time
                 if(when != null && !when.isEmpty() && when.equalsIgnoreCase("Before Start Time")) {
                     val = true;
                 }
 
+                // if the checkbox for the notification is selected, the two spinners must have a value.
                 if (checkerNotif) {
                     if (notif.isEmpty()) {
                         ((TextView) spinNotifTime.getSelectedView()).setError("Notification information is required if check box is clicked.");
@@ -408,8 +410,9 @@ public class AddTaskActivity extends AppCompatActivity {
                     return;
                 }
 
+                // checks if the end date is empty
                 if (!endDate.equals("")) {
-                    if (!startDate.equals("") /* && !startTime.equals("")*/) {
+                    if (!startDate.equals("")) {
                         if (!startTime.equals("")) {
                             String tempStartDate = startDate;
                             String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
@@ -417,6 +420,7 @@ public class AddTaskActivity extends AppCompatActivity {
                             String tempEndDate = endDate;
                             String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
 
+                            // checks if the startDate is earlier than the endDate
                             long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
                             Log.d("hello pare", Long.toString(diff));
                             if (diff < 0) {
@@ -435,6 +439,7 @@ public class AddTaskActivity extends AppCompatActivity {
                         }
                     }
 
+                    // checks if the endDate is later than the current date
                     Calendar c = Calendar.getInstance();
                     c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 
@@ -482,17 +487,21 @@ public class AddTaskActivity extends AppCompatActivity {
                     return;
                 }
 
+                // checks if there is no priority button clicked
                 if (priority == null) {
                     error = "Priority level for this task is required.\n";
                     checker = true;
                 }
 
+                // checks if there is no category button clicked
                 if (category == null) {
                     error = "The category of this task is required\n";
                     checker = true;
                 }
 
+                // if there are no errors found, the information is added/edited to the database
                 if (!checker) {
+                    // if there is an intent from the TaskDetailsActivity, the information is only to be edited from the database
                     Intent intent = getIntent();
                     String taskID = intent.getStringExtra(Keys.KEY_ID.name());
                     if (taskID != null) {
@@ -529,7 +538,7 @@ public class AddTaskActivity extends AppCompatActivity {
                             }
                         }
                     }
-                } else {
+                } else { // if there are errors found, the error dialog should be shown with an error message
                     errorDialog = new Dialog(v.getContext());
                     errorDialog.setContentView(R.layout.dialog_error);
 
@@ -557,6 +566,11 @@ public class AddTaskActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the buttons for the priority and their onclick listeners.
+     * Because of how the onclick listeners were created, there is only one in the arraylist of priority buttons
+     * that can be clicked at a time.
+     */
     private void initPriority () {
         this.btnPriority = new ArrayList<>();
         ConstraintLayout clPriority = findViewById(R.id.cl_add_task_priority);
@@ -590,6 +604,11 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initializes the buttons for the category and their onclick listeners.
+     * Because of how the onclick listeners were created, there is only one in the arraylist of category buttons
+     * that can be clicked at a time.
+     */
     private void initCategory () {
         this.btnCategory = new ArrayList<>();
         ConstraintLayout clCategory = findViewById(R.id.cl_add_task_category);
@@ -623,6 +642,10 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates the timepicker dialog and datepicker dialog for the dates and times.
+     * Also set the values the Activity is to be used for editing.
+     */
     private void initCalendar () {
         EditText startDate = (EditText) findViewById(R.id.et_add_task_start_date);
         Calendar calendarStart = Calendar.getInstance();
