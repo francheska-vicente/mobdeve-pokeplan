@@ -16,7 +16,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -39,26 +38,33 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private CustomDialog confirmDelete;
     private CustomDialog candyDialog;
 
-    private String taskID;
+    private Intent intent;
 
     private DatabaseHelper databaseHelper;
     private UserDetails user;
-    private Task task;
 
-    private boolean wasEdited = false;
+    private String taskName;
+    private String category;
+    private int priority;
+    private String notes;
+    private String taskID;
+    private String endDate;
+    private String startDate;
+    private String endTime;
+    private String startTime;
+    private String notifWhen;
+    private Boolean notifOn;
+    private Boolean notifStartTime;
+
+    private String fullStartDateString;
+    private String fullEndDateString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
 
-        Intent intent = getIntent();
-        taskID = intent.getStringExtra(Keys.KEY_ID.name());
-
         initInfo();
-
-        ImageButton btnback = findViewById(R.id.ib_taskdetails_back);
-        btnback.setOnClickListener(view -> onBackPressed());
     }
 
     private void initInfo() {
@@ -84,114 +90,117 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.ibEditTask = findViewById(R.id.ib_taskdetails_edit);
         this.tvNotif = findViewById(R.id.tv_taskdetails_notif);
 
-        if (wasEdited)
-            updateViewComponents(taskID);
-        else
-            setViewComponents();
-        setButtonListeners();
+        this.intent = getIntent();
+        this.getExtrasFromIntent();
+
+        this.setViewComponentValues();
+        this.setButtonListeners();
     }
 
     private void setButtonListeners() {
+        ImageButton btnback = findViewById(R.id.ib_taskdetails_back);
+        btnback.setOnClickListener(view -> onBackPressed());
+
         this.btnFinishTask.setOnClickListener(v -> createConfirmFinishDialog(v, taskID));
         this.ibDeleteTask.setOnClickListener(v -> createDeleteTaskDialog(v, taskID));
+        this.ibEditTask.setOnClickListener(v -> editTaskDetails());
     }
 
-    private void setViewComponents () {
-        Intent intent = getIntent();
-
-        String taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
-        String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
-        int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
-        String startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
-        String endDate = intent.getStringExtra(Keys.KEY_DEADLINE.name());
-        String notes = intent.getStringExtra(Keys.KEY_NOTES.name());
-        String taskID = intent.getStringExtra(Keys.KEY_ID.name());
-        String cEndDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
-        String cStartDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
-        String cEndTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
-        String cStartTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
-        String notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
-        Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
-        Boolean notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
-
-        setViewComponentValues(taskName, category, startDate, endDate,
-                notes, priority, notifWhen, notifOn, notifStartTime);
-
-        this.ibEditTask.setOnClickListener(v -> editTaskDetails(taskName, category, priority, notes, taskID, cEndDate, cStartDate, cEndTime, cStartTime,
-                notifWhen, notifOn, notifStartTime));
-    }
-
-    private void updateViewComponents (String taskID) {
-        databaseHelper.getTasks((list, isSuccesful, message) -> {
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getTaskID().equalsIgnoreCase(taskID)) {
-                    task = list.get(i);
-                    break;
-                }
-            }
-
-            String taskName = task.getTaskName();
-            String category = task.getCategory();
-            int priority = task.getPriority();
-            Boolean notifOn = task.getIsNotif();
-            Boolean notifStartTime = task.getBeforeStartTime();
-            String notifWhen = task.getNotifWhen();
-            String notes = task.getDescription();
-            CustomDate startDate = task.getStartDate();
-            CustomDate endDate = task.getEndDate();
-
-            DecimalFormat formatter = new DecimalFormat("00");
-
-            String sEndDate = formatter.format(endDate.getDay()) + "." + formatter.format(endDate.getMonth()) + "." +
-                    endDate.getYear();
-            String sStartDate = formatter.format(startDate.getDay()) + "." + formatter.format(startDate.getMonth()) + "." +
-                    startDate.getYear();
-            String sEndTime = formatter.format(endDate.getHour()) + ":" + formatter.format(endDate.getMinute());
-            String sStartTime = formatter.format(startDate.getHour()) + ":" + formatter.format(startDate.getMinute());
-
-            ibEditTask.setOnClickListener(v -> editTaskDetails(taskName, category, priority, notes, taskID, sEndDate, sStartDate, sEndTime, sStartTime,
-                    notifWhen, notifOn, notifStartTime));
-        });
-    }
-
-    private void setViewComponentValues (String taskName, String category, String startDate, String endDate,
-                            String notes, int priority, String notifWhen, Boolean notifOn, Boolean notifStartTime) {
+    private void setViewComponentValues() {
         this.tvTaskName.setText(taskName);
         this.tvCategory.setText(category);
+        this.tvStartTime.setText("Starts " + fullStartDateString);
+        this.tvEndTime.setText("Ends " + fullEndDateString);
 
-        this.tvStartTime.setText("Starts " + startDate);
-        this.tvEndTime.setText("Ends " + endDate);
+        this.setPriorityIcon();
+        this.ivCategory.setImageResource(categoryToIcon());
+        this.tvNotif.setText(formatNotification());
 
         if (notes == null) {
             this.tvNotesLabel.setVisibility(View.GONE);
             this.tvNotesDesc.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             this.tvNotesLabel.setVisibility(View.VISIBLE);
             this.tvNotesDesc.setVisibility(View.VISIBLE);
             this.tvNotesDesc.setText(notes);
         }
-
-        this.setCategoryIcon(category);
-        this.setPriorityIcon(priority);
-
-        String notif = "No set notification for this task.";
-        if (notifOn) {
-            if (notifStartTime) {
-                notif = notifWhen + " before Start";
-            }
-            else {
-                notif = notifWhen + " before End";
-            }
-        }
-
-        this.tvNotif.setText(notif);
     }
 
-    private void editTaskDetails (String taskName, String category, int priority, String notes, String taskID,
-                             String endDate, String startDate, String endTime, String startTime, String notifWhen,
-                             Boolean notifOn, Boolean notifStartTime) {
-        Intent intent = new Intent(TaskDetailsActivity.this, AddTaskActivity.class);
+    private void setPriorityIcon() {
+        String priorityIcon = "!";
+        String priorityName = "Low Priority";
+        switch (priority) {
+            case 5:
+                priorityIcon = "!!!!!";
+                priorityName = "Highest Priority";
+                break;
+            case 4:
+                priorityIcon = "!!!!";
+                priorityName = "High Priority";
+                break;
+            case 3:
+                priorityIcon = "!!!";
+                priorityName = "Mid Priority";
+                break;
+            case 2:
+                priorityIcon = "!!";
+                priorityName = "Low Priority";
+                break;
+        }
+        this.tvPriorityIcon.setText(priorityIcon);
+        this.tvPriorityName.setText(priorityName);
+    }
 
+    private int categoryToIcon() {
+        switch (category) {
+            case "School": return R.drawable.task_categ_school;
+            case "Work": return R.drawable.task_categ_work;
+            case "Hobby": return R.drawable.task_categ_hobby;
+            case "Leisure": return R.drawable.task_categ_leisure;
+            case "Chores": return R.drawable.task_categ_chores;
+            case "Health": return R.drawable.task_categ_health;
+            case "Social": return R.drawable.task_categ_social;
+            default: return R.drawable.task_categ_others;
+        }
+    }
+
+    private String formatNotification() {
+        if (notifOn) {
+            if (notifStartTime) {
+                return notifWhen + " before Start";
+            }
+            else {
+                return notifWhen + " before End";
+            }
+        }
+        return "No set notification for this task.";
+    }
+
+    private void editTaskDetails() {
+        intent = new Intent(TaskDetailsActivity.this, AddTaskActivity.class);
+        putExtrasInIntent();
+        addActivityResultLauncher.launch(intent);
+    }
+
+    private void getExtrasFromIntent() {
+        taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+        category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+        priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+        notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+        taskID = intent.getStringExtra(Keys.KEY_ID.name());
+        fullEndDateString = intent.getStringExtra(Keys.KEY_DEADLINE.name());
+        fullStartDateString = intent.getStringExtra(Keys.KEY_START_DATE.name());
+        endDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
+        startDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
+        endTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
+        startTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
+        notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+        notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+        notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+    }
+
+    private void putExtrasInIntent() {
         intent.putExtra(Keys.KEY_TASKNAME.name(), taskName);
         intent.putExtra(Keys.KEY_CATEGORY.name(), category);
         intent.putExtra(Keys.KEY_PRIORITY.name(), priority);
@@ -204,31 +213,26 @@ public class TaskDetailsActivity extends AppCompatActivity {
         intent.putExtra(Keys.KEY_NOTIF_WHEN.name(), notifWhen);
         intent.putExtra(Keys.KEY_NOTIF_ON.name(), notifOn);
         intent.putExtra(Keys.KEY_NOTIF_START_TIME.name(), notifStartTime);
-
-        addActivityResultLauncher.launch(intent);
     }
 
-
-    private ActivityResultLauncher addActivityResultLauncher = registerForActivityResult(
+    private final ActivityResultLauncher addActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
 
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    Intent intent = result.getData();
+                    intent = result.getData();
 
-                    String name = intent.getStringExtra(Keys.KEY_TASKNAME.name());
-                    String notes = intent.getStringExtra(Keys.KEY_NOTES.name());
-                    String endDate = intent.getStringExtra(Keys.KEY_END_DATE.name());
-                    String startDate = intent.getStringExtra(Keys.KEY_START_DATE.name());
-                    int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
-                    String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
-                    String notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
-                    Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
-                    Boolean notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+                    taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
+                    notes = intent.getStringExtra(Keys.KEY_NOTES.name());
+                    fullEndDateString = intent.getStringExtra(Keys.KEY_END_DATE.name());
+                    fullStartDateString = intent.getStringExtra(Keys.KEY_START_DATE.name());
+                    priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
+                    category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
+                    notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+                    notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+                    notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
 
-                    setViewComponentValues(name, category, startDate, endDate,
-                            notes, priority, notifWhen, notifOn, notifStartTime);
-                    wasEdited = true;
+                    setViewComponentValues();
                 }
                 else {
                     initComponents();
@@ -236,7 +240,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
             }
     );
 
-    private void giveCandies () {
+    private void giveCandies() {
         /*
             These five arrays represent the values needed to generate the candies
             for each priority level
@@ -326,7 +330,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         confirmFinish.show();
     }
 
-    private void createGiveCandyDialog (String candyType, int numberOfCandies) {
+    private void createGiveCandyDialog(String candyType, int numberOfCandies) {
         candyDialog = new CustomDialog(TaskDetailsActivity.this);
         candyDialog.setDialogType(CustomDialog.OK);
 
@@ -360,48 +364,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 (AudioManager.STREAM_MUSIC, 5,0);
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.finishtask);
         mediaPlayer.start();
-    }
-
-    private void setCategoryIcon (String category) {
-        int pic;
-        if (category != null) {
-            switch (category) {
-                case "School": pic = R.drawable.task_categ_school; break;
-                case "Work": pic = R.drawable.task_categ_work; break;
-                case "Hobby": pic = R.drawable.task_categ_hobby; break;
-                case "Leisure": pic = R.drawable.task_categ_leisure; break;
-                case "Chores": pic = R.drawable.task_categ_chores; break;
-                case "Health": pic = R.drawable.task_categ_health; break;
-                case "Social": pic = R.drawable.task_categ_social; break;
-                default: pic = R.drawable.task_categ_others; break;
-            }
-            this.ivCategory.setImageResource(pic);
-        }
-    }
-
-    private void setPriorityIcon (int priority) {
-        String priorityIcon = "!";
-        String priorityName = "Low Priority";
-        switch (priority) {
-            case 5:
-                priorityIcon = "!!!!!";
-                priorityName = "Highest Priority";
-                break;
-            case 4:
-                priorityIcon = "!!!!";
-                priorityName = "High Priority";
-                break;
-            case 3:
-                priorityIcon = "!!!";
-                priorityName = "Mid Priority";
-                break;
-            case 2:
-                priorityIcon = "!!";
-                priorityName = "Low Priority";
-                break;
-        }
-        this.tvPriorityIcon.setText(priorityIcon);
-        this.tvPriorityName.setText(priorityName);
     }
 
     @Override
