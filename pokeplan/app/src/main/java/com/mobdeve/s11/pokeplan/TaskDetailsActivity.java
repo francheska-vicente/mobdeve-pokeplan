@@ -20,7 +20,12 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * Shows the details of a specific task. This Activity also handles the modification and deletion of the task,
+ * and marking an ongoing task to be completed.
+ */
 public class TaskDetailsActivity extends AppCompatActivity {
+    /* Components of the layout */
     private TextView tvTaskName;
     private TextView tvCategory;
     private ImageView ivCategory;
@@ -35,15 +40,18 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private Button btnFinishTask;
     private ImageButton ibDeleteTask;
     private ImageButton ibEditTask;
+
+    /* Dialogs that would show the message to the user */
     private CustomDialog confirmFinish;
     private CustomDialog confirmDelete;
     private CustomDialog candyDialog;
 
     private Intent intent;
 
-    private DatabaseHelper databaseHelper;
+    private DatabaseHelper databaseHelper; // allows access to the database
     private UserDetails user;
 
+    /* Information to be shown in the textviews of this activity */
     private String taskName;
     private String category;
     private int priority;
@@ -69,6 +77,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
         initInfo();
     }
 
+    /**
+     * Initializes the components of the layout once the information has been successfully retrieved from the database.
+     * */
     private void initInfo() {
         databaseHelper = new DatabaseHelper();
         databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> {
@@ -77,6 +88,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the components of the layout and calls the functions that would set their values
+     */
     private void initComponents() {
         this.tvTaskName = findViewById(R.id.tv_taskdetails_name);
         this.tvCategory = findViewById(R.id.tv_taskdetails_category);
@@ -99,6 +113,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.setButtonListeners();
     }
 
+    /**
+     * Sets the onclick listeners of the buttons of the layout
+     */
     private void setButtonListeners() {
         ImageButton btnback = findViewById(R.id.ib_taskdetails_back);
         btnback.setOnClickListener(view -> onBackPressed());
@@ -108,6 +125,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.ibEditTask.setOnClickListener(v -> editTaskDetails());
     }
 
+    /**
+     * Sets the values of the components of the layout
+     */
     private void setViewComponentValues() {
         this.tvTaskName.setText(taskName);
         this.tvCategory.setText(category);
@@ -129,6 +149,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets the icon that represents the priority level of the task
+     */
     private void setPriorityIcon() {
         String priorityIcon = "!";
         String priorityName = "Low Priority";
@@ -154,6 +177,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.tvPriorityName.setText(priorityName);
     }
 
+    /**
+     * Returns the integer that represents the icon assigned to a category
+     * @return an integer value of the drawable assigned to a category
+     */
     private int categoryToIcon() {
         switch (category) {
             case "School": return R.drawable.task_categ_school;
@@ -167,6 +194,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Formats the value of the notification to be shown in the textview
+     * @return a String formatted to show when the notification is
+     */
     private String formatNotification() {
         if (notifOn) {
             if (notifStartTime) {
@@ -178,13 +209,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
         }
         return "No set notification for this task.";
     }
-
+    
     private void editTaskDetails() {
         intent = new Intent(TaskDetailsActivity.this, AddTaskActivity.class);
 
         putExtrasInIntent();
         addActivityResultLauncher.launch(intent);
     }
+
 
     private void getExtrasFromIntent() {
         taskName = intent.getStringExtra(Keys.KEY_TASKNAME.name());
@@ -204,6 +236,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
         isFinished = intent.getBooleanExtra(Keys.KEY_IS_COMPLETED.name(), false);
     }
 
+    /**
+     * Sets the intent values needed to edit the task. These values are used to pre-fill the information
+     * fields based on the current values of the task details.
+     */
     private void putExtrasInIntent() {
         intent.putExtra(Keys.KEY_TASKNAME.name(), taskName);
         intent.putExtra(Keys.KEY_CATEGORY.name(), category);
