@@ -63,7 +63,6 @@ public class TaskListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tasklist, container, false);
 
         initInfo (view);
-
         return view;
     }
 
