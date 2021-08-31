@@ -155,17 +155,17 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     public void setValues (Intent intent) {
-        this.etTaskName.setText(intent.getStringExtra(TaskDetailsActivity.KEY_TASKNAME));
-        this.etTaskNotes.setText(intent.getStringExtra(TaskDetailsActivity.KEY_NOTES));
+        this.etTaskName.setText(intent.getStringExtra(Keys.KEY_TASKNAME.name()));
+        this.etTaskNotes.setText(intent.getStringExtra(Keys.KEY_NOTES.name()));
 
-        int priority = intent.getIntExtra(TaskDetailsActivity.KEY_PRIORITY, 1) - 1;
+        int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1) - 1;
         Drawable priorityDrawable = btnPriority.get(priority).getBackground();
         priorityDrawable = DrawableCompat.wrap(priorityDrawable);
         DrawableCompat.setTint(priorityDrawable, getResources().getColor(R.color.pink_button));
         btnPriority.get(priority).setBackground(priorityDrawable);
 
         this.priority = this.setPriority(priority + 1);
-        String category = intent.getStringExtra(TaskDetailsActivity.KEY_CATEGORY);
+        String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
 
         for (int i = 0; i < btnCategory.size(); i++) {
             Button temp = (Button) btnCategory.get(i);
@@ -178,15 +178,15 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         }
 
-        Boolean notifOn = intent.getBooleanExtra(TaskDetailsActivity.KEY_NOTIF_ON, false);
+        Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
         this.checkerNotif = notifOn;
         this.cbNotif.setChecked(notifOn);
 
         if (notifOn) {
 
-            String notifTime = intent.getStringExtra(TaskDetailsActivity.KEY_NOTIF_WHEN);
+            String notifTime = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
 
-            Boolean notifWhen = intent.getBooleanExtra(TaskDetailsActivity.KEY_NOTIF_START_TIME, false);
+            Boolean notifWhen = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
             String temp = "Before End Time";
             if (notifWhen) {
                 temp = "Before Start Time";
@@ -244,7 +244,7 @@ public class AddTaskActivity extends AppCompatActivity {
         this.spinNotifWhen = findViewById(R.id.spin_add_task_notifwhen);
 
         Intent intent = getIntent();
-        String checker = intent.getStringExtra(TaskDetailsActivity.KEY_ID);
+        String checker = intent.getStringExtra(Keys.KEY_ID.name());
         if (intent != null && checker != null) {
             setValues (intent);
 
@@ -406,7 +406,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 if (!checker) {
                     Intent intent = getIntent();
-                    String taskID = intent.getStringExtra(TaskDetailsActivity.KEY_ID);
+                    String taskID = intent.getStringExtra(Keys.KEY_ID.name());
                     if (taskID != null) {
                         editDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes,
                                 taskID, notif, val);
@@ -560,7 +560,7 @@ public class AddTaskActivity extends AppCompatActivity {
         DecimalFormat format = new DecimalFormat("00");
 
         Intent intent = getIntent();
-        String sStartDate = intent.getStringExtra(TaskDetailsActivity.KEY_C_START_DATE);
+        String sStartDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
         if (sStartDate != null && !sStartDate.isEmpty()) {
             String [] temp = sStartDate.split("\\.");
             day = Integer.parseInt(temp[0]);
@@ -602,7 +602,7 @@ public class AddTaskActivity extends AppCompatActivity {
         day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         year = Calendar.getInstance().get(Calendar.YEAR);
 
-        String sEndDate = intent.getStringExtra(TaskDetailsActivity.KEY_C_END_DATE);
+        String sEndDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
         if (sStartDate != null && !sEndDate.isEmpty()) {
             String [] temp = sEndDate.split("\\.");
             day = Integer.parseInt(temp[0]);
@@ -641,7 +641,7 @@ public class AddTaskActivity extends AppCompatActivity {
         int hour = 0;
         int minute = 0;
 
-        String sTime = intent.getStringExtra(TaskDetailsActivity.KEY_C_START_TIME);
+        String sTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
         if (sTime != null && !sTime.isEmpty()) {
             String [] temp = sTime.split(":");
             hour = Integer.parseInt(temp[0]);
@@ -689,7 +689,7 @@ public class AddTaskActivity extends AppCompatActivity {
         hour = 0;
         minute = 0;
 
-        String eTime = intent.getStringExtra(TaskDetailsActivity.KEY_C_END_TIME);
+        String eTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
         if (eTime != null && !eTime.isEmpty()) {
             String [] temp = eTime.split(":");
             hour = Integer.parseInt(temp[0]);
