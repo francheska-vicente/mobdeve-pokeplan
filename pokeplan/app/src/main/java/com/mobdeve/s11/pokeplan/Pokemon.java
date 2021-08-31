@@ -15,7 +15,14 @@ public class Pokemon {
     private String type2;
 
     /**
-     *  full constructor
+     *  Class constructor for a pokemon that can evolve and is dual-typed.
+     *  @param species the species of a pokemon
+     *  @param dexnum the pokedex number of a pokemon
+     *  @param rarity the rarity of a pokemon, should be one of 4 rarities or empty
+     *  @param evolve_lvl the level needed for the pokemon's next evolution, should be an integer from 1-100
+     *  @param evolves_to the species of the pokemon's next evolution
+     *  @param type_1 the first type of the pokemon, should be one of 18 types
+     *  @param type_2 the second type of the pokemon, should be one of 18 types
      */
     public Pokemon (String species, int dexnum, String rarity, int evolve_lvl,
                     String evolves_to, String type_1, String type_2) {
@@ -29,7 +36,12 @@ public class Pokemon {
     }
 
     /**
-     *  no evolve lvl + evolves to, has type 2
+     *  Class constructor for a dual-typed pokemon that cannot evolve.
+     *  @param species the species of a pokemon
+     *  @param dexnum the pokedex number of a pokemon
+     *  @param rarity the rarity of a pokemon, should be one of 4 rarities or empty
+     *  @param type_1 the first type of the pokemon, should be one of 18 types
+     *  @param type_2 the second type of the pokemon, should be one of 18 types
      */
     public Pokemon (String species, int dexnum, String rarity,
                     String type_1, String type_2) {
@@ -43,7 +55,11 @@ public class Pokemon {
     }
 
     /**
-     *  no evolve lvl + evolves to, no type 2
+     *  Class constructor for a pokemon that cannot evolve and has only one type.
+     *  @param species the species of a pokemon
+     *  @param dexnum the pokedex number of a pokemon
+     *  @param rarity the rarity of a pokemon, should be one of 4 rarities or empty
+     *  @param type_1 the first type of the pokemon, should be one of 18 types
      */
     public Pokemon (String species, int dexnum, String rarity,
                     String type_1) {
@@ -57,7 +73,13 @@ public class Pokemon {
     }
 
     /**
-     *  has evolve lvl + evolves to, no type 2
+     *  Class constructor for a pokemon that can evolve but has only one type.
+     *  @param species the species of a pokemon
+     *  @param dexnum the pokedex number of a pokemon
+     *  @param rarity the rarity of a pokemon, should be one of 4 rarities or empty
+     *  @param evolve_lvl the level needed for the pokemon's next evolution, should be an integer from 1-100
+     *  @param evolves_to the species of the pokemon's next evolution
+     *  @param type_1 the first type of the pokemon, should be one of 18 types
      */
     public Pokemon (String species, int dexnum, String rarity, int evolve_lvl,
                     String evolves_to, String type_1) {
@@ -70,9 +92,10 @@ public class Pokemon {
         this.type2 = "";
     }
 
-    public Pokemon () {
-
-    }
+    /**
+     * Class constructor (for database use)
+     */
+    public Pokemon () {}
 
     public String getSpecies() {
         return species;
