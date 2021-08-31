@@ -81,7 +81,6 @@ public class HomeFragment extends Fragment {
         this.tvSuperCandyCtr = view.findViewById(R.id.tv_home_supercandycount);
         this.tvPokedexCtr = view.findViewById(R.id.tv_home_pokedexcount);
 
-
         user = new UserDetails();
         ongoingTaskNum = 0;
 
