@@ -97,64 +97,62 @@ public class Pokemon {
      */
     public Pokemon () {}
 
+    /**
+     * @return the species of the pokemon
+     */
     public String getSpecies() {
         return species;
     }
 
+    /**
+     * @return the pokedex number of the pokemon
+     */
     public int getDexNum() {
         return dexNum;
     }
 
+    /**
+     * @return the rarity of the pokemon
+     */
     public String getRarity() {
         return rarity;
     }
 
+    /**
+     * @return the level needed for the pokemon to evolve
+     */
     public int getEvolveLvl() {
         return evolveLvl;
     }
 
+    /**
+     * @return the species of the pokemon's next evolution
+     */
     public String getEvolvesTo() {
         return evolvesTo;
     }
 
+    /**
+     * @return the first type of the pokemon
+     */
     public String getType1() {
         return type1;
     }
 
+    /**
+     * @return the second type of the pokemon
+     */
     public String getType2() {
         return type2;
     }
 
-    public void setSpecies (String species) {
-        this.species = species;
-    }
-
-    public void setDexNum (int num) {
-        this.dexNum = num;
-    }
-
-    public void setRarity (String rare) {
-        this.rarity = rare;
-    }
-
-    public void setEvolveLvl (int evolve) {
-        this.evolveLvl = evolve;
-    }
-
-    public void setEvolvesTo (String pokemon) {
-        this.evolvesTo = pokemon;
-    }
-
-    public void setType1 (String type) {
-        this.type1 = type;
-    }
-
-    public void setType2 (String type) {
-        this.type2 = type;
-    }
-
+    /**
+     * Plays the pokemon's cry or sound.
+     */
     public void playPokemonCry() {
         MediaPlayer mediaPlayer = new MediaPlayer();
+
+        // soundfiles are accessed online
         String audioUrl = "https://play.pokemonshowdown.com/audio/cries/";
         audioUrl = audioUrl +
                 species.toLowerCase() + ".mp3";
@@ -170,6 +168,9 @@ public class Pokemon {
         }
     }
 
+    /**
+     * @return the string representation of the pokemon
+     */
     @Override
     public String toString() {
         return species;
