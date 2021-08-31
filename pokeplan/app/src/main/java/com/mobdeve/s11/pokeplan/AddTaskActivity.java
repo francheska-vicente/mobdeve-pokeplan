@@ -649,6 +649,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private void initCalendar () {
         EditText startDate = (EditText) findViewById(R.id.et_add_task_start_date);
         Calendar calendarStart = Calendar.getInstance();
+
         DatePickerDialog.OnDateSetListener dateStart = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month,
@@ -830,6 +831,9 @@ public class AddTaskActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the spinners and checkbox needed for the notification.
+     */
     private void initNotifications () {
         spinNotifTime = findViewById(R.id.spin_add_task_notiftime);
         ArrayAdapter<CharSequence> adapterTime = ArrayAdapter.createFromResource(this,
@@ -859,6 +863,12 @@ public class AddTaskActivity extends AppCompatActivity {
         }});
     }
 
+    /**
+     * Creates the notification based on the information provided.
+     * @param date is the day (and specific time) wherein the notification would be created
+     * @param notif determines how many minutes/hours/days the notification would be from the date provided
+     * @param checker is used for the creation of the notification message
+     */
     private void setTimer (CustomDate date, String notif, boolean checker) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, date.getMonth() - 1);
@@ -868,6 +878,7 @@ public class AddTaskActivity extends AppCompatActivity {
         c.set(Calendar.MINUTE, date.getMinute());
         c.set(Calendar.SECOND, 0);
 
+        // sets the time-offset from the date and time
         switch(notif) {
             case "10 Minutes": c.add(Calendar.MINUTE, -10);
                 break;
@@ -894,6 +905,8 @@ public class AddTaskActivity extends AppCompatActivity {
             message = message + " ends in " + notif;
         }
 
+
+        // creates the alarm manager and the intent to be sent to the broadcast receiver
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, ReminderBroadcast.class);
         intent.putExtra("TASKNAME", etTaskName.getText().toString().trim());
@@ -901,10 +914,12 @@ public class AddTaskActivity extends AppCompatActivity {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
+        // sets the notification time and date
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
     private void createNotificationChannel() {
+        // checks if the sdk used by the phone is greater than or equal 26 as a channel needs to be created if it is sdk 26 or higher
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "PokePlanReminderChannel";
             String description = "Channel for PokePlan Reminder";
@@ -917,6 +932,9 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Deletes the notification created from the broadcast receiver.
+     */
     private void deleteTimer () {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, ReminderBroadcast.class);
