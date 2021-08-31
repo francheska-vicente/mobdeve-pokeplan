@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -218,6 +219,24 @@ public class TaskDetailsActivity extends AppCompatActivity {
         intent.putExtra(Keys.KEY_NOTIF_START_TIME.name(), notifStartTime);
     }
 
+    private String convertTo24Hour (String time) {
+        String [] temp = time.split(":");
+        String meridian = temp[1].split(" ")[1];
+
+        int hour = Integer.parseInt(temp [0]);
+        int minute = Integer.parseInt(temp[1].split(" ")[0]);
+
+        if (meridian.equalsIgnoreCase("PM") && hour != 12) {
+            hour = hour + 12;
+        } else if (meridian.equalsIgnoreCase("AM") && hour == 12) {
+            hour = 0;
+        }
+
+        DecimalFormat format = new DecimalFormat("00");
+
+        return format.format(hour) + ":" + format.format(minute);
+    }
+
     private final ActivityResultLauncher addActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -232,6 +251,14 @@ public class TaskDetailsActivity extends AppCompatActivity {
                     priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1);
                     category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
                     notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
+                    endDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
+                    startDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
+                    endTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
+                    startTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
+
+                    startTime = convertTo24Hour(startTime);
+                    endTime = convertTo24Hour(endTime);
+
                     notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
                     notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
 
