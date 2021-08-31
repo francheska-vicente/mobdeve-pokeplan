@@ -41,12 +41,16 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/*
+ * This activity is used to create a task and to edit an existing task. When editing a task,
+ * the fields are pre-filled with information that is saved in the database.
+ * */
 public class AddTaskActivity extends AppCompatActivity {
     private ImageButton ibBack;
 
     private String category;
     private String priority;
-    private boolean checkerNotif;
+    private boolean checkerNotif; // used to check if the user opted for notifications
 
     private TextView tvTitle;
 
@@ -58,8 +62,8 @@ public class AddTaskActivity extends AppCompatActivity {
     private EditText etEndTime;
     private Button btnCreate;
 
-    private ArrayList<View> btnPriority;
-    private ArrayList<View> btnCategory;
+    private ArrayList<View> btnPriority; // represents the different buttons of priority levels of a task
+    private ArrayList<View> btnCategory; // represents the different buttons of the categories of a task
 
     private CheckBox cbNotif;
     private Spinner spinNotifTime;
@@ -69,7 +73,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private String currentUserUid;
 
-    private DatabaseHelper databaseHelper;
+    private DatabaseHelper databaseHelper; // allows access to the database
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,19 +85,31 @@ public class AddTaskActivity extends AppCompatActivity {
         this.initComponents();
     }
 
+    /**
+     * Initializes the layout's components.
+     */
     private void initComponents () {
-        this.currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        this.initCalendar ();
-        this.intent ();
+        this.currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // user id of the current user
+        this.initCalendar (); // initializes the date picker for the end date and start date of the task
+        this.declareComponents ();
 
         ibBack = findViewById(R.id.ib_add_task_back);
         this.setButtonListeners();
     }
 
+    /**
+     * Initializes the action of the back button.
+     */
     private void setButtonListeners() {
         ibBack.setOnClickListener(view -> onBackPressed());
     }
 
+    /**
+     * converts the given 12H format hour to its 24H format version
+     * @param hour is the hour to be converted
+     * @param temp is the meridian of the hour given (AM or PM)
+     * @return the 24H format of the given hour
+     */
     private int convertHour (int hour, String temp) {
         if (hour == 12 && temp.equalsIgnoreCase("AM"))
             hour = 0;
@@ -103,10 +119,28 @@ public class AddTaskActivity extends AppCompatActivity {
         return hour;
     }
 
+    /**
+     * Parses a part of the given date/time (in string format) to an integer
+     * @param input is the string to be parsed to int
+     * @param start is the start index of the part that would be parsed to an integer
+     * @param end   is the end - 1 index of the part that would be parsed to an integer
+     */
     private int dateTimeInputToInt(String input, int start, int end) {
         return Integer.parseInt(input.substring(start, end));
     }
 
+    /**
+     * Adds the information of the task created to the database.
+     * @param name is the task name.
+     * @param priority is the priority level of the task (ranges from 1 as the lowest to 5 as the highest)
+     * @param category is the category of the task
+     * @param startDate is the string representation of the start date of the task (dd.MM.YYYY)
+     * @param endDate is the string representation of the end date of the task (dd.MM.YYYY)
+     * @param startTime is the string representation of the start time of the task (hh:mm) in 24H format
+     * @param endTime is the string representation of the end time of the task (hh:mm) in 24H format
+     * @param notif is the string representation of how many minutes/hours/days before a date should the notification be
+     * @param val if true, the notification is before the start time; if false, the notificaation is before the end time
+     */
     public void addToDatabase (String name, int priority, String category, String startDate,
                                String endDate, String startTime, String endTime, String notes,
                                String notif, boolean val) {
@@ -144,6 +178,12 @@ public class AddTaskActivity extends AppCompatActivity {
         }, taskCreated);
     }
 
+
+    /**
+     * Converts a priority number to its representing icon
+     * @param num is the priority number assigned to a task
+     * @return the string represention of a priority number
+     */
     public String setPriority (int num) {
         switch (num) {
             case 1: return "!";
@@ -154,10 +194,18 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * sets the values of the fields based on the latest information of the task
+     * @param intent is the intent that holds the previous information of the task from the details shown in the TaskDetailsActivity
+     */
     public void setValues (Intent intent) {
         this.etTaskName.setText(intent.getStringExtra(Keys.KEY_TASKNAME.name()));
         this.etTaskNotes.setText(intent.getStringExtra(Keys.KEY_NOTES.name()));
 
+        /* Since the priority is represented by an arraylist of buttons, this next lines of code finds the
+           correct button that is assigned to a specific priority level. As the priority level ranges from 1 to 5,
+           it can easily be found as the index of a specific level is just priority_level - 1.
+        * */
         int priority = intent.getIntExtra(Keys.KEY_PRIORITY.name(), 1) - 1;
         Drawable priorityDrawable = btnPriority.get(priority).getBackground();
         priorityDrawable = DrawableCompat.wrap(priorityDrawable);
@@ -167,6 +215,8 @@ public class AddTaskActivity extends AppCompatActivity {
         this.priority = this.setPriority(priority + 1);
         String category = intent.getStringExtra(Keys.KEY_CATEGORY.name());
 
+        /* Finds the correct button that is assigned to the current category of the task to highlight in the form.
+        * */
         for (int i = 0; i < btnCategory.size(); i++) {
             Button temp = (Button) btnCategory.get(i);
             if(temp.getText().toString().equalsIgnoreCase(category)) {
@@ -178,12 +228,15 @@ public class AddTaskActivity extends AppCompatActivity {
             }
         }
 
+        // checks the checkbox if the user current opted for notification; unchecks if the user has no set notification for the task
         Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
         this.checkerNotif = notifOn;
         this.cbNotif.setChecked(notifOn);
 
+        /* if the user opted for notification, then the spinner for the specific time of the notification
+           and when the notification should be is set to its current values.
+        * */
         if (notifOn) {
-
             String notifTime = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
 
             Boolean notifWhen = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
@@ -197,6 +250,20 @@ public class AddTaskActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Edits the information in the database based on the new information given by the user.
+     * @param name is the task name
+     * @param priority is the priority level of the task (ranges from 1 as the lowest to 5 as the highest)
+     * @param category is the category of the task
+     * @param startDate is the string representation of the start date of the task (dd.MM.YYYY)
+     * @param endDate is the string representation of the end date of the task (dd.MM.YYYY)
+     * @param startTime is the string representation of the start time of the task (hh:mm) in 24H format
+     * @param endTime is the string representation of the end time of the task (hh:mm) in 24H format
+     * @param notes is the description added to the task
+     * @param taskID is the id of the task assigned in the database
+     * @param notif is the string representation of how many minutes/hours/days before a date should the notification be
+     * @param val if true, the notification is before the start time; if false, the notificaation is before the end time
+     */
     public void editDatabase (String name, int priority, String category, String startDate,
                               String endDate, String startTime, String endTime, String notes,
                               String taskID, String notif, boolean val) {
@@ -230,10 +297,14 @@ public class AddTaskActivity extends AppCompatActivity {
         finish();
     }
 
-    private void intent (){
-        this.initPriority ();
-        this.initCategory ();
-        this.initNotifications ();
+    /**
+     * This sets the components of the layout to their respective attributes. It also sets the
+     * button listener for the btnCreate, which would validate the fields.
+     */
+    private void declareComponents (){
+        this.initPriority (); // initializes the arraylist of buttons that represents the priority level of the task
+        this.initCategory (); // initializes the arraylist of buttons that represents the category  of the task
+        this.initNotifications (); // initializes the spinners and checkbox that handles the notification
 
         this.etTaskName = findViewById(R.id.et_add_task_name);
         this.etTaskNotes = findViewById(R.id.et_add_task_notes);
@@ -247,12 +318,15 @@ public class AddTaskActivity extends AppCompatActivity {
         this.spinNotifTime = findViewById(R.id.spin_add_task_notiftime);
         this.spinNotifWhen = findViewById(R.id.spin_add_task_notifwhen);
 
-        Intent intent = getIntent();
+        Intent intent = getIntent(); // gets the intent if it is for notiication
+        /* If there is no intent, then we can conclude that it is a new task that is being created.
+           If there is an intent from the task details, we can conclude that it is only editing an existing task.
+        * */
         String checker = intent.getStringExtra(Keys.KEY_ID.name());
         if (intent != null && checker != null) {
-            setValues (intent);
+            setValues (intent); // set the values of the fields to the current information from the intent
 
-            tvTitle.setText("EDIT TASK");
+            tvTitle.setText("EDIT TASK"); // changes the textview to show that the task is only being edited
             btnCreate.setText("EDIT TASK");
         }
 
@@ -265,6 +339,16 @@ public class AddTaskActivity extends AppCompatActivity {
 
         this.btnCreate.setOnClickListener(new View.OnClickListener() {
 
+            /**
+             * Gets the difference in milliseconds between two dates.
+             * @param endDate is the date that is subtracted from
+             * @param startDate is the date that is subtracted to
+             * @param endTime is the time that is connected with the endDate
+             * @param startTime is the time that is connected with the startDate
+             * @return if the endDate and endTime is earlier than the startDate, it returns a negative value.
+             *         if the startDate and startTime is earlier than the endDate, it returns a positive value.
+             *         if the startDate and startTime is the same with the endDate and endTime, it returns 0.
+             */
             private long getDiff (String endDate, String startDate, String endTime, String startTime) {
                 long diff = -1;
 
