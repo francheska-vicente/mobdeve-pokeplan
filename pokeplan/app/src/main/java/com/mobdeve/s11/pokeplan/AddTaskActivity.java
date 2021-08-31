@@ -216,6 +216,10 @@ public class AddTaskActivity extends AppCompatActivity {
         intent.putExtra(Keys.KEY_NOTES.name(), notes);
         intent.putExtra(Keys.KEY_END_DATE.name(), cEndDate.toString());
         intent.putExtra(Keys.KEY_START_DATE.name(), cStartDate.toString());
+        intent.putExtra(Keys.KEY_C_END_DATE.name(), endDate);
+        intent.putExtra(Keys.KEY_C_START_DATE.name(), startDate);
+        intent.putExtra(Keys.KEY_C_START_TIME.name(), startTime);
+        intent.putExtra(Keys.KEY_C_END_TIME.name(), endTime);
         intent.putExtra(Keys.KEY_CATEGORY.name(), category);
         intent.putExtra(Keys.KEY_PRIORITY.name(), priority);
         intent.putExtra(Keys.KEY_NOTIF_START_TIME.name(), val);
