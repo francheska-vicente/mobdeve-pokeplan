@@ -23,13 +23,15 @@ public class TaskListFragment extends Fragment {
     private ArrayList<Task> ongoingList;
     private RecyclerView rvOngoing;
     private ImageButton ibOngoingToggle;
-    private boolean ongoingIsVisible;
+    private boolean ongoingIsVisible = true;
     private TextView tvOngoingLabel;
 
     private ArrayList<Task> completedList;
     private RecyclerView rvCompleted;
     private ImageButton ibCompletedToggle;
-    private boolean completedIsVisible;
+
+    // sets the ongoing list toggle
+    private boolean completedIsVisible = true;
     private TextView tvCompletedLabel;
 
     private TaskAdapter taskAdapterCompleted;
@@ -39,7 +41,7 @@ public class TaskListFragment extends Fragment {
     private Spinner spinFilter;
     private ImageButton ibFilter;
     private TextView tvFilterLabel;
-    private boolean filterIsVisible;
+    private boolean filterIsVisible = false;
 
     private DatabaseHelper databaseHelper;
 
@@ -59,7 +61,6 @@ public class TaskListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tasklist, container, false);
-        databaseHelper = new DatabaseHelper();
 
         initInfo (view);
 
@@ -71,6 +72,7 @@ public class TaskListFragment extends Fragment {
      * @param view the View of the fragment
      */
     private void initInfo(View view) {
+        databaseHelper = new DatabaseHelper();
         databaseHelper.getTasks((list, isSuccesful, message) -> {
             classifyTasks(list);
             initComponents(view);
@@ -103,27 +105,26 @@ public class TaskListFragment extends Fragment {
         this.rvCompleted.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         this.setTaskLists(this.ongoingList, this.completedList);
 
-        this.spinFilter = view.findViewById(R.id.spinner_tasklist_filter);
-        this.ibFilter = view.findViewById(R.id.ib_filter);
-        this.tvFilterLabel = view.findViewById(R.id.tv_tasklist_filter_label);
-        this.setFilterComponents();
-
         this.tvOngoingLabel = view.findViewById(R.id.tv_tasklist_label_ongoing);
         this.tvCompletedLabel = view.findViewById(R.id.tv_tasklist_label_completed);
         this.ibOngoingToggle = view.findViewById(R.id.ib_tasklist_toggleongoing);
         this.ibCompletedToggle = view.findViewById(R.id.ib_tasklist_togglecompleted);
-        this.setToggleListeners();
+        this.initToggleComponents();
+
+        this.spinFilter = view.findViewById(R.id.spinner_tasklist_filter);
+        this.ibFilter = view.findViewById(R.id.ib_filter);
+        this.tvFilterLabel = view.findViewById(R.id.tv_tasklist_filter_label);
+        this.initFilterComponents();
 
         this.fabAdd = view.findViewById(R.id.fab_tasklist_add_task);
         this.setFabListener();
     }
 
     /**
-     * Sets the listeners for the show/hide task list feature
+     * Initializes components used for the show/hide task list feature
      */
-    private void setToggleListeners() {
-        // sets the ongoing list toggle
-        this.ongoingIsVisible = true;
+    private void initToggleComponents() {
+        // sets the toggle for ongoing list
         View.OnClickListener ongoingListener = v -> {
             if(ongoingIsVisible) {
                 ibOngoingToggle.setImageResource(R.drawable.arrow_down);
@@ -138,8 +139,7 @@ public class TaskListFragment extends Fragment {
         this.ibOngoingToggle.setOnClickListener(ongoingListener);
         this.tvOngoingLabel.setOnClickListener(ongoingListener);
 
-
-        this.completedIsVisible = true;
+        // sets the toggle for completed list
         View.OnClickListener completedListener = v -> {
             if(completedIsVisible) {
                 ibCompletedToggle.setImageResource(R.drawable.arrow_down);
@@ -155,24 +155,26 @@ public class TaskListFragment extends Fragment {
         this.tvCompletedLabel.setOnClickListener(completedListener);
     }
 
-    private void setFilterComponents() {
-        this.filterIsVisible = false;
-        this.spinFilter.setVisibility(View.INVISIBLE);
+    /**
+     * Initializes components used for the filter feature
+     */
+    private void initFilterComponents() {
+        // sets the toggle for showing filter spinner
         View.OnClickListener filterListener = v -> {
             if (filterIsVisible) {
-                filterIsVisible = false;
                 spinFilter.setVisibility(View.INVISIBLE);
                 tvFilterLabel.setVisibility(View.VISIBLE);
-            } else {
-                filterIsVisible = true;
+            }
+            else {
                 spinFilter.setVisibility(View.VISIBLE);
                 tvFilterLabel.setVisibility(View.INVISIBLE);
             }
+            filterIsVisible = !filterIsVisible;
         };
-
         this.ibFilter.setOnClickListener(filterListener);
         this.tvFilterLabel.setOnClickListener(filterListener);
 
+        // initializes filter spinner
         ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
                 R.array.tasklist_filter, R.layout.spinner_item);
         adapterFilter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -181,11 +183,13 @@ public class TaskListFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 filterTask(spinFilter.getSelectedItem().toString());
             }
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
     }
 
+    /**
+     * Sets listener for the FloatingActionButton
+     */
     private void setFabListener() {
         this.fabAdd.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddTaskActivity.class);
@@ -193,6 +197,11 @@ public class TaskListFragment extends Fragment {
         });
     }
 
+    /**
+     * Sets the adapter for the RecyclerViews
+     * @param ongoingList the list of the user's ongoing tasks
+     * @param completedList the list of the user's completed tasks
+     */
     private void setTaskLists (ArrayList<Task> ongoingList, ArrayList<Task> completedList) {
         this.taskAdapterOngoing = new TaskAdapter(ongoingList);
         this.rvOngoing.setAdapter(this.taskAdapterOngoing);
@@ -203,6 +212,10 @@ public class TaskListFragment extends Fragment {
         this.taskAdapterCompleted.notifyDataSetChanged();
     }
 
+    /**
+     * Filters the user's tasks based on their category
+     * @param category the chosen category to display
+     */
     private void filterTask (String category) {
         if (category.equalsIgnoreCase("ALL")) {
             setTaskLists(this.ongoingList, this.completedList);
@@ -214,7 +227,6 @@ public class TaskListFragment extends Fragment {
             for (int i = 0; i < this.completedList.size(); i++)
                 if (this.completedList.get(i).getCategory().equalsIgnoreCase(category))
                     filteredCompleted.add(this.completedList.get(i));
-
 
             for (int i = 0; i < this.ongoingList.size(); i++)
                 if (this.ongoingList.get(i).getCategory().equalsIgnoreCase(category))
