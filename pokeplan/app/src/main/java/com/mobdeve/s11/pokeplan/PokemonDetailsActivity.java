@@ -67,10 +67,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_details);
         checkerDeleted = false;
-        Intent intent = getIntent();
-        String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
-        sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
-        databaseHelper = new DatabaseHelper();
 
         this.pbLoading = findViewById(R.id.pb_pokemon_details_loading);
         this.pbLoading.bringToFront();
@@ -80,11 +76,16 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
 
         partyList = new ArrayList<>();
-        this.initInfo (pkmnid);
+        this.initInfo();
     }
 
 
-    private void initInfo (String pkmnid) {
+    private void initInfo () {
+        Intent intent = getIntent();
+        String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
+        sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
+
+        databaseHelper = new DatabaseHelper();
         databaseHelper.getUserDetails(new FirebaseCallbackUser() {
             @Override
             public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
