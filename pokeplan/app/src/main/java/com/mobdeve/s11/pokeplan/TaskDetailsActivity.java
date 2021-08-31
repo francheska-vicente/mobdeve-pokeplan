@@ -55,6 +55,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private String notifWhen;
     private Boolean notifOn;
     private Boolean notifStartTime;
+    private Boolean isFinished;
 
     private String fullStartDateString;
     private String fullEndDateString;
@@ -179,6 +180,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
     private void editTaskDetails() {
         intent = new Intent(TaskDetailsActivity.this, AddTaskActivity.class);
+
         putExtrasInIntent();
         addActivityResultLauncher.launch(intent);
     }
@@ -198,6 +200,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         notifWhen = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
         notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
         notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+        isFinished = intent.getBooleanExtra(Keys.KEY_IS_COMPLETED.name(), false);
     }
 
     private void putExtrasInIntent() {
