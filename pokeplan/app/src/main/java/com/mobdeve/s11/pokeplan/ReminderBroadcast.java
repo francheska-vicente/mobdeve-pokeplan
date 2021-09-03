@@ -17,7 +17,9 @@ public class ReminderBroadcast extends BroadcastReceiver {
                 .setContentText(intent.getStringExtra("NOTIF_MESSAGE"))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
+        notifBuilder.setAutoCancel(true);
         NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(context);
         notificationCompat.notify((int) System.currentTimeMillis(), notifBuilder.build());
     }
+
 }
