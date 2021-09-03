@@ -91,7 +91,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private void initComponents () {
         this.currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // user id of the current user
         this.initCalendar (); // initializes the date picker for the end date and start date of the task
-        this.declareComponents ();
+        this.setComponents();
 
         ibBack = findViewById(R.id.ib_add_task_back);
         this.setButtonListeners();
@@ -102,6 +102,13 @@ public class AddTaskActivity extends AppCompatActivity {
      */
     private void setButtonListeners() {
         ibBack.setOnClickListener(view -> onBackPressed());
+
+        this.cbNotif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkerNotif = !checkerNotif;
+            }
+        });
     }
 
     /**
@@ -199,6 +206,9 @@ public class AddTaskActivity extends AppCompatActivity {
      * @param intent is the intent that holds the previous information of the task from the details shown in the TaskDetailsActivity
      */
     public void setValues (Intent intent) {
+        tvTitle.setText("EDIT TASK"); // changes the textview to show that the task is only being edited
+        btnCreate.setText("EDIT TASK");
+
         this.etTaskName.setText(intent.getStringExtra(Keys.KEY_TASKNAME.name()));
         this.etTaskNotes.setText(intent.getStringExtra(Keys.KEY_NOTES.name()));
 
@@ -298,10 +308,9 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     /**
-     * This sets the components of the layout to their respective attributes. It also sets the
-     * button listener for the btnCreate, which would validate the fields.
+     * This initializes the layout
      */
-    private void declareComponents (){
+    private void setComponents () {
         this.initPriority (); // initializes the arraylist of buttons that represents the priority level of the task
         this.initCategory (); // initializes the arraylist of buttons that represents the category  of the task
         this.initNotifications (); // initializes the spinners and checkbox that handles the notification
@@ -318,6 +327,41 @@ public class AddTaskActivity extends AppCompatActivity {
         this.spinNotifTime = findViewById(R.id.spin_add_task_notiftime);
         this.spinNotifWhen = findViewById(R.id.spin_add_task_notifwhen);
 
+        this.checkValuesIfValid();
+    }
+
+    /**
+     * Gets the difference in milliseconds between two dates.
+     * @param endDate is the date that is subtracted from
+     * @param startDate is the date that is subtracted to
+     * @param endTime is the time that is connected with the endDate
+     * @param startTime is the time that is connected with the startDate
+     * @return if the endDate and endTime is earlier than the startDate, it returns a negative value.
+     *         if the startDate and startTime is earlier than the endDate, it returns a positive value.
+     *         if the startDate and startTime is the same with the endDate and endTime, it returns 0.
+     */
+    private long getDiff (String endDate, String startDate, String endTime, String startTime) {
+        long diff = -1;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm a");
+
+        try {
+            Date dateStart = simpleDateFormat.parse(startDate + " " + startTime);
+            Date dateEnd = simpleDateFormat.parse(endDate + " " + endTime);
+
+            diff = dateEnd.getTime() - dateStart.getTime();
+        } catch (Exception e) {
+
+        }
+
+        return diff;
+    }
+
+    /**
+     * This sets the components of the layout to their respective attributes. It also sets the
+     * button listener for the btnCreate, which would validate the fields.
+     */
+    private void checkValuesIfValid (){
         Intent intent = getIntent(); // gets the intent if it is for notiication
         /* If there is no intent, then we can conclude that it is a new task that is being created.
            If there is an intent from the task details, we can conclude that it is only editing an existing task.
@@ -325,45 +369,9 @@ public class AddTaskActivity extends AppCompatActivity {
         String checker = intent.getStringExtra(Keys.KEY_ID.name());
         if (intent != null && checker != null) {
             setValues (intent); // set the values of the fields to the current information from the intent
-
-            tvTitle.setText("EDIT TASK"); // changes the textview to show that the task is only being edited
-            btnCreate.setText("EDIT TASK");
         }
 
-        this.cbNotif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkerNotif = !checkerNotif;
-            }
-        });
-
         this.btnCreate.setOnClickListener(new View.OnClickListener() {
-
-            /**
-             * Gets the difference in milliseconds between two dates.
-             * @param endDate is the date that is subtracted from
-             * @param startDate is the date that is subtracted to
-             * @param endTime is the time that is connected with the endDate
-             * @param startTime is the time that is connected with the startDate
-             * @return if the endDate and endTime is earlier than the startDate, it returns a negative value.
-             *         if the startDate and startTime is earlier than the endDate, it returns a positive value.
-             *         if the startDate and startTime is the same with the endDate and endTime, it returns 0.
-             */
-            private long getDiff (String endDate, String startDate, String endTime, String startTime) {
-                long diff = -1;
-
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm a");
-
-                try {
-                    Date dateStart = simpleDateFormat.parse(startDate + " " + startTime);
-                    Date dateEnd = simpleDateFormat.parse(endDate + " " + endTime);
-
-                    diff = dateEnd.getTime() - dateStart.getTime();
-                } catch (Exception e) {
-                }
-
-                return diff;
-            }
 
             @Override
             public void onClick(View v) {
@@ -539,31 +547,40 @@ public class AddTaskActivity extends AppCompatActivity {
                         }
                     }
                 } else { // if there are errors found, the error dialog should be shown with an error message
-                    errorDialog = new Dialog(v.getContext());
-                    errorDialog.setContentView(R.layout.dialog_error);
-
-                    int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-                    int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-                    errorDialog.getWindow().setLayout(width, height);
-                    errorDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-                    TextView tvdialogtitle = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_title);
-                    tvdialogtitle.setText("Invalid input!");
-                    TextView tvdialogtext = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_text);
-                    tvdialogtext.setText(error);
-
-                    Button btndialogerror = (Button) errorDialog.findViewById(R.id.btn_dialog_error);
-                    btndialogerror.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            errorDialog.dismiss();
-                        }
-                    });
-                    errorDialog.show();
+                    setErrorDialog (error, v);
                 }
             }
         });
+    }
+
+    /**
+     * Creates the dialog that shows the error for the user's input
+     * @param error is the error message
+     * @param v is the view that would be showing the dialog
+     */
+    private void setErrorDialog (String error, View v) {
+        errorDialog = new Dialog(v.getContext());
+        errorDialog.setContentView(R.layout.dialog_error);
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        errorDialog.getWindow().setLayout(width, height);
+        errorDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_title);
+        tvdialogtitle.setText("Invalid input!");
+        TextView tvdialogtext = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_text);
+        tvdialogtext.setText(error);
+
+        Button btndialogerror = (Button) errorDialog.findViewById(R.id.btn_dialog_error);
+        btndialogerror.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                errorDialog.dismiss();
+            }
+        });
+        errorDialog.show();
     }
 
     /**
