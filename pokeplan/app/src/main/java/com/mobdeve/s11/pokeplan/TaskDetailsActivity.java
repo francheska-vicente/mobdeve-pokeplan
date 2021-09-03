@@ -11,12 +11,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -372,7 +374,19 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Button btndialogconfirm = confirmDelete.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setOnClickListener(v -> {
             confirmDelete.dismiss();
-            databaseHelper.deleteTask((list, isSuccesful, message) -> finish(), taskID);
+            databaseHelper.deleteTask(new FirebaseCallbackTask() {
+                @Override
+                public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                    finish();
+
+                    if (isSuccesful) {
+                        Toast.makeText(TaskDetailsActivity.this, "Task was successfully deleted.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(TaskDetailsActivity.this, "Task was not deleted.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }, taskID);
         });
         confirmDelete.show();
     }
