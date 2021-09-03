@@ -26,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -185,6 +186,12 @@ public class AddTaskActivity extends AppCompatActivity {
         databaseHelper.addOngoingTask(new FirebaseCallbackTask() {
             @Override
             public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                if (isSuccesful) {
+                    Toast.makeText(AddTaskActivity.this, "Task was added successfully.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddTaskActivity.this, "Task was not added to your list of tasks.", Toast.LENGTH_SHORT).show();    
+                }
+                
                 finish();
             }
         }, taskCreated);
@@ -289,6 +296,11 @@ public class AddTaskActivity extends AppCompatActivity {
         databaseHelper.editTask(new FirebaseCallbackTask() {
             @Override
             public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                if (isSuccesful) {
+                    Toast.makeText(AddTaskActivity.this, "", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddTaskActivity.this, "", Toast.LENGTH_SHORT).show();    
+                }
             }
         }, name, priority, category, cStartDate, cEndDate, notes, taskID, notif, val, checkerNotif);
 
