@@ -221,6 +221,7 @@
         android:gravity="center"
         android:inputType="date"
         android:textSize="12sp"
+        android:cursorVisible="false"
         app:layout_constraintEnd_toStartOf="@+id/gl_add_task_ver45p"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
@@ -252,6 +253,7 @@
         android:inputType="time"
         android:paddingLeft="0dp"
         android:textSize="12sp"
+        android:cursorVisible="false"
         app:layout_constraintEnd_toStartOf="@+id/gl_add_task_ver95p"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver50p"
         app:layout_constraintTop_toBottomOf="@+id/tv_add_task_label_start_time" />
@@ -465,6 +467,7 @@
         android:gravity="center"
         android:inputType="date"
         android:textSize="12sp"
+        android:cursorVisible="false"
         app:layout_constraintEnd_toStartOf="@+id/gl_add_task_ver45p"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver5p"
         app:layout_constraintTop_toBottomOf="@+id/tv_add_task_label_end_date" />
@@ -482,6 +485,7 @@
         android:inputType="time"
         android:paddingLeft="0dp"
         android:textSize="12sp"
+        android:cursorVisible="false"
         app:layout_constraintEnd_toStartOf="@+id/gl_add_task_ver95p"
         app:layout_constraintStart_toStartOf="@+id/gl_add_task_ver50p"
         app:layout_constraintTop_toBottomOf="@+id/tv_add_task_label_end_time" />
