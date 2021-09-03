@@ -10,10 +10,11 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -74,12 +75,16 @@ public class AddTaskActivity extends AppCompatActivity {
     private String currentUserUid;
 
     private DatabaseHelper databaseHelper; // allows access to the database
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
         createNotificationChannel();
+
+        this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         databaseHelper = new DatabaseHelper();
         checkerNotif = true;
         this.initComponents();
@@ -430,7 +435,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                             // checks if the startDate is earlier than the endDate
                             long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
-                            Log.d("hello pare", Long.toString(diff));
+
                             if (diff < 0) {
                                 etEndDate.setError("End date should be later than the Start date.");
                                 etEndDate.requestFocus();
@@ -507,6 +512,22 @@ public class AddTaskActivity extends AppCompatActivity {
                     checker = true;
                 }
 
+                if (checkerNotif) {
+                    if (val) {
+                        if (startDate.isEmpty()) {
+                            error = "You cannot set the notification for before start time if start date is empty.";
+                            checker = true;
+                        }
+                    }
+
+                    boolean notifs = sp.getBoolean(Keys.KEY_NOTIFS.name(), true);
+
+                    if (!notifs) {
+                        error = "You cannot add notifications. If you wish to add notifications, head to settings to allow notifications.";
+                        checker = true;
+                    }
+                }
+
                 // if there are no errors found, the information is added/edited to the database
                 if (!checker) {
                     // if there is an intent from the TaskDetailsActivity, the information is only to be edited from the database
@@ -518,12 +539,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                         if(checkerNotif) {
                             if (val) {
-                                if (startDate.isEmpty()) {
-                                    deleteTimer();
-                                    setTimer(new CustomDate(true), notif, true);
-                                } else {
-                                    setTimer(new CustomDate(startDate, startTime), notif, true);
-                                }
+                                setTimer(new CustomDate(startDate, startTime), notif, true);
                             } else {
                                 deleteTimer();
                                 setTimer(new CustomDate(endDate, endTime), notif, false);
@@ -536,11 +552,7 @@ public class AddTaskActivity extends AppCompatActivity {
                         addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                         if(checkerNotif) {
                             if (val) {
-                                if (startDate.isEmpty()) {
-                                    setTimer(new CustomDate(true), notif, true);
-                                } else {
-                                    setTimer(new CustomDate(startDate, startTime), notif, true);
-                                }
+                                setTimer(new CustomDate(startDate, startTime), notif, true);
                             } else {
                                 setTimer(new CustomDate(endDate, endTime), notif, false);
                             }
@@ -881,12 +893,12 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates the notification based on the information provided.
-     * @param date is the day (and specific time) wherein the notification would be created
-     * @param notif determines how many minutes/hours/days the notification would be from the date provided
-     * @param checker is used for the creation of the notification message
+     * Calculates given the data and the interval to be calculated
+     * @param date is the basis date
+     * @param notif the time to be subtracted from the basis date
+     * @return the time in millis of the calculated time and date
      */
-    private void setTimer (CustomDate date, String notif, boolean checker) {
+    private long calculateTime (CustomDate date, String notif) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, date.getMonth() - 1);
         c.set(Calendar.DAY_OF_MONTH, date.getDay());
@@ -915,13 +927,24 @@ public class AddTaskActivity extends AppCompatActivity {
                 break;
         }
 
+        return c.getTimeInMillis();
+    }
+
+    /**
+     * Creates the notification based on the information provided.
+     * @param date is the day (and specific time) wherein the notification would be created
+     * @param notif determines how many minutes/hours/days the notification would be from the date provided
+     * @param checker is used for the creation of the notification message
+     */
+    private void setTimer (CustomDate date, String notif, boolean checker) {
+        long timeInMillis = calculateTime(date, notif);
+
         String message = "Don't forget! This ";
         if(checker) {
-            message = message + " starts in " + notif;
+            message = message + "starts in " + notif;
         } else {
-            message = message + " ends in " + notif;
+            message = message + "ends in " + notif;
         }
-
 
         // creates the alarm manager and the intent to be sent to the broadcast receiver
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -932,7 +955,7 @@ public class AddTaskActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
         // sets the notification time and date
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
     }
 
     private void createNotificationChannel() {
@@ -943,6 +966,9 @@ public class AddTaskActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("pokeplanNotify", name, importance);
             channel.setDescription(description);
+
+            channel.enableLights(true);
+            channel.enableVibration(true);
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
