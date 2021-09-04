@@ -5,22 +5,22 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/focusTimerFragment"
-        android:name="com.mobdeve.s11.pokeplan.FocusTimerFragment"
+        android:name="com.mobdeve.s11.pokeplan.fragments.FocusTimerFragment"
         android:label="FocusTimerFragment" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.mobdeve.s11.pokeplan.HomeFragment"
+        android:name="com.mobdeve.s11.pokeplan.fragments.HomeFragment"
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/pokedexFragment"
-        android:name="com.mobdeve.s11.pokeplan.PokedexFragment"
+        android:name="com.mobdeve.s11.pokeplan.fragments.PokedexFragment"
         android:label="PokedexFragment" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.mobdeve.s11.pokeplan.SettingsFragment"
+        android:name="com.mobdeve.s11.pokeplan.fragments.SettingsFragment"
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/tasklistFragment"
-        android:name="com.mobdeve.s11.pokeplan.TaskListFragment"
+        android:name="com.mobdeve.s11.pokeplan.fragments.TaskListFragment"
         android:label="TasklistFragment" />
 </navigation>
