@@ -232,6 +232,13 @@ public class SettingsFragment extends Fragment {
                     @Override
                     public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
                         dialogEdit.dismiss();
+
+                        if (isSuccessful) {
+                            Toast.makeText(getContext(), "Your information was successfully modified.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Your information was not modified.", Toast.LENGTH_SHORT).show();
+                        }
+
                         Intent intent = new Intent(v.getContext(), UserProfileActivity.class);
                         startActivity(intent);
                     }
@@ -293,6 +300,8 @@ public class SettingsFragment extends Fragment {
                         spEditor.remove(Keys.KEY_EMAIL.name());
                         spEditor.remove(Keys.KEY_PASSWORD.name());
                         spEditor.apply();
+
+                        Toast.makeText(v1.getContext(), "Your account was successfully deleted.", Toast.LENGTH_SHORT).show();
 
                         Intent i = new Intent(v1.getContext(), InitActivity.class);
                         v1.getContext().startActivity(i);

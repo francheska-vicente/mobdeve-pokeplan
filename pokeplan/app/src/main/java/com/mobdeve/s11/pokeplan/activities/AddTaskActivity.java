@@ -10,10 +10,11 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -81,12 +83,16 @@ public class AddTaskActivity extends AppCompatActivity {
     private String currentUserUid;
 
     private DatabaseHelper databaseHelper; // allows access to the database
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
         createNotificationChannel();
+
+        this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         databaseHelper = new DatabaseHelper();
         checkerNotif = true;
         this.initComponents();
@@ -98,7 +104,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private void initComponents () {
         this.currentUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // user id of the current user
         this.initCalendar (); // initializes the date picker for the end date and start date of the task
-        this.declareComponents ();
+        this.setComponents();
 
         ibBack = findViewById(R.id.ib_add_task_back);
         this.setButtonListeners();
@@ -109,6 +115,13 @@ public class AddTaskActivity extends AppCompatActivity {
      */
     private void setButtonListeners() {
         ibBack.setOnClickListener(view -> onBackPressed());
+
+        this.cbNotif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkerNotif = !checkerNotif;
+            }
+        });
     }
 
     /**
@@ -180,6 +193,12 @@ public class AddTaskActivity extends AppCompatActivity {
         databaseHelper.addOngoingTask(new FirebaseCallbackTask() {
             @Override
             public void onCallbackTask(ArrayList<UserTask> list, Boolean isSuccesful, String message) {
+                if (isSuccesful) {
+                    Toast.makeText(AddTaskActivity.this, "Task was added successfully.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddTaskActivity.this, "Task was not added to your list of tasks.", Toast.LENGTH_SHORT).show();    
+                }
+
                 finish();
             }
         }, taskCreated);
@@ -206,6 +225,9 @@ public class AddTaskActivity extends AppCompatActivity {
      * @param intent is the intent that holds the previous information of the task from the details shown in the TaskDetailsActivity
      */
     public void setValues (Intent intent) {
+        tvTitle.setText("EDIT TASK"); // changes the textview to show that the task is only being edited
+        btnCreate.setText("EDIT TASK");
+
         this.etTaskName.setText(intent.getStringExtra(Keys.KEY_TASKNAME.name()));
         this.etTaskNotes.setText(intent.getStringExtra(Keys.KEY_NOTES.name()));
 
@@ -280,7 +302,13 @@ public class AddTaskActivity extends AppCompatActivity {
 
         databaseHelper.editTask(new FirebaseCallbackTask() {
             @Override
+
             public void onCallbackTask(ArrayList<UserTask> list, Boolean isSuccesful, String message) {
+                if (isSuccesful) {
+                    Toast.makeText(AddTaskActivity.this, "", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddTaskActivity.this, "", Toast.LENGTH_SHORT).show();    
+                }
             }
         }, name, priority, category, cStartDate, cEndDate, notes, taskID, notif, val, checkerNotif);
 
@@ -305,10 +333,9 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     /**
-     * This sets the components of the layout to their respective attributes. It also sets the
-     * button listener for the btnCreate, which would validate the fields.
+     * This initializes the layout
      */
-    private void declareComponents (){
+    private void setComponents () {
         this.initPriority (); // initializes the arraylist of buttons that represents the priority level of the task
         this.initCategory (); // initializes the arraylist of buttons that represents the category  of the task
         this.initNotifications (); // initializes the spinners and checkbox that handles the notification
@@ -325,6 +352,42 @@ public class AddTaskActivity extends AppCompatActivity {
         this.spinNotifTime = findViewById(R.id.spin_add_task_notiftime);
         this.spinNotifWhen = findViewById(R.id.spin_add_task_notifwhen);
 
+
+        this.checkValuesIfValid();
+    }
+
+    /**
+     * Gets the difference in milliseconds between two dates.
+     * @param endDate is the date that is subtracted from
+     * @param startDate is the date that is subtracted to
+     * @param endTime is the time that is connected with the endDate
+     * @param startTime is the time that is connected with the startDate
+     * @return if the endDate and endTime is earlier than the startDate, it returns a negative value.
+     *         if the startDate and startTime is earlier than the endDate, it returns a positive value.
+     *         if the startDate and startTime is the same with the endDate and endTime, it returns 0.
+     */
+    private long getDiff (String endDate, String startDate, String endTime, String startTime) {
+        long diff = -1;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm a");
+
+        try {
+            Date dateStart = simpleDateFormat.parse(startDate + " " + startTime);
+            Date dateEnd = simpleDateFormat.parse(endDate + " " + endTime);
+
+            diff = dateEnd.getTime() - dateStart.getTime();
+        } catch (Exception e) {
+
+        }
+
+        return diff;
+    }
+
+    /**
+     * This sets the components of the layout to their respective attributes. It also sets the
+     * button listener for the btnCreate, which would validate the fields.
+     */
+    private void checkValuesIfValid (){
         Intent intent = getIntent(); // gets the intent if it is for notiication
         /* If there is no intent, then we can conclude that it is a new task that is being created.
            If there is an intent from the task details, we can conclude that it is only editing an existing task.
@@ -332,45 +395,9 @@ public class AddTaskActivity extends AppCompatActivity {
         String checker = intent.getStringExtra(Keys.KEY_ID.name());
         if (intent != null && checker != null) {
             setValues (intent); // set the values of the fields to the current information from the intent
-
-            tvTitle.setText("EDIT TASK"); // changes the textview to show that the task is only being edited
-            btnCreate.setText("EDIT TASK");
         }
 
-        this.cbNotif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkerNotif = !checkerNotif;
-            }
-        });
-
         this.btnCreate.setOnClickListener(new View.OnClickListener() {
-
-            /**
-             * Gets the difference in milliseconds between two dates.
-             * @param endDate is the date that is subtracted from
-             * @param startDate is the date that is subtracted to
-             * @param endTime is the time that is connected with the endDate
-             * @param startTime is the time that is connected with the startDate
-             * @return if the endDate and endTime is earlier than the startDate, it returns a negative value.
-             *         if the startDate and startTime is earlier than the endDate, it returns a positive value.
-             *         if the startDate and startTime is the same with the endDate and endTime, it returns 0.
-             */
-            private long getDiff (String endDate, String startDate, String endTime, String startTime) {
-                long diff = -1;
-
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm a");
-
-                try {
-                    Date dateStart = simpleDateFormat.parse(startDate + " " + startTime);
-                    Date dateEnd = simpleDateFormat.parse(endDate + " " + endTime);
-
-                    diff = dateEnd.getTime() - dateStart.getTime();
-                } catch (Exception e) {
-                }
-
-                return diff;
-            }
 
             @Override
             public void onClick(View v) {
@@ -419,79 +446,79 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 // checks if the end date is empty
                 if (!endDate.equals("")) {
-                    if (!startDate.equals("")) {
-                        if (!startTime.equals("")) {
-                            String tempStartDate = startDate;
-                            String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
+                    if (endTime == null || endTime.isEmpty()) {
+                        error = "End time is required";
+                        checker = true;
+                    } else {
+                        if (!startDate.equals("")) {
+                            if (!startTime.equals("")) {
+                                String tempStartDate = startDate;
+                                String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
 
-                            String tempEndDate = endDate;
-                            String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
+                                String tempEndDate = endDate;
+                                String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
 
-                            // checks if the startDate is earlier than the endDate
-                            long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
-                            Log.d("hello pare", Long.toString(diff));
-                            if (diff < 0) {
-                                etEndDate.setError("End date should be later than the Start date.");
-                                etEndDate.requestFocus();
-                                return;
-                            } else if (diff == 0) {
-                                error = "Your task should not start and end at the same day and time!";
+                                // checks if the startDate is earlier than the endDate
+                                long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
+
+                                if (diff < 0) {
+                                    error = "End date should be later than the Start date.";
+                                    checker = true;
+                                } else if (diff == 0) {
+                                    error = "Your task should not start and end at the same day and time!";
+                                    checker = true;
+                                }
+                            }
+                            else {
+                                error = "Start time is required if start date is provided.";
                                 checker = true;
                             }
                         }
-                        else {
-                            etStartTime.setError("Start time is required if start date is provided.");
-                            etStartTime.requestFocus();
-                            return;
+
+                        // checks if the endDate is later than the current date
+                        Calendar c = Calendar.getInstance();
+                        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+
+                        int currentYear = c.get(Calendar.YEAR);
+                        int currentDay = c.get(Calendar.DAY_OF_MONTH);
+                        int currentMonth = c.get(Calendar.MONTH) + 1;
+                        int currentHour = c.get(Calendar.HOUR_OF_DAY);
+                        int currentMinute = c.get(Calendar.MINUTE);
+
+                        String temp = "AM";
+                        if (currentHour >= 12) {
+                            temp = "PM";
+                        }
+
+                        if (currentHour > 12) {
+                            currentHour = currentHour - 12;
+                        }
+
+                        String currentDate = new DecimalFormat("00").format(currentDay) + "." +
+                                new DecimalFormat("00").format(currentMonth) + "." + currentYear;
+                        String currentTime = new DecimalFormat("00").format(currentHour) + ":" +
+                                new DecimalFormat("00").format(currentMinute)+ " " + temp;
+
+                        String tempEndDate = endDate;
+                        String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
+                        long diff = getDiff(tempEndDate, currentDate, tempEndTime, currentTime);
+
+                        if (diff < 0) {
+                            error = "Your end date should be later than the current time and date!";
+                            checker = true;
+                        } else if (diff == 0) {
+                            error = "Your task cannot be currently ending!\n";
+                            checker = true;
                         }
                     }
-
-                    // checks if the endDate is later than the current date
-                    Calendar c = Calendar.getInstance();
-                    c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-
-                    int currentYear = c.get(Calendar.YEAR);
-                    int currentDay = c.get(Calendar.DAY_OF_MONTH);
-                    int currentMonth = c.get(Calendar.MONTH) + 1;
-                    int currentHour = c.get(Calendar.HOUR_OF_DAY);
-                    int currentMinute = c.get(Calendar.MINUTE);
-
-                    String temp = "AM";
-                    if (currentHour >= 12) {
-                        temp = "PM";
-                    }
-
-                    if (currentHour > 12) {
-                        currentHour = currentHour - 12;
-                    }
-
-                    String currentDate = new DecimalFormat("00").format(currentDay) + "." +
-                            new DecimalFormat("00").format(currentMonth) + "." + currentYear;
-                    String currentTime = new DecimalFormat("00").format(currentHour) + ":" +
-                            new DecimalFormat("00").format(currentMinute)+ " " + temp;
-
-                    String tempEndDate = endDate;
-                    String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
-                    long diff = getDiff(tempEndDate, currentDate, tempEndTime, currentTime);
-
-                    if (diff < 0) {
-                        etEndDate.setError("Your end date should be later than the current time and date!");
-                        etEndDate.requestFocus();
-                        return;
-                    } else if (diff == 0) {
-                        error = "Your task cannot be currently ending!\n";
-                        checker = true;
-                    }
                 } else {
-                    etEndDate.setError("End date is required.");
-                    etEndDate.requestFocus();
-                    return;
+                    error = "End date is required.";
+                    checker = true;
                 }
 
                 if (endTime == null || endTime.isEmpty()) {
-                    etEndTime.setError("End time is required");
-                    etEndTime.requestFocus();
-                    return;
+                    error = "End time is required";
+                    checker = true;
                 }
 
                 // checks if there is no priority button clicked
@@ -506,6 +533,22 @@ public class AddTaskActivity extends AppCompatActivity {
                     checker = true;
                 }
 
+                if (checkerNotif) {
+                    if (val) {
+                        if (startDate.isEmpty()) {
+                            error = "You cannot set the notification to be determined by the start time if start date is empty.";
+                            checker = true;
+                        }
+                    }
+
+                    boolean notifs = sp.getBoolean(Keys.KEY_NOTIFS.name(), true);
+
+                    if (!notifs) {
+                        error = "You cannot add notifications. If you wish to add notifications, head to settings to allow notifications.";
+                        checker = true;
+                    }
+                }
+
                 // if there are no errors found, the information is added/edited to the database
                 if (!checker) {
                     // if there is an intent from the TaskDetailsActivity, the information is only to be edited from the database
@@ -517,12 +560,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
                         if(checkerNotif) {
                             if (val) {
-                                if (startDate.isEmpty()) {
-                                    deleteTimer();
-                                    setTimer(new CustomDate(true), notif, true);
-                                } else {
-                                    setTimer(new CustomDate(startDate, startTime), notif, true);
-                                }
+                                setTimer(new CustomDate(startDate, startTime), notif, true);
                             } else {
                                 deleteTimer();
                                 setTimer(new CustomDate(endDate, endTime), notif, false);
@@ -535,42 +573,47 @@ public class AddTaskActivity extends AppCompatActivity {
                         addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                         if(checkerNotif) {
                             if (val) {
-                                if (startDate.isEmpty()) {
-                                    setTimer(new CustomDate(true), notif, true);
-                                } else {
-                                    setTimer(new CustomDate(startDate, startTime), notif, true);
-                                }
+                                setTimer(new CustomDate(startDate, startTime), notif, true);
                             } else {
                                 setTimer(new CustomDate(endDate, endTime), notif, false);
                             }
                         }
                     }
                 } else { // if there are errors found, the error dialog should be shown with an error message
-                    errorDialog = new Dialog(v.getContext());
-                    errorDialog.setContentView(R.layout.dialog_error);
-
-                    int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-                    int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-                    errorDialog.getWindow().setLayout(width, height);
-                    errorDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-                    TextView tvdialogtitle = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_title);
-                    tvdialogtitle.setText("Invalid input!");
-                    TextView tvdialogtext = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_text);
-                    tvdialogtext.setText(error);
-
-                    Button btndialogerror = (Button) errorDialog.findViewById(R.id.btn_dialog_error);
-                    btndialogerror.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            errorDialog.dismiss();
-                        }
-                    });
-                    errorDialog.show();
+                    setErrorDialog (error, v);
                 }
             }
         });
+    }
+
+    /**
+     * Creates the dialog that shows the error for the user's input
+     * @param error is the error message
+     * @param v is the view that would be showing the dialog
+     */
+    private void setErrorDialog (String error, View v) {
+        errorDialog = new Dialog(v.getContext());
+        errorDialog.setContentView(R.layout.dialog_error);
+
+        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
+
+        errorDialog.getWindow().setLayout(width, height);
+        errorDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        TextView tvdialogtitle = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_title);
+        tvdialogtitle.setText("Invalid input!");
+        TextView tvdialogtext = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_text);
+        tvdialogtext.setText(error);
+
+        Button btndialogerror = (Button) errorDialog.findViewById(R.id.btn_dialog_error);
+        btndialogerror.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                errorDialog.dismiss();
+            }
+        });
+        errorDialog.show();
     }
 
     /**
@@ -871,12 +914,12 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates the notification based on the information provided.
-     * @param date is the day (and specific time) wherein the notification would be created
-     * @param notif determines how many minutes/hours/days the notification would be from the date provided
-     * @param checker is used for the creation of the notification message
+     * Calculates given the data and the interval to be calculated
+     * @param date is the basis date
+     * @param notif the time to be subtracted from the basis date
+     * @return the time in millis of the calculated time and date
      */
-    private void setTimer (CustomDate date, String notif, boolean checker) {
+    private long calculateTime (CustomDate date, String notif) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, date.getMonth() - 1);
         c.set(Calendar.DAY_OF_MONTH, date.getDay());
@@ -905,13 +948,24 @@ public class AddTaskActivity extends AppCompatActivity {
                 break;
         }
 
+        return c.getTimeInMillis();
+    }
+
+    /**
+     * Creates the notification based on the information provided.
+     * @param date is the day (and specific time) wherein the notification would be created
+     * @param notif determines how many minutes/hours/days the notification would be from the date provided
+     * @param checker is used for the creation of the notification message
+     */
+    private void setTimer (CustomDate date, String notif, boolean checker) {
+        long timeInMillis = calculateTime(date, notif);
+
         String message = "Don't forget! This ";
         if(checker) {
-            message = message + " starts in " + notif;
+            message = message + "starts in " + notif;
         } else {
-            message = message + " ends in " + notif;
+            message = message + "ends in " + notif;
         }
-
 
         // creates the alarm manager and the intent to be sent to the broadcast receiver
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -922,7 +976,7 @@ public class AddTaskActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
 
         // sets the notification time and date
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
     }
 
     private void createNotificationChannel() {
@@ -933,6 +987,9 @@ public class AddTaskActivity extends AppCompatActivity {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel("pokeplanNotify", name, importance);
             channel.setDescription(description);
+
+            channel.enableLights(true);
+            channel.enableVibration(true);
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
