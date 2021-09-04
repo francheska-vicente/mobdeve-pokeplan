@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
     private void initInfo(View view) {
         rvPokemonParty = view.findViewById(R.id.rv_home_party);
         setRecyclerView();
-        
+
         helper.getPokemon((list, isSuccessful, message) -> {
             pokemonPartyList = new ArrayList<>(6);
             if (isSuccessful) {
