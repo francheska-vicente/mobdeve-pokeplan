@@ -344,6 +344,7 @@ public class AddTaskActivity extends AppCompatActivity {
         this.spinNotifTime = findViewById(R.id.spin_add_task_notiftime);
         this.spinNotifWhen = findViewById(R.id.spin_add_task_notifwhen);
 
+
         this.checkValuesIfValid();
     }
 
@@ -437,79 +438,79 @@ public class AddTaskActivity extends AppCompatActivity {
 
                 // checks if the end date is empty
                 if (!endDate.equals("")) {
-                    if (!startDate.equals("")) {
-                        if (!startTime.equals("")) {
-                            String tempStartDate = startDate;
-                            String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
+                    if (endTime == null || endTime.isEmpty()) {
+                        error = "End time is required";
+                        checker = true;
+                    } else {
+                        if (!startDate.equals("")) {
+                            if (!startTime.equals("")) {
+                                String tempStartDate = startDate;
+                                String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
 
-                            String tempEndDate = endDate;
-                            String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
+                                String tempEndDate = endDate;
+                                String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
 
-                            // checks if the startDate is earlier than the endDate
-                            long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
+                                // checks if the startDate is earlier than the endDate
+                                long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
 
-                            if (diff < 0) {
-                                etEndDate.setError("End date should be later than the Start date.");
-                                etEndDate.requestFocus();
-                                return;
-                            } else if (diff == 0) {
-                                error = "Your task should not start and end at the same day and time!";
+                                if (diff < 0) {
+                                    error = "End date should be later than the Start date.";
+                                    checker = true;
+                                } else if (diff == 0) {
+                                    error = "Your task should not start and end at the same day and time!";
+                                    checker = true;
+                                }
+                            }
+                            else {
+                                error = "Start time is required if start date is provided.";
                                 checker = true;
                             }
                         }
-                        else {
-                            etStartTime.setError("Start time is required if start date is provided.");
-                            etStartTime.requestFocus();
-                            return;
+
+                        // checks if the endDate is later than the current date
+                        Calendar c = Calendar.getInstance();
+                        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+
+                        int currentYear = c.get(Calendar.YEAR);
+                        int currentDay = c.get(Calendar.DAY_OF_MONTH);
+                        int currentMonth = c.get(Calendar.MONTH) + 1;
+                        int currentHour = c.get(Calendar.HOUR_OF_DAY);
+                        int currentMinute = c.get(Calendar.MINUTE);
+
+                        String temp = "AM";
+                        if (currentHour >= 12) {
+                            temp = "PM";
+                        }
+
+                        if (currentHour > 12) {
+                            currentHour = currentHour - 12;
+                        }
+
+                        String currentDate = new DecimalFormat("00").format(currentDay) + "." +
+                                new DecimalFormat("00").format(currentMonth) + "." + currentYear;
+                        String currentTime = new DecimalFormat("00").format(currentHour) + ":" +
+                                new DecimalFormat("00").format(currentMinute)+ " " + temp;
+
+                        String tempEndDate = endDate;
+                        String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
+                        long diff = getDiff(tempEndDate, currentDate, tempEndTime, currentTime);
+
+                        if (diff < 0) {
+                            error = "Your end date should be later than the current time and date!";
+                            checker = true;
+                        } else if (diff == 0) {
+                            error = "Your task cannot be currently ending!\n";
+                            checker = true;
                         }
                     }
-
-                    // checks if the endDate is later than the current date
-                    Calendar c = Calendar.getInstance();
-                    c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-
-                    int currentYear = c.get(Calendar.YEAR);
-                    int currentDay = c.get(Calendar.DAY_OF_MONTH);
-                    int currentMonth = c.get(Calendar.MONTH) + 1;
-                    int currentHour = c.get(Calendar.HOUR_OF_DAY);
-                    int currentMinute = c.get(Calendar.MINUTE);
-
-                    String temp = "AM";
-                    if (currentHour >= 12) {
-                        temp = "PM";
-                    }
-
-                    if (currentHour > 12) {
-                        currentHour = currentHour - 12;
-                    }
-
-                    String currentDate = new DecimalFormat("00").format(currentDay) + "." +
-                            new DecimalFormat("00").format(currentMonth) + "." + currentYear;
-                    String currentTime = new DecimalFormat("00").format(currentHour) + ":" +
-                            new DecimalFormat("00").format(currentMinute)+ " " + temp;
-
-                    String tempEndDate = endDate;
-                    String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
-                    long diff = getDiff(tempEndDate, currentDate, tempEndTime, currentTime);
-
-                    if (diff < 0) {
-                        etEndDate.setError("Your end date should be later than the current time and date!");
-                        etEndDate.requestFocus();
-                        return;
-                    } else if (diff == 0) {
-                        error = "Your task cannot be currently ending!\n";
-                        checker = true;
-                    }
                 } else {
-                    etEndDate.setError("End date is required.");
-                    etEndDate.requestFocus();
-                    return;
+                    error = "End date is required.";
+                    checker = true;
                 }
 
                 if (endTime == null || endTime.isEmpty()) {
-                    etEndTime.setError("End time is required");
-                    etEndTime.requestFocus();
-                    return;
+                    error = "End time is required";
+                    checker = true;
                 }
 
                 // checks if there is no priority button clicked
@@ -527,7 +528,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 if (checkerNotif) {
                     if (val) {
                         if (startDate.isEmpty()) {
-                            error = "You cannot set the notification for before start time if start date is empty.";
+                            error = "You cannot set the notification to be determined by the start time if start date is empty.";
                             checker = true;
                         }
                     }
