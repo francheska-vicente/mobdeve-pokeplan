@@ -194,6 +194,11 @@ public class HomeFragment extends Fragment {
         this.tvPokedexCtr.setText(Integer.toString(pokedex));
     }
 
+    /**
+     * Helper function to convert counter values
+     * @param value
+     * @return
+     */
     private String formatCounter(int value) {
         if (value > 999)
             return "999+";
