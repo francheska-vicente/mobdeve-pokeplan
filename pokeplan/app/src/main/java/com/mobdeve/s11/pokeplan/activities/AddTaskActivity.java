@@ -29,6 +29,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobdeve.s11.pokeplan.R;
 import com.mobdeve.s11.pokeplan.data.DatabaseHelper;
+import com.mobdeve.s11.pokeplan.data.FirebaseCallbackTask;
 import com.mobdeve.s11.pokeplan.models.CustomDate;
 import com.mobdeve.s11.pokeplan.models.UserTask;
 import com.mobdeve.s11.pokeplan.services.ReminderBroadcast;
@@ -75,6 +76,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private CustomDialog errorDialog;
 
     private String currentUserUid;
+    private int notifCode;
 
     private DatabaseHelper databaseHelper; // allows access to the database
     private SharedPreferences sp;
@@ -86,7 +88,7 @@ public class AddTaskActivity extends AppCompatActivity {
         createNotificationChannel();
 
         this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
+        notifCode = -1;
         databaseHelper = new DatabaseHelper(true);
         checkerNotif = true;
         this.initComponents();
@@ -257,6 +259,8 @@ public class AddTaskActivity extends AppCompatActivity {
             if (notifWhen) {
                 temp = "Before Start Time";
             }
+
+            notifCode = intent.getIntExtra(Keys.KEY_NOTIF_CODE.name(), -1);
 
             spinNotifWhen.setSelection(((ArrayAdapter<String>)spinNotifWhen.getAdapter()).getPosition(temp));
             spinNotifTime.setSelection(((ArrayAdapter<String>)spinNotifTime.getAdapter()).getPosition(notifTime));
@@ -534,10 +538,10 @@ public class AddTaskActivity extends AppCompatActivity {
 
                     if(checkerNotif) {
                         if (val) {
-                            setTimer(new CustomDate(startDate, startTime), notif, true);
+                            setTimer(new CustomDate(startDate, startTime), notif, true, taskID);
                         } else {
                             deleteTimer();
-                            setTimer(new CustomDate(endDate, endTime), notif, false);
+                            setTimer(new CustomDate(endDate, endTime), notif, false, taskID);
                         }
                     } else {
                         deleteTimer();
@@ -547,9 +551,9 @@ public class AddTaskActivity extends AppCompatActivity {
                     addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                     if(checkerNotif) {
                         if (val) {
-                            setTimer(new CustomDate(startDate, startTime), notif, true);
+                            setTimer(new CustomDate(startDate, startTime), notif, true, taskID);
                         } else {
-                            setTimer(new CustomDate(endDate, endTime), notif, false);
+                            setTimer(new CustomDate(endDate, endTime), notif, false, taskID);
                         }
                     }
                 }
@@ -736,7 +740,7 @@ public class AddTaskActivity extends AppCompatActivity {
      * @param notif determines how many minutes/hours/days the notification would be from the date provided
      * @param checker is used for the creation of the notification message
      */
-    private void setTimer (CustomDate date, String notif, boolean checker) {
+    private void setTimer (CustomDate date, String notif, boolean checker, String taskID) {
         long timeInMillis = calculateTime(date, notif);
 
         String message = "Don't forget! This ";
@@ -746,13 +750,29 @@ public class AddTaskActivity extends AppCompatActivity {
             message = message + "ends in " + notif;
         }
 
+        int requestCode = (int) System.currentTimeMillis();
+
+        if (notifCode != -1) {
+            requestCode = notifCode;
+        } else {
+            databaseHelper.createNotif(new FirebaseCallbackTask() {
+                @Override
+                public void onCallbackTask(ArrayList<UserTask> list, Boolean isSuccesful, String message) {
+
+                }
+            }, requestCode, taskID);
+
+            notifCode = requestCode;
+        }
+
         // creates the alarm manager and the intent to be sent to the broadcast receiver
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, ReminderBroadcast.class);
         intent.putExtra("TASKNAME", etTaskName.getText().toString().trim());
         intent.putExtra("NOTIF_MESSAGE", message);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        intent.putExtra("NOTIF_CODE", requestCode);
+        
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
 
         // sets the notification time and date
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
@@ -783,9 +803,10 @@ public class AddTaskActivity extends AppCompatActivity {
      */
     private void deleteTimer () {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, ReminderBroadcast.class);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+         Intent intent = new Intent(getApplicationContext(), ReminderBroadcast.class);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notifCode, intent, 0);
 
         alarmManager.cancel(pendingIntent);
     }
