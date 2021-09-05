@@ -27,28 +27,30 @@ public class FaqsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_faqs);
 
-
         ibBack = findViewById(R.id.ib_faqs_back);
         this.setButtonListeners();
 
+        this.rvFaqsList = findViewById(R.id.rv_faqs);
         this.initRecyclerView();
     }
 
+    /**
+     * Initializes the RecyclerView, LinearLayoutManager, and the Adapter
+     */
     private void initRecyclerView () {
-        this.rvFaqsList = findViewById(R.id.rv_faqs);
-
         this.faqsListManager  = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         this.rvFaqsList.setLayoutManager(this.faqsListManager);
 
-        FaqsDataHelper faqsDataHelper = new FaqsDataHelper();
-
-        this.questionList = faqsDataHelper.getQuestions();
-        this.answerList = faqsDataHelper.getAnswers();
+        this.questionList = new FaqsDataHelper().getQuestions();
+        this.answerList = new FaqsDataHelper().getAnswers();
 
         this.faqsAdapter = new FaqsAdapter(this.questionList, this.answerList);
         this.rvFaqsList.setAdapter(this.faqsAdapter);
     }
 
+    /**
+     * Sets onClickListeners for all buttons
+     */
     private void setButtonListeners() {
         ibBack.setOnClickListener(view -> onBackPressed());
     }
