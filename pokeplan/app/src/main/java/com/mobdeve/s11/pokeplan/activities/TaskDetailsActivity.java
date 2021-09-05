@@ -426,6 +426,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Button btndialogconfirm = confirmFinish.findViewById(R.id.btn_dialog_confirm);
         btndialogconfirm.setOnClickListener(v -> {
             confirmFinish.dismiss();
+
             databaseHelper.moveToCompletedTask((list, isSuccesful, message) -> giveCandies(), taskID, user);
         });
         confirmFinish.show();
