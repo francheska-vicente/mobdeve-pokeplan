@@ -392,6 +392,7 @@ public class DatabaseHelper {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 snapshot.getRef().removeValue();
                 Log.d("Pokemon DB", "Pokemon was deleted from the DB.");
+                firebaseCallbackPokemon.onCallbackPokemon(null, true, "Pokemon was deleted from the DB.");
             }
 
             @Override
