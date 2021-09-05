@@ -68,7 +68,7 @@ public class DatabaseHelper {
 
 
     public void addUser (FirebaseCallbackUser firebaseCallbackUser, UserDetails user, String password) {
-        Log.d("hello pare", user.getEmail() + " " + password);
+
         mAuth.createUserWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
@@ -87,7 +87,7 @@ public class DatabaseHelper {
                         }
                     });
                 } else {
-                    firebaseCallbackUser.onCallbackUser(null, true, "User was not registered!");
+                    firebaseCallbackUser.onCallbackUser(null, false, "User was not registered!");
                 }
             }
         });
