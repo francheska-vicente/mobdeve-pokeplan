@@ -67,6 +67,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder> {
             i.putExtra(Keys.KEY_C_END_DATE.name(), sEndDate);
             i.putExtra(Keys.KEY_C_START_TIME.name(), sStartTime);
             i.putExtra(Keys.KEY_C_END_TIME.name(), sEndTime);
+            i.putExtra(Keys.KEY_NOTIF_CODE.name(), tasks.get(vh.getBindingAdapterPosition()).getNotifRequestCode());
 
             view1.getContext().startActivity(i);
         });
