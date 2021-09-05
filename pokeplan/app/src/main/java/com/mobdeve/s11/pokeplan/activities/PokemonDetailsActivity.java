@@ -63,7 +63,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
     private UserPokemon pkmn;
     private UserDetails user;
-    private boolean pkmnWasDeleted;
 
     private ArrayList<UserPokemon> partyList;
     private DatabaseHelper databaseHelper;
@@ -122,7 +121,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
      * Retrieves information from the database.
      */
     private void initInfo () {
-        this.pkmnWasDeleted = false;
         Intent intent = getIntent();
         String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
         sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
@@ -421,7 +419,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 databaseHelper.deletePokemon((list, isSuccessful, message) -> {
                     if(isSuccessful) {
                         finish();
-                        pkmnWasDeleted = true;
                     }
                 }, pkmn);
         });
