@@ -37,7 +37,7 @@ public class PokedexFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pokedex, container, false);
 
-        this.databaseHelper = new DatabaseHelper();
+        this.databaseHelper = new DatabaseHelper(true);
         this.initInfo(view);
 
         return view;
