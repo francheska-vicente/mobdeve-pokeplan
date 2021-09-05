@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
      * Retrieves all needed information from the database
      */
     private void initInfo(){
-        helper = new DatabaseHelper();
+        helper = new DatabaseHelper(true);
         helper.getPokemon((list, isSuccessful, message) -> {
             pokemonPartyList = new ArrayList<>(6);
             if (isSuccessful) {
