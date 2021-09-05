@@ -194,20 +194,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initBackBtn() {
         btnloginback = findViewById(R.id.ib_login_back);
-        btnloginback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        btnloginback.setOnClickListener(view -> onBackPressed());
     }
 
     private void initSubmitBtn() {
         btnloginsubmit = findViewById(R.id.btn_login_submit);
-        btnloginsubmit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), RegisterStarterActivity.class);
-                view.getContext().startActivity(i);
-            }
+        btnloginsubmit.setOnClickListener(view -> {
+            Intent i = new Intent(view.getContext(), RegisterStarterActivity.class);
+            view.getContext().startActivity(i);
         });
     }
 }
