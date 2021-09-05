@@ -10,7 +10,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,13 +59,10 @@ public class FocusTimerFragment extends Fragment implements SensorEventListener 
 
     private CustomDialog confirmstoptimerdialog;
 
-    private boolean timerIsDone;
-    private boolean timerIsStopped;
+    private boolean timerIsOngoing;
+    private boolean timerIsFinished;
     private DatabaseHelper databaseHelper;
     private UserDetails user;
-
-    public FocusTimerFragment() {
-    }
 
     public FocusTimerFragment() {}
     public static FocusTimerFragment newInstance() {
