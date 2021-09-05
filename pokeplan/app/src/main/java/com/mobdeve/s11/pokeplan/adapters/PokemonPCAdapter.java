@@ -37,13 +37,11 @@ public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> 
 
         PokemonPCViewHolder vh = new PokemonPCViewHolder(view);
 
-        vh.getConstraintLayout().setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), PokemonDetailsActivity.class);
-                i.putExtra(Keys.KEY_POKEMONID.name(), pc.get(vh.getBindingAdapterPosition()).getUserPokemonID());
-                i.putExtra(Keys.KEY_FROMWHERE.name(), "PC");
-                view.getContext().startActivity(i);
-            }
+        vh.getConstraintLayout().setOnClickListener(view1 -> {
+            Intent i = new Intent(view1.getContext(), PokemonDetailsActivity.class);
+            i.putExtra(Keys.KEY_POKEMONID.name(), pc.get(vh.getBindingAdapterPosition()).getUserPokemonID());
+            i.putExtra(Keys.KEY_FROMWHERE.name(), "PC");
+            view1.getContext().startActivity(i);
         });
 
         return vh;
@@ -52,7 +50,6 @@ public class PokemonPCAdapter extends RecyclerView.Adapter<PokemonPCViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull @NotNull PokemonPCViewHolder holder, int position) {
         holder.setPkmnIcon(this.pc.get(position).getDetails().getDexNum());
-        holder.setDexNum();
     }
 
     public void setPc (ArrayList<UserPokemon> userPokemons) {
