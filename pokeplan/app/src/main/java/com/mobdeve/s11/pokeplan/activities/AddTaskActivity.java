@@ -2,7 +2,6 @@ package com.mobdeve.s11.pokeplan.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,6 +34,7 @@ import com.mobdeve.s11.pokeplan.models.UserTask;
 import com.mobdeve.s11.pokeplan.services.ReminderBroadcast;
 import com.mobdeve.s11.pokeplan.utils.Keys;
 import com.mobdeve.s11.pokeplan.views.CustomDatePicker;
+import com.mobdeve.s11.pokeplan.views.CustomDialog;
 import com.mobdeve.s11.pokeplan.views.CustomTimePicker;
 
 import java.text.DecimalFormat;
@@ -72,7 +72,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private Spinner spinNotifTime;
     private Spinner spinNotifWhen;
 
-    private Dialog errorDialog;
+    private CustomDialog errorDialog;
 
     private String currentUserUid;
 
@@ -114,7 +114,7 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     /**
-     * converts the given 12H format hour to its 24H format version
+     * Converts the given 12H format hour to its 24H format version
      * @param hour is the hour to be converted
      * @param temp is the meridian of the hour given (AM or PM)
      * @return the 24H format of the given hour
@@ -205,7 +205,7 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     /**
-     * sets the values of the fields based on the latest information of the task
+     * Sets the values of the fields based on the latest information of the task
      * @param intent is the intent that holds the previous information of the task from the details shown in the TaskDetailsActivity
      */
     public void setValues (Intent intent) {
@@ -313,7 +313,7 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     /**
-     * This initializes the layout
+     * Initializes the layout components
      */
     private void setComponents () {
         this.initPriority (); // initializes the arraylist of buttons that represents the priority level of the task
@@ -364,7 +364,7 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     /**
-     * This sets the components of the layout to their respective attributes. It also sets the
+     * Sets the components of the layout to their respective attributes. It also sets the
      * button listener for the btnCreate, which would validate the fields.
      */
     private void checkValuesIfValid (){
@@ -376,7 +376,6 @@ public class AddTaskActivity extends AppCompatActivity {
         String checker = intent.getStringExtra(Keys.KEY_ID.name());
         if (checker != null)
             setValues (intent); // set the values of the fields to the current information from the intent
-
 
         this.btnCreate.setOnClickListener(v -> {
             String taskName = etTaskName.getText().toString();
@@ -555,7 +554,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     }
                 }
             } else { // if there are errors found, the error dialog should be shown with an error message
-                setErrorDialog (error, v);
+                setErrorDialog (error);
             }
         });
     }
@@ -563,25 +562,11 @@ public class AddTaskActivity extends AppCompatActivity {
     /**
      * Creates the dialog that shows the error for the user's input
      * @param error is the error message
-     * @param v is the view that would be showing the dialog
      */
-    private void setErrorDialog (String error, View v) {
-        errorDialog = new Dialog(v.getContext());
-        errorDialog.setContentView(R.layout.dialog_error);
-
-        int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
-        int height = (int)(getResources().getDisplayMetrics().heightPixels*0.40);
-
-        errorDialog.getWindow().setLayout(width, height);
-        errorDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        TextView tvdialogtitle = errorDialog.findViewById(R.id.tv_dialog_error_title);
-        tvdialogtitle.setText("Invalid input!");
-        TextView tvdialogtext = errorDialog.findViewById(R.id.tv_dialog_error_text);
-        tvdialogtext.setText(error);
-
-        Button btndialogerror = errorDialog.findViewById(R.id.btn_dialog_error);
-        btndialogerror.setOnClickListener(v1 -> errorDialog.dismiss());
+    private void setErrorDialog (String error) {
+        errorDialog = new CustomDialog(this);
+        errorDialog.setDialogType(CustomDialog.ERROR);
+        errorDialog.setErrorComponents("Invalid input!", error);
         errorDialog.show();
     }
 
@@ -773,6 +758,9 @@ public class AddTaskActivity extends AppCompatActivity {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
     }
 
+    /**
+     * Creates the notification channel
+     */
     private void createNotificationChannel() {
         // checks if the sdk used by the phone is greater than or equal 26 as a channel needs to be created if it is sdk 26 or higher
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
