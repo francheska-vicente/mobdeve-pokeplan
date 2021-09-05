@@ -74,6 +74,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
     private String fullStartDateString;
     private String fullEndDateString;
+    private int notifCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,6 +243,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
         notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
         isFinished = intent.getBooleanExtra(Keys.KEY_IS_COMPLETED.name(), false);
+        notifCode = intent.getIntExtra(Keys.KEY_NOTIF_CODE.name(), 0);
     }
 
     /**
@@ -261,6 +263,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         intent.putExtra(Keys.KEY_NOTIF_WHEN.name(), notifWhen);
         intent.putExtra(Keys.KEY_NOTIF_ON.name(), notifOn);
         intent.putExtra(Keys.KEY_NOTIF_START_TIME.name(), notifStartTime);
+        intent.putExtra(Keys.KEY_NOTIF_CODE.name(), notifCode);
     }
 
     /**
