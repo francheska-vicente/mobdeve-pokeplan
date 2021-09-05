@@ -1,7 +1,5 @@
 package com.mobdeve.s11.pokeplan.models;
 
-import android.util.Log;
-
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -15,9 +13,7 @@ public class CustomDate {
     private static final String[] monthString = new String[]{"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     private int day, month, year, hour, minute;
 
-    public CustomDate () {
-
-    }
+    public CustomDate () {}
 
     public CustomDate (boolean checker) {
         Calendar c = Calendar.getInstance();
@@ -31,7 +27,6 @@ public class CustomDate {
 
     public CustomDate(int year, int month, int day_in_month, int hour, int minute) {
         this.year = year;
-
         this.day = day_in_month;
         this.month = month;
         this.hour = hour;
@@ -39,8 +34,6 @@ public class CustomDate {
     }
 
     public CustomDate(String date, String time) {
-        Log.d("hello pare", date);
-        Log.d("hello time", time);
         String [] tempDate = date.split("\\.");
         String [] tempTime = time.split(":");
         this.month = Integer.parseInt(tempDate[1]);
@@ -53,7 +46,8 @@ public class CustomDate {
 
         if (tempTime[1].trim().equalsIgnoreCase("pm") && this.hour != 12) {
             this.hour = hour + 12;
-        } else if (tempTime[1].trim().equalsIgnoreCase("am") && this.hour == 12) {
+        }
+        else if (tempTime[1].trim().equalsIgnoreCase("am") && this.hour == 12) {
             this.hour = 0;
         }
 
@@ -87,12 +81,6 @@ public class CustomDate {
         return printData(tempDate, tempTime);
     }
 
-    public String storeData () {
-        String tempTime = new DecimalFormat("00").format(this.hour) + ":" + new DecimalFormat("00").format(this.minute);
-        String tempDate = new DecimalFormat("00").format(this.day) + "." + new DecimalFormat("00").format(this.month) + "." + this.year;
-        return tempDate + " " + tempTime;
-    }
-
     public static String printData (String dateToConvert, String time) {
         Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
@@ -115,7 +103,6 @@ public class CustomDate {
         long diff = 0;
         try {
             Date dateStart = simpleDateFormat.parse(currentDay + "." + currentMonth + "." + currentYear);
-            Log.d("hello pare date start", "printData: " + Calendar.DAY_OF_MONTH);
             String temp = new DecimalFormat("00").format(day_in_month) + "." + new DecimalFormat("00").format(month) + "." + year;
             Date dateEnd = simpleDateFormat.parse(temp);
 
@@ -133,7 +120,7 @@ public class CustomDate {
             }
         }
         catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         int tempHour = hour;
