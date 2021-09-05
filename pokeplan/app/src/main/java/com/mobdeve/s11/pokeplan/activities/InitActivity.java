@@ -7,17 +7,11 @@ import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobdeve.s11.pokeplan.R;
 import com.mobdeve.s11.pokeplan.utils.Keys;
-
-import org.jetbrains.annotations.NotNull;
 
 public class InitActivity extends AppCompatActivity {
     private Button btninitregister;
@@ -55,20 +49,17 @@ public class InitActivity extends AppCompatActivity {
     private void checkIfInDB (String email, String password) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Intent intent = new Intent(InitActivity.this, MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(InitActivity.this, "Saved user does not exist in the database.", Toast.LENGTH_LONG).show();
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                Intent intent = new Intent(InitActivity.this, MainActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(InitActivity.this, "Saved user does not exist in the database.", Toast.LENGTH_LONG).show();
 
-                    sp.edit().remove(Keys.KEY_EMAIL.name()).apply();
-                    sp.edit().remove(Keys.KEY_PASSWORD.name()).apply();
-                    Intent intent = new Intent(InitActivity.this, InitActivity.class);
-                    startActivity(intent);
-                }
+                sp.edit().remove(Keys.KEY_EMAIL.name()).apply();
+                sp.edit().remove(Keys.KEY_PASSWORD.name()).apply();
+                Intent intent = new Intent(InitActivity.this, InitActivity.class);
+                startActivity(intent);
             }
         });
     }
