@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -68,30 +67,23 @@ public class DatabaseHelper {
 
 
     public void addUser (FirebaseCallbackUser firebaseCallbackUser, UserDetails user, String password) {
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                initLoggedInDB ();
 
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    initLoggedInDB ();
-
-                    mUser.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull @NotNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                firebaseCallbackUser.onCallbackUser(user, true, "User registered.");
-
-                            } else {
-                                firebaseCallbackUser.onCallbackUser(null, false, "Error encountered in the registration!");
-                            }
-                        }
-                    });
-                } else {
-                    firebaseCallbackUser.onCallbackUser(null, false, "User was not registered!");
-                }
+                mUser.setValue(user).addOnCompleteListener(task1 -> {
+                    if(task1.isSuccessful()) {
+                        firebaseCallbackUser.onCallbackUser(user, true, "User registered.");
+                    }
+                    else {
+                        firebaseCallbackUser.onCallbackUser(null, false, "Error encountered in the registration!");
+                    }
+                });
+            }
+            else {
+                firebaseCallbackUser.onCallbackUser(null, false, "User was not registered!");
             }
         });
-
 
     }
 
@@ -115,57 +107,54 @@ public class DatabaseHelper {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
-        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                if (task.isSuccessful()) {
-                    user.delete();
-                    Query query = mUser;
-                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                            snapshot.getRef().removeValue();
-                            firebaseCallbackUser.onCallbackUser(null, true, "Your account was successfully deleted.");
-                        }
+        user.reauthenticate(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                user.delete();
+                Query query = mUser;
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        snapshot.getRef().removeValue();
+                        firebaseCallbackUser.onCallbackUser(null, true, "Your account was successfully deleted.");
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                            firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
-                        }
-                    });
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                        firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
+                    }
+                });
 
-                    query = mTask;
+                query = mTask;
 
-                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                            snapshot.getRef().removeValue();
-                            Log.d("Task DB", "All of the tasks of this user were deleted from the DB.");
-                        }
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        snapshot.getRef().removeValue();
+                        Log.d("Task DB", "All of the tasks of this user were deleted from the DB.");
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                            Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
-                        }
-                    });
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                        Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
+                    }
+                });
 
-                    query = mPokemon;
-                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                            snapshot.getRef().removeValue();
-                            Log.d("Pokemon DB", "All of the pokemons of this user were deleted from the DB.");
-                        }
+                query = mPokemon;
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                        snapshot.getRef().removeValue();
+                        Log.d("Pokemon DB", "All of the pokemons of this user were deleted from the DB.");
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                            Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
-                        }
-                    });
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                        Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
+                    }
+                });
 
-                } else {
-                    firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
-                }
+            } else {
+                firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
             }
         });
     }
@@ -174,23 +163,17 @@ public class DatabaseHelper {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
-        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    mUser.updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull @NotNull Task<Void> task) {
-                            if(task.isSuccessful()) {
-                                firebaseCallbackUser.onCallbackUser(null, true, "User was successfully modified in the database.");
-                            } else {
-                                firebaseCallbackUser.onCallbackUser(null, false, "An error was encountered in the modification!");
-                            }
-                        }
-                    });
-                } else {
-                    firebaseCallbackUser.onCallbackUser(null, false, "The email and password combination does not match any user.");
-                }
+        user.reauthenticate(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                mUser.updateChildren(hashUser).addOnCompleteListener(task1 -> {
+                    if(task1.isSuccessful()) {
+                        firebaseCallbackUser.onCallbackUser(null, true, "User was successfully modified in the database.");
+                    } else {
+                        firebaseCallbackUser.onCallbackUser(null, false, "An error was encountered in the modification!");
+                    }
+                });
+            } else {
+                firebaseCallbackUser.onCallbackUser(null, false, "The email and password combination does not match any user.");
             }
         });
     }
@@ -198,7 +181,7 @@ public class DatabaseHelper {
     public void updateUser (FirebaseCallbackUser firebaseCallbackUser, HashMap<String, Object> hashUser) {
         mUser.updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener() {
             @Override
-            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
+            public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()) {
                     firebaseCallbackUser.onCallbackUser(null, true, "User's informationw as modified.");
                 } else {
@@ -235,21 +218,19 @@ public class DatabaseHelper {
         ArrayList<UserPokemon> pokemonParty = new ArrayList<>();
         ArrayList<UserPokemon> pokemonPC = new ArrayList<>();
 
-        getPokemon(new FirebaseCallbackPokemon() {
-            @Override
-            public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
-                if (isSuccessful) {
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).isInParty()) {
-                            pokemonParty.add(list.get(i));
-                        } else {
-                            pokemonPC.add(list.get(i));
-                        }
+        getPokemon((list, isSuccessful, message) -> {
+            if (isSuccessful) {
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).isInParty()) {
+                        pokemonParty.add(list.get(i));
+                    } else {
+                        pokemonPC.add(list.get(i));
                     }
-                } else {
-                    firebaseCallbackPokemon.onCallbackPokemon(null, false, "User's pokemon information was not found.");
-                    return;
                 }
+            }
+            else {
+                firebaseCallbackPokemon.onCallbackPokemon(null, false, "User's pokemon information was not found.");
+                return;
             }
         });
 
@@ -268,17 +249,14 @@ public class DatabaseHelper {
         }
 
         mPokemon.child(key).setValue(userPokemon)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                        ArrayList<UserPokemon> tempPokemon = new ArrayList<>(1);
-                        tempPokemon.add(userPokemon);
-                        if (task.isSuccessful()) {
-                            updateUserPokemon(details, userDetails, checker);
-                            firebaseCallbackPokemon.onCallbackPokemon(tempPokemon, true, "Pokemon was successfully added to the database.");
-                        } else {
-                            firebaseCallbackPokemon.onCallbackPokemon(null, false, "Pokemon was not added to the database.");
-                        }
+                .addOnCompleteListener(task -> {
+                    ArrayList<UserPokemon> tempPokemon = new ArrayList<>(1);
+                    tempPokemon.add(userPokemon);
+                    if (task.isSuccessful()) {
+                        updateUserPokemon(details, userDetails, checker);
+                        firebaseCallbackPokemon.onCallbackPokemon(tempPokemon, true, "Pokemon was successfully added to the database.");
+                    } else {
+                        firebaseCallbackPokemon.onCallbackPokemon(null, false, "Pokemon was not added to the database.");
                     }
                 });
     }
@@ -286,12 +264,7 @@ public class DatabaseHelper {
     private void updateUserPokemon (Pokemon details, UserDetails userDetails, boolean checker) {
         HashMap <String, Object> hashUser = new HashMap<>();
         hashUser.put(Integer.toString(details.getDexNum() - 1), true);
-        mUser.child("userPokedex").updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                Log.d("User DB", "User's caught pokemon information was added.");
-            }
-        });
+        mUser.child("userPokedex").updateChildren(hashUser).addOnCompleteListener(task -> Log.d("User DB", "User's caught pokemon information was added."));
 
         HashMap<String, Object> hashNum = new HashMap<>();
 
@@ -305,22 +278,17 @@ public class DatabaseHelper {
             hashNum.put("hatchedPkmnCount", userDetails.getHatchedPkmnCount());
         }
 
-        mUser.updateChildren(hashNum).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                Log.d("User DB", "User's number of pokemons and hatched egg were updated. ");
-            }
-        });
+        mUser.updateChildren(hashNum).addOnCompleteListener(task -> Log.d("User DB", "User's number of pokemons and hatched egg were updated. "));
     }
 
     public void editNickname (FirebaseCallbackPokemon firebaseCallbackPokemon, String key, String nickname) {
-        HashMap <String, Object> hash = new HashMap <String, Object>();
+        HashMap <String, Object> hash = new HashMap<>();
         hash.put("nickname", nickname);
 
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
-            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-                if(task.isSuccessful()) {
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
                     firebaseCallbackPokemon.onCallbackPokemon(null, true, "Pokemon's nickname was modified.");
                 } else {
                     firebaseCallbackPokemon.onCallbackPokemon(null, false, "Pokemon's nickname was not modified.");
@@ -330,7 +298,7 @@ public class DatabaseHelper {
     }
 
     public void updatePokemon (FirebaseCallbackPokemon firebaseCallbackPokemon, UserPokemon pokemon, UserDetails userDetails) {
-        HashMap <String, Object> hash = new HashMap <String, Object>();
+        HashMap <String, Object> hash = new HashMap<>();
         hash.put("details", pokemon.getDetails());
         hash.put("fedCandy", pokemon.getFedCandy());
         hash.put("level", pokemon.getLevel());
@@ -342,23 +310,23 @@ public class DatabaseHelper {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
                 if (task.isSuccessful()) {
-                    HashMap <String, Object> userHash = new HashMap <String, Object>();
+                    HashMap <String, Object> userHash = new HashMap<>();
                     userHash.put("rareCandy", userDetails.getRareCandy());
                     userHash.put("superCandy", userDetails.getSuperCandy());
 
                     mUser.updateChildren(userHash).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
-
                             if (task.isSuccessful()) {
                                 firebaseCallbackPokemon.onCallbackPokemon(pokemons, true, "Pokemon's information was successfully modified.");
-                            } else {
-                                firebaseCallbackPokemon.onCallbackPokemon(pokemons, false, "Pokemon's information was successfully modified.");
+                            }
+                            else {
+                                firebaseCallbackPokemon.onCallbackPokemon(pokemons, false, "Pokemon's information was not modified.");
                             }
                         }
                     });
                 } else {
-                    firebaseCallbackPokemon.onCallbackPokemon(pokemons, false, "Pokemon's information was successfully modified.");
+                    firebaseCallbackPokemon.onCallbackPokemon(pokemons, false, "Pokemon's information was not modified.");
                 }
             }
         });
@@ -369,7 +337,7 @@ public class DatabaseHelper {
     }
 
     public void movePokemon(FirebaseCallbackPokemon firebaseCallbackPokemon, String key, boolean checker) {
-        HashMap <String, Object> hash = new HashMap<String, Object>();
+        HashMap <String, Object> hash = new HashMap<>();
         hash.put("inParty", checker);
 
         mPokemon.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
@@ -426,37 +394,29 @@ public class DatabaseHelper {
         String key = mTask.push().getKey();
         taskCreated.setTaskID(key);
 
-        mTask.child(key).setValue(taskCreated).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                if(task.isSuccessful()) {
-                    ArrayList<UserTask> tasks = new ArrayList<>();
-                    tasks.add(taskCreated);
-                    firebaseCallbackTask.onCallbackTask(tasks, true, "Task was added to the list of ongoing tasks.");
-                } else {
-                    firebaseCallbackTask.onCallbackTask(null, false, "Task was not added to the list of ongoing tasks.");
-                }
+        mTask.child(key).setValue(taskCreated).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                ArrayList<UserTask> tasks = new ArrayList<>();
+                tasks.add(taskCreated);
+                firebaseCallbackTask.onCallbackTask(tasks, true, "Task was added to the list of ongoing tasks.");
+            } else {
+                firebaseCallbackTask.onCallbackTask(null, false, "Task was not added to the list of ongoing tasks.");
             }
         });
     }
 
     public void moveToCompletedTask (FirebaseCallbackTask firebaseCallbackTask, String key, UserDetails user) {
-        HashMap <String, Object> hash = new HashMap <String, Object>();
+        HashMap <String, Object> hash = new HashMap<>();
 
         hash.put("isFinished", true);
         mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task task) {
                 Log.d("Task DB", "Task was successfully moved from ongoing list to completed list.");
-                HashMap<String, Object> hashUser = new HashMap<>();
                 user.addCompletedTask(1);
                 hash.put("completedTaskCount", user.getCompletedTaskCount());
-                mUser.updateChildren(hash).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                        firebaseCallbackTask.onCallbackTask(null, true, "Task was successfully moved to completed task.");
-                    }
-                });
+                mUser.updateChildren(hash).addOnCompleteListener(task1 ->
+                        firebaseCallbackTask.onCallbackTask(null, true, "Task was successfully moved to completed task."));
             }
         });
     }
@@ -479,7 +439,7 @@ public class DatabaseHelper {
 
     public void editTask (FirebaseCallbackTask firebaseCallbackTask, String name, int priority, String category, CustomDate startDate,
                           CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif) {
-        HashMap <String, Object> hash = new HashMap <String, Object>();
+        HashMap <String, Object> hash = new HashMap <>();
         hash.put("taskName", name);
         hash.put("endDate", endDate);
         hash.put("startDate", startDate);
@@ -490,14 +450,11 @@ public class DatabaseHelper {
         hash.put("beforeStartTime", val);
         hash.put("isNotif", isNotif);
 
-        mTask.child(key).updateChildren(hash).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<Void> task) {
-                if(task.isSuccessful()) {
-                    firebaseCallbackTask.onCallbackTask(null, true, "Task information was modified.");
-                } else {
-                    firebaseCallbackTask.onCallbackTask(null, true, "Task information was not modified.");
-                }
+        mTask.child(key).updateChildren(hash).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                firebaseCallbackTask.onCallbackTask(null, true, "Task information was modified.");
+            } else {
+                firebaseCallbackTask.onCallbackTask(null, true, "Task information was not modified.");
             }
         });
     }
