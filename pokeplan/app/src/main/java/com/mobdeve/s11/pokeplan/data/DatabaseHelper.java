@@ -458,4 +458,20 @@ public class DatabaseHelper {
             }
         });
     }
+
+    public void createNotif (FirebaseCallbackTask firebaseCallbackTask, int notifCode, String key) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("notifCode", notifCode);
+
+        mTask.child(key).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    firebaseCallbackTask.onCallbackTask(null, true, "Notification successfully created.");
+                } else {
+                    firebaseCallbackTask.onCallbackTask(null, false, "Notification was not created.");
+                }
+            }
+        });
+    }
 }
