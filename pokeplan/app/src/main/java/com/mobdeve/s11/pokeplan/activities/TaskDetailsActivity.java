@@ -88,7 +88,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
      * Initializes the components of the layout once the information has been successfully retrieved from the database.
      * */
     private void initInfo() {
-        databaseHelper = new DatabaseHelper();
+        databaseHelper = new DatabaseHelper(true);
         databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> {
             user = userDetails;
             initComponents();
