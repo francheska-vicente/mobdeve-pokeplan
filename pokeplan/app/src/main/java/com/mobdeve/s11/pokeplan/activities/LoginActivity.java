@@ -80,13 +80,13 @@ public class LoginActivity extends AppCompatActivity {
         forgotPasswordDialog.getWindow().setLayout(width, height);
         forgotPasswordDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        TextView tvdialogtitle = (TextView) forgotPasswordDialog.findViewById(R.id.iv_dialog_stringinput_title);
+        TextView tvdialogtitle = (TextView) forgotPasswordDialog.findViewById(R.id.iv_dialog_oneinput_title);
         tvdialogtitle.setText(R.string.forgot_title);
-        EditText etEmail = (EditText)  forgotPasswordDialog.findViewById(R.id.et_dialog_stringinput);
-        ImageView ivdialogicon = (ImageView) forgotPasswordDialog.findViewById(R.id.iv_dialog_stringinput_icon);
+        EditText etEmail = (EditText)  forgotPasswordDialog.findViewById(R.id.et_dialog_oneinput);
+        ImageView ivdialogicon = (ImageView) forgotPasswordDialog.findViewById(R.id.iv_oneinput_icon);
         ivdialogicon.setImageResource(R.drawable.warning);
 
-        Button btndialogcancel = (Button) forgotPasswordDialog.findViewById(R.id.btn_dialog_stringinput_confirm);
+        Button btndialogcancel = (Button) forgotPasswordDialog.findViewById(R.id.btn_dialog_oneinput_confirm);
         btndialogcancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button btndialogconfirm = (Button) forgotPasswordDialog.findViewById(R.id.btn_dialog_stringinput_ok);
+        Button btndialogconfirm = (Button) forgotPasswordDialog.findViewById(R.id.btn_dialog_oneinput_ok);
         btndialogconfirm.setText(R.string.forgot_button);
         btndialogconfirm.setOnClickListener(new View.OnClickListener() {
             @Override
