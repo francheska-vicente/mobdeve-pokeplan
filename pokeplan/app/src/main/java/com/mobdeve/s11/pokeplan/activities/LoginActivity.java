@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, InitActivity.class);
                     startActivity(intent);
                 } else {
-                    etEmail.setError("Please input a valid email address.");
+                    etEmail.setError("Email address does not match a registered user.");
                     etEmail.requestFocus();
                     return;
                 }
