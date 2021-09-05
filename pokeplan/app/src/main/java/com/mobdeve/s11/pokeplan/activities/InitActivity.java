@@ -14,9 +14,6 @@ import com.mobdeve.s11.pokeplan.R;
 import com.mobdeve.s11.pokeplan.utils.Keys;
 
 public class InitActivity extends AppCompatActivity {
-    private Button btninitregister;
-    private Button btninitlogin;
-
     private SharedPreferences sp;
 
     @Override
@@ -26,26 +23,34 @@ public class InitActivity extends AppCompatActivity {
         String email = this.sp.getString(Keys.KEY_EMAIL.name(), null);
         String password = this.sp.getString(Keys.KEY_PASSWORD.name(), null);
 
-        if (email != null && password != null) {
-            checkIfInDB (email, password);
+        if (email != null && password != null)
+            this.checkIfInDB(email, password);
 
-        }
-        else {
-            setContentView(R.layout.activity_init);
-            btninitregister = findViewById(R.id.btn_init_register);
-            btninitregister.setOnClickListener(view -> {
-                Intent i = new Intent(view.getContext(), RegisterActivity.class);
-                view.getContext().startActivity(i);
-            });
-
-            btninitlogin = findViewById(R.id.btn_init_login);
-            btninitlogin.setOnClickListener(view -> {
-                Intent i = new Intent(view.getContext(), LoginActivity.class);
-                view.getContext().startActivity(i);
-            });
-        }
+        else
+            this.setInitView();
     }
 
+    /**
+     * Initializes and sets the view for when the user is not currently logged in
+     */
+    private void setInitView() {
+        setContentView(R.layout.activity_init);
+        Button btninitregister = findViewById(R.id.btn_init_register);
+        btninitregister.setOnClickListener(view -> {
+            Intent i = new Intent(view.getContext(), RegisterActivity.class);
+            view.getContext().startActivity(i);
+        });
+
+        Button btninitlogin = findViewById(R.id.btn_init_login);
+        btninitlogin.setOnClickListener(view -> {
+            Intent i = new Intent(view.getContext(), LoginActivity.class);
+            view.getContext().startActivity(i);
+        });
+    }
+
+    /**
+     * Checks if there is a valid user currently signed in
+     */
     private void checkIfInDB (String email, String password) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 

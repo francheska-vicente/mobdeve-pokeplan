@@ -32,7 +32,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private TextView tvEggHatchCtr;
     private TextView tvTaskCompleteCtr;
-    private DatabaseHelper databaseHelper;
     private UserDetails user;
 
     @Override
@@ -47,7 +46,7 @@ public class UserProfileActivity extends AppCompatActivity {
      * Retrieves user information from the database
      */
     private void initInfo () {
-        databaseHelper = new DatabaseHelper(true);
+        DatabaseHelper databaseHelper = new DatabaseHelper(true);
         databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> {
             if (isSuccessful) {
                 user = userDetails;

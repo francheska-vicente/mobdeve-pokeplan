@@ -48,7 +48,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private ImageButton ibDeleteTask;
     private ImageButton ibEditTask;
 
-    /* Dialogs that would show the message to the user */
     private CustomDialog confirmFinish;
     private CustomDialog confirmDelete;
     private CustomDialog candyDialog;
@@ -121,7 +120,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets the onclick listeners of the buttons of the layout
+     * Sets the OnClickListeners of all buttons
      */
     private void setButtonListeners() {
         ImageButton btnback = findViewById(R.id.ib_taskdetails_back);
