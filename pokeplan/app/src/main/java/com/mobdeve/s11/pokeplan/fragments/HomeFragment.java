@@ -2,6 +2,7 @@ package com.mobdeve.s11.pokeplan.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,9 +107,12 @@ public class HomeFragment extends Fragment {
                         user = userDetails;
 
                         helper.getTasks((list1, isSuccessful2, message2) -> {
+                            ongoingTaskNum = 0;
                             for(int i = 0; i < list1.size(); i++) {
+                                Log.d("hello here", list1.get(i).getTaskName() + " " + list1.get(i).getIsFinished());
                                 if (!list1.get(i).getIsFinished()) {
                                     ongoingTaskNum++;
+                                    Log.d("hello counting", Integer.toString(ongoingTaskNum));
                                 }
                             }
                             setCounterValues();
