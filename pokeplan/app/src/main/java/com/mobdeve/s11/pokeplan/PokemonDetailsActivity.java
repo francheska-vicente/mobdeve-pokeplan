@@ -17,10 +17,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 
 public class PokemonDetailsActivity extends AppCompatActivity {
@@ -96,8 +92,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                                 }
                             }
 
-                            initComponents();
-                            initButtons(pkmn);
+                            initComponents(pkmn);
                             setAllComponents(pkmn);
                             pkmn.getPokemonDetails().playPokemonCry();
                         }
@@ -301,6 +296,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
 
         Button btndialogok = editdialog.findViewById(R.id.btn_dialog_stringinput_ok);
         btndialogok.setOnClickListener(v -> {
+            EditText etdialoginput = findViewById(R.id.et_dialog_stringinput);
             pkmn.setNickname(etdialoginput.getText().toString());
                 tvPkmnNickname.setText(pkmn.getNickname());
                 editdialog.dismiss();
