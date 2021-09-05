@@ -184,7 +184,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.btnedit.setOnClickListener(view -> createEditNicknameDialog());
         this.btnrare.setOnClickListener(view -> feedPokemon());
         this.btnsuper.setOnClickListener(view -> evolvePokemon());
-        this.btnRelease.setOnClickListener(v -> createReleasePokemonDialog (v, pkmn));
+        this.btnRelease.setOnClickListener(v -> createReleasePokemonDialog(pkmn));
 
         // sets buttons depending if currently in party or pc
         if (sourceActivity.equals("PARTY")) {
@@ -404,7 +404,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     /**
      * Creates a confirm dialog for when the user wants to release the pokemon.
      */
-    private void createReleasePokemonDialog (View view, UserPokemon pkmn) {
+    private void createReleasePokemonDialog (UserPokemon pkmn) {
         releasePkmnDialog = new CustomDialog(this);
         releasePkmnDialog.setDialogType(CustomDialog.CONFIRM);
 
