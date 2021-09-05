@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_dialog_delete_username_title"
+        android:id="@+id/tv_dialog_twoinputs_one_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -38,41 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_confirm_title" />
 
     <EditText
-        android:id="@+id/et_dialog_delete_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="#000000"
-        android:fontFamily="@font/raleway_semibold"
-        android:inputType="textPassword"
-        android:justificationMode="inter_word"
-        android:textColor="#000000"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_password_title" />
-
-    <TextView
-        android:id="@+id/tv_dialog_password_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="@font/raleway_bold"
-        android:text="Enter your password:"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_delete_email" />
-
-    <EditText
-        android:id="@+id/et_dialog_delete_email"
+        android:id="@+id/et_dialog_twoinputs_one"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -87,10 +53,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_delete_username_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_twoinputs_one_title" />
+
+    <TextView
+        android:id="@+id/tv_dialog_twoinputs_two_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/raleway_bold"
+        android:text="Enter your password:"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_twoinputs_one" />
+
+    <EditText
+        android:id="@+id/et_dialog_twoinputs_two"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#000000"
+        android:fontFamily="@font/raleway_semibold"
+        android:inputType="textPassword"
+        android:justificationMode="inter_word"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_twoinputs_two_title" />
 
     <Button
-        android:id="@+id/btn_delete_account_confirm"
+        android:id="@+id/btn_dialog_twoinputs_confirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -103,12 +103,12 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_delete_account_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_delete_password"
+        app:layout_constraintStart_toEndOf="@+id/btn_dialog_twoinputs_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_twoinputs_two"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/btn_delete_account_cancel"
+        android:id="@+id/btn_dialog_twoinputs_cancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -121,8 +121,8 @@
         android:text="Cancel"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_delete_account_confirm"
+        app:layout_constraintEnd_toStartOf="@+id/btn_dialog_twoinputs_confirm"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_delete_password" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_twoinputs_two" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

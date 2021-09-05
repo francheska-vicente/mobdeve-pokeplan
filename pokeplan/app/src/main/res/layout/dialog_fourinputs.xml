@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_dialog_edit_name_title"
+        android:id="@+id/tv_dialog_fourinput_one_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_dialog_title" />
 
     <EditText
-        android:id="@+id/et_dialog_edit_name"
+        android:id="@+id/et_dialog_fourinput_one"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -53,11 +53,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_edit_name_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_fourinput_one_title" />
 
 
     <TextView
-        android:id="@+id/tv_dialog_edit_username_title"
+        android:id="@+id/tv_dialog_fourinput_two_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -69,43 +69,40 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_edit_name" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_fourinput_one" />
 
     <EditText
-        android:id="@+id/et_dialog_edit_password"
+        android:id="@+id/et_dialog_fourinput_two"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#000000"
         android:fontFamily="@font/raleway_semibold"
-        android:inputType="textPassword"
+        android:inputType="textWebEmailAddress"
         android:justificationMode="inter_word"
         android:textColor="#000000"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_edit_password" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_fourinput_two_title" />
 
     <TextView
-        android:id="@+id/tv_dialog_edit_password"
+        android:id="@+id/tv_dialog_fourinput_three_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="Enter your password:"
+        android:text="Birthday"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_edit_birthday" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_fourinput_two" />
 
     <EditText
-        android:id="@+id/et_dialog_edit_birthday"
+        android:id="@+id/et_dialog_fourinput_three"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -119,40 +116,43 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_edit_birthday_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_fourinput_three_title" />
 
     <TextView
-        android:id="@+id/tv_dialog_edit_birthday_title"
+        android:id="@+id/tv_dialog_fourinput_four_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
         android:fontFamily="@font/raleway_bold"
-        android:text="Birthday"
+        android:text="Enter your password:"
         android:textColor="@color/black"
         android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_edit_username" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_fourinput_three" />
 
     <EditText
-        android:id="@+id/et_dialog_edit_username"
+        android:id="@+id/et_dialog_fourinput_four"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#000000"
         android:fontFamily="@font/raleway_semibold"
-        android:inputType="textWebEmailAddress"
+        android:inputType="textPassword"
         android:justificationMode="inter_word"
         android:textColor="#000000"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_edit_username_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_dialog_fourinput_four_title" />
 
     <Button
-        android:id="@+id/btn_edit_account_confirm"
+        android:id="@+id/btn_dialog_fourinput_confirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -165,12 +165,12 @@
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_edit_account_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_edit_password"
+        app:layout_constraintStart_toEndOf="@+id/btn_dialog_fourinput_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_fourinput_four"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/btn_edit_account_cancel"
+        android:id="@+id/btn_dialog_fourinput_cancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -183,8 +183,8 @@
         android:text="Cancel"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_edit_account_confirm"
+        app:layout_constraintEnd_toStartOf="@+id/btn_dialog_fourinput_confirm"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_edit_password" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_fourinput_four" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
