@@ -1,6 +1,5 @@
 package com.mobdeve.s11.pokeplan.viewholders;
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +21,10 @@ public class PokedexViewHolder extends RecyclerView.ViewHolder {
     private TextView tvpkmndexnum;
     private ConstraintLayout layout;
 
+    /**
+     * Class constructor
+     * @param itemView the layout of a specific item
+     */
     public PokedexViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
 
@@ -31,8 +34,13 @@ public class PokedexViewHolder extends RecyclerView.ViewHolder {
         this.layout = itemView.findViewById(R.id.cl_template_pokedex);
     }
 
+    /**
+     * Sets the pokemon's icon; if not yet caught, the pokemon would be 'hidden'
+     * @param dexnum the pokemon's pokedex number
+     * @param caught if true, the user has caught the pokemon
+     */
     public void setPkmnIcon(int dexnum, boolean caught) {
-        int pic = getImageId(itemView.getContext(), "pkmn_" + dexnum);
+        int pic = getImageId("pkmn_" + dexnum);
         this.ivpkmnicon.setImageResource(pic);
 
         if (!caught) {
@@ -45,20 +53,36 @@ public class PokedexViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    /**
+     * Enables or disables the layout depending if the pokemon was caught before
+     * @param caught if true, the user has caught the pokemon
+     */
     public void setButtonEnabled(boolean caught) {
         layout.setEnabled(caught);
     }
 
+    /**
+     * Sets the pokedex number of the pokemon
+     * @param dexnum the pokemon's pokedex number
+     */
     public void setDexNum(int dexnum) {
         String text = "#" + dexnum;
         this.tvpkmndexnum.setText(text);
     }
 
-    private int getImageId(Context context, String imageName) {
-        return context.getResources().getIdentifier("drawable/" + imageName,
-                null, context.getPackageName());
+    /**
+     * Helper function to get the image ID given the image name.
+     * @param imageName the name of the image
+     * @return the image id of the image
+     */
+    private int getImageId(String imageName) {
+        return itemView.getContext().getResources().getIdentifier("drawable/" + imageName,
+                null, itemView.getContext().getPackageName());
     }
 
+    /**
+     * @return the ConstraintLayout of the template
+     */
     public ConstraintLayout getConstraintLayout() {
         return this.layout;
     }
