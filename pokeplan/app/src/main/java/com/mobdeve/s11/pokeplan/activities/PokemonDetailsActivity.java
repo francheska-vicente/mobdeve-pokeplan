@@ -3,6 +3,7 @@ package com.mobdeve.s11.pokeplan.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -283,7 +284,11 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         this.tvRareCandyCtr.setText(Integer.toString(user.getRareCandy()));
 
         // update progress bar
-        this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
+        if (Build.VERSION.SDK_INT >= 24)
+            this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel(), true);
+        else
+            this.pbPkmnLevel.setProgress(pkmn.getPercentToNextLevel());
+
 
         // disable rare candy button
         if (user.getRareCandy() <= 0 || pkmn.getLevel() >= 100)
@@ -381,9 +386,9 @@ public class PokemonDetailsActivity extends AppCompatActivity {
                 getImageId("pkmn_"+ pkmn.getDetails().getDexNum())
         );
 
-        EditText name = editdialog.findViewById(R.id.et_dialog_stringinput);
+        EditText name = editdialog.findViewById(R.id.et_dialog_oneinput);
 
-        Button btndialogok = editdialog.findViewById(R.id.btn_dialog_stringinput_ok);
+        Button btndialogok = editdialog.findViewById(R.id.btn_dialog_oneinput_ok);
         btndialogok.setOnClickListener(v -> {
             pkmn.setNickname(name.getText().toString());
                 tvPkmnNickname.setText(pkmn.getNickname());
