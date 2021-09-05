@@ -1,6 +1,5 @@
 package com.mobdeve.s11.pokeplan.viewholders;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +18,10 @@ public class PokemonPartyViewHolder extends RecyclerView.ViewHolder {
     private TextView tvpkmnlevel;
     private ConstraintLayout layout;
 
+    /**
+     * Class constructor
+     * @param itemView the layout of a specific item
+     */
     public PokemonPartyViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
 
@@ -28,24 +31,45 @@ public class PokemonPartyViewHolder extends RecyclerView.ViewHolder {
         this.layout = itemView.findViewById(R.id.cl_template_pokemon);
     }
 
+    /**
+     * Sets the pokemon's icon
+     * @param dexnum the pokemon's pokedex number
+     */
     public void setPkmnIcon(int dexnum) {
-        int pic = getImageId(itemView.getContext(), "pkmn_" + dexnum);
+        int pic = getImageId("pkmn_" + dexnum);
         this.ivpkmnicon.setImageResource(pic);
     }
 
+    /**
+     * Sets the pokemon's nickname
+     * @param name the pokemon's nickname
+     */
     public void setPkmnNickname(String name) {
         this.tvpkmnnickname.setText(name);
     }
 
+    /**
+     * Sets the pokemon's level
+     * @param level the pokemon's level
+     */
     public void setPkmnLevel(int level) {
         String text = "Level " + level;
         this.tvpkmnlevel.setText(text);
     }
 
-    private int getImageId(Context context, String imageName) {
-        return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
+    /**
+     * Helper function to get the image ID given the image name.
+     * @param imageName the name of the image
+     * @return the image id of the image
+     */
+    private int getImageId(String imageName) {
+        return itemView.getContext().getResources().getIdentifier("drawable/" + imageName,
+                null, itemView.getContext().getPackageName());
     }
 
+    /**
+     * @return the ConstraintLayout of the template
+     */
     public ConstraintLayout getConstraintLayout() {
         return this.layout;
     }
