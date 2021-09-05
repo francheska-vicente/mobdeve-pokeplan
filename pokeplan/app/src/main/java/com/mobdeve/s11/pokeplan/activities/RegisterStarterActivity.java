@@ -41,7 +41,7 @@ public class RegisterStarterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_starter);
 
-        databaseHelper = new DatabaseHelper();
+        databaseHelper = new DatabaseHelper(false);
 
         pbLoading = findViewById(R.id.pb_register_starter);
         pbLoading.setVisibility(View.GONE);
