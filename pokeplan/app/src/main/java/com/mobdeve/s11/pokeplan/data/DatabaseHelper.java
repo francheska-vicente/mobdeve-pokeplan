@@ -227,38 +227,38 @@ public class DatabaseHelper {
                         pokemonPC.add(list.get(i));
                     }
                 }
+
+                UserPokemon userPokemon;
+                String key = mPokemon.push().getKey();
+
+                if (pokemonParty.size() < 6) {
+                    userPokemon = new UserPokemon(details, true);
+                    userPokemon.setUserPokemonID(key);
+                    pokemonParty.add(userPokemon);
+                }
+                else {
+                    userPokemon = new UserPokemon(details, false);
+                    userPokemon.setUserPokemonID(key);
+                    pokemonPC.add(userPokemon);
+                }
+
+                mPokemon.child(key).setValue(userPokemon)
+                        .addOnCompleteListener(task -> {
+                            ArrayList<UserPokemon> tempPokemon = new ArrayList<>(1);
+                            tempPokemon.add(userPokemon);
+                            if (task.isSuccessful()) {
+                                updateUserPokemon(details, userDetails, checker);
+                                firebaseCallbackPokemon.onCallbackPokemon(tempPokemon, true, "Pokemon was successfully added to the database.");
+                            } else {
+                                firebaseCallbackPokemon.onCallbackPokemon(null, false, "Pokemon was not added to the database.");
+                            }
+                        });
             }
             else {
                 firebaseCallbackPokemon.onCallbackPokemon(null, false, "User's pokemon information was not found.");
                 return;
             }
         });
-
-        UserPokemon userPokemon;
-        String key = mPokemon.push().getKey();
-
-        if (pokemonParty.size() < 6) {
-            userPokemon = new UserPokemon(details, true);
-            userPokemon.setUserPokemonID(key);
-            pokemonParty.add(userPokemon);
-        }
-        else {
-            userPokemon = new UserPokemon(details, false);
-            userPokemon.setUserPokemonID(key);
-            pokemonPC.add(userPokemon);
-        }
-
-        mPokemon.child(key).setValue(userPokemon)
-                .addOnCompleteListener(task -> {
-                    ArrayList<UserPokemon> tempPokemon = new ArrayList<>(1);
-                    tempPokemon.add(userPokemon);
-                    if (task.isSuccessful()) {
-                        updateUserPokemon(details, userDetails, checker);
-                        firebaseCallbackPokemon.onCallbackPokemon(tempPokemon, true, "Pokemon was successfully added to the database.");
-                    } else {
-                        firebaseCallbackPokemon.onCallbackPokemon(null, false, "Pokemon was not added to the database.");
-                    }
-                });
     }
 
     private void updateUserPokemon (Pokemon details, UserDetails userDetails, boolean checker) {
