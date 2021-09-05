@@ -34,13 +34,11 @@ public class PokemonPartyAdapter extends RecyclerView.Adapter<PokemonPartyViewHo
 
         PokemonPartyViewHolder vh = new PokemonPartyViewHolder(view);
 
-        vh.getConstraintLayout().setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), PokemonDetailsActivity.class);
-                i.putExtra(Keys.KEY_POKEMONID.name(), party.get(vh.getBindingAdapterPosition()).getUserPokemonID());
-                i.putExtra(Keys.KEY_FROMWHERE.name(), "PARTY");
-                view.getContext().startActivity(i);
-            }
+        vh.getConstraintLayout().setOnClickListener(view1 -> {
+            Intent i = new Intent(view1.getContext(), PokemonDetailsActivity.class);
+            i.putExtra(Keys.KEY_POKEMONID.name(), party.get(vh.getBindingAdapterPosition()).getUserPokemonID());
+            i.putExtra(Keys.KEY_FROMWHERE.name(), "PARTY");
+            view1.getContext().startActivity(i);
         });
 
         return vh;
