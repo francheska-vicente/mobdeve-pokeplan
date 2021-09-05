@@ -2,12 +2,10 @@ package com.mobdeve.s11.pokeplan.activities;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,13 +17,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,25 +30,24 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobdeve.s11.pokeplan.R;
 import com.mobdeve.s11.pokeplan.data.DatabaseHelper;
-import com.mobdeve.s11.pokeplan.data.FirebaseCallbackTask;
 import com.mobdeve.s11.pokeplan.models.CustomDate;
 import com.mobdeve.s11.pokeplan.models.UserTask;
 import com.mobdeve.s11.pokeplan.services.ReminderBroadcast;
 import com.mobdeve.s11.pokeplan.utils.Keys;
+import com.mobdeve.s11.pokeplan.views.CustomDatePicker;
+import com.mobdeve.s11.pokeplan.views.CustomTimePicker;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
-/*
+/**
  * This activity is used to create a task and to edit an existing task. When editing a task,
  * the fields are pre-filled with information that is saved in the database.
- * */
+ */
 public class AddTaskActivity extends AppCompatActivity {
     private ImageButton ibBack;
 
@@ -116,12 +110,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private void setButtonListeners() {
         ibBack.setOnClickListener(view -> onBackPressed());
 
-        this.cbNotif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkerNotif = !checkerNotif;
-            }
-        });
+        this.cbNotif.setOnClickListener(v -> checkerNotif = !checkerNotif);
     }
 
     /**
@@ -190,20 +179,15 @@ public class AddTaskActivity extends AppCompatActivity {
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes, notif, val, checkerNotif);
         }
 
-        databaseHelper.addOngoingTask(new FirebaseCallbackTask() {
-            @Override
-            public void onCallbackTask(ArrayList<UserTask> list, Boolean isSuccesful, String message) {
-                if (isSuccesful) {
-                    Toast.makeText(AddTaskActivity.this, "Task was added successfully.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(AddTaskActivity.this, "Task was not added to your list of tasks.", Toast.LENGTH_SHORT).show();    
-                }
+        databaseHelper.addOngoingTask((list, isSuccessful, message) -> {
+            if (isSuccessful)
+                Toast.makeText(AddTaskActivity.this, "Task was added successfully.", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(AddTaskActivity.this, "Task was not added to your list of tasks.", Toast.LENGTH_SHORT).show();
 
-                finish();
-            }
+            finish();
         }, taskCreated);
     }
-
 
     /**
      * Converts a priority number to its representing icon
@@ -258,7 +242,7 @@ public class AddTaskActivity extends AppCompatActivity {
         }
 
         // checks the checkbox if the user current opted for notification; unchecks if the user has no set notification for the task
-        Boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
+        boolean notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
         this.checkerNotif = notifOn;
         this.cbNotif.setChecked(notifOn);
 
@@ -268,7 +252,7 @@ public class AddTaskActivity extends AppCompatActivity {
         if (notifOn) {
             String notifTime = intent.getStringExtra(Keys.KEY_NOTIF_WHEN.name());
 
-            Boolean notifWhen = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
+            boolean notifWhen = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
             String temp = "Before End Time";
             if (notifWhen) {
                 temp = "Before Start Time";
@@ -300,15 +284,11 @@ public class AddTaskActivity extends AppCompatActivity {
         CustomDate cEndDate = new CustomDate (endDate, endTime);
         CustomDate cStartDate = new CustomDate(startDate, startTime);
 
-        databaseHelper.editTask(new FirebaseCallbackTask() {
-            @Override
-
-            public void onCallbackTask(ArrayList<UserTask> list, Boolean isSuccesful, String message) {
-                if (isSuccesful) {
-                    Toast.makeText(AddTaskActivity.this, "", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(AddTaskActivity.this, "", Toast.LENGTH_SHORT).show();    
-                }
+        databaseHelper.editTask((list, isSuccessful, message) -> {
+            if (isSuccessful) {
+                Toast.makeText(AddTaskActivity.this, "Task was successfully edited!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(AddTaskActivity.this, "Task was not edited successfully!", Toast.LENGTH_SHORT).show();
             }
         }, name, priority, category, cStartDate, cEndDate, notes, taskID, notif, val, checkerNotif);
 
@@ -346,12 +326,11 @@ public class AddTaskActivity extends AppCompatActivity {
         this.etStartDate = findViewById(R.id.et_add_task_start_date);
         this.etEndDate = findViewById(R.id.et_add_task_end_date);
         this.etEndTime = findViewById(R.id.et_add_task_end_time);
-        tvTitle = findViewById(R.id.tv_add_task_start_title);
-        this.btnCreate = (Button) findViewById(R.id.btn_add_task_create);
+        this.tvTitle = findViewById(R.id.tv_add_task_start_title);
+        this.btnCreate = findViewById(R.id.btn_add_task_create);
         this.cbNotif = findViewById(R.id.cb_add_task_notifs);
         this.spinNotifTime = findViewById(R.id.spin_add_task_notiftime);
         this.spinNotifWhen = findViewById(R.id.spin_add_task_notifwhen);
-
 
         this.checkValuesIfValid();
     }
@@ -376,8 +355,9 @@ public class AddTaskActivity extends AppCompatActivity {
             Date dateEnd = simpleDateFormat.parse(endDate + " " + endTime);
 
             diff = dateEnd.getTime() - dateStart.getTime();
-        } catch (Exception e) {
-
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
         return diff;
@@ -389,199 +369,193 @@ public class AddTaskActivity extends AppCompatActivity {
      */
     private void checkValuesIfValid (){
         Intent intent = getIntent(); // gets the intent if it is for notiication
-        /* If there is no intent, then we can conclude that it is a new task that is being created.
-           If there is an intent from the task details, we can conclude that it is only editing an existing task.
-        * */
+        /*
+           If there is no intent, it is a new task that is being created.
+           Otherwise, it is only editing an existing task.
+        */
         String checker = intent.getStringExtra(Keys.KEY_ID.name());
-        if (intent != null && checker != null) {
+        if (checker != null)
             setValues (intent); // set the values of the fields to the current information from the intent
-        }
 
-        this.btnCreate.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
+        this.btnCreate.setOnClickListener(v -> {
+            String taskName = etTaskName.getText().toString();
+            String taskNotes = etTaskNotes.getText().toString();
+            String startTime = etStartTime.getText().toString();
+            String endTime = etEndTime.getText().toString();
+            String startDate = etStartDate.getText().toString();
+            String endDate = etEndDate.getText().toString();
+            String notif = spinNotifTime.getSelectedItem().toString();
+            String when = spinNotifWhen.getSelectedItem().toString();
 
-                String taskName = etTaskName.getText().toString();
-                String taskNotes = etTaskNotes.getText().toString();
-                String startTime = etStartTime.getText().toString();
-                String endTime = etEndTime.getText().toString();
-                String startDate = etStartDate.getText().toString();
-                String endDate = etEndDate.getText().toString();
-                String notif = spinNotifTime.getSelectedItem().toString();
-                String when = spinNotifWhen.getSelectedItem().toString();
+            boolean val = false;
+            // sets the val to true if the chosen notification is before the start time
+            if(!when.isEmpty() && when.equalsIgnoreCase("Before Start Time")) {
+                val = true;
+            }
 
-                boolean val = false;
-                // sets the val to true if the chosen notification is before the start time
-                if(when != null && !when.isEmpty() && when.equalsIgnoreCase("Before Start Time")) {
-                    val = true;
-                }
-
-                // if the checkbox for the notification is selected, the two spinners must have a value.
-                if (checkerNotif) {
-                    if (notif.isEmpty()) {
-                        ((TextView) spinNotifTime.getSelectedView()).setError("Notification information is required if check box is clicked.");
-                        ((TextView) spinNotifTime.getSelectedView()).requestFocus();
-                        return;
-                    } else if (when.isEmpty()) {
-                        ((TextView) spinNotifWhen.getSelectedView()).setError("Notification information is required if check box is clicked.");
-                        ((TextView) spinNotifWhen.getSelectedView()).requestFocus();
-                        return;
-                    }
-                }
-
-                String error = "";
-                boolean checker = false;
-
-                // checking task name for errors
-                if (taskName.isEmpty()) {
-                    etTaskName.setError("Task name is required!");
-                    etTaskName.requestFocus();
-                    return;
-                } else if (taskName.length() >= 25) {
-                    etTaskName.setError("Length of task name should be from 1 to 25 characters.");
-                    etTaskName.requestFocus();
+            // if the checkbox for the notification is selected, the two spinners have a value.
+            if (checkerNotif) {
+                if (notif.isEmpty()) {
+                    ((TextView) spinNotifTime.getSelectedView()).setError("Notification information is required if check box is clicked.");
+                    spinNotifTime.getSelectedView().requestFocus();
                     return;
                 }
-
-                // checks if the end date is empty
-                if (!endDate.equals("")) {
-                    if (endTime == null || endTime.isEmpty()) {
-                        error = "End time is required";
-                        checker = true;
-                    } else {
-                        if (!startDate.equals("")) {
-                            if (!startTime.equals("")) {
-                                String tempStartDate = startDate;
-                                String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
-
-                                String tempEndDate = endDate;
-                                String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
-
-                                // checks if the startDate is earlier than the endDate
-                                long diff = getDiff(tempEndDate, tempStartDate, tempEndTime, tempStarTime);
-
-                                if (diff < 0) {
-                                    error = "End date should be later than the Start date.";
-                                    checker = true;
-                                } else if (diff == 0) {
-                                    error = "Your task should not start and end at the same day and time!";
-                                    checker = true;
-                                }
-                            }
-                            else {
-                                error = "Start time is required if start date is provided.";
-                                checker = true;
-                            }
-                        }
-
-                        // checks if the endDate is later than the current date
-                        Calendar c = Calendar.getInstance();
-                        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
-
-                        int currentYear = c.get(Calendar.YEAR);
-                        int currentDay = c.get(Calendar.DAY_OF_MONTH);
-                        int currentMonth = c.get(Calendar.MONTH) + 1;
-                        int currentHour = c.get(Calendar.HOUR_OF_DAY);
-                        int currentMinute = c.get(Calendar.MINUTE);
-
-                        String temp = "AM";
-                        if (currentHour >= 12) {
-                            temp = "PM";
-                        }
-
-                        if (currentHour > 12) {
-                            currentHour = currentHour - 12;
-                        }
-
-                        String currentDate = new DecimalFormat("00").format(currentDay) + "." +
-                                new DecimalFormat("00").format(currentMonth) + "." + currentYear;
-                        String currentTime = new DecimalFormat("00").format(currentHour) + ":" +
-                                new DecimalFormat("00").format(currentMinute)+ " " + temp;
-
-                        String tempEndDate = endDate;
-                        String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
-                        long diff = getDiff(tempEndDate, currentDate, tempEndTime, currentTime);
-
-                        if (diff < 0) {
-                            error = "Your end date should be later than the current time and date!";
-                            checker = true;
-                        } else if (diff == 0) {
-                            error = "Your task cannot be currently ending!\n";
-                            checker = true;
-                        }
-                    }
-                } else {
-                    error = "End date is required.";
-                    checker = true;
+                else if (when.isEmpty()) {
+                    ((TextView) spinNotifWhen.getSelectedView()).setError("Notification information is required if check box is clicked.");
+                    spinNotifWhen.getSelectedView().requestFocus();
+                    return;
                 }
+            }
 
-                if (endTime == null || endTime.isEmpty()) {
+            String error = "";
+            boolean checker1 = false;
+
+            // checking task name for errors
+            if (taskName.isEmpty()) {
+                etTaskName.setError("Task name is required!");
+                etTaskName.requestFocus();
+                return;
+            } else if (taskName.length() >= 25) {
+                etTaskName.setError("Length of task name should be from 1 to 25 characters.");
+                etTaskName.requestFocus();
+                return;
+            }
+
+            // checks if the end date is empty
+            if (!endDate.equals("")) {
+                if (endTime.isEmpty()) {
                     error = "End time is required";
-                    checker = true;
-                }
+                    checker1 = true;
+                } else {
+                    if (!startDate.equals("")) {
+                        if (!startTime.equals("")) {
+                            String tempStarTime = startTime.substring(0, 2) + ":" + startTime.substring(3, 8);
 
-                // checks if there is no priority button clicked
-                if (priority == null) {
-                    error = "Priority level for this task is required.\n";
-                    checker = true;
-                }
+                            String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
 
-                // checks if there is no category button clicked
-                if (category == null) {
-                    error = "The category of this task is required\n";
-                    checker = true;
-                }
+                            // checks if the startDate is earlier than the endDate
+                            long diff = getDiff(endDate, startDate, tempEndTime, tempStarTime);
 
-                if (checkerNotif) {
-                    if (val) {
-                        if (startDate.isEmpty()) {
-                            error = "You cannot set the notification to be determined by the start time if start date is empty.";
-                            checker = true;
+                            if (diff < 0) {
+                                error = "End date should be later than the Start date.";
+                                checker1 = true;
+                            } else if (diff == 0) {
+                                error = "Your task should not start and end at the same day and time!";
+                                checker1 = true;
+                            }
+                        }
+                        else {
+                            error = "Start time is required if start date is provided.";
+                            checker1 = true;
                         }
                     }
 
-                    boolean notifs = sp.getBoolean(Keys.KEY_NOTIFS.name(), true);
+                    // checks if the endDate is later than the current date
+                    Calendar c = Calendar.getInstance();
+                    c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
 
-                    if (!notifs) {
-                        error = "You cannot add notifications. If you wish to add notifications, head to settings to allow notifications.";
-                        checker = true;
+                    int currentYear = c.get(Calendar.YEAR);
+                    int currentDay = c.get(Calendar.DAY_OF_MONTH);
+                    int currentMonth = c.get(Calendar.MONTH) + 1;
+                    int currentHour = c.get(Calendar.HOUR_OF_DAY);
+                    int currentMinute = c.get(Calendar.MINUTE);
+
+                    String temp = "AM";
+                    if (currentHour >= 12) {
+                        temp = "PM";
+                    }
+
+                    if (currentHour > 12) {
+                        currentHour = currentHour - 12;
+                    }
+
+                    String currentDate = new DecimalFormat("00").format(currentDay) + "." +
+                            new DecimalFormat("00").format(currentMonth) + "." + currentYear;
+                    String currentTime = new DecimalFormat("00").format(currentHour) + ":" +
+                            new DecimalFormat("00").format(currentMinute)+ " " + temp;
+
+                    String tempEndTime = endTime.substring(0, 2) + ":" + endTime.substring(3, 8);
+                    long diff = getDiff(endDate, currentDate, tempEndTime, currentTime);
+
+                    if (diff < 0) {
+                        error = "Your end date should be later than the current time and date!";
+                        checker1 = true;
+                    } else if (diff == 0) {
+                        error = "Your task cannot be currently ending!\n";
+                        checker1 = true;
+                    }
+                }
+            } else {
+                error = "End date is required.";
+                checker1 = true;
+            }
+
+            if (endTime.isEmpty()) {
+                error = "End time is required";
+                checker1 = true;
+            }
+
+            // checks if there is no priority button clicked
+            if (priority == null) {
+                error = "Priority level for this task is required.\n";
+                checker1 = true;
+            }
+
+            // checks if there is no category button clicked
+            if (category == null) {
+                error = "The category of this task is required\n";
+                checker1 = true;
+            }
+
+            if (checkerNotif) {
+                if (val) {
+                    if (startDate.isEmpty()) {
+                        error = "You cannot set the notification to be determined by the start time if start date is empty.";
+                        checker1 = true;
                     }
                 }
 
-                // if there are no errors found, the information is added/edited to the database
-                if (!checker) {
-                    // if there is an intent from the TaskDetailsActivity, the information is only to be edited from the database
-                    Intent intent = getIntent();
-                    String taskID = intent.getStringExtra(Keys.KEY_ID.name());
-                    if (taskID != null) {
-                        editDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes,
-                                taskID, notif, val);
+                boolean notifs = sp.getBoolean(Keys.KEY_NOTIFS.name(), true);
 
-                        if(checkerNotif) {
-                            if (val) {
-                                setTimer(new CustomDate(startDate, startTime), notif, true);
-                            } else {
-                                deleteTimer();
-                                setTimer(new CustomDate(endDate, endTime), notif, false);
-                            }
+                if (!notifs) {
+                    error = "You cannot add notifications. If you wish to add notifications, head to settings to allow notifications.";
+                    checker1 = true;
+                }
+            }
+
+            // if there are no errors found, the information is added/edited to the database
+            if (!checker1) {
+                // if there is an intent from the TaskDetailsActivity, the information is only to be edited from the database
+                Intent intent1 = getIntent();
+                String taskID = intent1.getStringExtra(Keys.KEY_ID.name());
+                if (taskID != null) {
+                    editDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes,
+                            taskID, notif, val);
+
+                    if(checkerNotif) {
+                        if (val) {
+                            setTimer(new CustomDate(startDate, startTime), notif, true);
                         } else {
                             deleteTimer();
+                            setTimer(new CustomDate(endDate, endTime), notif, false);
                         }
-
                     } else {
-                        addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
-                        if(checkerNotif) {
-                            if (val) {
-                                setTimer(new CustomDate(startDate, startTime), notif, true);
-                            } else {
-                                setTimer(new CustomDate(endDate, endTime), notif, false);
-                            }
+                        deleteTimer();
+                    }
+
+                } else {
+                    addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
+                    if(checkerNotif) {
+                        if (val) {
+                            setTimer(new CustomDate(startDate, startTime), notif, true);
+                        } else {
+                            setTimer(new CustomDate(endDate, endTime), notif, false);
                         }
                     }
-                } else { // if there are errors found, the error dialog should be shown with an error message
-                    setErrorDialog (error, v);
                 }
+            } else { // if there are errors found, the error dialog should be shown with an error message
+                setErrorDialog (error, v);
             }
         });
     }
@@ -601,18 +575,13 @@ public class AddTaskActivity extends AppCompatActivity {
         errorDialog.getWindow().setLayout(width, height);
         errorDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-        TextView tvdialogtitle = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_title);
+        TextView tvdialogtitle = errorDialog.findViewById(R.id.tv_dialog_error_title);
         tvdialogtitle.setText("Invalid input!");
-        TextView tvdialogtext = (TextView) errorDialog.findViewById(R.id.tv_dialog_error_text);
+        TextView tvdialogtext = errorDialog.findViewById(R.id.tv_dialog_error_text);
         tvdialogtext.setText(error);
 
-        Button btndialogerror = (Button) errorDialog.findViewById(R.id.btn_dialog_error);
-        btndialogerror.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                errorDialog.dismiss();
-            }
-        });
+        Button btndialogerror = errorDialog.findViewById(R.id.btn_dialog_error);
+        btndialogerror.setOnClickListener(v1 -> errorDialog.dismiss());
         errorDialog.show();
     }
 
@@ -627,26 +596,22 @@ public class AddTaskActivity extends AppCompatActivity {
         for(int i = 0; i < clPriority.getChildCount(); i++){
             View v = clPriority.getChildAt(i);
             if(v instanceof Button){
-                btnPriority.add((Button) v);
-                btnPriority.get(i).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Button b = (Button) v;
-                        priority = b.getText().toString();
+                btnPriority.add(v);
+                btnPriority.get(i).setOnClickListener(v1 -> {
+                    Button b = (Button) v1;
+                    priority = b.getText().toString();
 
-                        ConstraintLayout clPriority = findViewById(R.id.cl_add_task_priority);
-                        for(int i = 0; i < clPriority.getChildCount(); i++) {
-                            View view = clPriority.getChildAt(i);
-                            if(view instanceof Button && !view.equals(v)) {
-                                Drawable buttonDrawable = view.getBackground();
-                                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.lighter_gray) );
-                                view.setBackground(buttonDrawable);
-                            } else if (view.equals(v)) {
-                                Drawable buttonDrawable = v.getBackground();
-                                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.pink_button));
-                                v.setBackground(buttonDrawable);
-                            }
+                    for(int i1 = 0; i1 < clPriority.getChildCount(); i1++) {
+                        View view = clPriority.getChildAt(i1);
+                        if(view instanceof Button && !view.equals(v1)) {
+                            Drawable buttonDrawable = view.getBackground();
+                            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.lighter_gray) );
+                            view.setBackground(buttonDrawable);
+                        } else if (view.equals(v1)) {
+                            Drawable buttonDrawable = v1.getBackground();
+                            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.pink_button));
+                            v1.setBackground(buttonDrawable);
                         }
                     }
                 });
@@ -665,26 +630,22 @@ public class AddTaskActivity extends AppCompatActivity {
         for(int i = 0; i < clCategory.getChildCount(); i++){
             View v = clCategory.getChildAt(i);
             if(v instanceof Button){
-                btnCategory.add((Button) v);
-                btnCategory.get(i).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Button b = (Button) v;
-                        category = b.getText().toString();
+                btnCategory.add(v);
+                btnCategory.get(i).setOnClickListener(v1 -> {
+                    Button b = (Button) v1;
+                    category = b.getText().toString();
 
-                        ConstraintLayout clPriority = findViewById(R.id.cl_add_task_category);
-                        for(int i = 0; i < clPriority.getChildCount(); i++) {
-                            View view = clPriority.getChildAt(i);
-                            if(view instanceof Button && !view.equals(v)) {
-                                Drawable buttonDrawable = view.getBackground();
-                                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.lighter_gray) );
-                                view.setBackground(buttonDrawable);
-                            } else if (view.equals(v)) {
-                                Drawable buttonDrawable = v.getBackground();
-                                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.pink_button));
-                                v.setBackground(buttonDrawable);
-                            }
+                    for(int i1 = 0; i1 < clCategory.getChildCount(); i1++) {
+                        View view = clCategory.getChildAt(i1);
+                        if(view instanceof Button && !view.equals(v1)) {
+                            Drawable buttonDrawable = view.getBackground();
+                            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.lighter_gray));
+                            view.setBackground(buttonDrawable);
+                        } else if (view.equals(v1)) {
+                            Drawable buttonDrawable = v1.getBackground();
+                            buttonDrawable = DrawableCompat.wrap(buttonDrawable);
+                            DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.pink_button));
+                            v1.setBackground(buttonDrawable);
                         }
                     }
                 });
@@ -697,188 +658,23 @@ public class AddTaskActivity extends AppCompatActivity {
      * Also set the values the Activity is to be used for editing.
      */
     private void initCalendar () {
-        EditText startDate = (EditText) findViewById(R.id.et_add_task_start_date);
-        Calendar calendarStart = Calendar.getInstance();
-
-        DatePickerDialog.OnDateSetListener dateStart = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month,
-                                  int day) {
-                calendarStart.set(Calendar.YEAR, year);
-                calendarStart.set(Calendar.MONTH, month);
-                calendarStart.set(Calendar.DAY_OF_MONTH, day);
-
-                String myFormat = "dd.MM.yyyy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
-
-                startDate.setText(sdf.format(calendarStart.getTime()));
-            }
-        };
-
-        int month = Calendar.getInstance().get(Calendar.MONTH);
-        int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-
-        DecimalFormat format = new DecimalFormat("00");
-
         Intent intent = getIntent();
         String sStartDate = intent.getStringExtra(Keys.KEY_C_START_DATE.name());
-        if (sStartDate != null && !sStartDate.isEmpty()) {
-            String [] temp = sStartDate.split("\\.");
-            day = Integer.parseInt(temp[0]);
-            month = Integer.parseInt(temp[1]) - 1;
-
-            startDate.setText(format.format(day) + "." + format.format(month + 1) + "." + temp[2]);
-        }
-
-        int finalSYear = year;
-        int finalSDay = day;
-        int finalSMonth = month;
-        startDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(AddTaskActivity.this, dateStart, finalSYear, finalSMonth,
-                        finalSDay).show();
-            }
-        });
-
-        EditText endDate = (EditText) findViewById(R.id.et_add_task_end_date);
-        Calendar calendarEnd = Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener dateEnd = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month,
-                                  int day) {
-                calendarEnd.set(Calendar.YEAR, year);
-                calendarEnd.set(Calendar.MONTH, month);
-                calendarEnd.set(Calendar.DAY_OF_MONTH, day);
-
-                String myFormat = "dd.MM.yyyy";
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ROOT);
-
-                endDate.setText(sdf.format(calendarEnd.getTime()));
-            }
-
-        };
-
-        month = Calendar.getInstance().get(Calendar.MONTH);
-        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        year = Calendar.getInstance().get(Calendar.YEAR);
-
         String sEndDate = intent.getStringExtra(Keys.KEY_C_END_DATE.name());
-        if (sStartDate != null && !sEndDate.isEmpty()) {
-            String [] temp = sEndDate.split("\\.");
-            day = Integer.parseInt(temp[0]);
-            month = Integer.parseInt(temp[1]) - 1;
+        String sStartTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
+        String sEndTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
 
-            endDate.setText(format.format(day) + "." + format.format(month + 1) + "." + temp[2]);
-        }
+        EditText startDate = findViewById(R.id.et_add_task_start_date);
+        EditText endDate = findViewById(R.id.et_add_task_end_date);
 
-        int finalYear = year;
-        int finalMonth = month;
-        int finalDay = day;
-        endDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(AddTaskActivity.this, dateEnd, finalYear, finalMonth,
-                        finalDay).show();
-            }
-        });
+        new CustomDatePicker().createDatePicker(this, startDate, sStartDate);
+        new CustomDatePicker().createDatePicker(this, endDate, sEndDate);
 
-        EditText startTime = (EditText) findViewById(R.id.et_add_task_start_time);
-        TimePickerDialog.OnTimeSetListener timeStart = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String date = hourOfDay + ":" + minute;
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                try {
-                    Date tempDate = sdf.parse(date);
-                    sdf = new SimpleDateFormat("hh:mm aa");
-                    startTime.setText(sdf.format(tempDate));
+        EditText startTime = findViewById(R.id.et_add_task_start_time);
+        EditText endTime = findViewById(R.id.et_add_task_end_time);
 
-                } catch (ParseException e) {
-                }
-            }
-        };
-
-        int hour = 0;
-        int minute = 0;
-
-        String sTime = intent.getStringExtra(Keys.KEY_C_START_TIME.name());
-        if (sTime != null && !sTime.isEmpty()) {
-            String [] temp = sTime.split(":");
-            hour = Integer.parseInt(temp[0]);
-            minute = Integer.parseInt(temp[1]);
-
-            int tempHour = hour;
-            String tempM = "AM";
-            if (hour > 12) {
-                tempHour = hour - 12;
-                tempM = "PM";
-            } else if (hour == 0) {
-                tempHour = 12;
-            } else if (hour == 12) {
-                tempM = "PM";
-            }
-
-            startTime.setText(format.format(tempHour) + ":" + format.format(minute) + " " + tempM);
-        }
-
-        int finalSHour = hour;
-        int finalSMinute = minute;
-        startTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new TimePickerDialog(AddTaskActivity.this, timeStart, finalSHour, finalSMinute, false).show();
-            }
-        });
-
-        EditText endTime = (EditText) findViewById(R.id.et_add_task_end_time);
-        TimePickerDialog.OnTimeSetListener timeEnd = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String date = hourOfDay + ":" + minute;
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                try {
-                    Date tempDate = sdf.parse(date);
-                    sdf = new SimpleDateFormat("hh:mm aa");
-                    endTime.setText(sdf.format(tempDate));
-
-                } catch (ParseException e) {
-                }
-            }
-        };
-
-        hour = 0;
-        minute = 0;
-
-        String eTime = intent.getStringExtra(Keys.KEY_C_END_TIME.name());
-        if (eTime != null && !eTime.isEmpty()) {
-            String [] temp = eTime.split(":");
-            hour = Integer.parseInt(temp[0]);
-            minute = Integer.parseInt(temp[1]);
-            int tempHour = hour;
-            String tempM = "AM";
-            if (hour > 12) {
-                tempHour = hour - 12;
-                tempM = "PM";
-            } else if (hour == 0) {
-                tempHour = 12;
-            } else if (hour == 12) {
-                tempM = "PM";
-            }
-
-            endTime.setText(format.format(tempHour) + ":" + format.format(minute) + " " + tempM);
-        }
-
-        int finalEHour = hour;
-        int finalEMinute = minute;
-
-        endTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new TimePickerDialog(AddTaskActivity.this, timeEnd, finalEHour, finalEMinute, false).show();
-            }
-        });
+        new CustomTimePicker().createTimePicker(this, startTime, sStartTime);
+        new CustomTimePicker().createTimePicker(this, endTime, sEndTime);
     }
 
     /**
@@ -899,18 +695,16 @@ public class AddTaskActivity extends AppCompatActivity {
 
         cbNotif = findViewById(R.id.cb_add_task_notifs);
         cbNotif.setChecked(true);
-        cbNotif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (cbNotif.isChecked()) {
-                    spinNotifTime.setEnabled(true);
-                    spinNotifWhen.setEnabled(true);
-                }
-                else {
-                spinNotifTime.setEnabled(false);
-                spinNotifWhen.setEnabled(false);
-             }
-        }});
+        cbNotif.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (cbNotif.isChecked()) {
+                spinNotifTime.setEnabled(true);
+                spinNotifWhen.setEnabled(true);
+            }
+            else {
+            spinNotifTime.setEnabled(false);
+            spinNotifWhen.setEnabled(false);
+         }
+    });
     }
 
     /**
