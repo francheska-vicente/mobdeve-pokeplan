@@ -21,16 +21,15 @@ import com.mobdeve.s11.pokeplan.adapters.PokemonPartyAdapter;
 import com.mobdeve.s11.pokeplan.data.DatabaseHelper;
 import com.mobdeve.s11.pokeplan.models.UserDetails;
 import com.mobdeve.s11.pokeplan.models.UserPokemon;
-import com.mobdeve.s11.pokeplan.models.UserTask;
 
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
+    private ConstraintLayout clComponents;
+
     private ArrayList<UserPokemon> pokemonPartyList;
     private RecyclerView rvPokemonParty;
     private PokemonPartyAdapter ppAdapter;
-
-    private ConstraintLayout clComponents;
 
     private ImageButton ibUserProfile;
     private ImageButton ibPokemonPC;
@@ -42,7 +41,6 @@ public class HomeFragment extends Fragment {
 
     private ProgressBar pbLoading;
 
-    private String userID;
     private UserDetails user;
     private int ongoingTaskNum;
     private DatabaseHelper helper;
@@ -62,10 +60,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        helper = new DatabaseHelper();
 
         this.loadingScreen(view);
-        this.initInfo(view);
         return view;
     }
 
@@ -78,73 +74,61 @@ public class HomeFragment extends Fragment {
         this.pbLoading.setVisibility(View.VISIBLE);
         this.clComponents = view.findViewById(R.id.cl_home_components);
         this.clComponents.setVisibility(View.INVISIBLE);
+
+        this.initComponents(view);
     }
 
     /**
      * Sets the view components for when the data has finished loading
      */
-    private void finishLoading(View view) {
-        this.initComponents(view);
-
+    private void finishLoading() {
         pbLoading.setVisibility(View.GONE);
         clComponents.setVisibility(View.VISIBLE);
     }
 
     /**
-     * Gets all pokemon in the party
-     * @
+     * Retrieves all needed information from the database
      */
-    private void loadPokemonData(ArrayList<UserPokemon> list) {
-        for (int i = 0; i < list.size (); i++) {
-            if (list.get(i).isInParty()) {
-                pokemonPartyList.add(list.get(i));
-            }
-        }
-    }
-
-    /**
-     * Gets the number of ongoing tasks
-     */
-    private void loadTaskData(ArrayList<UserTask> list) {
-        ongoingTaskNum = 0;
-        for (int i = 0; i < list.size(); i++)
-            if (!list.get(i).getIsFinished())
-                ongoingTaskNum++;
-    }
-
-    /**
-     * Retrieves information from the database.
-     * */
-    private void initInfo(View view) {
-        rvPokemonParty = view.findViewById(R.id.rv_home_party);
-        setRecyclerView();
-
+    private void initInfo(){
+        helper = new DatabaseHelper();
         helper.getPokemon((list, isSuccessful, message) -> {
             pokemonPartyList = new ArrayList<>(6);
             if (isSuccessful) {
-                loadPokemonData(list);
+                for (int i = 0; i < list.size (); i++) {
+                    if (list.get(i).isInParty()) {
+                        pokemonPartyList.add(list.get(i));
+                    }
+                }
                 ppAdapter.setPokemonParty(pokemonPartyList);
 
-                helper.getUserDetails((userDetails, isSuccessful2, message2) -> {
-                    if(isSuccessful) {
+                helper.getUserDetails((userDetails, isSuccessful1, message1) -> {
+                    if(isSuccessful1) {
                         user = userDetails;
-                        helper.getTasks((tasks, isSuccesful, message1) -> {
-                            loadTaskData(tasks);
+
+                        helper.getTasks((list1, isSuccessful2, message2) -> {
+                            for(int i = 0; i < list1.size(); i++) {
+                                if (!list1.get(i).getIsFinished()) {
+                                    ongoingTaskNum++;
+                                }
+                            }
                             setCounterValues();
-                            finishLoading(view);
+                            finishLoading();
                         });
                     }
                 });
             }
         });
-
     }
+
 
     /**
      * Initializes the layout's components
      * @param view the view of the fragment
      */
     private void initComponents(View view) {
+        this.rvPokemonParty = view.findViewById(R.id.rv_home_party);
+        this.setRecyclerView();
+
         this.ibUserProfile = view.findViewById(R.id.ib_home_user);
         this.ibPokemonPC = view.findViewById(R.id.ib_home_pc);
         this.setButtonListeners();
@@ -153,6 +137,9 @@ public class HomeFragment extends Fragment {
         this.tvRareCandyCtr = view.findViewById(R.id.tv_home_rarecandycount);
         this.tvSuperCandyCtr = view.findViewById(R.id.tv_home_supercandycount);
         this.tvPokedexCtr = view.findViewById(R.id.tv_home_pokedexcount);
+
+        this.ongoingTaskNum = 0;
+        this.initInfo();
     }
 
     /**
@@ -196,8 +183,8 @@ public class HomeFragment extends Fragment {
 
     /**
      * Helper function to convert counter values
-     * @param value
-     * @return
+     * @param value the number to convert
+     * @return the formatted value
      */
     private String formatCounter(int value) {
         if (value > 999)
@@ -208,6 +195,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        initComponents(getView());
+        loadingScreen(getView());
     }
 }
