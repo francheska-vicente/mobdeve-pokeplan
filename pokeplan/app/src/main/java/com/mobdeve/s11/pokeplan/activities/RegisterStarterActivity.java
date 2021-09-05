@@ -1,6 +1,5 @@
 package com.mobdeve.s11.pokeplan.activities;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,20 +11,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.mobdeve.s11.pokeplan.R;
 import com.mobdeve.s11.pokeplan.data.DatabaseHelper;
-import com.mobdeve.s11.pokeplan.data.FirebaseCallbackPokemon;
-import com.mobdeve.s11.pokeplan.data.FirebaseCallbackUser;
 import com.mobdeve.s11.pokeplan.models.CustomDate;
 import com.mobdeve.s11.pokeplan.models.Pokedex;
 import com.mobdeve.s11.pokeplan.models.Pokemon;
 import com.mobdeve.s11.pokeplan.models.UserDetails;
-import com.mobdeve.s11.pokeplan.models.UserPokemon;
 import com.mobdeve.s11.pokeplan.utils.Keys;
 
 import java.util.ArrayList;
 
 public class RegisterStarterActivity extends AppCompatActivity {
-    private ImageButton btnregisterstartback;
-    private ArrayList<ImageButton> btnspkmn;
     private ProgressBar pbLoading;
 
     private static final int[] BUTTON_IDS = {
@@ -33,8 +27,6 @@ public class RegisterStarterActivity extends AppCompatActivity {
             R.id.ib_pkmn6, R.id.ib_pkmn7, R.id.ib_pkmn8, R.id.ib_pkmn9, R.id.ib_pkmn10,
             R.id.ib_pkmn11, R.id.ib_pkmn12, R.id.ib_pkmn13, R.id.ib_pkmn14, R.id.ib_pkmn15,
     };
-
-    private Dialog successDialog;
 
     private String name;
     private String email;
@@ -58,6 +50,9 @@ public class RegisterStarterActivity extends AppCompatActivity {
         initPkmnBtns();
     }
 
+    /**
+     * Gets the values set by the user in the previous activity
+     */
     private void initValues () {
         Intent intent = getIntent();
         this.name =  intent.getStringExtra(Keys.KEY_NAME.name());
@@ -67,14 +62,10 @@ public class RegisterStarterActivity extends AppCompatActivity {
         this.birthday = intent.getStringExtra(Keys.KEY_BIRTHDAY.name());
     }
 
+
     private void initBackBtn() {
-        btnregisterstartback = findViewById(R.id.ib_register_s_back);
-        btnregisterstartback.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), RegisterActivity.class);
-                view.getContext().startActivity(i);
-            }
-        });
+        ImageButton btnregisterstartback = findViewById(R.id.ib_register_s_back);
+        btnregisterstartback.setOnClickListener(view -> onBackPressed());
     }
 
     private void registerUser (int pokeNum) {
@@ -89,35 +80,29 @@ public class RegisterStarterActivity extends AppCompatActivity {
         UserDetails user = new UserDetails (name, email, username, pokeNum, customDate);
         user.setCaught(pokeNum);
 
-        databaseHelper.addUser(new FirebaseCallbackUser() {
-            @Override
-            public void onCallbackUser(UserDetails userDetails, Boolean isSuccessful, String message) {
-                if (isSuccessful) {
-                    Pokemon pokemon = Pokedex.getPokedex().getPokemon(pokeNum);
+        databaseHelper.addUser((userDetails, isSuccessful, message) -> {
+            if (isSuccessful) {
+                Pokemon pokemon = Pokedex.getPokedex().getPokemon(pokeNum);
 
-                    databaseHelper.addPokemon(new FirebaseCallbackPokemon() {
-                        @Override
-                        public void onCallbackPokemon(ArrayList<UserPokemon> list, Boolean isSuccessful, String message) {
-                            if (isSuccessful) {
-                                Toast.makeText(RegisterStarterActivity.this, "User's information has been registered!",
-                                        Toast.LENGTH_LONG).show();
-                                pbLoading.setVisibility(View.GONE);
-                                finish();
+                databaseHelper.addPokemon((list, isSuccessful1, message1) -> {
+                    if (isSuccessful1) {
+                        Toast.makeText(RegisterStarterActivity.this, "User's information has been registered!",
+                                Toast.LENGTH_LONG).show();
+                        pbLoading.setVisibility(View.GONE);
+                        finish();
 
-                                Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(RegisterStarterActivity.this, "User's pokemon information has not been registered!",
-                                        Toast.LENGTH_LONG).show();
-                                pbLoading.setVisibility(View.GONE);
-                            }
-                        }
-                    }, false, pokemon, user);
-                } else {
-                    Toast.makeText(RegisterStarterActivity.this, "User's information has not been registered!",
-                            Toast.LENGTH_LONG).show();
-                    pbLoading.setVisibility(View.GONE);
-                }
+                        Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(RegisterStarterActivity.this, "User's pokemon information has not been registered!",
+                                Toast.LENGTH_LONG).show();
+                        pbLoading.setVisibility(View.GONE);
+                    }
+                }, false, pokemon, user);
+            } else {
+                Toast.makeText(RegisterStarterActivity.this, "User's information has not been registered!",
+                        Toast.LENGTH_LONG).show();
+                pbLoading.setVisibility(View.GONE);
             }
         }, user, this.password);
 
@@ -126,15 +111,13 @@ public class RegisterStarterActivity extends AppCompatActivity {
     }
 
     private void initPkmnBtns() {
-        btnspkmn = new ArrayList<>();
+        ArrayList<ImageButton> btnspkmn = new ArrayList<>();
         for(int id : BUTTON_IDS) {
             ImageButton button = findViewById(id);
-            button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    int pokeNum = Integer.valueOf((String) view.getTag ());
-                    pbLoading.setVisibility(View.VISIBLE);
-                    registerUser (pokeNum);
-                }
+            button.setOnClickListener(view -> {
+                int pokeNum = Integer.valueOf((String) view.getTag ());
+                pbLoading.setVisibility(View.VISIBLE);
+                registerUser (pokeNum);
             });
             btnspkmn.add(button);
         }
