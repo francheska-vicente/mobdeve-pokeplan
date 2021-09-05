@@ -127,7 +127,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         String pkmnid = intent.getStringExtra(Keys.KEY_POKEMONID.name());
         sourceActivity = intent.getStringExtra(Keys.KEY_FROMWHERE.name());
 
-        databaseHelper = new DatabaseHelper();
+        databaseHelper = new DatabaseHelper(true);
         databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> {
             if(isSuccessful) {
                 user = userDetails;
@@ -446,13 +446,5 @@ public class PokemonDetailsActivity extends AppCompatActivity {
     private void playPkmnCry(Pokemon pkmn) {
         if (soundEnabled)
             pkmn.playPokemonCry();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (!pkmnWasDeleted)
-            databaseHelper.updatePokemon((list, isSuccessful, message) -> {}, pkmn, user);
     }
 }
