@@ -19,7 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.mobdeve.s11.pokeplan.R;
 import com.mobdeve.s11.pokeplan.data.DatabaseHelper;
+import com.mobdeve.s11.pokeplan.data.FirebaseCallbackTask;
 import com.mobdeve.s11.pokeplan.models.UserDetails;
+import com.mobdeve.s11.pokeplan.models.UserTask;
 import com.mobdeve.s11.pokeplan.utils.Keys;
 import com.mobdeve.s11.pokeplan.views.CustomDialog;
 
@@ -382,7 +384,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
             confirmDelete.dismiss();
             databaseHelper.deleteTask(new FirebaseCallbackTask() {
                 @Override
-                public void onCallbackTask(ArrayList<Task> list, Boolean isSuccesful, String message) {
+                public void onCallbackTask(ArrayList<UserTask> list, Boolean isSuccesful, String message) {
                     finish();
 
                     if (isSuccesful) {
