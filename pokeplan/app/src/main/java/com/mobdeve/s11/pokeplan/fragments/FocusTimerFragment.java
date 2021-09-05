@@ -88,7 +88,7 @@ public class FocusTimerFragment extends Fragment implements SensorEventListener 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_focustimer, container, false);
 
-        databaseHelper = new DatabaseHelper();
+        databaseHelper = new DatabaseHelper(true);
         databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> user = userDetails);
 
         this.initComponents(view);
