@@ -21,6 +21,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
     private final ConstraintLayout layout;
 
     /**
+     * Class constructor
      * @param itemView the layout of a specific item
      */
     public TaskViewHolder(@NonNull @NotNull View itemView) {
