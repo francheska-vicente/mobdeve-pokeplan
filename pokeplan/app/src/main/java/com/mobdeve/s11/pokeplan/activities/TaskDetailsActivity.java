@@ -127,9 +127,11 @@ public class TaskDetailsActivity extends AppCompatActivity {
         ImageButton btnback = findViewById(R.id.ib_taskdetails_back);
         btnback.setOnClickListener(view -> onBackPressed());
 
-        this.btnFinishTask.setOnClickListener(v -> createConfirmFinishDialog());
         this.ibDeleteTask.setOnClickListener(v -> createDeleteTaskDialog());
         this.ibEditTask.setOnClickListener(v -> editTaskDetails());
+        this.btnFinishTask.setOnClickListener(v -> createConfirmFinishDialog());
+        if (isFinished)
+            this.btnFinishTask.setVisibility(View.GONE);
     }
 
     /**
