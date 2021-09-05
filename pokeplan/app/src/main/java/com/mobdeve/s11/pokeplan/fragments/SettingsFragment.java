@@ -70,7 +70,7 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        this.databaseHelper = new DatabaseHelper();
+        this.databaseHelper = new DatabaseHelper(true);
         initInfo(view);
 
         this.sp = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
