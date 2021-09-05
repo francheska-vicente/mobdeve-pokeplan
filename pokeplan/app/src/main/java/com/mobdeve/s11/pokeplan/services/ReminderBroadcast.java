@@ -23,8 +23,10 @@ public class ReminderBroadcast extends BroadcastReceiver {
         notifBuilder.setAutoCancel(true);
         notifBuilder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
 
+        int requestCode = intent.getIntExtra("NOTIF_CODE", 1);
+
         NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(context);
-        notificationCompat.notify((int) System.currentTimeMillis(), notifBuilder.build());
+        notificationCompat.notify(requestCode, notifBuilder.build());
     }
 
 }
