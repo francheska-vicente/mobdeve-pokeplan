@@ -30,7 +30,7 @@ public class PokemonPCActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemonpc);
-        databaseHelper = new DatabaseHelper();
+        databaseHelper = new DatabaseHelper(true);
 
         this.initComponents();
     }
