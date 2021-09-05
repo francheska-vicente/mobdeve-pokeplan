@@ -62,12 +62,34 @@ public class RegisterStarterActivity extends AppCompatActivity {
         this.birthday = intent.getStringExtra(Keys.KEY_BIRTHDAY.name());
     }
 
-
+    /**
+     * Initializes and sets the listener of the back button
+     */
     private void initBackBtn() {
         ImageButton btnregisterstartback = findViewById(R.id.ib_register_s_back);
         btnregisterstartback.setOnClickListener(view -> onBackPressed());
     }
 
+    /**
+     * Initializes and sets the listeners of the starter pokemon buttons
+     */
+    private void initPkmnBtns() {
+        ArrayList<ImageButton> btnspkmn = new ArrayList<>();
+        for(int id : BUTTON_IDS) {
+            ImageButton button = findViewById(id);
+            button.setOnClickListener(view -> {
+                int pokeNum = Integer.valueOf((String) view.getTag ());
+                pbLoading.setVisibility(View.VISIBLE);
+                registerUser (pokeNum);
+            });
+            btnspkmn.add(button);
+        }
+    }
+
+    /**
+     * Registers the user and adds the user information to the database
+     * @param pokeNum the pokedex number of the chosen starter pokemon
+     */
     private void registerUser (int pokeNum) {
         String [] stringBirthday = birthday.split("\\.");
 
@@ -108,18 +130,5 @@ public class RegisterStarterActivity extends AppCompatActivity {
 
         Intent intent = new Intent(RegisterStarterActivity.this, InitActivity.class);
         startActivity(intent);
-    }
-
-    private void initPkmnBtns() {
-        ArrayList<ImageButton> btnspkmn = new ArrayList<>();
-        for(int id : BUTTON_IDS) {
-            ImageButton button = findViewById(id);
-            button.setOnClickListener(view -> {
-                int pokeNum = Integer.valueOf((String) view.getTag ());
-                pbLoading.setVisibility(View.VISIBLE);
-                registerUser (pokeNum);
-            });
-            btnspkmn.add(button);
-        }
     }
 }
