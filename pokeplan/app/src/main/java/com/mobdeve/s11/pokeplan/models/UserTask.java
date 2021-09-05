@@ -105,63 +105,101 @@ public class UserTask {
     }
 
     /**
-     * @return the priority level of the task
+     * @return  true if notification is before start time;
+     *          otherwise, notification is before end time
      */
     public boolean getBeforeStartTime () {
         return this.beforeStartTime;
     }
 
     /**
-     * @return the priority level of the task
+     * @return the number of minutes until the notification time
      */
     public String getNotifWhen () {
         return this.notifWhen;
     }
 
+    /**
+     * @return  true if notifications are on for this task;
+     *          otherwise, notifications are off
+     */
     public boolean getIsNotif () {
         return this.isNotif;
     }
 
+    /**
+     * @param name the name of the task
+     */
     public void setTaskName (String name) {
         this.taskName = name;
     }
 
+    /**
+     * @param priority the priority level of the task
+     */
     public void setPriority (int priority) {
         this.priority = priority;
     }
 
+    /**
+     * @param category the category of the task
+     */
     public void setCategory (String category) {
         this.category = category;
     }
 
+    /**
+     * @param startDate the start date and time of the task
+     */
     public void setStartDate (CustomDate startDate) {
         this.startDate = startDate;
     }
 
+    /**
+     * @param endDate the end date and time of the task
+     */
     public void setEndDate (CustomDate endDate) {
         this.endDate = endDate;
     }
 
+    /**
+     * @param description the description of the task
+     */
     public void setDescription (String description) {
         this.description = description;
     }
 
+    /**
+     * @param finished true if the task is finished; otherwise, task is not finished
+     */
     public void setIsFinished(boolean finished) {
         this.isFinished = finished;
     }
 
+    /**
+     * @param ID the ID of the task
+     */
     public void setTaskID (String ID) {
         this.taskID = ID;
     }
 
+    /**
+     * @param isNotif true if notifications are on for this task; otherwise, notifications are off
+     */
     public void setIsNotif (boolean isNotif) {
         this.isNotif = isNotif;
     }
 
+    /**
+     * @param when true if notification is before start time; otherwise, notification is before end time
+     */
     public void setBeforeStartTime (boolean when) {
         this.beforeStartTime = when;
     }
 
+    /**
+     * @param when the number of minutes until the notification time
+     */
     public void setNotifWhen (String when) {
         this.notifWhen = when;
     }
