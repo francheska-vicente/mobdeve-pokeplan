@@ -47,7 +47,7 @@ public class UserProfileActivity extends AppCompatActivity {
      * Retrieves user information from the database
      */
     private void initInfo () {
-        databaseHelper = new DatabaseHelper();
+        databaseHelper = new DatabaseHelper(true);
         databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> {
             if (isSuccessful) {
                 user = userDetails;
