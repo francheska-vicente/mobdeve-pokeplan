@@ -771,7 +771,7 @@ public class AddTaskActivity extends AppCompatActivity {
         intent.putExtra("TASKNAME", etTaskName.getText().toString().trim());
         intent.putExtra("NOTIF_MESSAGE", message);
         intent.putExtra("NOTIF_CODE", requestCode);
-        
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
 
         // sets the notification time and date
