@@ -76,7 +76,7 @@ public class TaskListFragment extends Fragment {
      * @param view the View of the fragment
      */
     private void initInfo(View view) {
-        databaseHelper = new DatabaseHelper();
+        databaseHelper = new DatabaseHelper(true);
         databaseHelper.getTasks((list, isSuccesful, message) -> {
             classifyTasks(list);
             initComponents(view);
