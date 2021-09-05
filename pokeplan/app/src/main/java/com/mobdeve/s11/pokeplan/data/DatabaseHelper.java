@@ -32,32 +32,55 @@ public class DatabaseHelper {
 
     private final FirebaseAuth mAuth;
 
-    private final DatabaseReference mUser;
-    private final DatabaseReference mTask;
-    private final DatabaseReference mPokemon;
-    private final FirebaseDatabase mDatabase;
-    private final String userID;
+    private  DatabaseReference mUser;
+    private  DatabaseReference mTask;
+    private  DatabaseReference mPokemon;
+    private  FirebaseDatabase mDatabase;
+    private  String userID;
 
-    public DatabaseHelper () {
-        this.mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
+    public DatabaseHelper (boolean loggedIn) {
         this.mAuth = FirebaseAuth.getInstance();
-        this.userID = this.mAuth.getCurrentUser().getUid();
+
+        if (loggedIn) {
+            initLoggedInDB ();
+        } else {
+            initNotLoggedIn ();
+        }
+    }
+
+    private void initLoggedInDB () {
+        this.mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
+        this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         this.mUser = mDatabase.getReference("Users").child(this.userID);
         this.mPokemon = mDatabase.getReference("UserPokemon").child(this.userID);
         this.mTask = mDatabase.getReference("Tasks").child(this.userID);
     }
 
+    private void initNotLoggedIn () {
+        this.mDatabase = null;
+        this.userID = null;
+
+        this.mUser = null;
+        this.mPokemon = null;
+        this.mTask = null;
+    }
+
+
     public void addUser (FirebaseCallbackUser firebaseCallbackUser, UserDetails user, String password) {
+        Log.d("hello pare", user.getEmail() + " " + password);
         mAuth.createUserWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
+                    initLoggedInDB ();
+
                     mUser.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                             if(task.isSuccessful()) {
                                 firebaseCallbackUser.onCallbackUser(user, true, "User registered.");
+
                             } else {
                                 firebaseCallbackUser.onCallbackUser(null, false, "Error encountered in the registration!");
                             }
@@ -68,6 +91,8 @@ public class DatabaseHelper {
                 }
             }
         });
+
+
     }
 
     public void getUserDetails (FirebaseCallbackUser firebaseCallbackUser) {
