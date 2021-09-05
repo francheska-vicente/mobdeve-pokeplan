@@ -87,7 +87,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
         this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        databaseHelper = new DatabaseHelper();
+        databaseHelper = new DatabaseHelper(true);
         checkerNotif = true;
         this.initComponents();
     }
