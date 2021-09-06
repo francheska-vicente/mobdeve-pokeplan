@@ -129,8 +129,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
         this.ibDeleteTask.setOnClickListener(v -> createDeleteTaskDialog());
         this.ibEditTask.setOnClickListener(v -> editTaskDetails());
         this.btnFinishTask.setOnClickListener(v -> createConfirmFinishDialog());
-        if (isFinished)
+        if (isFinished) {
+            this.ibEditTask.setVisibility(View.GONE);
             this.btnFinishTask.setVisibility(View.GONE);
+        }
     }
 
     /**
