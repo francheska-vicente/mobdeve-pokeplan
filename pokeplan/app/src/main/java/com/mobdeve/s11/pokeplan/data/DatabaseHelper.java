@@ -460,6 +460,19 @@ public class DatabaseHelper {
         });
     }
 
+    public void removeNotif (FirebaseCallbackTask firebaseCallbackTask, String key) {
+        HashMap <String, Object> hash = new HashMap <>();
+        hash.put("isNotif", false);
+
+        mTask.child(key).updateChildren(hash).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                firebaseCallbackTask.onCallbackTask(null, true, "Notification was removed.");
+            } else {
+                firebaseCallbackTask.onCallbackTask(null, true, "Notification was not removed.");
+            }
+        });
+    }
+
     public void createNotif (FirebaseCallbackTask firebaseCallbackTask, int notifCode, String key) {
         HashMap<String, Object> hashMap = new HashMap<>();
 
