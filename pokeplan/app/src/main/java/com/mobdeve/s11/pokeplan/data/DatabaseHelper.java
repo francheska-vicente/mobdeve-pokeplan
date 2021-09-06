@@ -377,6 +377,7 @@ public class DatabaseHelper {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     UserTask temp = ds.getValue(UserTask.class);
+                    temp.setNotifRequestCode(ds.child("notifCode").getValue(Integer.class));
                     tasks.add(temp);
                 }
 
