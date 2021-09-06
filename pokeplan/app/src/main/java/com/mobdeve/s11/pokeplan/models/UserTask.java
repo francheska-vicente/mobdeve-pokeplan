@@ -206,7 +206,7 @@ public class UserTask {
         this.notifWhen = when;
     }
 
-    public int getNotifRequestCode () {
+    public int getNotifCode () {
         return this.notifRequestCode;
     }
 
