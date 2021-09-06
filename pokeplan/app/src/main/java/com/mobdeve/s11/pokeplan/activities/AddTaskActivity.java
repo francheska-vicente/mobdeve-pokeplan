@@ -81,6 +81,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper; // allows access to the database
     private SharedPreferences sp;
+    private boolean wasNotifOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class AddTaskActivity extends AppCompatActivity {
         Log.d("hello", Integer.toString(notifCode));
         databaseHelper = new DatabaseHelper(true);
         checkerNotif = true;
+        wasNotifOn = false;
         this.initComponents();
     }
 
@@ -263,12 +265,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 temp = "Before Start Time";
             }
 
-            Log.d("hello pare", "sending notifcode" + notifCode);
-            notifCode = intent.getIntExtra(Keys.KEY_NOTIF_CODE.name(), -1);
-
+            wasNotifOn = true;
             spinNotifWhen.setSelection(((ArrayAdapter<String>)spinNotifWhen.getAdapter()).getPosition(temp));
             spinNotifTime.setSelection(((ArrayAdapter<String>)spinNotifTime.getAdapter()).getPosition(notifTime));
         }
+
+        notifCode = intent.getIntExtra(Keys.KEY_NOTIF_CODE.name(), -1);
     }
 
     /**
@@ -538,20 +540,21 @@ public class AddTaskActivity extends AppCompatActivity {
                 Intent intent1 = getIntent();
                 String taskID = intent1.getStringExtra(Keys.KEY_ID.name());
                 if (taskID != null) {
+
+                    if (wasNotifOn) {
+                        deleteTimer();
+                    }
+
                     if(checkerNotif) {
                         if (val) {
                             setTimer(new CustomDate(startDate, startTime), notif, true, taskID);
                         } else {
-                            deleteTimer();
                             setTimer(new CustomDate(endDate, endTime), notif, false, taskID);
                         }
-                    } else {
-                        deleteTimer();
                     }
 
                     editDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes,
                             taskID, notif, val);
-
                 } else {
                     if(checkerNotif) {
                         if (val) {
@@ -803,7 +806,6 @@ public class AddTaskActivity extends AppCompatActivity {
      * Deletes the notification created from the broadcast receiver.
      */
     private void deleteTimer () {
-        Log.d("hello notifCode", Integer.toString(notifCode));
         if (notifCode != -1) {
             Log.d("hello deleting", Integer.toString(notifCode));
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
