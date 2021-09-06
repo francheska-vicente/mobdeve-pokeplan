@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baackground_forestpika" />
+            app:srcCompat="@drawable/background_forestpika" />
 
         <ImageView
             android:id="@+id/iv_init_logo"
