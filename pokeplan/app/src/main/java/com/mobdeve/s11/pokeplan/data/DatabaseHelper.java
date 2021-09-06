@@ -438,7 +438,7 @@ public class DatabaseHelper {
     }
 
     public void editTask (FirebaseCallbackTask firebaseCallbackTask, String name, int priority, String category, CustomDate startDate,
-                          CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif) {
+                          CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif, int notifCode) {
         HashMap <String, Object> hash = new HashMap <>();
         hash.put("taskName", name);
         hash.put("endDate", endDate);
@@ -449,6 +449,7 @@ public class DatabaseHelper {
         hash.put("notifWhen", notif);
         hash.put("beforeStartTime", val);
         hash.put("isNotif", isNotif);
+        hash.put("notifCode", notifCode);
 
         mTask.child(key).updateChildren(hash).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
@@ -461,7 +462,7 @@ public class DatabaseHelper {
 
     public void createNotif (FirebaseCallbackTask firebaseCallbackTask, int notifCode, String key) {
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("notifCode", notifCode);
+
 
         mTask.child(key).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
