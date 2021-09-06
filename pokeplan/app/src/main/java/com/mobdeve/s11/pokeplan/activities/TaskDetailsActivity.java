@@ -1,6 +1,8 @@
 package com.mobdeve.s11.pokeplan.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -20,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mobdeve.s11.pokeplan.R;
 import com.mobdeve.s11.pokeplan.data.DatabaseHelper;
 import com.mobdeve.s11.pokeplan.models.UserDetails;
+import com.mobdeve.s11.pokeplan.services.ReminderBroadcast;
 import com.mobdeve.s11.pokeplan.utils.Keys;
 import com.mobdeve.s11.pokeplan.views.CustomDialog;
 
@@ -80,7 +83,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
-
+        notifCode = -1;
         initInfo();
     }
 
@@ -243,7 +246,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         notifOn = intent.getBooleanExtra(Keys.KEY_NOTIF_ON.name(), false);
         notifStartTime = intent.getBooleanExtra(Keys.KEY_NOTIF_START_TIME.name(), false);
         isFinished = intent.getBooleanExtra(Keys.KEY_IS_COMPLETED.name(), false);
-        notifCode = intent.getIntExtra(Keys.KEY_NOTIF_CODE.name(), 0);
+        notifCode = intent.getIntExtra(Keys.KEY_NOTIF_CODE.name(), -1);
     }
 
     /**
@@ -400,6 +403,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
             databaseHelper.deleteTask((list, isSuccesful, message) -> {
                 finish();
                 if (isSuccesful) {
+                    removeNotif();
                     Toast.makeText(TaskDetailsActivity.this, "Task was successfully deleted.", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -409,6 +413,18 @@ public class TaskDetailsActivity extends AppCompatActivity {
             }, taskID);
         });
         confirmDelete.show();
+    }
+
+    private void removeNotif () {
+        if (notifCode != -1) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            Intent intent = new Intent(this, ReminderBroadcast.class);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notifCode, intent, 0);
+
+            alarmManager.cancel(pendingIntent);
+        }
     }
 
     /**
