@@ -119,7 +119,6 @@ public class SettingsFragment extends Fragment {
 
         swNotifs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("hello pare", "gumagana ba to " + isChecked);
                 if (!isChecked) {
                     createRemoveNotifDialog ();
                 }
