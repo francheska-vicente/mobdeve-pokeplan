@@ -266,6 +266,7 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             //play level up sound
             MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.levelup);
             mediaPlayer.start();
+            mediaPlayer.setOnCompletionListener(mp -> mp.release());
 
             // update level text
             String level = "Level " + pkmn.getLevel();
@@ -310,6 +311,10 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             this.tvPkmnNickname.setText(pkmn.getNickname());
             this.ivPkmnIcon.setImageResource(getImageId("pkmn_"+ pkmn.getDetails().getDexNum()));
             this.tvPkmnSpecies.setText(pkmn.getDetails().getSpecies());
+            String pkmntype = pkmn.getDetails().getType1();
+            if (!pkmn.getDetails().getType2().isEmpty())
+                pkmntype = pkmntype + "/" + pkmn.getDetails().getType2();
+            this.tvPkmnType.setText(pkmntype);
 
             // play pokemon cry
             this.playPkmnCry(pkmn.getDetails());
