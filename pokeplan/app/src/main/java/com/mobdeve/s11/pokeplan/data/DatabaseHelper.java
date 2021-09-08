@@ -27,6 +27,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class handles all the database functions and directly accesses the Firebase realtime database.
+ */
 public class DatabaseHelper {
 
     private final FirebaseAuth mAuth;
@@ -37,6 +40,11 @@ public class DatabaseHelper {
     private  FirebaseDatabase mDatabase;
     private  String userID;
 
+    /**
+     * This is the constructor of the DatabaseHelper class. It initializes the FirebaseAuth object and the different
+     * DatabaseReferences if the user is logged in
+     * @param loggedIn is true if the user is logged in; false otherwise
+     */
     public DatabaseHelper (boolean loggedIn) {
         this.mAuth = FirebaseAuth.getInstance();
 
@@ -47,6 +55,10 @@ public class DatabaseHelper {
         }
     }
 
+    /**
+     * Initializes the database and the database reference to the User, Pokemon and Task table. It also gets the UID of the
+     * currently logged in user.
+     */
     private void initLoggedInDB () {
         this.mDatabase = FirebaseDatabase.getInstance("https://pokeplan-8930c-default-rtdb.asia-southeast1.firebasedatabase.app/");
         this.userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -56,6 +68,10 @@ public class DatabaseHelper {
         this.mTask = mDatabase.getReference("Tasks").child(this.userID);
     }
 
+    /**
+     * Initializes the database, the UID,  and the database reference to the User, Pokemon and Task table to null
+     * if the user is not logged in.
+     */
     private void initNotLoggedIn () {
         this.mDatabase = null;
         this.userID = null;
@@ -65,7 +81,12 @@ public class DatabaseHelper {
         this.mTask = null;
     }
 
-
+    /**
+     * Adds the user to the list of Authenticated users and his/her information to the User table.
+     * @param firebaseCallbackUser is a FirebaseCallbackUser object that would handle the asynchronous database.
+     * @param user is the UserDetails object that holds the user's information
+     * @param password is the user's password
+     */
     public void addUser (FirebaseCallbackUser firebaseCallbackUser, UserDetails user, String password) {
         mAuth.createUserWithEmailAndPassword(user.getEmail(), password).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
@@ -87,6 +108,10 @@ public class DatabaseHelper {
 
     }
 
+    /**
+     * This function gets the user's details from the Users table in the Database.
+     * @param firebaseCallbackUser is a FirebaseCallbackUser object that would handle the asynchronous database.
+     */
     public void getUserDetails (FirebaseCallbackUser firebaseCallbackUser) {
         mUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -104,62 +129,85 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * If the given email matches the currently logged in user, and the given password matches the password of that user,
+     * the user and his/her information (Pokemon, Users, Tasks) would be deleted from the Firebase Database.
+     * @param firebaseCallbackUser is a FirebaseCallbackUser object that would handle the asynchronous database.
+     * @param email is the email provided by the user
+     * @param password is the password provided by the user
+     */
     public void deleteUser (FirebaseCallbackUser firebaseCallbackUser, String email, String password) {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
-        user.reauthenticate(credential).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                user.delete();
-                Query query = mUser;
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                        snapshot.getRef().removeValue();
-                        firebaseCallbackUser.onCallbackUser(null, true, "Your account was successfully deleted.");
-                    }
+        // checking if the email provided matches the current user's email
+        if (email.equalsIgnoreCase(user.getEmail())) {
+            // checking if the credential provided is authenticated in Firebase
+            user.reauthenticate(credential).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    user.delete(); // deletes the user's authentication
 
-                    @Override
-                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                        firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
-                    }
-                });
+                    // deleting the user's information in the Users table
+                    Query query = mUser;
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                            snapshot.getRef().removeValue();
+                            firebaseCallbackUser.onCallbackUser(null, true, "Your account was successfully deleted.");
+                        }
 
-                query = mTask;
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                            firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
+                        }
+                    });
 
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                        snapshot.getRef().removeValue();
-                        Log.d("Task DB", "All of the tasks of this user were deleted from the DB.");
-                    }
+                    // deleting the user's information in the Tasks table
+                    query = mTask;
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                            snapshot.getRef().removeValue();
+                            Log.d("Task DB", "All of the tasks of this user were deleted from the DB.");
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                        Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                            Log.e("Task DB", "There is an error encountered! " + error.toException().toString());
+                        }
+                    });
 
-                query = mPokemon;
-                query.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
-                        snapshot.getRef().removeValue();
-                        Log.d("Pokemon DB", "All of the pokemons of this user were deleted from the DB.");
-                    }
+                    // deleting the user's information in the UserPokemon table
+                    query = mPokemon;
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                            snapshot.getRef().removeValue();
+                            Log.d("Pokemon DB", "All of the pokemons of this user were deleted from the DB.");
+                        }
 
-                    @Override
-                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
-                        Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
-                    }
-                });
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+                            Log.e("Pokemon DB", "There is an error encountered! " + error.toException().toString());
+                        }
+                    });
 
-            } else {
-                firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
-            }
-        });
+                } else {
+                    firebaseCallbackUser.onCallbackUser(null, false, "Your account was not deleted.");
+                }
+            });
+        } else {
+            firebaseCallbackUser.onCallbackUser(null, false, "The email provided does not match the current user's email.");
+        }
     }
 
+    /**
+     * Modifies the user's information in the Users table (e.g. Birthday, Username, Full name) in the FirebaseDatabase.
+     * @param firebaseCallbackUser is a FirebaseCallbackUser object that would handle the asynchronous database.
+     * @param hashUser is the HashMap that holds the information to be modified in the Database.
+     * @param email is the email of the currently logged in user.
+     * @param password is the password provided by the user.
+     */
     public void modifyUserOnDB (FirebaseCallbackUser firebaseCallbackUser, HashMap<String, Object> hashUser, String email, String password) {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
@@ -179,6 +227,12 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Modifies the user's information that is used by the application for displays (e.g. completedTaskCount, hatchedPkmncount)
+     * in the Database.
+     * @param firebaseCallbackUser is a FirebaseCallbackUser object that would handle the asynchronous database.
+     * @param hashUser is the HashMap that holds the information to be modified in the Database.
+     */
     public void updateUser (FirebaseCallbackUser firebaseCallbackUser, HashMap<String, Object> hashUser) {
         mUser.updateChildren(hashUser).addOnCompleteListener(new OnCompleteListener() {
             @Override
@@ -192,6 +246,10 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Retrieves the list of Pokemons of the current user in the User's table.
+     * @param firebaseCallbackPokemon is a FirebaseCallbackPokemon object that would handle the asynchronous database.
+     */
     public void getPokemon (FirebaseCallbackPokemon firebaseCallbackPokemon) {
         ArrayList<UserPokemon> userPokemons = new ArrayList<>();
 
@@ -215,6 +273,13 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     *
+     * @param firebaseCallbackPokemon
+     * @param checker
+     * @param details
+     * @param userDetails
+     */
     public void addPokemon (FirebaseCallbackPokemon firebaseCallbackPokemon, boolean checker, Pokemon details, UserDetails userDetails) {
         ArrayList<UserPokemon> pokemonParty = new ArrayList<>();
         ArrayList<UserPokemon> pokemonPC = new ArrayList<>();
