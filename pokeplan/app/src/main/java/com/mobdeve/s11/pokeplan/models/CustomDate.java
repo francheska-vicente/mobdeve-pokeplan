@@ -76,22 +76,42 @@ public class CustomDate {
 
     }
 
+    /**
+     * This function returns the day of the date of the CustomDate object.
+     * @return the day of the date
+     */
     public int getDay () {
         return this.day;
     }
 
+    /**
+     * This function returns the month of the date of the CustomDate object.
+     * @return the month of the date
+     */
     public int getMonth () {
         return this.month;
     }
 
+    /**
+     * This function returns the year of the date of the CustomDate object.
+     * @return the year of the date
+     */
     public int getYear () {
         return this.year;
     }
 
+    /**
+     * This function returns the minute of the time of the CustomDate object.
+     * @return hour of the time
+     */
     public int getHour () {
         return this.hour;
     }
 
+    /**
+     * This function returns the minute of the time of the CustomDate object.
+     * @return minute of the time
+     */
     public int getMinute () {
         return this.minute;
     }
