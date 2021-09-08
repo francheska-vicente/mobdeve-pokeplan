@@ -9,12 +9,22 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This class handles the storing and printing the dates based on the format of the application.
+ */
 public class CustomDate {
     private static final String[] monthString = new String[]{"", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     private int day, month, year, hour, minute;
 
+    /**
+     * A constructor with no parameters for Firebase.
+     */
     public CustomDate () {}
 
+    /**
+     * A constructor used to create a CustomDate object with today as the date.
+     * @param checker
+     */
     public CustomDate (boolean checker) {
         Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
@@ -25,6 +35,14 @@ public class CustomDate {
         this.minute = c.get(Calendar.MINUTE);
     }
 
+    /**
+     * A constructor used to create a CustomDate object for the specific date.
+     * @param year is the year of the date to be created
+     * @param month is the month of the date to be created
+     * @param day_in_month is the day of the date to be created
+     * @param hour is the hour of the date to be created
+     * @param minute is the minute of the date to be created
+     */
     public CustomDate(int year, int month, int day_in_month, int hour, int minute) {
         this.year = year;
         this.day = day_in_month;
@@ -33,6 +51,11 @@ public class CustomDate {
         this.minute = minute;
     }
 
+    /**
+     * A constructor used to create a CustomDate object for the specific date in String
+     * @param date is a String in the format dd.MM.yyyy that represents the date to be created
+     * @param time is a String in the format HH:mm aa that represents the time of the date to be created in 12H foramt
+     */
     public CustomDate(String date, String time) {
         String [] tempDate = date.split("\\.");
         String [] tempTime = time.split(":");
@@ -74,6 +97,9 @@ public class CustomDate {
     }
 
     @Override
+    /**
+     * Reformats the CustomDate object to a string
+     */
     public String toString() {
         String tempTime = new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
         String tempDate = this.day + "." + this.month + "." + this.year;
