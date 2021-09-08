@@ -176,7 +176,7 @@ public class CustomDate {
     }
 
     /**
-     * This formats the date object with the month written in its name format
+     * This formats the date object with the month written in its shortcut name format (e.g. 'Jan', 'Feb').
      * @return a string in the format MMMM dd, yyyy.
      */
     public String printSpecificDate () {
