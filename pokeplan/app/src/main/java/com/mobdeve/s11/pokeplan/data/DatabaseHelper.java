@@ -274,18 +274,20 @@ public class DatabaseHelper {
     }
 
     /**
-     *
-     * @param firebaseCallbackPokemon
-     * @param checker
-     * @param details
-     * @param userDetails
+     * Adds the pokemon in the UserPokemon table under a specific user.
+     * @param firebaseCallbackPokemon is a FirebaseCallbackPokemon object that would handle the asynchronous database.
+     * @param checker true if the pokemon is a hatched pokemon; false otherwise
+     * @param details is a Pokemon object that holds the information of the pokemon
+     * @param userDetails is a UserDetails object that holds the current information of the user
      */
     public void addPokemon (FirebaseCallbackPokemon firebaseCallbackPokemon, boolean checker, Pokemon details, UserDetails userDetails) {
         ArrayList<UserPokemon> pokemonParty = new ArrayList<>();
         ArrayList<UserPokemon> pokemonPC = new ArrayList<>();
 
+        // gets the Pokemon of the current user
         getPokemon((list, isSuccessful, message) -> {
             if (isSuccessful) {
+                // adds the Pokemon of the user to their respective teams
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).isInParty()) {
                         pokemonParty.add(list.get(i));
@@ -327,6 +329,13 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Updates the number of caught and number of not caught Pokemon of the User. It also the specific Pokemon to the
+     * to the current user's Pokedex.
+     * @param details is a Pokemon object that holds the information of the pokemon
+     * @param userDetails is a UserDetails object that holds the current information of the user
+     * @param checker true if the pokemon is a hatched pokemon; false otherwise
+     */
     private void updateUserPokemon (Pokemon details, UserDetails userDetails, boolean checker) {
         HashMap <String, Object> hashUser = new HashMap<>();
         hashUser.put(Integer.toString(details.getDexNum() - 1), true);
@@ -347,6 +356,12 @@ public class DatabaseHelper {
         mUser.updateChildren(hashNum).addOnCompleteListener(task -> Log.d("User DB", "User's number of pokemons and hatched egg were updated. "));
     }
 
+    /**
+     * Edits the nickname of a specific Pokemon of the current user in the Database.
+     * @param firebaseCallbackPokemon is a FirebaseCallbackPokemon object that would handle the asynchronous database.
+     * @param key is the key of the UserPokemon that would be edited
+     * @param nickname is the new nickname of the UserPokemon
+     */
     public void editNickname (FirebaseCallbackPokemon firebaseCallbackPokemon, String key, String nickname) {
         HashMap <String, Object> hash = new HashMap<>();
         hash.put("nickname", nickname);
@@ -363,6 +378,7 @@ public class DatabaseHelper {
         });
     }
 
+    
     public void updatePokemon (FirebaseCallbackPokemon firebaseCallbackPokemon, UserPokemon pokemon, UserDetails userDetails) {
         HashMap <String, Object> hash = new HashMap<>();
         hash.put("details", pokemon.getDetails());
