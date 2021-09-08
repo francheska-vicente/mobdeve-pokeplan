@@ -166,6 +166,8 @@ public class Pokemon {
         catch (IOException e) {
             e.printStackTrace();
         }
+
+        mediaPlayer.setOnCompletionListener(mp -> mp.release());
     }
 
     /**
