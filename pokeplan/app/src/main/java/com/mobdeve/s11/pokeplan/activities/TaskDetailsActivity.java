@@ -489,6 +489,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 (AudioManager.STREAM_MUSIC, 5,0);
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.finishtask);
         mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(mp -> mp.release());
     }
 
     @Override
