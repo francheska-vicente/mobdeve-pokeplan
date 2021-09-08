@@ -41,6 +41,7 @@ import com.mobdeve.s11.pokeplan.views.CustomTimePicker;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -526,6 +527,18 @@ public class AddTaskActivity extends AppCompatActivity {
                     }
                 }
 
+                if(val) {
+                    if (calculateTime(new CustomDate(startDate, startTime), notif) <= 0) {
+                        checker1 = true;
+                        error = "You cannot create a notification for an earlier time.";
+                    }
+                } else {
+                    if (calculateTime(new CustomDate(endDate, endTime), notif) <= 0) {
+                        checker1 = true;
+                        error = "You cannot create a notification for an earlier time.";
+                    }
+                }
+
                 boolean notifs = sp.getBoolean(Keys.KEY_NOTIFS.name(), true);
 
                 if (!notifs) {
@@ -696,15 +709,32 @@ public class AddTaskActivity extends AppCompatActivity {
         cbNotif = findViewById(R.id.cb_add_task_notifs);
         cbNotif.setChecked(true);
         cbNotif.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (cbNotif.isChecked()) {
-                spinNotifTime.setEnabled(true);
-                spinNotifWhen.setEnabled(true);
-            }
-            else {
-            spinNotifTime.setEnabled(false);
-            spinNotifWhen.setEnabled(false);
-         }
-    });
+                if (cbNotif.isChecked()) {
+                    spinNotifTime.setEnabled(true);
+                    spinNotifWhen.setEnabled(true);
+                } else {
+                    spinNotifTime.setEnabled(false);
+                    spinNotifWhen.setEnabled(false);
+                }
+        });
+    }
+
+
+    private long getDiff (long alarm) {
+        long diff = -1;
+
+
+
+        try {
+            Date dateStart = new Date();
+
+            diff = alarm - dateStart.getTime();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return diff;
     }
 
     /**
@@ -714,6 +744,7 @@ public class AddTaskActivity extends AppCompatActivity {
      * @return the time in millis of the calculated time and date
      */
     private long calculateTime (CustomDate date, String notif) {
+        Log.d("hello hour", Integer.toString(date.getHour()));
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, date.getMonth() - 1);
         c.set(Calendar.DAY_OF_MONTH, date.getDay());
@@ -742,7 +773,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 break;
         }
 
-        return c.getTimeInMillis();
+        long alarm = c.getTime().getTime();
+        if (getDiff(alarm) > 0) {
+            return c.getTimeInMillis();
+        } else {
+            return -1;
+        }
     }
 
     /**
