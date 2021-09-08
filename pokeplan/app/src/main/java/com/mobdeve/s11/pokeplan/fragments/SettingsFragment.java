@@ -1,14 +1,19 @@
 package com.mobdeve.s11.pokeplan.fragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -22,12 +27,16 @@ import com.mobdeve.s11.pokeplan.activities.FaqsActivity;
 import com.mobdeve.s11.pokeplan.activities.InitActivity;
 import com.mobdeve.s11.pokeplan.activities.UserProfileActivity;
 import com.mobdeve.s11.pokeplan.data.DatabaseHelper;
+import com.mobdeve.s11.pokeplan.data.FirebaseCallbackTask;
 import com.mobdeve.s11.pokeplan.models.CustomDate;
 import com.mobdeve.s11.pokeplan.models.UserDetails;
+import com.mobdeve.s11.pokeplan.models.UserTask;
+import com.mobdeve.s11.pokeplan.services.ReminderBroadcast;
 import com.mobdeve.s11.pokeplan.utils.Keys;
 import com.mobdeve.s11.pokeplan.views.CustomDatePicker;
 import com.mobdeve.s11.pokeplan.views.CustomDialog;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SettingsFragment extends Fragment {
@@ -48,6 +57,7 @@ public class SettingsFragment extends Fragment {
     private CustomDialog aboutUsDialog;
     private CustomDialog deleteAccDialog;
     private CustomDialog editAccDialog;
+    private CustomDialog removeNotifDialog;
 
     private DatabaseHelper databaseHelper;
     private UserDetails user;
@@ -106,6 +116,15 @@ public class SettingsFragment extends Fragment {
         this.swKeepScreenOn = view.findViewById(R.id.sw_screenon);
         this.swNotifs = view.findViewById(R.id.sw_notifs);
         this.swPkmnCries = view.findViewById(R.id.sw_pkmncries);
+
+        swNotifs.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!isChecked) {
+                    createRemoveNotifDialog ();
+                }
+            }
+        });
+
         setSwitchFont(view);
         setSwitchValues();
     }
@@ -355,5 +374,68 @@ public class SettingsFragment extends Fragment {
         this.spEditor.putBoolean(Keys.KEY_NOTIFS.name(), notifs);
         this.spEditor.putBoolean(Keys.KEY_PKMNCRIES.name(), pkmncries);
         this.spEditor.apply();
+    }
+
+    private void deleteAllNotif () {
+        databaseHelper.getTasks(new FirebaseCallbackTask() {
+            @Override
+            public void onCallbackTask(ArrayList<UserTask> list, Boolean isSuccesful, String message) {
+                for (int i = 0; i < list.size(); i++) {
+                    UserTask tempTask = list.get(i);
+                    if (tempTask.getIsNotif()) {
+                        deleteNotif(tempTask.getNotifCode());
+                        databaseHelper.removeNotif(new FirebaseCallbackTask() {
+                            @Override
+                            public void onCallbackTask(ArrayList<UserTask> list, Boolean isSuccesful, String message) {
+
+                            }
+                        }, tempTask.getTaskID());
+                    }
+                }
+            }
+        });
+    }
+
+    private void deleteNotif (int requestCode) {
+        if (requestCode != -1) {
+
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+
+            Intent intent = new Intent(getContext(), ReminderBroadcast.class);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), requestCode, intent, 0);
+
+            alarmManager.cancel(pendingIntent);
+        }
+    }
+
+    private void createRemoveNotifDialog () {
+        removeNotifDialog = new CustomDialog(getContext());
+        removeNotifDialog.setDialogType(CustomDialog.CONFIRM);
+        removeNotifDialog.setConfirmComponents("Remove all notifications? ",
+                                               "This would disable notifications and delete your current notifications.",
+                                                     R.drawable.warning,
+                                             "Confirm");
+
+        Button btnDialogConfirm = removeNotifDialog.findViewById(R.id.btn_dialog_confirm);
+
+        btnDialogConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteAllNotif ();
+                removeNotifDialog.dismiss();
+            }
+        });
+
+        Button btnDialogCancel = removeNotifDialog.findViewById(R.id.btn_dialog_confirm_cancel);
+        btnDialogCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                swNotifs.setChecked(true);
+                removeNotifDialog.dismiss();
+            }
+        });
+
+        removeNotifDialog.show();
     }
 }

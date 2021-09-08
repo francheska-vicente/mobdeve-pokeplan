@@ -377,6 +377,7 @@ public class DatabaseHelper {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     UserTask temp = ds.getValue(UserTask.class);
+                    temp.setNotifRequestCode(ds.child("notifCode").getValue(Integer.class));
                     tasks.add(temp);
                 }
 
@@ -438,7 +439,7 @@ public class DatabaseHelper {
     }
 
     public void editTask (FirebaseCallbackTask firebaseCallbackTask, String name, int priority, String category, CustomDate startDate,
-                          CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif) {
+                          CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif, int notifCode) {
         HashMap <String, Object> hash = new HashMap <>();
         hash.put("taskName", name);
         hash.put("endDate", endDate);
@@ -449,12 +450,42 @@ public class DatabaseHelper {
         hash.put("notifWhen", notif);
         hash.put("beforeStartTime", val);
         hash.put("isNotif", isNotif);
+        hash.put("notifCode", notifCode);
 
         mTask.child(key).updateChildren(hash).addOnCompleteListener(task -> {
             if(task.isSuccessful()) {
                 firebaseCallbackTask.onCallbackTask(null, true, "Task information was modified.");
             } else {
                 firebaseCallbackTask.onCallbackTask(null, true, "Task information was not modified.");
+            }
+        });
+    }
+
+    public void removeNotif (FirebaseCallbackTask firebaseCallbackTask, String key) {
+        HashMap <String, Object> hash = new HashMap <>();
+        hash.put("isNotif", false);
+
+        mTask.child(key).updateChildren(hash).addOnCompleteListener(task -> {
+            if(task.isSuccessful()) {
+                firebaseCallbackTask.onCallbackTask(null, true, "Notification was removed.");
+            } else {
+                firebaseCallbackTask.onCallbackTask(null, true, "Notification was not removed.");
+            }
+        });
+    }
+
+    public void createNotif (FirebaseCallbackTask firebaseCallbackTask, int notifCode, String key) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+
+
+        mTask.child(key).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    firebaseCallbackTask.onCallbackTask(null, true, "Notification successfully created.");
+                } else {
+                    firebaseCallbackTask.onCallbackTask(null, false, "Notification was not created.");
+                }
             }
         });
     }

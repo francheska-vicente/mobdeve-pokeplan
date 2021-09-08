@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,6 +30,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mobdeve.s11.pokeplan.R;
 import com.mobdeve.s11.pokeplan.data.DatabaseHelper;
+import com.mobdeve.s11.pokeplan.data.FirebaseCallbackTask;
 import com.mobdeve.s11.pokeplan.models.CustomDate;
 import com.mobdeve.s11.pokeplan.models.UserTask;
 import com.mobdeve.s11.pokeplan.services.ReminderBroadcast;
@@ -75,9 +77,11 @@ public class AddTaskActivity extends AppCompatActivity {
     private CustomDialog errorDialog;
 
     private String currentUserUid;
+    private int notifCode;
 
     private DatabaseHelper databaseHelper; // allows access to the database
     private SharedPreferences sp;
+    private boolean wasNotifOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,9 +90,12 @@ public class AddTaskActivity extends AppCompatActivity {
         createNotificationChannel();
 
         this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        notifCode = -1;
 
+        Log.d("hello", Integer.toString(notifCode));
         databaseHelper = new DatabaseHelper(true);
         checkerNotif = true;
+        wasNotifOn = false;
         this.initComponents();
     }
 
@@ -179,13 +186,13 @@ public class AddTaskActivity extends AppCompatActivity {
                     new CustomDate(yearEnd, monthEnd, dayEnd, hourEnd, minuteEnd), notes, notif, val, checkerNotif);
         }
 
+        taskCreated.setNotifRequestCode(notifCode);
+
         databaseHelper.addOngoingTask((list, isSuccessful, message) -> {
             if (isSuccessful)
                 Toast.makeText(AddTaskActivity.this, "Task was added successfully.", Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(AddTaskActivity.this, "Task was not added to your list of tasks.", Toast.LENGTH_SHORT).show();
-
-            finish();
         }, taskCreated);
     }
 
@@ -258,9 +265,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 temp = "Before Start Time";
             }
 
+            wasNotifOn = true;
             spinNotifWhen.setSelection(((ArrayAdapter<String>)spinNotifWhen.getAdapter()).getPosition(temp));
             spinNotifTime.setSelection(((ArrayAdapter<String>)spinNotifTime.getAdapter()).getPosition(notifTime));
         }
+
+        notifCode = intent.getIntExtra(Keys.KEY_NOTIF_CODE.name(), -1);
     }
 
     /**
@@ -284,13 +294,14 @@ public class AddTaskActivity extends AppCompatActivity {
         CustomDate cEndDate = new CustomDate (endDate, endTime);
         CustomDate cStartDate = new CustomDate(startDate, startTime);
 
+
         databaseHelper.editTask((list, isSuccessful, message) -> {
             if (isSuccessful) {
                 Toast.makeText(AddTaskActivity.this, "Task was successfully edited!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(AddTaskActivity.this, "Task was not edited successfully!", Toast.LENGTH_SHORT).show();
             }
-        }, name, priority, category, cStartDate, cEndDate, notes, taskID, notif, val, checkerNotif);
+        }, name, priority, category, cStartDate, cEndDate, notes, taskID, notif, val, checkerNotif, notifCode);
 
         Intent intent = new Intent();
 
@@ -529,29 +540,33 @@ public class AddTaskActivity extends AppCompatActivity {
                 Intent intent1 = getIntent();
                 String taskID = intent1.getStringExtra(Keys.KEY_ID.name());
                 if (taskID != null) {
-                    editDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes,
-                            taskID, notif, val);
 
-                    if(checkerNotif) {
-                        if (val) {
-                            setTimer(new CustomDate(startDate, startTime), notif, true);
-                        } else {
-                            deleteTimer();
-                            setTimer(new CustomDate(endDate, endTime), notif, false);
-                        }
-                    } else {
+                    if (wasNotifOn) {
                         deleteTimer();
                     }
 
-                } else {
-                    addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
                     if(checkerNotif) {
                         if (val) {
-                            setTimer(new CustomDate(startDate, startTime), notif, true);
+                            setTimer(new CustomDate(startDate, startTime), notif, true, taskID);
                         } else {
-                            setTimer(new CustomDate(endDate, endTime), notif, false);
+                            setTimer(new CustomDate(endDate, endTime), notif, false, taskID);
                         }
                     }
+
+                    editDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes,
+                            taskID, notif, val);
+                } else {
+                    if(checkerNotif) {
+                        if (val) {
+                            setTimer(new CustomDate(startDate, startTime), notif, true, taskID);
+                        } else {
+                            setTimer(new CustomDate(endDate, endTime), notif, false, taskID);
+                        }
+                    }
+
+                    addToDatabase (taskName, priority.length(), category, startDate, endDate, startTime, endTime, taskNotes, notif, val);
+
+                    finish();
                 }
             } else { // if there are errors found, the error dialog should be shown with an error message
                 setErrorDialog (error);
@@ -736,7 +751,7 @@ public class AddTaskActivity extends AppCompatActivity {
      * @param notif determines how many minutes/hours/days the notification would be from the date provided
      * @param checker is used for the creation of the notification message
      */
-    private void setTimer (CustomDate date, String notif, boolean checker) {
+    private void setTimer (CustomDate date, String notif, boolean checker, String taskID) {
         long timeInMillis = calculateTime(date, notif);
 
         String message = "Don't forget! This ";
@@ -746,13 +761,22 @@ public class AddTaskActivity extends AppCompatActivity {
             message = message + "ends in " + notif;
         }
 
+        int requestCode = (int) System.currentTimeMillis();
+
+        if (notifCode != -1) {
+            requestCode = notifCode;
+        } else {
+            notifCode = requestCode;
+        }
+
         // creates the alarm manager and the intent to be sent to the broadcast receiver
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, ReminderBroadcast.class);
         intent.putExtra("TASKNAME", etTaskName.getText().toString().trim());
         intent.putExtra("NOTIF_MESSAGE", message);
+        intent.putExtra("NOTIF_CODE", requestCode);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, 0);
 
         // sets the notification time and date
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
@@ -782,11 +806,15 @@ public class AddTaskActivity extends AppCompatActivity {
      * Deletes the notification created from the broadcast receiver.
      */
     private void deleteTimer () {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, ReminderBroadcast.class);
+        if (notifCode != -1) {
+            Log.d("hello deleting", Integer.toString(notifCode));
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+            Intent intent = new Intent(getApplicationContext(), ReminderBroadcast.class);
 
-        alarmManager.cancel(pendingIntent);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notifCode, intent, 0);
+
+            alarmManager.cancel(pendingIntent);
+        }
     }
 }

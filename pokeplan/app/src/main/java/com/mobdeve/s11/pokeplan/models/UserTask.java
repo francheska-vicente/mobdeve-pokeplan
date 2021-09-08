@@ -13,6 +13,7 @@ public class UserTask {
     private String notifWhen;
     private boolean beforeStartTime;
     private boolean isNotif;
+    private int notifRequestCode;
 
     /**
      * Class constructor (for database use)
@@ -46,6 +47,7 @@ public class UserTask {
         this.notifWhen = notifWhen;
         this.beforeStartTime = beforeStartTime;
         this.isNotif = isNotif;
+        this.notifRequestCode = 0;
     }
 
     /**
@@ -202,5 +204,13 @@ public class UserTask {
      */
     public void setNotifWhen (String when) {
         this.notifWhen = when;
+    }
+
+    public int getNotifCode () {
+        return this.notifRequestCode;
+    }
+
+    public void setNotifRequestCode (int code) {
+        this.notifRequestCode = code;
     }
 }

@@ -32,6 +32,7 @@ public enum Keys {
     KEY_C_START_TIME,
     KEY_C_END_TIME,
     KEY_IS_COMPLETED,
+    KEY_NOTIF_CODE,
 
     // pokemon
     KEY_POKEMONID,
