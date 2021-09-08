@@ -92,6 +92,7 @@ public class DatabaseHelper {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserDetails userDetails = dataSnapshot.getValue(UserDetails.class);
+                userDetails.setFinishedTaskCount(dataSnapshot.child("completedTaskCount").getValue(Integer.class));
                 firebaseCallbackUser.onCallbackUser(userDetails, true, "User information successfully loaded.");
             }
 
