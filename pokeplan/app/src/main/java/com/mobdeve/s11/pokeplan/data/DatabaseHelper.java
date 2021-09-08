@@ -378,7 +378,12 @@ public class DatabaseHelper {
         });
     }
 
-    
+    /**
+     * Updates the information of a specific Pokemon of the current user in the Database.
+     * @param firebaseCallbackPokemon is a FirebaseCallbackPokemon object that would handle the asynchronous database.
+     * @param pokemon is a UserPokemon object that holds the modified information of the UserPokemon to be edited
+     * @param userDetails is a UserDetail object that holds the modified information of the current user
+     */
     public void updatePokemon (FirebaseCallbackPokemon firebaseCallbackPokemon, UserPokemon pokemon, UserDetails userDetails) {
         HashMap <String, Object> hash = new HashMap<>();
         hash.put("details", pokemon.getDetails());
@@ -418,6 +423,12 @@ public class DatabaseHelper {
         }
     }
 
+    /**
+     * Moves the pokemon from the party to the PC or from the PC to the party.
+     * @param firebaseCallbackPokemon is a FirebaseCallbackPokemon object that would handle the asynchronous database.
+     * @param key key is the key of the UserPokemon that would be edited
+     * @param checker true if the Pokemon is to be moved to the user's party; false otherwise
+     */
     public void movePokemon(FirebaseCallbackPokemon firebaseCallbackPokemon, String key, boolean checker) {
         HashMap <String, Object> hash = new HashMap<>();
         hash.put("inParty", checker);
@@ -434,6 +445,12 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Deletes the Pokemon from the user's list of Pokemon (party or PC).
+     * @param firebaseCallbackPokemon is a FirebaseCallbackPokemon object that would handle the asynchronous database.
+     * @param pokemon is a UserPokemon object that holds the information of the pokemon to be deleted from the current
+     * user's list of Pokemon.
+     */
     public void deletePokemon (FirebaseCallbackPokemon firebaseCallbackPokemon, UserPokemon pokemon) {
         Query query = mPokemon.child(pokemon.getUserPokemonID());
 
@@ -452,6 +469,10 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Retrieves the current user's task from the Database.
+     * @param firebaseCallbackTask is a FirebaseCallbackTask object that would handle the asynchronous database.
+     */
     public void getTasks (FirebaseCallbackTask firebaseCallbackTask) {
         ArrayList<UserTask> tasks = new ArrayList<>();
         mTask.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -473,6 +494,11 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Adds the task to the current user's list of task (in the Tasks table).
+     * @param firebaseCallbackTask is a FirebaseCallbackTask object that would handle the asynchronous database.
+     * @param taskCreated is a UserTask object that holds the information of the task to be added under the current user
+     */
     public void addOngoingTask(FirebaseCallbackTask firebaseCallbackTask, UserTask taskCreated) {
         String key = mTask.push().getKey();
         taskCreated.setTaskID(key);
@@ -488,6 +514,12 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Moves the task from the list of ongoing tasks to the list of completed tasks
+     * @param firebaseCallbackTask is a FirebaseCallbackTask object that would handle the asynchronous database.
+     * @param key is the key of the task to be moved
+     * @param user is a UserDetails object that holds the current user's information
+     */
     public void moveToCompletedTask (FirebaseCallbackTask firebaseCallbackTask, String key, UserDetails user) {
         HashMap <String, Object> hash = new HashMap<>();
 
@@ -504,6 +536,11 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Deletes the task from the list of tasks of the user
+     * @param firebaseCallbackTask is a FirebaseCallbackTask object that would handle the asynchronous database.
+     * @param key is the key of the task to be deleted
+     */
     public void deleteTask (FirebaseCallbackTask firebaseCallbackTask, String key) {
         Query query = mTask.child(key);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -520,8 +557,23 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Edits an existing task from the list of tasks of the user
+     * @param firebaseCallbackTask is a FirebaseCallbackTask object that would handle the asynchronous database.
+     * @param name is the modified task name of the task.
+     * @param priority is the modified priority level of the task.
+     * @param category is the modified category of the task.
+     * @param startDate is the modified start date of the task.
+     * @param endDate is the modified end date of the task.
+     * @param notes is the modified description of the task
+     * @param key is the key of the task to be edited
+     * @param notif tells when the notification of the task would be
+     * @param isBeforeStartTime true if the notification is before the start time; false otherwise
+     * @param isNotif true if the user wants to be notified; false otherwise
+     * @param notifCode is the request code assigned to the task; -1 if the task has no notification
+     */
     public void editTask (FirebaseCallbackTask firebaseCallbackTask, String name, int priority, String category, CustomDate startDate,
-                          CustomDate endDate, String notes, String key, String notif, boolean val, boolean isNotif, int notifCode) {
+                          CustomDate endDate, String notes, String key, String notif, boolean isBeforeStartTime, boolean isNotif, int notifCode) {
         HashMap <String, Object> hash = new HashMap <>();
         hash.put("taskName", name);
         hash.put("endDate", endDate);
@@ -530,7 +582,7 @@ public class DatabaseHelper {
         hash.put("category", category);
         hash.put("description", notes);
         hash.put("notifWhen", notif);
-        hash.put("beforeStartTime", val);
+        hash.put("beforeStartTime", isBeforeStartTime);
         hash.put("isNotif", isNotif);
         hash.put("notifCode", notifCode);
 
@@ -543,6 +595,11 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Updates the user's information if a task has its notifications on or off.
+     * @param firebaseCallbackTask is a FirebaseCallbackTask object that would handle the asynchronous database.
+     * @param key is the key of the task to be edited
+     */
     public void removeNotif (FirebaseCallbackTask firebaseCallbackTask, String key) {
         HashMap <String, Object> hash = new HashMap <>();
         hash.put("isNotif", false);
@@ -556,9 +613,14 @@ public class DatabaseHelper {
         });
     }
 
+    /**
+     * Updates the user's information of a specific task regarding the request code assigned to its notification
+     * @param firebaseCallbackTask is a FirebaseCallbackTask object that would handle the asynchronous database.
+     * @param notifCode is the request code assigned to its notification.
+     * @param key is the key of the task to be edited
+     */
     public void createNotif (FirebaseCallbackTask firebaseCallbackTask, int notifCode, String key) {
         HashMap<String, Object> hashMap = new HashMap<>();
-
 
         mTask.child(key).updateChildren(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
