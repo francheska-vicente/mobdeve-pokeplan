@@ -756,9 +756,13 @@ public class AddTaskActivity extends AppCompatActivity {
 
         String message = "Don't forget! This ";
         if(checker) {
-            message = message + "starts in " + notif;
+            message = message + "is starting in " + notif;
         } else {
-            message = message + "ends in " + notif;
+            message = message + "is ending in " + notif;
+        }
+
+        if (notif.equalsIgnoreCase("0 minutes")) {
+            message = "This has ended!";
         }
 
         int requestCode = (int) System.currentTimeMillis();

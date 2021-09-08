@@ -376,6 +376,9 @@ public class SettingsFragment extends Fragment {
         this.spEditor.apply();
     }
 
+    /**
+     * Deletes all pre-existing notifications of the user.
+     */
     private void deleteAllNotif () {
         databaseHelper.getTasks(new FirebaseCallbackTask() {
             @Override
@@ -396,6 +399,10 @@ public class SettingsFragment extends Fragment {
         });
     }
 
+    /**
+     * Deletes a specific notification
+     * @param requestCode is the request code of the notification that would be deleted.
+     */
     private void deleteNotif (int requestCode) {
         if (requestCode != -1) {
 
@@ -409,6 +416,10 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+    /**
+     * Creates the dialog that asks the user if they want to delete their pre-existing notifications and
+     * disable the creation of notifications.
+     */
     private void createRemoveNotifDialog () {
         removeNotifDialog = new CustomDialog(getContext());
         removeNotifDialog.setDialogType(CustomDialog.CONFIRM);
