@@ -719,10 +719,13 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Gets the difference (in milliseconds) between the current date and time and the date and time provided
+     * @param alarm is the date and time in milliseconds
+     * @return the difference between the two times
+     */
     private long getDiff (long alarm) {
         long diff = -1;
-
-
 
         try {
             Date dateStart = new Date();
