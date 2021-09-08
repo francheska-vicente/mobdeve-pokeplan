@@ -86,6 +86,10 @@ public class RegisterActivity extends AppCompatActivity {
             etUsername.setError("Username is required.");
             etUsername.requestFocus();
             return;
+        } else if (!(username.length() >= 6 && username.length() <= 12)) {
+            etUsername.setError("Username should be at least 6 characters and at most 12 characters.");
+            etUsername.requestFocus();
+            return;
         }
 
         if (password.isEmpty()) {
