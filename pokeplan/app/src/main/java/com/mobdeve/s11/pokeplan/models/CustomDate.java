@@ -98,7 +98,8 @@ public class CustomDate {
 
     @Override
     /**
-     * Reformats the CustomDate object to a string
+     * Formats the time to HH:mm in 24H format and calls the printData method
+     * @return a formatted string that indicates the date, with the Month in its word format (e.g. 'Jan'), and the time in 12H format
      */
     public String toString() {
         String tempTime = new DecimalFormat("00").format(hour) + ":" + new DecimalFormat("00").format(minute);
@@ -107,6 +108,14 @@ public class CustomDate {
         return printData(tempDate, tempTime);
     }
 
+    /**
+     * This returns a formatted string of the date and the time based on the parameters passed to it.
+     * @param dateToConvert is the date to format
+     * @param time is the hour of the date to format
+     * @return a formatted string. If the date passed is within the next six days, it would set the date to specific
+     * day of that date (e.g. 'Monday'). If the date is today, the date would be 'Today. Else, it would follow the format
+     * MMMM dd, yyyy @ HH:mm aa.
+     */
     public static String printData (String dateToConvert, String time) {
         Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
@@ -166,6 +175,10 @@ public class CustomDate {
         return  date;
     }
 
+    /**
+     * This formats the date object with the month written in its name format
+     * @return a string in the format MMMM dd, yyyy.
+     */
     public String printSpecificDate () {
         return monthString[month] + " " + day + ", " + year;
     }
