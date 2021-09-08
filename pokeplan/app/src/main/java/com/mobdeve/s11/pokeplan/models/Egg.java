@@ -14,7 +14,7 @@ public class Egg {
     private final String SR = "Super Rare";
 
     // rates of C, UC, R, SR respectively
-    private final int[] first = {50, 30, 19, 1};
+    private final int[] first = {60, 30, 9, 1};
     private final int[] second = {30, 40, 25, 5};
     private final int[] third = {15, 50, 25, 10};
     private final int[] fourth = {5, 35, 40, 20};
