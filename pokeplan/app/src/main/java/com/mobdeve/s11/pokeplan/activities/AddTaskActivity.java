@@ -761,6 +761,10 @@ public class AddTaskActivity extends AppCompatActivity {
             message = message + "ends in " + notif;
         }
 
+        if (notif.equalsIgnoreCase("0 minutes")) {
+            message = "This has ended!";
+        }
+
         int requestCode = (int) System.currentTimeMillis();
 
         if (notifCode != -1) {
