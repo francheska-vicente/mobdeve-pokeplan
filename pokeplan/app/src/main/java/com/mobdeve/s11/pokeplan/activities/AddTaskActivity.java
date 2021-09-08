@@ -93,7 +93,6 @@ public class AddTaskActivity extends AppCompatActivity {
         this.sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         notifCode = -1;
 
-        Log.d("hello", Integer.toString(notifCode));
         databaseHelper = new DatabaseHelper(true);
         checkerNotif = true;
         wasNotifOn = false;
@@ -744,7 +743,6 @@ public class AddTaskActivity extends AppCompatActivity {
      * @return the time in millis of the calculated time and date
      */
     private long calculateTime (CustomDate date, String notif) {
-        Log.d("hello hour", Integer.toString(date.getHour()));
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, date.getMonth() - 1);
         c.set(Calendar.DAY_OF_MONTH, date.getDay());
@@ -847,7 +845,6 @@ public class AddTaskActivity extends AppCompatActivity {
      */
     private void deleteTimer () {
         if (notifCode != -1) {
-            Log.d("hello deleting", Integer.toString(notifCode));
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
             Intent intent = new Intent(getApplicationContext(), ReminderBroadcast.class);
