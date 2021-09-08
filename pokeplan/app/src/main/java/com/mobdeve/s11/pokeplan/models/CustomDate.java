@@ -1,5 +1,7 @@
 package com.mobdeve.s11.pokeplan.models;
 
+import org.chromium.base.Log;
+
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -74,6 +76,7 @@ public class CustomDate {
             this.hour = 0;
         }
 
+        Log.d("hello date cons", toString());
     }
 
     /**
