@@ -76,7 +76,6 @@ public class CustomDate {
             this.hour = 0;
         }
 
-        Log.d("hello date cons", toString());
     }
 
     /**
