@@ -16,3 +16,5 @@ The user would be able to see the list of all available Pokémon in the applicat
 
 ## Pokemon Party
 The Pokémon Party is a group of Pokémon that is visible on the Home Screen. These Pokémon can be interacted with, or more specifically, can be fed Rare Candies and Super Candies.
+
+In the absence of the traditional Pokémon battling system, Rare Candies and Super Candies are used to level up and evolve your Pokémon respectively. Ten (10) Rare Candies are used to level up a Pokémon, while only one (1) Super Candy is needed for evolution. Pokémon can only evolve at specific levels, each different per species.
