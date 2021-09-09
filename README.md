@@ -17,7 +17,8 @@ The user may view all the tasks that they have added. Users have the choice to s
 In creating a task, the user would be asked to provide the name, category, an optional due date, and the priority level of the task. The priority level of a task ranges from 1 (which signifies the most important task) to 5. Finishing a task with a higher priority level would result in better rewards.
 
 ## Pokedex
-<img src="https://user-images.githubusercontent.com/75743382/132638398-dc5d751a-2984-42d0-a13e-705cb323afa1.png" width="300">
+<img src="https://user-images.githubusercontent.com/75743382/132638398-dc5d751a-2984-42d0-a13e-705cb323afa1.png" width="300"><img src="https://user-images.githubusercontent.com/75743382/132640717-7c29e55b-63f4-4ae7-88aa-0ce424f0beb7.png" width="300">
+
 The user would be able to see the list of all available Pokémon in the application. However, they would only be able to view the information of the Pokémon that they already have.
 
 ## Pokemon Party
