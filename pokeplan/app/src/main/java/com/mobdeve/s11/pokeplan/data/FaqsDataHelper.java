@@ -12,16 +12,16 @@ public class FaqsDataHelper {
         answersList = new ArrayList<>();
 
         questionsList.add("1. What is the Focus Timer?");
-        answersList.add("The focus timer is a timer that would help you avoid the temptation of using your device when you are trying to be productive. In using the focus timer, you would be encouraged not to touch, move or use your device during its duration as there is a Pokémon awaiting you at the end of it.");
+        answersList.add("The Focus Timer is a timer that would help you avoid the temptation of using your device when you are trying to be productive. In using the Focus Timer, you would be encouraged not to use your device as finishing the timer would reward you with a Pokémon.");
 
         questionsList.add("2. What is Deep Focus Mode?");
-        answersList.add("The deep focus mode is an additional feature of the focus timer. In this mode, the user may not touch or move the phone, as doing either of the two would cause the user’s egg to crack. However, choosing this mode would also increase the chances of hatching a rare Pokémon.");
+        answersList.add("Deep focus mode is an additional feature of the focus timer. In this mode, the user may not touch or move the phone, as doing either of the two would cause the egg to not hatch. Enabling this mode would increase the chances of hatching a rare Pokémon.");
 
-        questionsList.add("3. Why did my egg turn into a sunny-side-up?");
-        answersList.add("In the Normal Mode, this might be because you exited from the application, your device’s screen turned off, or you stopped the timer. Additionally, in the Deep Focus Mode, you might have touched or moved your phone.");
+        questionsList.add("3. Why did my egg not hatch?");
+        answersList.add("This might be because you exited from the application, your device’s screen turned off, or you stopped the timer. Additionally, in the Deep Focus Mode, you might have touched or moved your phone.");
 
         questionsList.add("4. How do I hatch rarer Pokémon from the Focus Timer?");
-        answersList.add("The chances of a rare Pokémon increases as the length of your timer becomes longer. ");
+        answersList.add("The chances of a rare Pokémon increases as the length of your timer becomes longer.");
 
         questionsList.add("5. What is the Pokémon Party?");
         answersList.add("The Pokémon Party is a group of Pokémon that is visible on the Home Screen. These Pokémon can be interacted with, or more specifically, can be fed Rare Candies and Super Candies.");
@@ -30,7 +30,7 @@ public class FaqsDataHelper {
         answersList.add("Like the original Pokémon games, six Pokémon can be stored at your party. Newly hatched Pokémon will automatically be sent to your PC.");
 
         questionsList.add("7. What is the Pokémon PC?");
-        answersList.add("The Pokémon PC acts as a storage system for all your other Pokémon.");
+        answersList.add("The Pokémon PC acts as a storage system for all your other Pokémon. In here, you can choose to move your Pokémon to the PC or release them forever");
 
         questionsList.add("8. What are Rare Candies and Super Candies?");
         answersList.add("In the absence of the traditional Pokémon battling system, Rare Candies and Super Candies are used to level up and evolve your Pokémon respectively. Ten (10) Rare Candies are used to level up a Pokémon, while only one (1) Super Candy is needed for evolution. Pokémon can only evolve at specific levels, each different per species.");
