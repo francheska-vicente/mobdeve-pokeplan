@@ -111,10 +111,6 @@ public class RegisterStarterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterStarterActivity.this, "User's information has been registered!",
                                 Toast.LENGTH_LONG).show();
                         pbLoading.setVisibility(View.GONE);
-                        finish();
-
-                        Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
-                        startActivity(intent);
                     } else {
                         Toast.makeText(RegisterStarterActivity.this, "User's pokemon information has not been registered!",
                                 Toast.LENGTH_LONG).show();
@@ -128,7 +124,6 @@ public class RegisterStarterActivity extends AppCompatActivity {
             }
         }, user, this.password);
 
-        Intent intent = new Intent(RegisterStarterActivity.this, InitActivity.class);
-        startActivity(intent);
+        finish();
     }
 }
