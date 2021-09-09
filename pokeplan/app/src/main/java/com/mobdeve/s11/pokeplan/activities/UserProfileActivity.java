@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.mobdeve.s11.pokeplan.R;
 import com.mobdeve.s11.pokeplan.data.DatabaseHelper;
@@ -18,6 +21,9 @@ import com.mobdeve.s11.pokeplan.models.UserDetails;
 import com.mobdeve.s11.pokeplan.utils.Keys;
 
 public class UserProfileActivity extends AppCompatActivity {
+    private ConstraintLayout clComponents;
+    private ProgressBar pbLoading;
+
     private SharedPreferences sp;
     private SharedPreferences.Editor spEditor;
 
@@ -43,13 +49,33 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     /**
+     * Sets the view components for when the data has not loaded yet
+     */
+    private void loadingScreen() {
+        this.pbLoading = findViewById(R.id.pb_userprofile_loading);
+        this.pbLoading.setVisibility(View.VISIBLE);
+        this.clComponents = findViewById(R.id.cl_userprofile_components);
+        this.clComponents.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * Sets the view components for when the data has finished loading
+     */
+    private void finishLoading() {
+        pbLoading.setVisibility(View.GONE);
+        clComponents.setVisibility(View.VISIBLE);
+    }
+
+    /**
      * Retrieves user information from the database
      */
     private void initInfo () {
+        loadingScreen();
         DatabaseHelper databaseHelper = new DatabaseHelper(true);
         databaseHelper.getUserDetails((userDetails, isSuccessful, message) -> {
             if (isSuccessful) {
                 user = userDetails;
+                finishLoading();
                 initComponents();
             }
         });
