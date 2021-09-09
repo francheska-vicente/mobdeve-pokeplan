@@ -23,7 +23,7 @@ The user would be able to see the list of all available Pokémon in the applicat
 
 ## Pokemon Party
 
-<img src="https://user-images.githubusercontent.com/75743382/132641033-76feca7e-f1e1-4ee6-bb88-0e69e019bac7.png" width="300"><img src="https://user-images.githubusercontent.com/75743382/132641173-9aad888f-f088-4174-b679-73b1624cd86a.png" width="300"><img src="https://user-images.githubusercontent.com/75743382/132641257-050a5c6f-e6e6-4a9a-a7cc-f5fac64cc182.png" width="300">
+<img src="https://user-images.githubusercontent.com/75743382/132641033-76feca7e-f1e1-4ee6-bb88-0e69e019bac7.png" width="200"><img src="https://user-images.githubusercontent.com/75743382/132641173-9aad888f-f088-4174-b679-73b1624cd86a.png" width="200"><img src="https://user-images.githubusercontent.com/75743382/132641257-050a5c6f-e6e6-4a9a-a7cc-f5fac64cc182.png" width="200">
 
 The Pokémon Party is a group of Pokémon that is visible on the Home Screen. These Pokémon can be interacted with, or more specifically, can be fed Rare Candies and Super Candies.
 
