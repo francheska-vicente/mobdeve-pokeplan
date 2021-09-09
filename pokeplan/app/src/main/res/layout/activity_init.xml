@@ -27,7 +27,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baackground_forestpika" />
+            app:srcCompat="@drawable/background_forestpika" />
 
         <ImageView
             android:id="@+id/iv_init_logo"
@@ -70,7 +70,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:fontFamily="@font/raleway_light_italic"
-        android:text="tagline here, tagline tagline"
+        android:text="@string/tagline"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tv_init_welcome"
         app:layout_constraintTop_toBottomOf="@+id/div_init" />

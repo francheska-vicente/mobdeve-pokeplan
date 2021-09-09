@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PokePlan"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FaqsActivity"></activity>
+        <activity android:name=".activities.FaqsActivity"></activity>
         <activity
-            android:name=".InitActivity"
+            android:name=".activities.InitActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,39 +21,42 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".activities.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RegisterStarterActivity"
+            android:name=".activities.RegisterStarterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TaskDetailsActivity"
+            android:name=".activities.TaskDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddTaskActivity"
+            android:name=".activities.AddTaskActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PokemonDetailsActivity"
+            android:name=".activities.PokemonDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UserProfileActivity"
+            android:name=".activities.UserProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PokemonPCActivity"
+            android:name=".activities.PokemonPCActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PokedexDetailsActivity"
+            android:name=".activities.PokedexDetailsActivity"
             android:screenOrientation="portrait" />
+
+        <receiver android:name=".services.ReminderBroadcast"></receiver>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>

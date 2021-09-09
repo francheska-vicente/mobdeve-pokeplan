@@ -1,7 +1,7 @@
 <resources>
     <!-- General -->
     <string name="app_name">PokéPlan</string>
-    <string name="tagline">Stay productive! Pika pika pi!</string>
+    <string name="tagline">Gotta plan \'em all!</string>
 
     <!-- Login / Register -->
     <string name="register_tagline">Hello! Create a new account now.</string>
@@ -12,7 +12,6 @@
     <string name="name">Name</string>
     <string name="email">Email</string>
     <string name="register_s_title">Choose Your Starter</string>
-
     <string name="forgot_title">Enter your e-mail.</string>
     <string name="forgot_button">Reset Password</string>
 
@@ -133,9 +132,9 @@
     <string name="pkmndetails_movetopartydiag_title">Move to Party</string>
     <string name="pkmndetails_movetopartydiag_text">This would add the pokemon to your party.</string>
     <string name="pkmndetails_movetopartydiag_button">Move to Party</string>
-    <string name="pkmndetails_releasepkmndiag_button">Release Pokemon</string>
-    <string name="pkmndetails_releasepkmndiag_title">Release Pokemon to the wild?</string>
-    <string name="pkmndetails_releasepkmndiag_text">Releasing this pokemon means that you will not be able to see it in your PC or your party.</string>
+    <string name="pkmndetails_releasepkmndiag_button">Release</string>
+    <string name="pkmndetails_releasepkmndiag_title">Release Pokemon?</string>
+    <string name="pkmndetails_releasepkmndiag_text">You won\'t be able to see this Pokemon again. Are you sure?</string>
 
     <!-- Task Details -->
     <string name="task_details_confirm_finish_title">Finish Task</string>

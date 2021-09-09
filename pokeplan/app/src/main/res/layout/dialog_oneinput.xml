@@ -8,7 +8,7 @@
     android:backgroundTint="@color/lighter_gray">
 
     <Button
-        android:id="@+id/btn_dialog_stringinput_confirm"
+        android:id="@+id/btn_dialog_oneinput_confirm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -17,12 +17,12 @@
         android:background="@drawable/rounded_rectangle"
         android:fontFamily="@font/raleway_bold"
         android:text="Cancel"
-        app:layout_constraintEnd_toStartOf="@+id/btn_dialog_stringinput_ok"
+        app:layout_constraintEnd_toStartOf="@+id/btn_dialog_oneinput_ok"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_stringinput" />
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_oneinput" />
 
     <TextView
-        android:id="@+id/iv_dialog_stringinput_title"
+        android:id="@+id/iv_dialog_oneinput_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -34,10 +34,10 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_dialog_stringinput_icon" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_oneinput_icon" />
 
     <ImageView
-        android:id="@+id/iv_dialog_stringinput_icon"
+        android:id="@+id/iv_oneinput_icon"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="32dp"
@@ -49,7 +49,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_dialog_stringinput_ok"
+        android:id="@+id/btn_dialog_oneinput_ok"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -62,11 +62,11 @@
         android:text="OK"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_dialog_stringinput_confirm"
-        app:layout_constraintTop_toBottomOf="@+id/et_dialog_stringinput" />
+        app:layout_constraintStart_toEndOf="@+id/btn_dialog_oneinput_confirm"
+        app:layout_constraintTop_toBottomOf="@+id/et_dialog_oneinput" />
 
     <EditText
-        android:id="@+id/et_dialog_stringinput"
+        android:id="@+id/et_dialog_oneinput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -77,5 +77,5 @@
         android:textColor="@color/darkest_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_dialog_stringinput_title" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_dialog_oneinput_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>
