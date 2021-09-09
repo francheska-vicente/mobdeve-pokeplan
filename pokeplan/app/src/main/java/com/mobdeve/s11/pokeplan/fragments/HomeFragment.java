@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
     private ConstraintLayout clComponents;
+    private ProgressBar pbLoading;
 
     private ArrayList<UserPokemon> pokemonPartyList;
     private RecyclerView rvPokemonParty;
@@ -39,8 +40,6 @@ public class HomeFragment extends Fragment {
     private TextView tvRareCandyCtr;
     private TextView tvSuperCandyCtr;
     private TextView tvPokedexCtr;
-
-    private ProgressBar pbLoading;
 
     private UserDetails user;
     private int ongoingTaskNum;
