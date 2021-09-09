@@ -1,7 +1,7 @@
 # PokéPlan: Gotta Plan 'Em All
-<p style="clear: both; text-align: justify">
-  <img src="https://user-images.githubusercontent.com/75743382/132638099-15cb3985-b189-4a7a-9e91-fd6035649498.png" width="300" style="float: left; align: left"/>PokéPlan is a productivity application that encourages its users to be productive and organized while having fun. This application incentivizes users to achieve their goals by adding Pokémon elements to their life: for example, finishing tasks rewards the user with Pokémon Eggs and Rare Candies. Eggs can be hatched by staying focused on a task and avoiding distractions for a certain amount of time while Rare Candies are used to level up and evolve Pokémon. The overall goal of this application is to collect all the available Pokémon, all while helping the user to stay motivated and productive in real life.
- </p>
+<p style="clear: both; text-align: justify"> PokéPlan is a productivity application that encourages its users to be productive and organized while having fun. This application incentivizes users to achieve their goals by adding Pokémon elements to their life: for example, finishing tasks rewards the user with Pokémon Eggs and Rare Candies. Eggs can be hatched by staying focused on a task and avoiding distractions for a certain amount of time while Rare Candies are used to level up and evolve Pokémon. The overall goal of this application is to collect all the available Pokémon, all while helping the user to stay motivated and productive in real life.  </p>
+  <img src="https://user-images.githubusercontent.com/75743382/132638099-15cb3985-b189-4a7a-9e91-fd6035649498.png" width="300" style="float: left; align: left"/>
+
 
 ## Focus Timer
 <img src="https://user-images.githubusercontent.com/75743382/132639456-6d68252e-ad35-435b-a7b7-a332007a7c32.png" width="200"><img src="https://user-images.githubusercontent.com/75743382/132639574-b0c63ec0-52ed-4ae4-9479-98cd6ae548c4.png" width="200">
