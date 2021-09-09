@@ -9,8 +9,10 @@ Additionally, the user may toggle ‘Deep Focus Mode’ where in addition to not
 ## Task Planner
 The user may view all the tasks that they have added. Users have the choice to see all the pending tasks or to filter the tasks to be shown based on their category. A user may also choose to modify or delete an existing task. 
 
-## Pokedex
+In creating a task, the user would be asked to provide the name, category, an optional due date, and the priority level of the task. The priority level of a task ranges from 1 (which signifies the most important task) to 5. Finishing a task with a higher priority level would result in better rewards.
 
-## Pokemon PC
+## Pokedex
+The user would be able to see the list of all available Pokémon in the application. However, they would only be able to view the information of the Pokémon that they already have.
 
 ## Pokemon Party
+The Pokémon Party is a group of Pokémon that is visible on the Home Screen. These Pokémon can be interacted with, or more specifically, can be fed Rare Candies and Super Candies.
