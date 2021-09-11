@@ -111,19 +111,32 @@ public class RegisterStarterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterStarterActivity.this, "User's information has been registered!",
                                 Toast.LENGTH_LONG).show();
                         pbLoading.setVisibility(View.GONE);
+
+                        finish();
+
+                        Intent intent = new Intent(RegisterStarterActivity.this, LoginActivity.class);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(RegisterStarterActivity.this, "User's pokemon information has not been registered!",
                                 Toast.LENGTH_LONG).show();
                         pbLoading.setVisibility(View.GONE);
+
+                        finish();
+
+                        Intent intent = new Intent(RegisterStarterActivity.this, InitActivity.class);
+                        startActivity(intent);
                     }
                 }, false, pokemon, user);
             } else {
                 Toast.makeText(RegisterStarterActivity.this, "User's information has not been registered!",
                         Toast.LENGTH_LONG).show();
                 pbLoading.setVisibility(View.GONE);
+
+                finish();
+
+                Intent intent = new Intent(RegisterStarterActivity.this, InitActivity.class);
+                startActivity(intent);
             }
         }, user, this.password);
-
-        finish();
     }
 }
