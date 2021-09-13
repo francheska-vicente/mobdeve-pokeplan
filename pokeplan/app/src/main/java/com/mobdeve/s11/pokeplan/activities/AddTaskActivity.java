@@ -528,12 +528,12 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
 
                 if(val) {
-                    if (calculateTime(new CustomDate(startDate, startTime), notif) <= 0) {
+                    if (!checker1 && !startDate.isEmpty() && calculateTime(new CustomDate(startDate, startTime), notif) <= 0) {
                         checker1 = true;
                         error = "You cannot create a notification for an earlier time.";
                     }
                 } else {
-                    if (calculateTime(new CustomDate(endDate, endTime), notif) <= 0) {
+                    if (!checker1 && !endDate.isEmpty() && calculateTime(new CustomDate(endDate, endTime), notif) <= 0) {
                         checker1 = true;
                         error = "You cannot create a notification for an earlier time.";
                     }
