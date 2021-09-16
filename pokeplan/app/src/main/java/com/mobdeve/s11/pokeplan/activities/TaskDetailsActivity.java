@@ -223,7 +223,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         }
         return "No set notification for this task.";
     }
-    
+
     private void editTaskDetails() {
         intent = new Intent(TaskDetailsActivity.this, AddTaskActivity.class);
 
@@ -448,6 +448,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
             confirmFinish.dismiss();
 
             databaseHelper.moveToCompletedTask((list, isSuccesful, message) -> giveCandies(), taskID, user);
+
+            deleteTimer();
         });
         confirmFinish.show();
     }
@@ -490,6 +492,21 @@ public class TaskDetailsActivity extends AppCompatActivity {
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.finishtask);
         mediaPlayer.start();
         mediaPlayer.setOnCompletionListener(mp -> mp.release());
+    }
+
+    /**
+     * Deletes the notification created from the broadcast receiver.
+     */
+    private void deleteTimer () {
+        if (notifCode != -1) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            Intent intent = new Intent(getApplicationContext(), ReminderBroadcast.class);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notifCode, intent, 0);
+
+            alarmManager.cancel(pendingIntent);
+        }
     }
 
     @Override
